@@ -1,6 +1,8 @@
 ---
 title: "R Notebook"
-output: html_notebook
+output: 
+  html_notebook:
+    toc: true
 ---
 
 This document serves to compare the data presented in Sydney's original XLSX 
@@ -362,11 +364,33 @@ head(the_difference, n = 20)
 ## #   `9-2` <int>
 ```
 
-It appears that there are a couple of discrepancies:
+
+## Conclusion
+
+Both data sets failed the cromulence check in a common manner:
+
+```
+- Column 'Host' violates assertion 'in_set(HOST)' 2 times
+  index  value
+1   263 B07104
+2   317 PO7683
+```
+
+These are the values I grabbed from the manuscript that could possibly match:
+
+ - `PO7863`
+ - `PO7883`
+ - `BO7104` (The difference is that this is the letter "O" and above is the number "0")
+
+Sydney's data set had an extra discrepancy, but that's noted in the difference
+between data sets below:
 
 1. Isolate 805 is flagged for some reason in Sydney's data set
 2. Tasmania (TS, Sydney) has been changed to Australia (AU, Sajeewa)
 3. Belgium (BL, Sydney) has been changed to France (FR, Sajeewa)
+4. Host for isolate 499 has been changed from ExRico (Sydney) to Bunsi (Sajeewa)
+
+
 
 
 ## Session Information
