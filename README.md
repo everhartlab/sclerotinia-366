@@ -9,6 +9,6 @@ The manuscript has mostly been written, but it still needs some cleaning:
 > from dry bean throughout the United States, and from Mexico, France, and
 > Australia
 >
-> B. S. Amaradasa, R. Jhala, J. Steadman, and S. E. Everhart
+> B. S. Amaradasa, R. Jhala, Z. N. Kamvar, J. Steadman, and S. E. Everhart
 
 
