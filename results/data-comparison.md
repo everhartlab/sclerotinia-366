@@ -318,47 +318,48 @@ have the same rows (in any order)
 
 
 ```r
-setequal(saj, syd)
+dplyr::setequal(saj, syd)
 ```
 
 ```
-## [1] FALSE
+## FALSE: Rows in x but not y: 366, 365, 363, 260, 364, 41, 40, 39, 38. Rows in y but not x: 366, 365, 364, 363, 260, 41, 39, 38, 40.
 ```
 
 Okay, something's not cromulent here. We'll have to manaully inspect these:
 
 
 ```r
-syddiff <- setdiff(syd, saj)
-sajdiff <- setdiff(saj, syd)
+syddiff <- dplyr::setdiff(syd, saj)
+sajdiff <- dplyr::setdiff(saj, syd)
 the_difference <- bind_rows(syd = syddiff, saj = sajdiff, .id = "source") %>% arrange(Isolate)
 head(the_difference, n = 20)
 ```
 
 ```
-## # A tibble: 20 × 4
-##    source Isolate State  Host
-##     <chr>   <chr> <chr> <chr>
-## 1     syd     152    NE    GH
-## 2     saj     152    NE    GH
-## 3     syd     274    NE    GH
-## 4     saj     274    NE    GH
-## 5     syd     443    NY    GH
-## 6     saj     443    NY    GH
-## 7     syd     444    MN  G122
-## 8     saj     444    MN  G122
-## 9     syd     445    MN Beryl
-## 10    saj     445    MN Beryl
-## 11    syd     446    MI Beryl
-## 12    saj     446    MI Beryl
-## 13    syd     447    MI Beryl
-## 14    saj     447    MI Beryl
-## 15    syd     448    MI Beryl
-## 16    saj     448    MI Beryl
-## 17    syd     449    MI Bunsi
-## 18    saj     449    MI Bunsi
-## 19    syd     450    MI Bunsi
-## 20    saj     450    MI Bunsi
+## # A tibble: 18 × 19
+##    source Isolate Severity   MCG State Source  Year   Host `110-4` `114-4`
+##     <chr>   <chr>    <dbl> <chr> <chr>  <chr> <chr>  <chr>   <int>   <int>
+## 1     syd     496      5.1    83    TS    wmn  2004   G122     386     359
+## 2     saj     496      5.1    83    AU    wmn  2004   G122     386     359
+## 3     syd     499      5.6    85    TS    wmn  2004 ExRico     378     367
+## 4     saj     499      5.6    85    AU    wmn  2004  Bunsi     378     367
+## 5     syd     500      1.4    83    TS    wmn  2004  Beryl     374     367
+## 6     saj     500      1.4    83    AU    wmn  2004  Beryl     374     367
+## 7     syd     501      3.3    84    TS    wmn  2004  Beryl     374     359
+## 8     saj     501      3.3    84    AU    wmn  2004  Beryl     374     359
+## 9     saj     805      5.8    18    ND    stc  2010    unk     382     339
+## 10    syd    805*      5.8    18    ND    stc  2010    unk     382     339
+## 11    syd     966      4.5    33    BL   flds  2012    unk     386     371
+## 12    saj     966      4.5    33    FR   flds  2012    unk     386     371
+## 13    syd     967      5.8    34    BL   flds  2012    unk     386     339
+## 14    saj     967      5.8    34    FR   flds  2012    unk     386     339
+## 15    syd     968      4.2    34    BL   flds  2012    unk     370     339
+## 16    saj     968      4.2    34    FR   flds  2012    unk     370     339
+## 17    syd     970      5.2    35    BL   flds  2012    unk     382     371
+## 18    saj     970      5.2    35    FR   flds  2012    unk     382     371
+## # ... with 9 more variables: `12-2` <int>, `17-3` <int>, `20-3` <int>,
+## #   `5-2` <int>, `55-4` <int>, `6-2` <int>, `7-2` <int>, `8-3` <int>,
+## #   `9-2` <int>
 ```
 
 It appears that there are a couple of discrepancies:

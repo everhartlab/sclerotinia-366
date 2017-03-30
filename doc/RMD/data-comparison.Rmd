@@ -179,14 +179,14 @@ to have the same data. The `setequal()` checks whether or not both data sets
 have the same rows (in any order)
 
 ```{r, equal_sets}
-setequal(saj, syd)
+dplyr::setequal(saj, syd)
 ```
 
 Okay, something's not cromulent here. We'll have to manaully inspect these:
 
 ```{r}
-syddiff <- setdiff(syd, saj)
-sajdiff <- setdiff(saj, syd)
+syddiff <- dplyr::setdiff(syd, saj)
+sajdiff <- dplyr::setdiff(saj, syd)
 the_difference <- bind_rows(syd = syddiff, saj = sajdiff, .id = "source") %>% arrange(Isolate)
 head(the_difference, n = 20)
 ```
