@@ -1,6 +1,7 @@
 .PHONY: all
 
-all: results/data-comparison.md
+all: results/data-comparison.md \
+	results/MLG-distribution.md
 
 results/%.md : doc/RMD/%.Rmd
 	R --slave -e "ezknitr::ezknit('$^', \

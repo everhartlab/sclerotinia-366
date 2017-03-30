@@ -390,7 +390,16 @@ between data sets below:
 3. Belgium (BL, Sydney) has been changed to France (FR, Sajeewa)
 4. Host for isolate 499 has been changed from ExRico (Sydney) to Bunsi (Sajeewa)
 
+### Sydney's comments
 
+We have no clue why 805 is flagged. The changes to the metadata are correct.
+The change from BL to FR was because of confusion between the source of the 
+collectors vs. source of isolate.
+
+TS was grouped into AU because it was too small of a sample size to do anything.
+
+
+From here on out, we will use Sajeewa's data for analysis.
 
 
 ## Session Information

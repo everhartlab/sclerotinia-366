@@ -1,0 +1,86 @@
+---
+title: "R Notebook"
+output: 
+  html_notebook:
+    toc: true
+---
+
+```{r setup, include = FALSE}
+knitr::opts_knit$set(root.dir = PROJHOME)
+```
+
+In this document, I will create a graph that shows the distribution of MLGs
+across populations
+
+```{r}
+library('tidyverse')
+library('assertr')
+library('poppr')
+library('igraph')
+```
+
+## Loading data and assertions
+
+
+
+
+
+```{r read_data}
+dat <- read.genalex("../Analysis4 ForManu/A2_Copy4 EUR_AUS_forManu.csv", ploidy = 1)
+splitStrata(dat) <- ~Isolate/Severity/MCG/Region/Source/Year/Host
+dat
+```
+
+The incoming strata includes both Severity and Isolate. Since these are not
+necessary for delimiting the strata, we will place them in the "other" slot
+after converting Severity to numeric. Placing this information in the "other"
+slot ensures that these data will travel with the object.
+
+```{r fix_strata}
+dat_strata <- strata(dat) %>%
+  mutate_all(as.character) %>%
+  mutate(Severity = as.numeric(Severity))
+strata(dat)     <- select(dat_strata, -Severity, -Isolate)
+indNames(dat)   <- dat_strata$Isolate
+other(dat)$meta <- select(dat_strata, Severity, Isolate)
+```
+
+```{r}
+setPop(dat) <- ~Region
+dat
+```
+
+## Crossing populations
+
+
+We can use `mlg.crosspop()` to tabulte which MLGs cross populations.
+
+```{r}
+make_from_to <- function(poplist){
+  x <- combn(poplist, 2)
+  tibble::data_frame(from = x[1, ], to = x[2, ])
+}
+crosses <- mlg.crosspop(dat, df = TRUE, quiet = TRUE)
+
+pop_graph <- crosses %>%
+  group_by(MLG) %>% 
+  summarize(Population = list(make_from_to(Population)), Size = sum(Count)) %>%
+  unnest() %>%
+  group_by(from, to) %>%
+  summarize(weight = length(Size)) %>%
+  ungroup()
+
+
+gcross <- graph_from_data_frame(pop_graph, directed = FALSE)
+traffic <- apply(gcross[], 1, sum)
+# V(gcross)$weight <- table(pop(clonecorrect(dat, ~Region)))[V(gcross)]
+colors <- viridis::magma(max(pop_graph$weight), end = 0.9)
+set.seed(50)
+gcross %>%
+  plot(., vertex.size = table(pop(clonecorrect(dat, ~Region)))[names(V(gcross))],
+       edge.width = E(.)$weight, 
+       layout = layout_in_circle(.),
+       edge.color = colors[E(.)$weight])
+
+```
+
