@@ -62,25 +62,59 @@ make_from_to <- function(poplist){
 }
 crosses <- mlg.crosspop(dat, df = TRUE, quiet = TRUE)
 
-pop_graph <- crosses %>%
+pg <- 
+  crosses %>%
   group_by(MLG) %>% 
-  summarize(Population = list(make_from_to(Population)), Size = sum(Count)) %>%
-  unnest() %>%
+  summarize(Population = list(make_from_to(Population)), Size = length(Count))
+  
+pop_graph <- pg %>%  unnest() %>%
   group_by(from, to) %>%
-  summarize(weight = length(Size)) %>%
-  ungroup()
+  mutate(weight = length(Size)) %>%
+  ungroup() %>%
+  select(from, to, weight, everything())
+
+unchoose <- function(x) ceiling(sqrt(x * 2))
 
 
-gcross <- graph_from_data_frame(pop_graph, directed = FALSE)
-traffic <- apply(gcross[], 1, sum)
-# V(gcross)$weight <- table(pop(clonecorrect(dat, ~Region)))[V(gcross)]
-colors <- viridis::magma(max(pop_graph$weight), end = 0.9)
+  
+gcross           <- graph_from_data_frame(pop_graph, directed = FALSE)
+E(gcross)$name   <- as.character(pop_graph$MLG)
+E(gcross)$weight <- unchoose(table(E(gcross)$name)[E(gcross)$name])
+colors <- viridis::magma(max(E(gcross)$weight) - 1, end = 0.8)
 set.seed(50)
 gcross %>%
   plot(., vertex.size = table(pop(clonecorrect(dat, ~Region)))[names(V(gcross))],
-       edge.width = E(.)$weight, 
-       layout = layout_in_circle(.),
-       edge.color = colors[E(.)$weight])
+       edge.width = E(.)$weight - 1,
+       layout = layout_as_star(., center = "MI"),
+       # layout = layout_in_circle(.),
+       edge.color = colors[E(.)$weight - 1])
 
+
+
+```
+
+
+
+```{r}
+
+pops <- crosses %>%
+  group_by(Population) %>%
+  summarize(MLG = list(as.character(MLG))) %>%
+  group_by(Population) %>%
+  mutate(interactions = list(pg$Population[pg$MLG %in% unlist(MLG)] %>% setNames(unlist(MLG)) %>% bind_rows(.id = "MLG") %>% distinct)) %>%
+  mutate(graph = map(interactions, ~select(.x, from, to, MLG) %>% graph_from_data_frame(directed = FALSE)))
+psize <- table(pop(clonecorrect(dat, ~Region)))
+par(mfrow = c(3, 4))
+
+apply(pops, 1, function(i){
+    plot(i$graph, 
+         layout = layout_as_star(i$graph, center = i$Population), 
+         main = i$Population, 
+         vertex.size = psize[names(V(i$graph))])
+  })
+par(mfrow = c(1, 1))
+do.call("union", pops$graph) %>% 
+  plot(., vertex.size = psize[names(V(.))],
+       layout = layout_as_star(., center = "MI"))
 ```
 
