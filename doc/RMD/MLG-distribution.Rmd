@@ -164,10 +164,10 @@ caps %>% mutate(from_size = scale(from_size, center = FALSE)/10) %>%
 
 glay <- create_layout(gnew, "manual", node.positions = as.data.frame(glayout2) %>% setNames(c("x", "y")))
 ggraph(glay) +
-  geom_node_circle(aes(r = scale(size, center = FALSE)/10, fill = size, alpha = 1 - weight)) +
   geom_edge_fan() +
   # geom_edge_fan2(aes(start_cap = circle(rep(spac$from_size, 2)/2, "mm"),
   #                   end_cap = circle(rep(spac$to_size, 2)/2, "mm"))) +
+  geom_node_circle(aes(r = scale(size, center = FALSE)/10, fill = size, alpha = 1 - weight)) +
   geom_node_label(aes(label = name), repel = TRUE) +
   viridis::scale_fill_viridis(option = "C") +
   coord_fixed() +
