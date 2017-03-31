@@ -114,6 +114,10 @@ library('igraph')
 ##     union
 ```
 
+```r
+library("ggraph")
+```
+
 ## Loading data and assertions
 
 
@@ -267,6 +271,48 @@ pops
 ```
 
 ```r
+possible_edges <- expand.grid(from = pops$Population, to = pops$Population)
+possible_edges$Population <- possible_edges$from
+from_edges <- right_join(possible_edges, select(pops, Population, size)) %>% 
+  tbl_df %>% 
+  rename(from_size = size) %>%
+  select(-Population)
+```
+
+```
+## Joining, by = "Population"
+```
+
+```
+## Warning in right_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## factor and character vector, coercing into character vector
+```
+
+```r
+to_edges <- right_join(mutate(possible_edges, Population = to), select(pops, Population, size)) %>% 
+  tbl_df %>% 
+  rename(to_size = size) %>%
+  select(-Population)
+```
+
+```
+## Joining, by = "Population"
+```
+
+```
+## Warning in right_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## factor and character vector, coercing into character vector
+```
+
+```r
+possible_edges <- inner_join(from_edges, to_edges)
+```
+
+```
+## Joining, by = c("from", "to")
+```
+
+```r
 par(mfrow = c(3, 4))
 
 apply(pops, 1, function(i){
@@ -307,11 +353,59 @@ glayout_df <- glayout %>%
 
 ```r
 V(gnew)$size <- glayout_df$size
-V(gnew)$color <- viridis::viridis(100)[round(100 * (1 - glayout_df$n_private/glayout_df$size))]
+V(gnew)$weight <- (1 - glayout_df$n_private/glayout_df$size)
+V(gnew)$color <- viridis::viridis(100)[round(V(gnew)$weight * 100)]
 gnew <- add_vertices(gnew, length(V(gnew)), size = glayout_df$n_private, color = "grey90")
 glayout2 <- rbind(glayout, glayout)
 plot(gnew, layout = glayout2)
 ```
 
 ![plot of chunk unnamed-chunk-4](./figures/MLG-distribution///unnamed-chunk-4-2.png)
+
+```r
+caps <- as_data_frame(gnew, what = "edges") %>% select(from, to) %>% 
+  inner_join(possible_edges) %>% tbl_df
+```
+
+```
+## Joining, by = c("from", "to")
+```
+
+```
+## Warning in inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## character vector and factor, coercing into character vector
+```
+
+```
+## Warning in inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## character vector and factor, coercing into character vector
+```
+
+```r
+caps %>% mutate(from_size = scale(from_size, center = FALSE)/10) %>%
+  mutate(to_size = scale(to_size, center = FALSE)/10) -> spac
+
+glay <- create_layout(gnew, "manual", node.positions = as.data.frame(glayout2) %>% setNames(c("x", "y")))
+ggraph(glay) +
+  geom_node_circle(aes(r = scale(size, center = FALSE)/10, fill = size, alpha = 1 - weight)) +
+  geom_edge_fan() +
+  # geom_edge_fan2(aes(start_cap = circle(rep(spac$from_size, 2)/2, "mm"),
+  #                   end_cap = circle(rep(spac$to_size, 2)/2, "mm"))) +
+  geom_node_label(aes(label = name), repel = TRUE) +
+  viridis::scale_fill_viridis(option = "C") +
+  coord_fixed() +
+  theme_void() +
+  labs(list(
+    title = "Shared haplotypes across regions",
+    fill = "Number of\nGenotypes",
+    alpha = "Fraction of private genotpes",
+    caption = "Outer circle: Number of genotypes in the region\nInner Circle: Number of private genotypes in the region"
+  ))
+```
+
+```
+## Warning: Removed 11 rows containing missing values (geom_label_repel).
+```
+
+![plot of chunk unnamed-chunk-4](./figures/MLG-distribution///unnamed-chunk-4-3.png)
 
