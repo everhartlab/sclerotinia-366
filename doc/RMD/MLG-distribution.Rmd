@@ -81,7 +81,7 @@ gcross           <- graph_from_data_frame(pop_graph, directed = FALSE)
 E(gcross)$name   <- as.character(pop_graph$MLG)
 E(gcross)$weight <- unchoose(table(E(gcross)$name)[E(gcross)$name])
 colors <- viridis::magma(max(E(gcross)$weight) - 1, end = 0.8)
-set.seed(50)
+set.seed(500)
 gcross %>%
   plot(., vertex.size = table(pop(clonecorrect(dat, ~Region)))[names(V(gcross))],
        edge.width = E(.)$weight - 1,
@@ -96,14 +96,23 @@ gcross %>%
 
 
 ```{r, fig.width = 10, fig.height = 10}
-
+psize <- table(pop(clonecorrect(dat, ~Region)))
 pops <- crosses %>%
+  mutate_if(is.factor, as.character) %>%
   group_by(Population) %>%
   summarize(MLG = list(as.character(MLG))) %>%
   group_by(Population) %>%
-  mutate(interactions = list(pg$Population[pg$MLG %in% unlist(MLG)] %>% setNames(unlist(MLG)) %>% bind_rows(.id = "MLG") %>% distinct)) %>%
-  mutate(graph = map(interactions, ~select(.x, from, to, MLG) %>% graph_from_data_frame(directed = FALSE)))
-psize <- table(pop(clonecorrect(dat, ~Region)))
+  mutate(size = psize[unlist(Population)]) %>%
+  mutate(n_private = size - lengths(MLG)) %>%
+  mutate(interactions = list(pg$Population[pg$MLG %in% unlist(MLG)] %>% 
+                               setNames(unlist(MLG)) %>% 
+                               bind_rows(.id = "MLG") %>% 
+                               distinct() %>%
+                               filter(Population == from | Population == to))) %>%
+  mutate(graph = map(interactions, ~select(.x, from, to, MLG) %>% 
+                       rename(name = MLG) %>% 
+                       graph_from_data_frame(directed = FALSE)))
+pops
 par(mfrow = c(3, 4))
 
 apply(pops, 1, function(i){
@@ -114,8 +123,22 @@ apply(pops, 1, function(i){
   })
 par(mfrow = c(1, 1))
 
-igraph::union(pops$graph[[1]], pops$graph[-1]) %>% 
-  plot(., vertex.size = psize[names(V(.))],
-       layout = layout_as_star(., center = "MI"))
+gnew <- igraph::union(pops$graph[[1]], pops$graph[-1])
+
+glayout <- layout_as_star(gnew, center = "MI")
+
+glayout_df <- glayout %>% 
+  data.frame %>% 
+  setNames(c("x", "y")) %>% 
+  as.list %>% 
+  c(Population = list(names(V(gnew)))) %>% 
+  dplyr::as_data_frame() %>%
+  inner_join(pops)
+V(gnew)$size <- glayout_df$size
+V(gnew)$color <- viridis::viridis(100)[round(100 * (1 - glayout_df$n_private/glayout_df$size))]
+gnew <- add_vertices(gnew, length(V(gnew)), size = glayout_df$n_private, color = "grey90")
+glayout2 <- rbind(glayout, glayout)
+plot(gnew, layout = glayout2)
+
 ```
 

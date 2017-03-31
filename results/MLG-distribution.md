@@ -213,7 +213,7 @@ gcross           <- graph_from_data_frame(pop_graph, directed = FALSE)
 E(gcross)$name   <- as.character(pop_graph$MLG)
 E(gcross)$weight <- unchoose(table(E(gcross)$name)[E(gcross)$name])
 colors <- viridis::magma(max(E(gcross)$weight) - 1, end = 0.8)
-set.seed(50)
+set.seed(500)
 gcross %>%
   plot(., vertex.size = table(pop(clonecorrect(dat, ~Region)))[names(V(gcross))],
        edge.width = E(.)$weight - 1,
@@ -228,13 +228,45 @@ gcross %>%
 
 
 ```r
+psize <- table(pop(clonecorrect(dat, ~Region)))
 pops <- crosses %>%
+  mutate_if(is.factor, as.character) %>%
   group_by(Population) %>%
   summarize(MLG = list(as.character(MLG))) %>%
   group_by(Population) %>%
-  mutate(interactions = list(pg$Population[pg$MLG %in% unlist(MLG)] %>% setNames(unlist(MLG)) %>% bind_rows(.id = "MLG") %>% distinct)) %>%
-  mutate(graph = map(interactions, ~select(.x, from, to, MLG) %>% graph_from_data_frame(directed = FALSE)))
-psize <- table(pop(clonecorrect(dat, ~Region)))
+  mutate(size = psize[unlist(Population)]) %>%
+  mutate(n_private = size - lengths(MLG)) %>%
+  mutate(interactions = list(pg$Population[pg$MLG %in% unlist(MLG)] %>% 
+                               setNames(unlist(MLG)) %>% 
+                               bind_rows(.id = "MLG") %>% 
+                               distinct() %>%
+                               filter(Population == from | Population == to))) %>%
+  mutate(graph = map(interactions, ~select(.x, from, to, MLG) %>% 
+                       rename(name = MLG) %>% 
+                       graph_from_data_frame(directed = FALSE)))
+pops
+```
+
+```
+## Source: local data frame [11 x 6]
+## Groups: Population [11]
+## 
+##    Population        MLG  size n_private      interactions        graph
+##         <chr>     <list> <int>     <int>            <list>       <list>
+## 1          AU  <chr [5]>     6         1  <tibble [6 × 3]> <S3: igraph>
+## 2          CA <chr [12]>    15         3 <tibble [12 × 3]> <S3: igraph>
+## 3          CO <chr [18]>    28        10 <tibble [31 × 3]> <S3: igraph>
+## 4          FR  <chr [8]>    14         6  <tibble [9 × 3]> <S3: igraph>
+## 5          MI <chr [32]>    43        11 <tibble [45 × 3]> <S3: igraph>
+## 6          MN  <chr [6]>     7         1  <tibble [9 × 3]> <S3: igraph>
+## 7          ND <chr [21]>    35        14 <tibble [32 × 3]> <S3: igraph>
+## 8          NE <chr [25]>    28         3 <tibble [38 × 3]> <S3: igraph>
+## 9          NY  <chr [1]>     1         0  <tibble [1 × 3]> <S3: igraph>
+## 10         OR  <chr [9]>    13         4 <tibble [10 × 3]> <S3: igraph>
+## 11         WA <chr [32]>    56        24 <tibble [39 × 3]> <S3: igraph>
+```
+
+```r
 par(mfrow = c(3, 4))
 
 apply(pops, 1, function(i){
@@ -256,9 +288,29 @@ par(mfrow = c(1, 1))
 ![plot of chunk unnamed-chunk-4](./figures/MLG-distribution///unnamed-chunk-4-1.png)
 
 ```r
-igraph::union(pops$graph[[1]], pops$graph[-1]) %>% 
-  plot(., vertex.size = psize[names(V(.))],
-       layout = layout_as_star(., center = "MI"))
+gnew <- igraph::union(pops$graph[[1]], pops$graph[-1])
+
+glayout <- layout_as_star(gnew, center = "MI")
+
+glayout_df <- glayout %>% 
+  data.frame %>% 
+  setNames(c("x", "y")) %>% 
+  as.list %>% 
+  c(Population = list(names(V(gnew)))) %>% 
+  dplyr::as_data_frame() %>%
+  inner_join(pops)
+```
+
+```
+## Joining, by = "Population"
+```
+
+```r
+V(gnew)$size <- glayout_df$size
+V(gnew)$color <- viridis::viridis(100)[round(100 * (1 - glayout_df$n_private/glayout_df$size))]
+gnew <- add_vertices(gnew, length(V(gnew)), size = glayout_df$n_private, color = "grey90")
+glayout2 <- rbind(glayout, glayout)
+plot(gnew, layout = glayout2)
 ```
 
 ![plot of chunk unnamed-chunk-4](./figures/MLG-distribution///unnamed-chunk-4-2.png)
