@@ -55,7 +55,7 @@ dat
 
 We can use `mlg.crosspop()` to tabulte which MLGs cross populations.
 
-```{r}
+```{r, fig.width = 10, fig.height = 10}
 make_from_to <- function(poplist){
   x <- combn(poplist, 2)
   tibble::data_frame(from = x[1, ], to = x[2, ])
@@ -95,7 +95,7 @@ gcross %>%
 
 
 
-```{r}
+```{r, fig.width = 10, fig.height = 10}
 
 pops <- crosses %>%
   group_by(Population) %>%
@@ -113,7 +113,8 @@ apply(pops, 1, function(i){
          vertex.size = psize[names(V(i$graph))])
   })
 par(mfrow = c(1, 1))
-do.call("union", pops$graph) %>% 
+
+igraph::union(pops$graph[[1]], pops$graph[-1]) %>% 
   plot(., vertex.size = psize[names(V(.))],
        layout = layout_as_star(., center = "MI"))
 ```
