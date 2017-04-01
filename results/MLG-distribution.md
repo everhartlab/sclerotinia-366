@@ -190,207 +190,126 @@ dat
 
 We can use `mlg.crosspop()` to tabulte which MLGs cross populations.
 
+I realized that it's possible to use an MLG table with matrix multiplication to
+get an adjency matrix.
+
 
 ```r
-make_from_to <- function(poplist){
-  x <- combn(poplist, 2)
-  tibble::data_frame(from = x[1, ], to = x[2, ])
+datmlg  <- mlg.table(dat, plot = FALSE) > 0 # presence/absence of MLG
+crosses <- mlg.crosspop(dat, quiet = TRUE, df = TRUE) %>% tbl_df()
+adjmat  <- datmlg %*% t(datmlg) 
+cols    <- sort(colnames(adjmat))
+adjmat  <- adjmat[cols, cols]
+adjmat
+```
+
+```
+##    AU CA CO FR ID MI MN MX ND NE NY OR WA WI
+## AU  6  0  0  1  0  0  4  0  0  0  0  1  0  0
+## CA  0 15  0  0  0  0  0  0  0  0  0  3  9  0
+## CO  0  0 28  0  0 11  1  0  5  7  0  0  7  0
+## FR  1  0  0 14  0  4  1  0  0  0  0  0  3  0
+## ID  0  0  0  0  1  0  0  0  0  0  0  0  0  0
+## MI  0  0 11  4  0 43  1  0 13  8  0  0  8  0
+## MN  4  0  1  1  0  1  7  0  0  1  0  0  1  0
+## MX  0  0  0  0  0  0  0  9  0  0  0  0  0  0
+## ND  0  0  5  0  0 13  0  0 35 11  0  0  3  0
+## NE  0  0  7  0  0  8  1  0 11 28  0  4  7  0
+## NY  0  0  0  0  0  0  0  0  0  0  1  1  0  0
+## OR  1  3  0  0  0  0  0  0  0  4  1 13  1  0
+## WA  0  9  7  3  0  8  1  0  3  7  0  1 56  0
+## WI  0  0  0  0  0  0  0  0  0  0  0  0  0  2
+```
+
+```r
+crosses
+```
+
+```
+## # A tibble: 169 × 3
+##       MLG Population Count
+##    <fctr>     <fctr> <int>
+## 1   MLG.1         OR     1
+## 2   MLG.1         CA     1
+## 3   MLG.2         MN     1
+## 4   MLG.2         AU     1
+## 5   MLG.3         MN     1
+## 6   MLG.3         AU     1
+## 7   MLG.4         MN     1
+## 8   MLG.4         AU     1
+## 9   MLG.4         FR     1
+## 10  MLG.5         OR     1
+## # ... with 159 more rows
+```
+
+
+Now that we have the adjacency matrix, we can use it to construct our graph:
+
+
+```r
+g           <- graph_from_adjacency_matrix(adjmat, mode = "undirected", diag = FALSE)
+V(g)$size   <- diag(adjmat)
+g           <- delete_vertices(g, degree(g) == 0)
+shared_mlg  <- (crosses %>% group_by(Population) %>% summarize(n = n()))$n
+V(g)$weight <- 1 - shared_mlg/V(g)$size
+el          <- as_adj_edge_list(g)
+el          <- el[lengths(el) > 0]
+popgraphs <- setNames(vector(mode = "list", length = length(el)), names(el))
+for (v in names(el)){
+  idx  <- el[[v]]
+  mlgs <- crosses %>%           # How to get all MLGs from a single population:
+    filter(Population == v) %>%         # Grab only the population e and then
+    select(MLG) %>%                     # remove everything but the MLGs to do an
+    inner_join(crosses, by = "MLG") %>% # inner join of the original list and then
+    filter(Population != v) %>%         # remove the query population to give
+    arrange(Population)                 # the neigboring populations in order.
+  MLGS <- as.character(mlgs$MLG)
+  E(g)[idx]$label  <- substr(MLGS, 5, nchar(MLGS))
+  E(g)[idx]$weight <- as.integer(table(MLGS)[MLGS]) # weight == n populations visited
+  popgraphs[[v]]   <- subgraph.edges(g, eids = idx)
 }
-crosses <- mlg.crosspop(dat, df = TRUE, quiet = TRUE)
-
-pg <- 
-  crosses %>%
-  group_by(MLG) %>% 
-  summarize(Population = list(make_from_to(Population)), Size = length(Count))
-  
-pop_graph <- pg %>%  unnest() %>%
-  group_by(from, to) %>%
-  mutate(weight = length(Size)) %>%
-  ungroup() %>%
-  select(from, to, weight, everything())
-
-unchoose <- function(x) ceiling(sqrt(x * 2))
-
-
-  
-gcross           <- graph_from_data_frame(pop_graph, directed = FALSE)
-E(gcross)$name   <- as.character(pop_graph$MLG)
-E(gcross)$weight <- unchoose(table(E(gcross)$name)[E(gcross)$name])
-colors <- viridis::magma(max(E(gcross)$weight) - 1, end = 0.8)
-set.seed(500)
-gcross %>%
-  plot(., vertex.size = table(pop(clonecorrect(dat, ~Region)))[names(V(gcross))],
-       edge.width = E(.)$weight - 1,
-       layout = layout_as_star(., center = "MI"),
-       # layout = layout_in_circle(.),
-       edge.color = colors[E(.)$weight - 1])
-```
-
-![plot of chunk unnamed-chunk-3](./figures/MLG-distribution///unnamed-chunk-3-1.png)
-
-
-
-
-```r
-psize <- table(pop(clonecorrect(dat, ~Region)))
-pops <- crosses %>%
-  mutate_if(is.factor, as.character) %>%
-  group_by(Population) %>%
-  summarize(MLG = list(as.character(MLG))) %>%
-  group_by(Population) %>%
-  mutate(size = psize[unlist(Population)]) %>%
-  mutate(n_private = size - lengths(MLG)) %>%
-  mutate(interactions = list(pg$Population[pg$MLG %in% unlist(MLG)] %>% 
-                               setNames(unlist(MLG)) %>% 
-                               bind_rows(.id = "MLG") %>% 
-                               distinct() %>%
-                               filter(Population == from | Population == to))) %>%
-  mutate(graph = map(interactions, ~select(.x, from, to, MLG) %>% 
-                       rename(name = MLG) %>% 
-                       graph_from_data_frame(directed = FALSE)))
-pops
-```
-
-```
-## Source: local data frame [11 x 6]
-## Groups: Population [11]
-## 
-##    Population        MLG  size n_private      interactions        graph
-##         <chr>     <list> <int>     <int>            <list>       <list>
-## 1          AU  <chr [5]>     6         1  <tibble [6 × 3]> <S3: igraph>
-## 2          CA <chr [12]>    15         3 <tibble [12 × 3]> <S3: igraph>
-## 3          CO <chr [18]>    28        10 <tibble [31 × 3]> <S3: igraph>
-## 4          FR  <chr [8]>    14         6  <tibble [9 × 3]> <S3: igraph>
-## 5          MI <chr [32]>    43        11 <tibble [45 × 3]> <S3: igraph>
-## 6          MN  <chr [6]>     7         1  <tibble [9 × 3]> <S3: igraph>
-## 7          ND <chr [21]>    35        14 <tibble [32 × 3]> <S3: igraph>
-## 8          NE <chr [25]>    28         3 <tibble [38 × 3]> <S3: igraph>
-## 9          NY  <chr [1]>     1         0  <tibble [1 × 3]> <S3: igraph>
-## 10         OR  <chr [9]>    13         4 <tibble [10 × 3]> <S3: igraph>
-## 11         WA <chr [32]>    56        24 <tibble [39 × 3]> <S3: igraph>
-```
-
-```r
-possible_edges <- expand.grid(from = pops$Population, to = pops$Population)
-possible_edges$Population <- possible_edges$from
-from_edges <- right_join(possible_edges, select(pops, Population, size)) %>% 
-  tbl_df %>% 
-  rename(from_size = size) %>%
-  select(-Population)
-```
-
-```
-## Joining, by = "Population"
-```
-
-```
-## Warning in right_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
-## factor and character vector, coercing into character vector
-```
-
-```r
-to_edges <- right_join(mutate(possible_edges, Population = to), select(pops, Population, size)) %>% 
-  tbl_df %>% 
-  rename(to_size = size) %>%
-  select(-Population)
-```
-
-```
-## Joining, by = "Population"
-```
-
-```
-## Warning in right_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
-## factor and character vector, coercing into character vector
-```
-
-```r
-possible_edges <- inner_join(from_edges, to_edges)
-```
-
-```
-## Joining, by = c("from", "to")
-```
-
-```r
 par(mfrow = c(3, 4))
-
-apply(pops, 1, function(i){
-    plot(i$graph, 
-         layout = layout_as_star(i$graph, center = i$Population), 
-         main = i$Population, 
-         vertex.size = psize[names(V(i$graph))])
-  })
-```
-
-```
-## NULL
-```
-
-```r
+for (i in names(popgraphs)){
+  pg <- popgraphs[[i]]
+  labs <- ifelse(E(pg)$weight > 1, E(pg)$label, NA)
+  labs <- ifelse(duplicated(labs), NA, labs)
+  plot(pg, 
+       main = i, 
+       layout = layout_as_star(pg, center = i), 
+       edge.width = E(pg)$weight,
+       edge.label = labs)
+}
 par(mfrow = c(1, 1))
 ```
 
 ![plot of chunk unnamed-chunk-4](./figures/MLG-distribution///unnamed-chunk-4-1.png)
 
 ```r
-gnew <- igraph::union(pops$graph[[1]], pops$graph[-1])
+center_node <- degree(g) %>% which.max() %>% names()
 
-glayout <- layout_as_star(gnew, center = "MI")
-
-glayout_df <- glayout %>% 
-  data.frame %>% 
-  setNames(c("x", "y")) %>% 
-  as.list %>% 
-  c(Population = list(names(V(gnew)))) %>% 
-  dplyr::as_data_frame() %>%
-  inner_join(pops)
-```
-
-```
-## Joining, by = "Population"
-```
-
-```r
-V(gnew)$size <- glayout_df$size
-V(gnew)$weight <- (1 - glayout_df$n_private/glayout_df$size)
-V(gnew)$color <- viridis::viridis(100)[round(V(gnew)$weight * 100)]
-gnew <- add_vertices(gnew, length(V(gnew)), size = glayout_df$n_private, color = "grey90")
-glayout2 <- rbind(glayout, glayout)
-plot(gnew, layout = glayout2)
+new_layout <- structure(c(1, 0.809016994374947, 0.309016994374947, -0.309016994374947, 
+-0.809016994374947, -1, -0.809016994374947, -0.309016994374948, 
+0, 0.309016994374947, 0.809016994374947, 0, 0.587785252292473, 
+0.951056516295154, 0.951056516295154, 0.587785252292473, 1.22464679914735e-16, 
+-0.587785252292473, -0.951056516295154, 0, -0.951056516295154, 
+-0.587785252292473), .Dim = c(11L, 2L), .Dimnames = list(c("MN", 
+"AU", "OR", "FR", "WA", "CA", "NE", "CO", "MI", "ND", "NY"), 
+    c("x", "y")))
+new_layout <- new_layout[V(g)$name, ]
+g <- add_vertices(g, length(V(g)), size = V(g)$size - shared_mlg, color = "grey90")
+plot(g, 
+     layout = rbind(new_layout, new_layout),
+     edge.width = E(g)$weight,
+     edge.label = NA)
 ```
 
 ![plot of chunk unnamed-chunk-4](./figures/MLG-distribution///unnamed-chunk-4-2.png)
 
 ```r
-caps <- as_data_frame(gnew, what = "edges") %>% select(from, to) %>% 
-  inner_join(possible_edges) %>% tbl_df
-```
-
-```
-## Joining, by = c("from", "to")
-```
-
-```
-## Warning in inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
-## character vector and factor, coercing into character vector
-```
-
-```
-## Warning in inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
-## character vector and factor, coercing into character vector
-```
-
-```r
-caps %>% mutate(from_size = scale(from_size, center = FALSE)/10) %>%
-  mutate(to_size = scale(to_size, center = FALSE)/10) -> spac
-
-glay <- create_layout(gnew, "manual", node.positions = as.data.frame(glayout2) %>% setNames(c("x", "y")))
+glay <- create_layout(g, "manual", node.positions = as.data.frame(rbind(new_layout, new_layout)))
 ggraph(glay) +
-  geom_edge_fan() +
-  # geom_edge_fan2(aes(start_cap = circle(rep(spac$from_size, 2)/2, "mm"),
-  #                   end_cap = circle(rep(spac$to_size, 2)/2, "mm"))) +
-  geom_node_circle(aes(r = scale(size, center = FALSE)/10, fill = size, alpha = 1 - weight)) +
+  geom_edge_fan(aes(alpha = weight + 1)) +
+  geom_node_circle(aes(r = scale(size, center = FALSE)/10, fill = size, alpha = weight)) +
   geom_node_label(aes(label = name), repel = TRUE) +
   viridis::scale_fill_viridis(option = "C") +
   coord_fixed() +
@@ -398,8 +317,9 @@ ggraph(glay) +
   labs(list(
     title = "Shared haplotypes across regions",
     fill = "Number of\nGenotypes",
-    alpha = "Fraction of private genotpes",
-    caption = "Outer circle: Number of genotypes in the region\nInner Circle: Number of private genotypes in the region"
+    alpha = "Fraction of\nprivate genotpes",
+    edge_alpha = "Populations\nper haploytpe",
+    caption = "Outer circle: Number of haplotypes in the region\nInner Circle: Number of private haplotypes in the region"
   ))
 ```
 
