@@ -502,16 +502,6 @@ plot_mlg_subgraph <- function(graphlist){
          edge.label = labs)
   }
 }
-```
-
-
-Now that we have the adjacency matrix, we can use it to construct our graph:
-
-
-```r
-graph16loc <- make_graph_list(dat)
-graph11loc <- make_graph_list(dat[loc = keeploci, mlg.reset = TRUE])
-
 
 
 
@@ -530,10 +520,22 @@ NY  0.8090169943749470071737 -5.877852522924730260812e-01
 OR  0.3090169943749470071737  9.510565162951539752711e-01
 WA -0.8090169943749470071737  5.877852522924730260812e-01"
 ) %>% as.matrix()
+```
 
+
+## Graphs
+
+With the fuctions above, we can create and plot the graphs
+
+
+```r
+# Creating the graphs
+graph16loc <- make_graph_list(dat)
+graph11loc <- make_graph_list(dat[loc = keeploci, mlg.reset = TRUE])
+
+# Plotting the subgraphs
 par(mfrow = c(3, 4))
 plot_mlg_subgraph(graph16loc[-length(graph16loc)])
-
 
 par(mfrow = c(3, 4))
 ```
@@ -543,7 +545,7 @@ par(mfrow = c(3, 4))
 ```r
 plot_mlg_subgraph(graph11loc[-length(graph11loc)])
 
-
+# Plotting the full graphs
 par(mfrow = c(1, 1))
 ```
 
