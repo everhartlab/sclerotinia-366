@@ -56,7 +56,7 @@ library('poppr')
 ```
 
 ```
-## This is poppr version 2.3.0.99.45. To get started, type package?poppr
+## This is poppr version 2.3.0.99.81. To get started, type package?poppr
 ## OMP parallel support: available
 ## 
 ## This version of poppr is under development.
@@ -425,11 +425,43 @@ dat
 We can use `mlg.crosspop()` to tabulte which MLGs cross populations.
 
 I realized that it's possible to use an MLG table with matrix multiplication to
-get an adjency matrix.
+get an adjency matrix. Here I'm making a function to create a list of graphs. 
+
+The vertices, representing populations, will have the following attributes:
+
+ - Size: equal to the number of MLGs within the population
+ - Weight: fraction of private MLGs
+ 
+The edges, representing multilocus genotypes are a bit trickier to handle since
+multiple edges can represent a single MLG passing through populations. They have
+the following attributes:
+
+ - Label: the MLG this edge belongs to. Note that multiple edges can share the
+          same label.
+ - Width: the number of populations this MLG passes through
+ - Weight: 1 - (probability of a second encounter by chance); 1 - psex
+
+The reason why I'm weighting these nodes as 1 - psex is for subsequent community
+analysis. The more likely you are to encounter a genotype by chance, the less
+influence that genotype should have on the connectivity. 
 
 
 ```r
+rerange <- function(x){
+  minx <- min(x, na.rm = TRUE)
+  maxx <- max(x, na.rm = TRUE)
+  if (minx < 0)
+    x <- x + abs(minx)
+    maxx <- maxx + abs(minx)
+  if (maxx > 1)
+    x <- x/maxx
+  return(x)
+}
 make_graph_list <- function(dat){ # dat is a genclone/snpclone object
+  # w       <- pgen(dat, by_pop = FALSE) %>% rowSums() %>% exp() %>% setNames(paste0("MLG.", mll(dat)))
+  # w       <- w[unique(names(w))]
+  w       <- psex(dat, by_pop = FALSE, method = "multiple") %>% split(mll(dat))
+  names(w)<- paste0("MLG.", names(w))
   datmlg  <- mlg.table(dat, plot = FALSE) > 0 # presence/absence of MLG
   crosses <- mlg.crosspop(dat, quiet = TRUE, df = TRUE) %>% tbl_df()
   adjmat  <- datmlg %*% t(datmlg) 
@@ -440,7 +472,7 @@ make_graph_list <- function(dat){ # dat is a genclone/snpclone object
   V(g)$size   <- diag(adjmat)
   g           <- delete_vertices(g, degree(g) == 0)
   shared_mlg  <- (crosses %>% group_by(Population) %>% summarize(n = n()))$n
-  V(g)$weight <- 1 - shared_mlg/V(g)$size
+  V(g)$weight <- 1 - shared_mlg/V(g)$size # fraction of private MLGs
   el          <- as_adj_edge_list(g)
   el          <- el[lengths(el) > 0]
   popgraphs <- setNames(vector(mode = "list", length = length(el) + 1), c(names(el), "total"))
@@ -454,7 +486,8 @@ make_graph_list <- function(dat){ # dat is a genclone/snpclone object
       arrange(Population)                 # the neigboring populations in order.
     MLGS <- as.character(mlgs$MLG)
     E(g)[idx]$label  <- substr(MLGS, 5, nchar(MLGS))
-    E(g)[idx]$weight <- as.integer(table(MLGS)[MLGS]) # weight == n populations visited
+    E(g)[idx]$width  <- as.integer(table(MLGS)[MLGS]) # size == n populations visited
+    E(g)[idx]$weight <- 1 - map_dbl(w[MLGS], 2)       # weight == 1 - psex 2nd encounter
     popgraphs[[v]]   <- subgraph.edges(g, eids = idx)
   }
   popgraphs[["total"]] <- g
@@ -473,19 +506,23 @@ plot_mlg_graph <- function(g, glayout = NULL){
   V(g2)$label <- ifelse(!is.na(V(g2)$name), sprintf("%s [(%d/%d)]", V(g2)$name, shared_mlg, V(g2)$size), NA)
   glay        <- create_layout(g2, "manual", node.positions = as.data.frame(rbind(glayout, glayout)))
   x_nudge     <- ifelse(abs(glay$x) == 1, -glay$x/10, glay$x/10)
+  breaks      <- quantile(1 - E(g)$weight)
+  breaks      <- setNames(breaks, format(breaks, digits = 2))
   ggraph(glay) +
-    geom_edge_fan(aes(alpha = weight + 1), width = 0.75) +
+    geom_edge_fan(aes(alpha = 1 - weight, width = width + 1)) +
     geom_node_circle(aes(r = drop(scale(size, center = FALSE))/10, fill = size)) +
     geom_node_label(aes(label = label), repel = TRUE, parse = TRUE, label.size = 0.75, nudge_x = x_nudge) +
     viridis::scale_fill_viridis(option = "C") +
-    scale_edge_alpha_continuous(range = c(0.25, 1), breaks = c(2:5)) +
+    scale_edge_alpha_continuous(range = c(1, 0.25), breaks = breaks) +
+    scale_edge_width_continuous(range = c(0.25, 1.25), breaks = c(2:5)) +
     coord_fixed() +
     theme_void() +
     theme(text = element_text(size = 14)) +
     labs(list(
       title = "Shared haplotypes across regions",
       fill = "Number of\nGenotypes",
-      edge_alpha = "Populations\nper haploytpe",
+      edge_alpha = "Probability of\nsecond encounter",
+      edge_width = "Populations\nPer haplotype",
       caption = "Outer circle: Number of haplotypes in the region\nInner Circle: Number of private haplotypes in the region"
     ))
 }
@@ -493,12 +530,13 @@ plot_mlg_graph <- function(g, glayout = NULL){
 plot_mlg_subgraph <- function(graphlist){
   for (i in names(graphlist)){
     pg   <- graphlist[[i]]
-    labs <- ifelse(E(pg)$weight > 1, E(pg)$label, NA)
+    labs <- ifelse(E(pg)$width > 1, E(pg)$label, NA)
     labs <- ifelse(duplicated(labs), NA, labs)
     plot(pg, 
          main = i, 
          layout = layout_as_star(pg, center = i), 
-         edge.width = E(pg)$weight,
+         edge.width = E(pg)$width,
+         edge.color = grey(rerange(1 - E(pg)$weight)), 
          edge.label = labs)
   }
 }
@@ -525,14 +563,21 @@ WA -0.8090169943749470071737  5.877852522924730260812e-01"
 
 ## Graphs
 
-With the fuctions above, we can create and plot the graphs
+With the fuctions above, we can create and plot the graphs.
 
 
 ```r
 # Creating the graphs
 graph16loc <- make_graph_list(dat)
 graph11loc <- make_graph_list(dat[loc = keeploci, mlg.reset = TRUE])
+```
 
+### Individual population subgraphs
+
+Each subgraph shows all of the connections for a single population.
+
+
+```r
 # Plotting the subgraphs
 par(mfrow = c(3, 4))
 plot_mlg_subgraph(graph16loc[-length(graph16loc)])
@@ -540,44 +585,88 @@ plot_mlg_subgraph(graph16loc[-length(graph16loc)])
 par(mfrow = c(3, 4))
 ```
 
-![plot of chunk unnamed-chunk-4](./figures/MLG-distribution///unnamed-chunk-4-1.png)
+![plot of chunk unnamed-chunk-5](./figures/MLG-distribution///unnamed-chunk-5-1.png)
 
 ```r
 plot_mlg_subgraph(graph11loc[-length(graph11loc)])
-
-# Plotting the full graphs
-par(mfrow = c(1, 1))
 ```
 
-![plot of chunk unnamed-chunk-4](./figures/MLG-distribution///unnamed-chunk-4-2.png)
+![plot of chunk unnamed-chunk-5](./figures/MLG-distribution///unnamed-chunk-5-2.png)
+
+### Cross-regional graphs
+
+
+#### With 16 loci
+
+First, I'm going to show the results of a community analysis. I'm using the 
+igraph function `cluster_optimal()` to cluster the nodes.
+
 
 ```r
-plot_mlg_graph(graph16loc$total, good_layout)
+par(mfrow = c(1, 1))
+(g16o <- cluster_optimal(graph16loc$total))
+```
+
+```
+## IGRAPH clustering optimal, groups: 3, mod: 0.2
+## + groups:
+##   $`1`
+##   [1] "AU" "FR" "MN"
+##   
+##   $`2`
+##   [1] "CA" "OR" "WA"
+##   
+##   $`3`
+##   [1] "CO" "MI" "ND" "NE"
+## 
+```
+
+```r
+plot_mlg_graph(graph16loc$total, good_layout) + labs(list(subtitle = "(16 loci)"))
 ```
 
 ```
 ## Warning: Removed 10 rows containing missing values (geom_label_repel).
 ```
 
-![plot of chunk unnamed-chunk-4](./figures/MLG-distribution///unnamed-chunk-4-3.png)
+![plot of chunk unnamed-chunk-6](./figures/MLG-distribution///unnamed-chunk-6-1.png)
+
+What we see is that We are given three clusters showing a clustering of the
+plains states, the west coast, and Australia, France, and Minnesota. The last
+cluster is likely driven by the single genotype shared between these three
+regions that has a low probability of a second encounter.
+
+
+#### With 11 loci
+
+
 
 ```r
-plot_mlg_graph(graph11loc$total, good_layout)
+(g11o <- cluster_optimal(graph11loc$total))
+```
+
+```
+## IGRAPH clustering optimal, groups: 3, mod: 0.17
+## + groups:
+##   $`1`
+##   [1] "AU" "FR" "MN"
+##   
+##   $`2`
+##   [1] "CA" "NY" "OR" "WA"
+##   
+##   $`3`
+##   [1] "CO" "MI" "ND" "NE"
+## 
+```
+
+```r
+plot_mlg_graph(graph11loc$total, good_layout) + labs(list(subtitle = "(11 loci)"))
 ```
 
 ```
 ## Warning: Removed 11 rows containing missing values (geom_label_repel).
 ```
 
-![plot of chunk unnamed-chunk-4](./figures/MLG-distribution///unnamed-chunk-4-4.png)
+![plot of chunk unnamed-chunk-7](./figures/MLG-distribution///unnamed-chunk-7-1.png)
 
-
-```r
-null_vertices <- length(V(g)) %>% seq(from = ./2 + 1, to = ., by = 1)
-sg <- g %>% 
-  delete_vertices(null_vertices) %>%
-  cluster_spinglass()
-modularity(sg)
-communities(sg)
-```
 
