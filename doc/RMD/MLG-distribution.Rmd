@@ -217,7 +217,7 @@ plot_mlg_graph <- function(g, glayout = NULL){
     geom_node_circle(aes(r = drop(scale(size, center = FALSE))/10, fill = size)) +
     geom_node_label(aes(label = label), repel = TRUE, parse = TRUE, label.size = 0.75, nudge_x = x_nudge) +
     viridis::scale_fill_viridis(option = "C") +
-    scale_edge_alpha_continuous(range = c(1, 0.25), breaks = breaks) +
+    scale_edge_alpha_continuous(range = c(1, 0.25), breaks = rev(breaks)) +
     scale_edge_width_continuous(range = c(0.25, 1.25), breaks = c(2:5)) +
     coord_fixed() +
     theme_void() +
@@ -317,4 +317,11 @@ regions that has a low probability of a second encounter.
 plot_mlg_graph(graph11loc$total, good_layout) + labs(list(subtitle = "(11 loci)"))
 ```
 
+
+## Session Information
+
+```{r}
+options(width = 100)
+devtools::session_info()
+```
 
