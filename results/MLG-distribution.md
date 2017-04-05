@@ -320,7 +320,7 @@ dat
 
 ```r
 keeploci <- !locNames(dat) %in% colnames(corrected_loci)
-genotype_curve(dat, sample = 1000)
+genotype_curve(dat, sample = 1000, quiet = TRUE)
 ```
 
 ![plot of chunk unnamed-chunk-2](./figures/MLG-distribution///unnamed-chunk-2-1.png)
@@ -393,7 +393,7 @@ dat
 ```
 
 ```r
-genotype_curve(dat[loc = keeploci, mlg.reset = TRUE])
+genotype_curve(dat[loc = keeploci, mlg.reset = TRUE], quiet = TRUE)
 ```
 
 ![plot of chunk unnamed-chunk-2](./figures/MLG-distribution///unnamed-chunk-2-2.png)
@@ -513,7 +513,7 @@ plot_mlg_graph <- function(g, glayout = NULL){
     geom_node_circle(aes(r = drop(scale(size, center = FALSE))/10, fill = size)) +
     geom_node_label(aes(label = label), repel = TRUE, parse = TRUE, label.size = 0.75, nudge_x = x_nudge) +
     viridis::scale_fill_viridis(option = "C") +
-    scale_edge_alpha_continuous(range = c(1, 0.25), breaks = breaks) +
+    scale_edge_alpha_continuous(range = c(1, 0.25), breaks = rev(breaks)) +
     scale_edge_width_continuous(range = c(0.25, 1.25), breaks = c(2:5)) +
     coord_fixed() +
     theme_void() +

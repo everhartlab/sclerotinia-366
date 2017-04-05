@@ -114,12 +114,12 @@ other(dat)$meta <- select(dat_strata, Severity, Isolate)
 setPop(dat) <- ~Region
 dat
 keeploci <- !locNames(dat) %in% colnames(corrected_loci)
-genotype_curve(dat, sample = 1000)
+genotype_curve(dat, sample = 1000, quiet = TRUE)
 locus_table(dat)
 # rl <- fix_replen(dat, repeat_lengths)
 # mlg.filter(dat, distance = bruvo.dist, replen = rl) <- .Machine$double.eps
 dat
-genotype_curve(dat[loc = keeploci, mlg.reset = TRUE])
+genotype_curve(dat[loc = keeploci, mlg.reset = TRUE], quiet = TRUE)
 # dat <- dat[loc = keeploci, mlg.reset = TRUE]
 dat
 ```
