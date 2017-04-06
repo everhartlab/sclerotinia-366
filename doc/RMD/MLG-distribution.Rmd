@@ -27,6 +27,11 @@ library('magrittr')
 ```{r read_data}
 dat <- read.genalex("../Analysis4 ForManu/A2_Copy4 EUR_AUS_forManu.csv", ploidy = 1)
 splitStrata(dat) <- ~Isolate/Severity/MCG/Region/Source/Year/Host
+pops <- levels(strata(dat)$Region)
+levels(strata(dat)$Region) <- case_when(pops == "FR" ~ "France", 
+                                        pops == "MX" ~ "Mexico", 
+                                        pops == "AU" ~ "Australia", 
+                                        TRUE ~ pops)
 dat
 
 repeat_lengths <-
@@ -176,7 +181,7 @@ make_graph_list <- function(dat){ # dat is a genclone/snpclone object
   V(g)$size   <- diag(adjmat)
   g           <- delete_vertices(g, degree(g) == 0)
   shared_mlg  <- (crosses %>% group_by(Population) %>% summarize(n = n()))$n
-  V(g)$weight <- 1 - shared_mlg/V(g)$size # fraction of private MLGs
+  V(g)$weight <- shared_mlg/V(g)$size # fraction of shared MLGs
   el          <- as_adj_edge_list(g)
   el          <- el[lengths(el) > 0]
   popgraphs <- setNames(vector(mode = "list", length = length(el) + 1), c(names(el), "total"))
@@ -204,7 +209,7 @@ plot_mlg_graph <- function(g, glayout = NULL, label = TRUE){
   } else {
     glayout <- glayout[V(g)$name, ]
   }
-  shared_mlg  <- (1 - V(g)$weight) * V(g)$size
+  shared_mlg  <- V(g)$weight * V(g)$size
   g           <- add_vertices(g, length(V(g)), size = V(g)$size - shared_mlg, color = "grey90")
   g2          <- g
   V(g2)$label <- ifelse(!is.na(V(g2)$name), sprintf("%s [(%d/%d)]", V(g2)$name, shared_mlg, V(g2)$size), NA)
@@ -251,10 +256,10 @@ plot_mlg_subgraph <- function(graphlist){
 good_layout <- read.table(
 text = 
 "   x                            y
-AU  0.8090169943749470071737  5.877852522924730260812e-01
+Australia  0.8090169943749470071737  5.877852522924730260812e-01
 CA -1.0000000000000000000000  1.224646799147350002426e-16
 CO -0.3090169943749480063744 -9.510565162951539752711e-01
-FR -0.3090169943749470071737  9.510565162951539752711e-01
+France -0.3090169943749470071737  9.510565162951539752711e-01
 MI  0.0000000000000000000000  0.000000000000000000000e+00
 MN  1.0000000000000000000000  0.000000000000000000000e+00
 ND  0.3090169943749470071737 -9.510565162951539752711e-01
@@ -267,7 +272,7 @@ WA -0.8090169943749470071737  5.877852522924730260812e-01"
 alt_layout <- read.table(
 text = 
 "   x                            y
-AU  0.8090169943749470071737  5.877852522924730260812e-01
+Australia  0.8090169943749470071737  5.877852522924730260812e-01
 OR -1.0000000000000000000000  1.224646799147350002426e-16
 CO -0.3090169943749480063744 -9.510565162951539752711e-01
 WA -0.3090169943749470071737  9.510565162951539752711e-01
@@ -276,10 +281,12 @@ MN  1.0000000000000000000000  0.000000000000000000000e+00
 ND  0.3090169943749470071737 -9.510565162951539752711e-01
 NE -0.8090169943749470071737 -5.877852522924730260812e-01
 NY  0.8090169943749470071737 -5.877852522924730260812e-01
-FR  0.3090169943749470071737  9.510565162951539752711e-01
+France  0.3090169943749470071737  9.510565162951539752711e-01
 CA -0.8090169943749470071737  5.877852522924730260812e-01"
 ) %>% as.matrix()
 alt_layout <- alt_layout[rownames(good_layout), ]
+
+
 ```
 
 
