@@ -56,7 +56,7 @@ library('poppr')
 ```
 
 ```
-## This is poppr version 2.3.0.99.81. To get started, type package?poppr
+## This is poppr version 2.3.0.99.89. To get started, type package?poppr
 ## OMP parallel support: available
 ## 
 ## This version of poppr is under development.
@@ -494,7 +494,7 @@ make_graph_list <- function(dat){ # dat is a genclone/snpclone object
   popgraphs
 }
 
-plot_mlg_graph <- function(g, glayout = NULL){
+plot_mlg_graph <- function(g, glayout = NULL, label = TRUE){
   if (is.null(glayout)){
     glayout <- layout_nicely(g)
   } else {
@@ -508,10 +508,11 @@ plot_mlg_graph <- function(g, glayout = NULL){
   x_nudge     <- ifelse(abs(glay$x) == 1, -glay$x/10, glay$x/10)
   breaks      <- quantile(1 - E(g)$weight)
   breaks      <- setNames(breaks, format(breaks, digits = 2))
-  ggraph(glay) +
+  outg <- ggraph(glay) +
     geom_edge_fan(aes(alpha = 1 - weight, width = width + 1)) +
-    geom_node_circle(aes(r = drop(scale(size, center = FALSE))/10, fill = size)) +
-    geom_node_label(aes(label = label), repel = TRUE, parse = TRUE, label.size = 0.75, nudge_x = x_nudge) +
+    geom_node_circle(aes(r = drop(scale(size, center = FALSE))/10, fill = size))
+  outg <- if (label) outg + geom_node_label(aes(label = label), repel = TRUE, parse = TRUE, label.size = 0.75, nudge_x = x_nudge) else outg
+  outg + 
     viridis::scale_fill_viridis(option = "C") +
     scale_edge_alpha_continuous(range = c(1, 0.25), breaks = rev(breaks)) +
     scale_edge_width_continuous(range = c(0.25, 1.25), breaks = c(2:5)) +
@@ -558,6 +559,23 @@ NY  0.8090169943749470071737 -5.877852522924730260812e-01
 OR  0.3090169943749470071737  9.510565162951539752711e-01
 WA -0.8090169943749470071737  5.877852522924730260812e-01"
 ) %>% as.matrix()
+
+alt_layout <- read.table(
+text = 
+"   x                            y
+AU  0.8090169943749470071737  5.877852522924730260812e-01
+OR -1.0000000000000000000000  1.224646799147350002426e-16
+CO -0.3090169943749480063744 -9.510565162951539752711e-01
+WA -0.3090169943749470071737  9.510565162951539752711e-01
+MI  0.0000000000000000000000  0.000000000000000000000e+00
+MN  1.0000000000000000000000  0.000000000000000000000e+00
+ND  0.3090169943749470071737 -9.510565162951539752711e-01
+NE -0.8090169943749470071737 -5.877852522924730260812e-01
+NY  0.8090169943749470071737 -5.877852522924730260812e-01
+FR  0.3090169943749470071737  9.510565162951539752711e-01
+CA -0.8090169943749470071737  5.877852522924730260812e-01"
+) %>% as.matrix()
+alt_layout <- alt_layout[rownames(good_layout), ]
 ```
 
 
@@ -622,7 +640,7 @@ par(mfrow = c(1, 1))
 ```
 
 ```r
-plot_mlg_graph(graph16loc$total, good_layout) + labs(list(subtitle = "(16 loci)"))
+plot_mlg_graph(graph16loc$total, alt_layout) + labs(list(subtitle = "(16 loci)"))
 ```
 
 ```
@@ -660,7 +678,7 @@ regions that has a low probability of a second encounter.
 ```
 
 ```r
-plot_mlg_graph(graph11loc$total, good_layout) + labs(list(subtitle = "(11 loci)"))
+plot_mlg_graph(graph11loc$total, alt_layout) + labs(list(subtitle = "(11 loci)"))
 ```
 
 ```
@@ -690,7 +708,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-04-05
+##  date     2017-04-06
 ```
 
 ```
@@ -757,7 +775,7 @@ devtools::session_info()
 ##  permute       0.9-4       2016-09-09 cran (@0.9-4)                           
 ##  phangorn      2.2.0       2017-04-03 cran (@2.2.0)                           
 ##  plyr          1.8.4       2016-06-08 CRAN (R 3.3.0)                          
-##  poppr       * 2.3.0.99-81 2017-04-05 Github (grunwaldlab/poppr@f69ab06)      
+##  poppr       * 2.3.0.99-89 2017-04-06 local                                   
 ##  psych         1.6.12      2017-01-08 CRAN (R 3.3.2)                          
 ##  purrr       * 0.2.2       2016-06-18 CRAN (R 3.3.0)                          
 ##  quadprog      1.5-5       2013-04-17 CRAN (R 3.2.0)                          

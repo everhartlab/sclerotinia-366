@@ -198,7 +198,7 @@ make_graph_list <- function(dat){ # dat is a genclone/snpclone object
   popgraphs
 }
 
-plot_mlg_graph <- function(g, glayout = NULL){
+plot_mlg_graph <- function(g, glayout = NULL, label = TRUE){
   if (is.null(glayout)){
     glayout <- layout_nicely(g)
   } else {
@@ -212,10 +212,11 @@ plot_mlg_graph <- function(g, glayout = NULL){
   x_nudge     <- ifelse(abs(glay$x) == 1, -glay$x/10, glay$x/10)
   breaks      <- quantile(1 - E(g)$weight)
   breaks      <- setNames(breaks, format(breaks, digits = 2))
-  ggraph(glay) +
+  outg <- ggraph(glay) +
     geom_edge_fan(aes(alpha = 1 - weight, width = width + 1)) +
-    geom_node_circle(aes(r = drop(scale(size, center = FALSE))/10, fill = size)) +
-    geom_node_label(aes(label = label), repel = TRUE, parse = TRUE, label.size = 0.75, nudge_x = x_nudge) +
+    geom_node_circle(aes(r = drop(scale(size, center = FALSE))/10, fill = size))
+  outg <- if (label) outg + geom_node_label(aes(label = label), repel = TRUE, parse = TRUE, label.size = 0.75, nudge_x = x_nudge) else outg
+  outg + 
     viridis::scale_fill_viridis(option = "C") +
     scale_edge_alpha_continuous(range = c(1, 0.25), breaks = rev(breaks)) +
     scale_edge_width_continuous(range = c(0.25, 1.25), breaks = c(2:5)) +
@@ -263,6 +264,22 @@ OR  0.3090169943749470071737  9.510565162951539752711e-01
 WA -0.8090169943749470071737  5.877852522924730260812e-01"
 ) %>% as.matrix()
 
+alt_layout <- read.table(
+text = 
+"   x                            y
+AU  0.8090169943749470071737  5.877852522924730260812e-01
+OR -1.0000000000000000000000  1.224646799147350002426e-16
+CO -0.3090169943749480063744 -9.510565162951539752711e-01
+WA -0.3090169943749470071737  9.510565162951539752711e-01
+MI  0.0000000000000000000000  0.000000000000000000000e+00
+MN  1.0000000000000000000000  0.000000000000000000000e+00
+ND  0.3090169943749470071737 -9.510565162951539752711e-01
+NE -0.8090169943749470071737 -5.877852522924730260812e-01
+NY  0.8090169943749470071737 -5.877852522924730260812e-01
+FR  0.3090169943749470071737  9.510565162951539752711e-01
+CA -0.8090169943749470071737  5.877852522924730260812e-01"
+) %>% as.matrix()
+alt_layout <- alt_layout[rownames(good_layout), ]
 ```
 
 
@@ -300,7 +317,7 @@ igraph function `cluster_optimal()` to cluster the nodes.
 ```{r, fig.width = 7, fig.height = 7}
 par(mfrow = c(1, 1))
 (g16o <- cluster_optimal(graph16loc$total))
-plot_mlg_graph(graph16loc$total, good_layout) + labs(list(subtitle = "(16 loci)"))
+plot_mlg_graph(graph16loc$total, alt_layout) + labs(list(subtitle = "(16 loci)"))
 ```
 
 What we see is that We are given three clusters showing a clustering of the
@@ -314,7 +331,7 @@ regions that has a low probability of a second encounter.
 
 ```{r, fig.width = 7, fig.height = 7}
 (g11o <- cluster_optimal(graph11loc$total))
-plot_mlg_graph(graph11loc$total, good_layout) + labs(list(subtitle = "(11 loci)"))
+plot_mlg_graph(graph11loc$total, alt_layout) + labs(list(subtitle = "(11 loci)"))
 ```
 
 
