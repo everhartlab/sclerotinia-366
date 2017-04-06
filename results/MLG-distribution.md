@@ -521,9 +521,9 @@ plot_mlg_graph <- function(g, glayout = NULL, label = TRUE){
     theme(text = element_text(size = 14)) +
     labs(list(
       title = "Shared haplotypes across regions",
-      fill = "Number of\nGenotypes",
+      fill = "Number of\nhaplotypes",
       edge_alpha = "Probability of\nsecond encounter",
-      edge_width = "Populations\nPer haplotype",
+      edge_width = "Populations\nper haplotype",
       caption = "Outer circle: Number of haplotypes in the region\nInner Circle: Number of private haplotypes in the region"
     ))
 }
