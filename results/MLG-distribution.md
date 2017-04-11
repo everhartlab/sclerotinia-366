@@ -34,7 +34,6 @@ library('tidyverse')
 ```
 
 ```r
-library('assertr')
 library('poppr')
 ```
 
@@ -56,11 +55,8 @@ library('poppr')
 ```
 
 ```
-## This is poppr version 2.3.0.99.89. To get started, type package?poppr
+## This is poppr version 2.4.1. To get started, type package?poppr
 ## OMP parallel support: available
-## 
-## This version of poppr is under development.
-## If you find any bugs, please report them at https://github.com/grunwaldlab/poppr/issues
 ```
 
 ```r
@@ -116,193 +112,15 @@ library('igraph')
 
 ```r
 library("ggraph")
-library('magrittr')
 ```
 
-```
-## 
-## Attaching package: 'magrittr'
-```
+## Loading data and setting strata
 
-```
-## The following object is masked from 'package:igraph':
-## 
-##     %>%
-```
-
-```
-## The following object is masked from 'package:purrr':
-## 
-##     set_names
-```
-
-```
-## The following object is masked from 'package:tidyr':
-## 
-##     extract
-```
-
-## Loading data and assertions
-
+I'm loading the data and splitting it into the 11 locus and 16 locus versions
 
 
 ```r
-dat <- read.genalex("../Analysis4 ForManu/A2_Copy4 EUR_AUS_forManu.csv", ploidy = 1)
-splitStrata(dat) <- ~Isolate/Severity/MCG/Region/Source/Year/Host
-pops <- levels(strata(dat)$Region)
-levels(strata(dat)$Region) <- case_when(pops == "FR" ~ "France", 
-                                        pops == "MX" ~ "Mexico", 
-                                        pops == "AU" ~ "Australia", 
-                                        TRUE ~ pops)
-dat
-```
-
-```
-## 
-## This is a genclone object
-## -------------------------
-## Genotype information:
-## 
-##    165 original multilocus genotypes 
-##    366 haploid individuals
-##     11 codominant loci
-## 
-## Population information:
-## 
-##      7 strata - Isolate, Severity, MCG, Region, Source, Year, Host
-##    366 populations defined - 
-## 152_3.9_4_NE_unk_2003_GH, 274_5.4_45_NE_unk_2003_GH, 443_6.3_5_NY_unk_2003_GH, ..., 967_5.8_34_FR_flds_2012_unk, 968_4.2_34_FR_flds_2012_unk, 970_5.2_35_FR_flds_2012_unk
-```
-
-```r
-repeat_lengths <-
-  c(
-  `5-2` = 2.000000,
-  `5-3` = 0.500000,
-  `6-2` = 6.000000,
-  `7-2` = 2.000000,
-  `8-3` = 2.000000,
-  `9-2` = 2.000000,
-  `12-2` = 2.000000,
-  `17-3` = 3.000000,
-  `20-3` = 2.000000,
-  `36-4` = 0.500000,
-  `50-4` = 0.500000,
-  `55-4` = 4.000000,
-  `92-4` = 2.000000,
-  `106-4` = 4.000000,
-  `110-4` = 4.000000,
-  `114-4` = 4.000000
-  )
-repeat_lengths <- ifelse(repeat_lengths < 1, 4, repeat_lengths)
-```
-
-
-
-```r
-ex <- readxl::read_excel("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xlsx", sheet = "GenAlex", skip = 1) %>%
-  select(-1) %>%                # removing first column, which is empty
-  gather(locus, allele, -1) %>% # gather all loci into tidy columns
-  mutate(locus = trimws(locus)) %>% # remove (F) designator
-  mutate(allele = as.integer(allele)) %>% # force alleles to integers
-  spread(locus, allele) %>%
-  slice(-n())
-ex <- ex[!names(ex) %in% locNames(dat)]
-
-# Function to select an adjacent allele. It will select the
-# next allele if the next allele is not missing and it's distance
-# is one away and the previous allele for the same conditions.
-# If none of the conditions are met, it will retain the allele.
-cromulent_allele <- Vectorize(function(lower, allele, higher){
-  if (!is.na(higher) && abs(allele - higher) == 1){
-    out <- higher
-  } else if (!is.na(lower) && abs(allele - lower) == 1){
-    out <- lower
-  } else {
-    out <- allele
-  }
-  out
-})
-ex
-```
-
-```
-## # A tibble: 366 × 6
-##    iso_st_mcg_org_loc_yr_hst_cult_rep `106-4(H)` `36-4(F)` `5-3(F)`
-##                                 <chr>      <int>     <int>    <int>
-## 1               152_3.9_4_NE__2003_GH        580       415      328
-## 2              274_5.4_45_NE__2003_GH        588       415      328
-## 3               443_6.3_5_NY__2003_GH        567       415      308
-## 4          444_4.4_4_MN_wmn_2003_G122        580       415      328
-## 5         445_4.7_4_MN_wmn_2003_Beryl        580       415      328
-## 6         446_6.1_3_MI_wmn_2003_Beryl        567       415      339
-## 7         447_5.5_5_MI_wmn_2003_Beryl        567       415      308
-## 8           448_5_3_MI_wmn_2003_Beryl        568       414      339
-## 9         449_5.2_3_MI_wmn_2003_Bunsi        568       415      339
-## 10        450_5.3_5_MI_wmn_2003_Bunsi        568       415      308
-## # ... with 356 more rows, and 2 more variables: `50-4(F)` <int>,
-## #   `92-4(F)` <int>
-```
-
-```r
-exsummary <- ex %>% 
-  gather(locus, allele, -1) %>% # tidy the data
-  group_by(locus, allele) %>%   
-  summarize(n = n()) %>%        # summarize by count 
-  ungroup() %>%
-  group_by(locus) %>%           # group the loci, add the lower and upper alleles,
-  mutate(lower = lag(allele), higher = lead(allele)) %>% # and then create new_alleles
-  mutate(new_allele = ifelse(n < 3, cromulent_allele(lower, allele, higher), allele)) %>%
-  select(locus, new_allele, allele)
-exsummary
-```
-
-```
-## Source: local data frame [71 x 3]
-## Groups: locus [5]
-## 
-##       locus new_allele allele
-##       <chr>      <int>  <int>
-## 1  106-4(H)        502    501
-## 2  106-4(H)        502    502
-## 3  106-4(H)        502    503
-## 4  106-4(H)        511    511
-## 5  106-4(H)        532    532
-## 6  106-4(H)        533    533
-## 7  106-4(H)        541    540
-## 8  106-4(H)        541    541
-## 9  106-4(H)        541    542
-## 10 106-4(H)        546    546
-## # ... with 61 more rows
-```
-
-```r
-corrected_loci <- ex %>% gather(locus, allele, -1) %>%
-  left_join(exsummary, by = c("locus", "allele")) %>%
-  mutate(allele = new_allele) %>%
-  select(-new_allele) %>%
-  spread(locus, allele)
-datdf <- genind2df(dat, usepop = FALSE) %>% bind_cols(corrected_loci[-1])
-dat  <- df2genind(datdf, ind.names = indNames(dat), strata = strata(dat), ploidy = 1) %>% as.genclone()
-```
-
-The incoming strata includes both Severity and Isolate. Since these are not
-necessary for delimiting the strata, we will place them in the "other" slot
-after converting Severity to numeric. Placing this information in the "other"
-slot ensures that these data will travel with the object.
-
-
-```r
-dat_strata <- strata(dat) %>%
-  mutate_all(as.character) %>%
-  mutate(Severity = as.numeric(Severity))
-strata(dat)     <- select(dat_strata, -Severity, -Isolate)
-indNames(dat)   <- dat_strata$Isolate
-other(dat)$meta <- select(dat_strata, Severity, Isolate)
-```
-
-
-```r
+load("data/sclerotinia_16_loci.dat")
 setPop(dat) <- ~Region
 dat
 ```
@@ -324,11 +142,68 @@ dat
 ```
 
 ```r
-keeploci <- !locNames(dat) %in% colnames(corrected_loci)
-genotype_curve(dat, sample = 1000, quiet = TRUE)
+locNames(dat)
 ```
 
-![plot of chunk unnamed-chunk-2](./figures/MLG-distribution///unnamed-chunk-2-1.png)
+```
+##  [1] "110-4(H)" "114-4(H)" "12-2(H)"  "17-3(H)"  "20-3(F)"  "5-2(F)"  
+##  [7] "55-4(F)"  "6-2(F)"   "7-2(F)"   "8-3(H)"   "9-2(F)"   "106-4(H)"
+## [13] "36-4(F)"  "5-3(F)"   "50-4(F)"  "92-4(F)"
+```
+
+```r
+other(dat)$REPLEN
+```
+
+```
+## 110-4(H) 114-4(H)  12-2(H)  17-3(H)  20-3(F)   5-2(F)  55-4(F)   6-2(F) 
+##  3.99999  4.00000  2.00000  3.00000  2.00000  2.00000  4.00000  5.99999 
+##   7-2(F)   8-3(H)   9-2(F) 106-4(H)  36-4(F)   5-3(F)  50-4(F)  92-4(F) 
+##  2.00000  2.00000  2.00000  4.00000  4.00000  4.00000  4.00000  2.00000
+```
+
+```r
+head(other(dat)$meta)
+```
+
+```
+## # A tibble: 6 × 2
+##   Severity Isolate
+##      <dbl>   <chr>
+## 1      3.9     152
+## 2      5.4     274
+## 3      6.3     443
+## 4      4.4     444
+## 5      4.7     445
+## 6      6.1     446
+```
+
+```r
+keeploci <- !locNames(dat) %in% colnames(corrected_loci)
+dat11 <- dat[loc = keeploci, mlg.reset = TRUE] # reducing to 11 loci and recalculating mlgs
+dat11
+```
+
+```
+## 
+## This is a genclone object
+## -------------------------
+## Genotype information:
+## 
+##    165 original multilocus genotypes 
+##    366 haploid individuals
+##     11 codominant loci
+## 
+## Population information:
+## 
+##      5 strata - MCG, Region, Source, Year, Host
+##     14 populations defined - NE, NY, MN, ..., France, Mexico, ND
+```
+
+Now we can inspect the genotype accumulation curves. Notice that the 16 loci
+version plateaus, but we know that these extra loci are inconsistent, so we 
+might not want to trust them. 
+
 
 ```r
 locus_table(dat)
@@ -356,28 +231,42 @@ locus_table(dat)
 ```
 ##           summary
 ## locus      allele    1-D   Hexp Evenness
+##   110-4(H)  5.000  0.754  0.756    0.915
+##   114-4(H) 10.000  0.828  0.831    0.801
+##   12-2(H)   5.000  0.579  0.580    0.779
+##   17-3(H)   7.000  0.551  0.553    0.526
+##   20-3(F)   2.000  0.053  0.053    0.420
 ##   5-2(F)    4.000  0.451  0.452    0.616
+##   55-4(F)  10.000  0.721  0.723    0.656
 ##   6-2(F)    3.000  0.643  0.645    0.949
 ##   7-2(F)    7.000  0.727  0.729    0.764
 ##   8-3(H)    7.000  0.740  0.742    0.789
 ##   9-2(F)    9.000  0.347  0.348    0.406
-##   12-2(H)   5.000  0.579  0.580    0.779
-##   17-3(H)   7.000  0.551  0.553    0.526
-##   20-3(F)   2.000  0.053  0.053    0.420
-##   55-4(F)  10.000  0.721  0.723    0.656
-##   110-4(H)  5.000  0.754  0.756    0.915
-##   114-4(H) 10.000  0.828  0.831    0.801
-##   106-4(H) 32.000  0.917  0.919    0.602
-##   36-4(F)   4.000  0.254  0.255    0.501
-##   5-3(F)   12.000  0.839  0.841    0.791
-##   50-4(F)   3.000  0.256  0.257    0.629
-##   92-4(F)   9.000  0.797  0.799    0.808
+##   106-4(H) 32.000  0.918  0.920    0.605
+##   36-4(F)   4.000  0.255  0.256    0.502
+##   5-3(F)   12.000  0.839  0.841    0.790
+##   50-4(F)   3.000  0.257  0.257    0.629
+##   92-4(F)   9.000  0.796  0.799    0.807
 ##   mean      8.062  0.591  0.593    0.685
 ```
 
 ```r
-# rl <- fix_replen(dat, repeat_lengths)
-# mlg.filter(dat, distance = bruvo.dist, replen = rl) <- .Machine$double.eps
+genotype_curve(dat, sample = 1000, quiet = TRUE)
+```
+
+![plot of chunk genotype_curves](./figures/MLG-distribution///genotype_curves-1.png)
+
+```r
+genotype_curve(dat11, quiet = TRUE)
+```
+
+![plot of chunk genotype_curves](./figures/MLG-distribution///genotype_curves-2.png)
+
+Creating contracted genotypes for use later
+
+
+```r
+mlg.filter(dat, distance = bruvo.dist, replen = other(dat)$REPLEN) <- .Machine$double.eps
 dat
 ```
 
@@ -387,7 +276,8 @@ dat
 ## -------------------------
 ## Genotype information:
 ## 
-##    215 original multilocus genotypes 
+##    187 contracted multilocus genotypes
+##        (0) [t], (bruvo.dist) [d], (farthest) [a] 
 ##    366 haploid individuals
 ##     16 codominant loci
 ## 
@@ -398,14 +288,8 @@ dat
 ```
 
 ```r
-genotype_curve(dat[loc = keeploci, mlg.reset = TRUE], quiet = TRUE)
-```
-
-![plot of chunk unnamed-chunk-2](./figures/MLG-distribution///unnamed-chunk-2-2.png)
-
-```r
-# dat <- dat[loc = keeploci, mlg.reset = TRUE]
-dat
+mlg.filter(dat11, distance = bruvo.dist, replen = other(dat11)$REPLEN) <- .Machine$double.eps
+dat11
 ```
 
 ```
@@ -414,14 +298,20 @@ dat
 ## -------------------------
 ## Genotype information:
 ## 
-##    215 original multilocus genotypes 
+##    165 contracted multilocus genotypes
+##        (0) [t], (bruvo.dist) [d], (farthest) [a] 
 ##    366 haploid individuals
-##     16 codominant loci
+##     11 codominant loci
 ## 
 ## Population information:
 ## 
 ##      5 strata - MCG, Region, Source, Year, Host
 ##     14 populations defined - NE, NY, MN, ..., France, Mexico, ND
+```
+
+```r
+mll(dat) <- "original"
+mll(dat11) <- "original"
 ```
 
 ## Crossing populations
@@ -608,16 +498,18 @@ plot_mlg_subgraph(graph16loc[-length(graph16loc)])
 par(mfrow = c(3, 4))
 ```
 
-![plot of chunk unnamed-chunk-5](./figures/MLG-distribution///unnamed-chunk-5-1.png)
+![plot of chunk subgraphs](./figures/MLG-distribution///subgraphs-1.png)
 
 ```r
 plot_mlg_subgraph(graph11loc[-length(graph11loc)])
 ```
 
-![plot of chunk unnamed-chunk-5](./figures/MLG-distribution///unnamed-chunk-5-2.png)
+![plot of chunk subgraphs](./figures/MLG-distribution///subgraphs-2.png)
 
 ### Cross-regional graphs
 
+I'm plotting two graphs here because it's useful to see if both of them are
+congruent in their community predictions.
 
 #### With 16 loci
 
@@ -652,7 +544,19 @@ plot_mlg_graph(graph16loc$total, alt_layout) + labs(list(subtitle = "(16 loci)")
 ## Warning: Removed 10 rows containing missing values (geom_label_repel).
 ```
 
-![plot of chunk unnamed-chunk-6](./figures/MLG-distribution///unnamed-chunk-6-1.png)
+![plot of chunk graph-16-loci](./figures/MLG-distribution///graph-16-loci-1.png)
+
+```r
+ggsave(filename = "results/figures/publication/FigureS1Z.svg", width = 88, units = "mm", scale = 2)
+```
+
+```
+## Saving 176 x 356 mm image
+```
+
+```
+## Warning: Removed 10 rows containing missing values (geom_label_repel).
+```
 
 What we see is that We are given three clusters showing a clustering of the
 plains states, the west coast, and Australia, France, and Minnesota. The last
@@ -690,7 +594,19 @@ plot_mlg_graph(graph11loc$total, alt_layout) + labs(list(subtitle = "(11 loci)")
 ## Warning: Removed 11 rows containing missing values (geom_label_repel).
 ```
 
-![plot of chunk unnamed-chunk-7](./figures/MLG-distribution///unnamed-chunk-7-1.png)
+![plot of chunk graph-11-loci](./figures/MLG-distribution///graph-11-loci-1.png)
+
+```r
+ggsave(filename = "results/figures/publication/Figure3Z.svg", width = 88, units = "mm", scale = 2)
+```
+
+```
+## Saving 176 x 356 mm image
+```
+
+```
+## Warning: Removed 11 rows containing missing values (geom_label_repel).
+```
 
 
 ## Session Information
@@ -713,7 +629,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-04-06
+##  date     2017-04-11
 ```
 
 ```
@@ -721,96 +637,98 @@ devtools::session_info()
 ```
 
 ```
-##  package     * version     date       source                                  
-##  ade4        * 1.7-6       2017-03-23 cran (@1.7-6)                           
-##  adegenet    * 2.1.0       2017-04-05 Github (thibautjombart/adegenet@bb0ffc0)
-##  ape           4.1         2017-02-14 CRAN (R 3.3.2)                          
-##  assertr     * 2.0.0       2017-03-17 CRAN (R 3.3.2)                          
-##  assertthat    0.1         2013-12-06 CRAN (R 3.2.0)                          
-##  boot          1.3-18      2016-02-23 CRAN (R 3.2.3)                          
-##  broom         0.4.2       2017-02-13 CRAN (R 3.3.2)                          
-##  cluster       2.0.5       2016-10-08 CRAN (R 3.3.0)                          
-##  coda          0.19-1      2016-12-08 cran (@0.19-1)                          
-##  colorspace    1.3-2       2016-12-14 CRAN (R 3.3.2)                          
-##  DBI           0.5-1       2016-09-10 CRAN (R 3.3.0)                          
-##  deldir        0.1-12      2016-03-06 CRAN (R 3.2.4)                          
-##  devtools      1.12.0      2016-06-24 CRAN (R 3.3.0)                          
-##  digest        0.6.12      2017-01-27 CRAN (R 3.3.2)                          
-##  dplyr       * 0.5.0       2016-06-24 CRAN (R 3.3.0)                          
-##  evaluate      0.10        2016-10-11 cran (@0.10)                            
-##  expm          0.999-1     2017-02-02 CRAN (R 3.3.2)                          
-##  ezknitr       0.6         2016-09-16 CRAN (R 3.3.0)                          
-##  fastmatch     1.1-0       2017-01-28 CRAN (R 3.3.2)                          
-##  forcats       0.2.0       2017-01-23 CRAN (R 3.3.2)                          
-##  foreign       0.8-67      2016-09-13 CRAN (R 3.3.0)                          
-##  gdata         2.17.0      2015-07-04 CRAN (R 3.2.0)                          
-##  ggforce       0.1.1       2016-11-28 CRAN (R 3.3.2)                          
-##  ggplot2     * 2.2.1       2016-12-30 CRAN (R 3.3.2)                          
-##  ggraph      * 1.0.0       2017-02-24 CRAN (R 3.3.2)                          
-##  ggrepel       0.6.6       2017-04-03 Github (slowkow/ggrepel@007318f)        
-##  gmodels       2.16.2      2015-07-22 CRAN (R 3.2.0)                          
-##  gridExtra     2.2.1       2016-02-29 CRAN (R 3.2.4)                          
-##  gtable        0.2.0       2016-02-26 CRAN (R 3.2.3)                          
-##  gtools        3.5.0       2015-05-29 CRAN (R 3.2.0)                          
-##  haven         1.0.0       2016-09-23 CRAN (R 3.3.0)                          
-##  highr         0.6         2016-05-09 CRAN (R 3.3.0)                          
-##  hms           0.3         2016-11-22 CRAN (R 3.3.2)                          
-##  htmltools     0.3.5       2016-03-21 CRAN (R 3.2.4)                          
-##  httpuv        1.3.3       2015-08-04 CRAN (R 3.2.0)                          
-##  httr          1.2.1       2016-07-03 cran (@1.2.1)                           
-##  igraph      * 1.0.1       2015-06-26 CRAN (R 3.2.0)                          
-##  jsonlite      1.3         2017-02-28 CRAN (R 3.3.2)                          
-##  knitr       * 1.15.16     2017-03-29 Github (yihui/knitr@9f6a1c2)            
-##  labeling      0.3         2014-08-23 CRAN (R 3.2.0)                          
-##  lattice       0.20-34     2016-09-06 CRAN (R 3.3.0)                          
-##  lazyeval      0.2.0.9000  2016-07-01 Github (hadley/lazyeval@c155c3d)        
-##  LearnBayes    2.15        2014-05-29 CRAN (R 3.2.0)                          
-##  lubridate     1.6.0       2016-09-13 CRAN (R 3.3.0)                          
-##  magrittr    * 1.5         2014-11-22 CRAN (R 3.2.0)                          
-##  MASS          7.3-45      2015-11-10 CRAN (R 3.2.2)                          
-##  Matrix        1.2-8       2017-01-20 CRAN (R 3.3.2)                          
-##  memoise       1.0.0       2016-01-29 CRAN (R 3.2.3)                          
-##  mgcv          1.8-17      2017-02-08 CRAN (R 3.3.2)                          
-##  mime          0.5         2016-07-07 cran (@0.5)                             
-##  mnormt        1.5-5       2016-10-15 cran (@1.5-5)                           
-##  modelr        0.1.0       2016-08-31 CRAN (R 3.3.0)                          
-##  munsell       0.4.3       2016-02-13 CRAN (R 3.2.3)                          
-##  nlme          3.1-131     2017-02-06 CRAN (R 3.3.2)                          
-##  pegas         0.9         2016-04-16 CRAN (R 3.2.5)                          
-##  permute       0.9-4       2016-09-09 cran (@0.9-4)                           
-##  phangorn      2.2.0       2017-04-03 cran (@2.2.0)                           
-##  plyr          1.8.4       2016-06-08 CRAN (R 3.3.0)                          
-##  poppr       * 2.3.0.99-89 2017-04-06 local                                   
-##  psych         1.6.12      2017-01-08 CRAN (R 3.3.2)                          
-##  purrr       * 0.2.2       2016-06-18 CRAN (R 3.3.0)                          
-##  quadprog      1.5-5       2013-04-17 CRAN (R 3.2.0)                          
-##  R.methodsS3   1.7.1       2016-02-16 CRAN (R 3.2.3)                          
-##  R.oo          1.21.0      2016-11-01 CRAN (R 3.3.0)                          
-##  R.utils       2.5.0       2016-11-07 CRAN (R 3.3.0)                          
-##  R6            2.2.0       2016-10-05 cran (@2.2.0)                           
-##  Rcpp          0.12.10     2017-03-19 cran (@0.12.10)                         
-##  readr       * 1.0.0       2016-08-03 CRAN (R 3.3.0)                          
-##  readxl        0.1.1       2016-03-28 CRAN (R 3.3.0)                          
-##  reshape2      1.4.2       2016-10-22 cran (@1.4.2)                           
-##  rvest         0.3.2       2016-06-17 CRAN (R 3.3.0)                          
-##  scales        0.4.1       2016-11-09 CRAN (R 3.3.2)                          
-##  seqinr        3.3-3       2016-10-13 cran (@3.3-3)                           
-##  shiny         1.0.1       2017-04-01 cran (@1.0.1)                           
-##  sp            1.2-4       2016-12-22 cran (@1.2-4)                           
-##  spdep         0.6-11      2017-02-23 cran (@0.6-11)                          
-##  stringi       1.1.2       2016-10-01 CRAN (R 3.3.0)                          
-##  stringr       1.2.0       2017-02-18 cran (@1.2.0)                           
-##  tibble      * 1.3.0       2017-04-01 cran (@1.3.0)                           
-##  tidyr       * 0.6.1       2017-01-10 CRAN (R 3.3.2)                          
-##  tidyverse   * 1.1.1       2017-01-27 CRAN (R 3.3.2)                          
-##  tweenr        0.1.5       2016-10-10 CRAN (R 3.3.0)                          
-##  udunits2      0.13        2016-11-17 CRAN (R 3.3.2)                          
-##  units         0.4-3       2017-03-25 cran (@0.4-3)                           
-##  vegan         2.4-2       2017-01-17 CRAN (R 3.3.2)                          
-##  viridis       0.4.0       2017-03-27 cran (@0.4.0)                           
-##  viridisLite   0.2.0       2017-03-24 cran (@0.2.0)                           
-##  withr         1.0.2       2016-06-20 cran (@1.0.2)                           
-##  xml2          1.1.1       2017-01-24 CRAN (R 3.3.2)                          
-##  xtable        1.8-2       2016-02-05 CRAN (R 3.2.3)
+##  package     * version    date       source                                  
+##  ade4        * 1.7-6      2017-03-23 cran (@1.7-6)                           
+##  adegenet    * 2.1.0      2017-04-05 Github (thibautjombart/adegenet@bb0ffc0)
+##  ape           4.1        2017-02-14 CRAN (R 3.3.2)                          
+##  assertr       2.0.0      2017-03-17 CRAN (R 3.3.2)                          
+##  assertthat    0.1        2013-12-06 CRAN (R 3.2.0)                          
+##  boot          1.3-18     2016-02-23 CRAN (R 3.2.3)                          
+##  broom         0.4.2      2017-02-13 CRAN (R 3.3.2)                          
+##  cluster       2.0.5      2016-10-08 CRAN (R 3.3.0)                          
+##  coda          0.19-1     2016-12-08 cran (@0.19-1)                          
+##  colorspace    1.3-2      2016-12-14 CRAN (R 3.3.2)                          
+##  DBI           0.5-1      2016-09-10 CRAN (R 3.3.0)                          
+##  deldir        0.1-12     2016-03-06 CRAN (R 3.2.4)                          
+##  devtools      1.12.0     2016-06-24 CRAN (R 3.3.0)                          
+##  digest        0.6.12     2017-01-27 CRAN (R 3.3.2)                          
+##  dplyr       * 0.5.0      2016-06-24 CRAN (R 3.3.0)                          
+##  evaluate      0.10       2016-10-11 cran (@0.10)                            
+##  expm          0.999-1    2017-02-02 CRAN (R 3.3.2)                          
+##  ezknitr       0.6        2016-09-16 CRAN (R 3.3.0)                          
+##  fastmatch     1.1-0      2017-01-28 CRAN (R 3.3.2)                          
+##  forcats       0.2.0      2017-01-23 CRAN (R 3.3.2)                          
+##  foreign       0.8-67     2016-09-13 CRAN (R 3.3.0)                          
+##  gdata         2.17.0     2015-07-04 CRAN (R 3.2.0)                          
+##  gdtools     * 0.1.3      2016-11-11 CRAN (R 3.3.2)                          
+##  ggforce       0.1.1      2016-11-28 CRAN (R 3.3.2)                          
+##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.3.2)                          
+##  ggraph      * 1.0.0      2017-02-24 CRAN (R 3.3.2)                          
+##  ggrepel       0.6.6      2017-04-03 Github (slowkow/ggrepel@007318f)        
+##  gmodels       2.16.2     2015-07-22 CRAN (R 3.2.0)                          
+##  gridExtra     2.2.1      2016-02-29 CRAN (R 3.2.4)                          
+##  gtable        0.2.0      2016-02-26 CRAN (R 3.2.3)                          
+##  gtools        3.5.0      2015-05-29 CRAN (R 3.2.0)                          
+##  haven         1.0.0      2016-09-23 CRAN (R 3.3.0)                          
+##  highr         0.6        2016-05-09 CRAN (R 3.3.0)                          
+##  hms           0.3        2016-11-22 CRAN (R 3.3.2)                          
+##  htmltools     0.3.5      2016-03-21 CRAN (R 3.2.4)                          
+##  httpuv        1.3.3      2015-08-04 CRAN (R 3.2.0)                          
+##  httr          1.2.1      2016-07-03 cran (@1.2.1)                           
+##  igraph      * 1.0.1      2015-06-26 CRAN (R 3.2.0)                          
+##  jsonlite      1.3        2017-02-28 CRAN (R 3.3.2)                          
+##  knitr       * 1.15.16    2017-03-29 Github (yihui/knitr@9f6a1c2)            
+##  labeling      0.3        2014-08-23 CRAN (R 3.2.0)                          
+##  lattice       0.20-34    2016-09-06 CRAN (R 3.3.0)                          
+##  lazyeval      0.2.0.9000 2016-07-01 Github (hadley/lazyeval@c155c3d)        
+##  LearnBayes    2.15       2014-05-29 CRAN (R 3.2.0)                          
+##  lubridate     1.6.0      2016-09-13 CRAN (R 3.3.0)                          
+##  magrittr      1.5        2014-11-22 CRAN (R 3.2.0)                          
+##  MASS          7.3-45     2015-11-10 CRAN (R 3.2.2)                          
+##  Matrix        1.2-8      2017-01-20 CRAN (R 3.3.2)                          
+##  memoise       1.0.0      2016-01-29 CRAN (R 3.2.3)                          
+##  mgcv          1.8-17     2017-02-08 CRAN (R 3.3.2)                          
+##  mime          0.5        2016-07-07 cran (@0.5)                             
+##  mnormt        1.5-5      2016-10-15 cran (@1.5-5)                           
+##  modelr        0.1.0      2016-08-31 CRAN (R 3.3.0)                          
+##  munsell       0.4.3      2016-02-13 CRAN (R 3.2.3)                          
+##  nlme          3.1-131    2017-02-06 CRAN (R 3.3.2)                          
+##  pegas         0.9        2016-04-16 CRAN (R 3.2.5)                          
+##  permute       0.9-4      2016-09-09 cran (@0.9-4)                           
+##  phangorn      2.2.0      2017-04-03 cran (@2.2.0)                           
+##  plyr          1.8.4      2016-06-08 CRAN (R 3.3.0)                          
+##  poppr       * 2.4.1      2017-04-11 local                                   
+##  psych         1.6.12     2017-01-08 CRAN (R 3.3.2)                          
+##  purrr       * 0.2.2      2016-06-18 CRAN (R 3.3.0)                          
+##  quadprog      1.5-5      2013-04-17 CRAN (R 3.2.0)                          
+##  R.methodsS3   1.7.1      2016-02-16 CRAN (R 3.2.3)                          
+##  R.oo          1.21.0     2016-11-01 CRAN (R 3.3.0)                          
+##  R.utils       2.5.0      2016-11-07 CRAN (R 3.3.0)                          
+##  R6            2.2.0      2016-10-05 cran (@2.2.0)                           
+##  Rcpp          0.12.10    2017-03-19 cran (@0.12.10)                         
+##  readr       * 1.0.0      2016-08-03 CRAN (R 3.3.0)                          
+##  readxl        0.1.1      2016-03-28 CRAN (R 3.3.0)                          
+##  reshape2      1.4.2      2016-10-22 cran (@1.4.2)                           
+##  rvest         0.3.2      2016-06-17 CRAN (R 3.3.0)                          
+##  scales        0.4.1      2016-11-09 CRAN (R 3.3.2)                          
+##  seqinr        3.3-3      2016-10-13 cran (@3.3-3)                           
+##  shiny         1.0.1      2017-04-01 cran (@1.0.1)                           
+##  sp            1.2-4      2016-12-22 cran (@1.2-4)                           
+##  spdep         0.6-11     2017-02-23 cran (@0.6-11)                          
+##  stringi       1.1.2      2016-10-01 CRAN (R 3.3.0)                          
+##  stringr       1.2.0      2017-02-18 cran (@1.2.0)                           
+##  svglite       1.2.0      2016-11-04 CRAN (R 3.3.0)                          
+##  tibble      * 1.3.0      2017-04-01 cran (@1.3.0)                           
+##  tidyr       * 0.6.1      2017-01-10 CRAN (R 3.3.2)                          
+##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.3.2)                          
+##  tweenr        0.1.5      2016-10-10 CRAN (R 3.3.0)                          
+##  udunits2      0.13       2016-11-17 CRAN (R 3.3.2)                          
+##  units         0.4-3      2017-03-25 cran (@0.4-3)                           
+##  vegan         2.4-2      2017-01-17 CRAN (R 3.3.2)                          
+##  viridis       0.4.0      2017-03-27 cran (@0.4.0)                           
+##  viridisLite   0.2.0      2017-03-24 cran (@0.2.0)                           
+##  withr         1.0.2      2016-06-20 cran (@1.0.2)                           
+##  xml2          1.1.1      2017-01-24 CRAN (R 3.3.2)                          
+##  xtable        1.8-2      2016-02-05 CRAN (R 3.2.3)
 ```
 

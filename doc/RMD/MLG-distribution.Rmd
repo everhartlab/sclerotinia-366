@@ -14,119 +14,46 @@ across populations
 
 ```{r}
 library('tidyverse')
-library('assertr')
 library('poppr')
 library('igraph')
 library("ggraph")
-library('magrittr')
 ```
 
-## Loading data and assertions
+## Loading data and setting strata
 
-
-```{r read_data}
-dat <- read.genalex("../Analysis4 ForManu/A2_Copy4 EUR_AUS_forManu.csv", ploidy = 1)
-splitStrata(dat) <- ~Isolate/Severity/MCG/Region/Source/Year/Host
-pops <- levels(strata(dat)$Region)
-levels(strata(dat)$Region) <- case_when(pops == "FR" ~ "France", 
-                                        pops == "MX" ~ "Mexico", 
-                                        pops == "AU" ~ "Australia", 
-                                        TRUE ~ pops)
-dat
-
-repeat_lengths <-
-  c(
-  `5-2` = 2.000000,
-  `5-3` = 0.500000,
-  `6-2` = 6.000000,
-  `7-2` = 2.000000,
-  `8-3` = 2.000000,
-  `9-2` = 2.000000,
-  `12-2` = 2.000000,
-  `17-3` = 3.000000,
-  `20-3` = 2.000000,
-  `36-4` = 0.500000,
-  `50-4` = 0.500000,
-  `55-4` = 4.000000,
-  `92-4` = 2.000000,
-  `106-4` = 4.000000,
-  `110-4` = 4.000000,
-  `114-4` = 4.000000
-  )
-repeat_lengths <- ifelse(repeat_lengths < 1, 4, repeat_lengths)
-```
-
-
-```{r excel_data}
-ex <- readxl::read_excel("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xlsx", sheet = "GenAlex", skip = 1) %>%
-  select(-1) %>%                # removing first column, which is empty
-  gather(locus, allele, -1) %>% # gather all loci into tidy columns
-  mutate(locus = trimws(locus)) %>% # remove (F) designator
-  mutate(allele = as.integer(allele)) %>% # force alleles to integers
-  spread(locus, allele) %>%
-  slice(-n())
-ex <- ex[!names(ex) %in% locNames(dat)]
-
-# Function to select an adjacent allele. It will select the
-# next allele if the next allele is not missing and it's distance
-# is one away and the previous allele for the same conditions.
-# If none of the conditions are met, it will retain the allele.
-cromulent_allele <- Vectorize(function(lower, allele, higher){
-  if (!is.na(higher) && abs(allele - higher) == 1){
-    out <- higher
-  } else if (!is.na(lower) && abs(allele - lower) == 1){
-    out <- lower
-  } else {
-    out <- allele
-  }
-  out
-})
-ex
-exsummary <- ex %>% 
-  gather(locus, allele, -1) %>% # tidy the data
-  group_by(locus, allele) %>%   
-  summarize(n = n()) %>%        # summarize by count 
-  ungroup() %>%
-  group_by(locus) %>%           # group the loci, add the lower and upper alleles,
-  mutate(lower = lag(allele), higher = lead(allele)) %>% # and then create new_alleles
-  mutate(new_allele = ifelse(n < 3, cromulent_allele(lower, allele, higher), allele)) %>%
-  select(locus, new_allele, allele)
-exsummary
-corrected_loci <- ex %>% gather(locus, allele, -1) %>%
-  left_join(exsummary, by = c("locus", "allele")) %>%
-  mutate(allele = new_allele) %>%
-  select(-new_allele) %>%
-  spread(locus, allele)
-datdf <- genind2df(dat, usepop = FALSE) %>% bind_cols(corrected_loci[-1])
-dat  <- df2genind(datdf, ind.names = indNames(dat), strata = strata(dat), ploidy = 1) %>% as.genclone()
-```
-
-The incoming strata includes both Severity and Isolate. Since these are not
-necessary for delimiting the strata, we will place them in the "other" slot
-after converting Severity to numeric. Placing this information in the "other"
-slot ensures that these data will travel with the object.
-
-```{r fix_strata}
-dat_strata <- strata(dat) %>%
-  mutate_all(as.character) %>%
-  mutate(Severity = as.numeric(Severity))
-strata(dat)     <- select(dat_strata, -Severity, -Isolate)
-indNames(dat)   <- dat_strata$Isolate
-other(dat)$meta <- select(dat_strata, Severity, Isolate)
-```
+I'm loading the data and splitting it into the 11 locus and 16 locus versions
 
 ```{r}
+load("data/sclerotinia_16_loci.dat")
 setPop(dat) <- ~Region
 dat
+locNames(dat)
+other(dat)$REPLEN
+head(other(dat)$meta)
 keeploci <- !locNames(dat) %in% colnames(corrected_loci)
-genotype_curve(dat, sample = 1000, quiet = TRUE)
+dat11 <- dat[loc = keeploci, mlg.reset = TRUE] # reducing to 11 loci and recalculating mlgs
+dat11
+```
+
+Now we can inspect the genotype accumulation curves. Notice that the 16 loci
+version plateaus, but we know that these extra loci are inconsistent, so we 
+might not want to trust them. 
+
+```{r genotype_curves, fig.width = 5, fig.height = 5}
 locus_table(dat)
-# rl <- fix_replen(dat, repeat_lengths)
-# mlg.filter(dat, distance = bruvo.dist, replen = rl) <- .Machine$double.eps
+genotype_curve(dat, sample = 1000, quiet = TRUE)
+genotype_curve(dat11, quiet = TRUE)
+```
+
+Creating contracted genotypes for use later
+
+```{r}
+mlg.filter(dat, distance = bruvo.dist, replen = other(dat)$REPLEN) <- .Machine$double.eps
 dat
-genotype_curve(dat[loc = keeploci, mlg.reset = TRUE], quiet = TRUE)
-# dat <- dat[loc = keeploci, mlg.reset = TRUE]
-dat
+mlg.filter(dat11, distance = bruvo.dist, replen = other(dat11)$REPLEN) <- .Machine$double.eps
+dat11
+mll(dat) <- "original"
+mll(dat11) <- "original"
 ```
 
 ## Crossing populations
@@ -304,7 +231,7 @@ graph11loc <- make_graph_list(dat[loc = keeploci, mlg.reset = TRUE])
 
 Each subgraph shows all of the connections for a single population.
 
-```{r, fig.width = 10, fig.height = 10}
+```{r subgraphs, fig.width = 10, fig.height = 10}
 # Plotting the subgraphs
 par(mfrow = c(3, 4))
 plot_mlg_subgraph(graph16loc[-length(graph16loc)])
@@ -315,16 +242,19 @@ plot_mlg_subgraph(graph11loc[-length(graph11loc)])
 
 ### Cross-regional graphs
 
+I'm plotting two graphs here because it's useful to see if both of them are
+congruent in their community predictions.
 
 #### With 16 loci
 
 First, I'm going to show the results of a community analysis. I'm using the 
 igraph function `cluster_optimal()` to cluster the nodes.
 
-```{r, fig.width = 7, fig.height = 7}
+```{r graph-16-loci, fig.width = 7, fig.height = 7}
 par(mfrow = c(1, 1))
 (g16o <- cluster_optimal(graph16loc$total))
 plot_mlg_graph(graph16loc$total, alt_layout) + labs(list(subtitle = "(16 loci)"))
+ggsave(filename = "results/figures/publication/FigureS1Z.svg", width = 88, units = "mm", scale = 2)
 ```
 
 What we see is that We are given three clusters showing a clustering of the
@@ -336,9 +266,10 @@ regions that has a low probability of a second encounter.
 #### With 11 loci
 
 
-```{r, fig.width = 7, fig.height = 7}
+```{r graph-11-loci, fig.width = 7, fig.height = 7}
 (g11o <- cluster_optimal(graph11loc$total))
 plot_mlg_graph(graph11loc$total, alt_layout) + labs(list(subtitle = "(11 loci)"))
+ggsave(filename = "results/figures/publication/Figure3Z.svg", width = 88, units = "mm", scale = 2)
 ```
 
 
