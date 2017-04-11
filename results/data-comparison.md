@@ -54,17 +54,17 @@ presented in the paper thus far to create the assertions.
 ```r
 size_ranges <- 
 "locus\trange\tn
-5-2	318-324	4
-6-2	483-495	3
-7-2	158-174	7
-8-3	244-270	7
-9-2	360-382	9
-12-2	214-222	5
-17-3	342-363	7
-20-3	280-282	2
-55-4	153-216	10
-110-4	370-386	5
-114-4	339-416	10
+5-2(F)	318-324	4
+6-2(F)	483-495	3
+7-2(F)	158-174	7
+8-3(H)	244-270	7
+9-2(F)	360-382	9
+12-2(H)	214-222	5
+17-3(H)	342-363	7
+20-3(F)	280-282	2
+55-4(F)	153-216	10
+110-4(H)	370-386	5
+114-4(H)	339-416	10
 "
 sr <- read_tsv(size_ranges) %>%
   separate(range, c("lower", "upper"), sep = "-") # split range into lower and upper bounds
@@ -73,19 +73,19 @@ sr
 
 ```
 ## # A tibble: 11 × 4
-##    locus lower upper     n
-## *  <chr> <chr> <chr> <int>
-## 1    5-2   318   324     4
-## 2    6-2   483   495     3
-## 3    7-2   158   174     7
-## 4    8-3   244   270     7
-## 5    9-2   360   382     9
-## 6   12-2   214   222     5
-## 7   17-3   342   363     7
-## 8   20-3   280   282     2
-## 9   55-4   153   216    10
-## 10 110-4   370   386     5
-## 11 114-4   339   416    10
+##       locus lower upper     n
+## *     <chr> <chr> <chr> <int>
+## 1    5-2(F)   318   324     4
+## 2    6-2(F)   483   495     3
+## 3    7-2(F)   158   174     7
+## 4    8-3(H)   244   270     7
+## 5    9-2(F)   360   382     9
+## 6   12-2(H)   214   222     5
+## 7   17-3(H)   342   363     7
+## 8   20-3(F)   280   282     2
+## 9   55-4(F)   153   216    10
+## 10 110-4(H)   370   386     5
+## 11 114-4(H)   339   416    10
 ```
 
 ```r
@@ -112,17 +112,17 @@ cat(assrt_string)
 
 ```
 ## assert_alleles_within_bounds <- . %>%
-##   assert(within_bounds(318, 324), `5-2`) %>%
-##   assert(within_bounds(483, 495), `6-2`) %>%
-##   assert(within_bounds(158, 174), `7-2`) %>%
-##   assert(within_bounds(244, 270), `8-3`) %>%
-##   assert(within_bounds(360, 382), `9-2`) %>%
-##   assert(within_bounds(214, 222), `12-2`) %>%
-##   assert(within_bounds(342, 363), `17-3`) %>%
-##   assert(within_bounds(280, 282), `20-3`) %>%
-##   assert(within_bounds(153, 216), `55-4`) %>%
-##   assert(within_bounds(370, 386), `110-4`) %>%
-##   assert(within_bounds(339, 416), `114-4`)
+##   assert(within_bounds(318, 324), `5-2(F)`) %>%
+##   assert(within_bounds(483, 495), `6-2(F)`) %>%
+##   assert(within_bounds(158, 174), `7-2(F)`) %>%
+##   assert(within_bounds(244, 270), `8-3(H)`) %>%
+##   assert(within_bounds(360, 382), `9-2(F)`) %>%
+##   assert(within_bounds(214, 222), `12-2(H)`) %>%
+##   assert(within_bounds(342, 363), `17-3(H)`) %>%
+##   assert(within_bounds(280, 282), `20-3(F)`) %>%
+##   assert(within_bounds(153, 216), `55-4(F)`) %>%
+##   assert(within_bounds(370, 386), `110-4(H)`) %>%
+##   assert(within_bounds(339, 416), `114-4(H)`)
 ```
 
 ```r
@@ -189,7 +189,7 @@ syd <- read_excel("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xlsx",
                 sheet = "GenAlexBinned", skip = 1) %>%
   select(-1) %>%                # removing first column, which is empty
   gather(locus, allele, -1) %>% # gather all loci into tidy columns
-  mutate(locus = trimws(locus) %>% substr(1, nchar(.) - 3)) %>% # remove (F) designator
+  mutate(locus = trimws(locus)) %>% # remove whitespace in locus names
   mutate(allele = as.integer(allele)) %>% # force alleles to integers
   spread(locus, allele) %>%     # spread data out with individual loci in columns
   separate(iso_st_mcg_org_loc_yr_hst_cult_rep, 
@@ -223,21 +223,21 @@ syd
 
 ```
 ## # A tibble: 366 × 18
-##    Isolate Severity   MCG State Source  Year  Host `110-4` `114-4` `12-2`
-##      <chr>    <dbl> <chr> <chr>  <chr> <chr> <chr>   <int>   <int>  <int>
-## 1      152      3.9     4    NE    unk  2003    GH     378     371    216
-## 2      274      5.4    45    NE    unk  2003    GH     378     359    216
-## 3      443      6.3     5    NY    unk  2003    GH     378     367    216
-## 4      444      4.4     4    MN    wmn  2003  G122     378     371    216
-## 5      445      4.7     4    MN    wmn  2003 Beryl     378     371    216
-## 6      446      6.1     3    MI    wmn  2003 Beryl     386     359    216
-## 7      447      5.5     5    MI    wmn  2003 Beryl     378     367    222
-## 8      448      5.0     3    MI    wmn  2003 Beryl     386     359    216
-## 9      449      5.2     3    MI    wmn  2003 Bunsi     386     367    216
-## 10     450      5.3     5    MI    wmn  2003 Bunsi     378     367    216
-## # ... with 356 more rows, and 8 more variables: `17-3` <int>,
-## #   `20-3` <int>, `5-2` <int>, `55-4` <int>, `6-2` <int>, `7-2` <int>,
-## #   `8-3` <int>, `9-2` <int>
+##    Isolate Severity   MCG State Source  Year  Host `110-4(H)` `114-4(H)`
+##      <chr>    <dbl> <chr> <chr>  <chr> <chr> <chr>      <int>      <int>
+## 1      152      3.9     4    NE    unk  2003    GH        378        371
+## 2      274      5.4    45    NE    unk  2003    GH        378        359
+## 3      443      6.3     5    NY    unk  2003    GH        378        367
+## 4      444      4.4     4    MN    wmn  2003  G122        378        371
+## 5      445      4.7     4    MN    wmn  2003 Beryl        378        371
+## 6      446      6.1     3    MI    wmn  2003 Beryl        386        359
+## 7      447      5.5     5    MI    wmn  2003 Beryl        378        367
+## 8      448      5.0     3    MI    wmn  2003 Beryl        386        359
+## 9      449      5.2     3    MI    wmn  2003 Bunsi        386        367
+## 10     450      5.3     5    MI    wmn  2003 Bunsi        378        367
+## # ... with 356 more rows, and 9 more variables: `12-2(H)` <int>,
+## #   `17-3(H)` <int>, `20-3(F)` <int>, `5-2(F)` <int>, `55-4(F)` <int>,
+## #   `6-2(F)` <int>, `7-2(F)` <int>, `8-3(H)` <int>, `9-2(F)` <int>
 ```
 
 ## Reading in Sajeewa's data
@@ -264,7 +264,7 @@ column_specification <- cols(
 saj <- read_csv("../Analysis4 ForManu/A2_Copy4 EUR_AUS_forManu.csv", skip = 2, col_types = column_specification) %>%
   select(-1) %>%
   gather(locus, allele, -1) %>% # gather all loci into tidy columns
-  mutate(locus = trimws(locus) %>% substr(1, nchar(.) - 3)) %>% # remove (F) designator
+  mutate(locus = trimws(locus)) %>% # remove any whitespace in the locus names
   spread(locus, allele) %>%     # spread data out with individual loci in columns
   separate(iso_st_mcg_org_loc_yr_hst, # Note: this corresponds closer to the initial data
            c("Isolate", "Severity", "MCG", "State", "Source", "Year", "Host"), 
@@ -294,21 +294,21 @@ saj
 
 ```
 ## # A tibble: 366 × 18
-##    Isolate Severity   MCG State Source  Year  Host `110-4` `114-4` `12-2`
-##      <chr>    <dbl> <chr> <chr>  <chr> <chr> <chr>   <int>   <int>  <int>
-## 1      152      3.9     4    NE    unk  2003    GH     378     371    216
-## 2      274      5.4    45    NE    unk  2003    GH     378     359    216
-## 3      443      6.3     5    NY    unk  2003    GH     378     367    216
-## 4      444      4.4     4    MN    wmn  2003  G122     378     371    216
-## 5      445      4.7     4    MN    wmn  2003 Beryl     378     371    216
-## 6      446      6.1     3    MI    wmn  2003 Beryl     386     359    216
-## 7      447      5.5     5    MI    wmn  2003 Beryl     378     367    222
-## 8      448      5.0     3    MI    wmn  2003 Beryl     386     359    216
-## 9      449      5.2     3    MI    wmn  2003 Bunsi     386     367    216
-## 10     450      5.3     5    MI    wmn  2003 Bunsi     378     367    216
-## # ... with 356 more rows, and 8 more variables: `17-3` <int>,
-## #   `20-3` <int>, `5-2` <int>, `55-4` <int>, `6-2` <int>, `7-2` <int>,
-## #   `8-3` <int>, `9-2` <int>
+##    Isolate Severity   MCG State Source  Year  Host `110-4(H)` `114-4(H)`
+##      <chr>    <dbl> <chr> <chr>  <chr> <chr> <chr>      <int>      <int>
+## 1      152      3.9     4    NE    unk  2003    GH        378        371
+## 2      274      5.4    45    NE    unk  2003    GH        378        359
+## 3      443      6.3     5    NY    unk  2003    GH        378        367
+## 4      444      4.4     4    MN    wmn  2003  G122        378        371
+## 5      445      4.7     4    MN    wmn  2003 Beryl        378        371
+## 6      446      6.1     3    MI    wmn  2003 Beryl        386        359
+## 7      447      5.5     5    MI    wmn  2003 Beryl        378        367
+## 8      448      5.0     3    MI    wmn  2003 Beryl        386        359
+## 9      449      5.2     3    MI    wmn  2003 Bunsi        386        367
+## 10     450      5.3     5    MI    wmn  2003 Bunsi        378        367
+## # ... with 356 more rows, and 9 more variables: `12-2(H)` <int>,
+## #   `17-3(H)` <int>, `20-3(F)` <int>, `5-2(F)` <int>, `55-4(F)` <int>,
+## #   `6-2(F)` <int>, `7-2(F)` <int>, `8-3(H)` <int>, `9-2(F)` <int>
 ```
 
 ## Comparison
@@ -339,29 +339,29 @@ head(the_difference, n = 20)
 
 ```
 ## # A tibble: 18 × 19
-##    source Isolate Severity   MCG State Source  Year   Host `110-4` `114-4`
-##     <chr>   <chr>    <dbl> <chr> <chr>  <chr> <chr>  <chr>   <int>   <int>
-## 1     syd     496      5.1    83    TS    wmn  2004   G122     386     359
-## 2     saj     496      5.1    83    AU    wmn  2004   G122     386     359
-## 3     syd     499      5.6    85    TS    wmn  2004 ExRico     378     367
-## 4     saj     499      5.6    85    AU    wmn  2004  Bunsi     378     367
-## 5     syd     500      1.4    83    TS    wmn  2004  Beryl     374     367
-## 6     saj     500      1.4    83    AU    wmn  2004  Beryl     374     367
-## 7     syd     501      3.3    84    TS    wmn  2004  Beryl     374     359
-## 8     saj     501      3.3    84    AU    wmn  2004  Beryl     374     359
-## 9     saj     805      5.8    18    ND    stc  2010    unk     382     339
-## 10    syd    805*      5.8    18    ND    stc  2010    unk     382     339
-## 11    syd     966      4.5    33    BL   flds  2012    unk     386     371
-## 12    saj     966      4.5    33    FR   flds  2012    unk     386     371
-## 13    syd     967      5.8    34    BL   flds  2012    unk     386     339
-## 14    saj     967      5.8    34    FR   flds  2012    unk     386     339
-## 15    syd     968      4.2    34    BL   flds  2012    unk     370     339
-## 16    saj     968      4.2    34    FR   flds  2012    unk     370     339
-## 17    syd     970      5.2    35    BL   flds  2012    unk     382     371
-## 18    saj     970      5.2    35    FR   flds  2012    unk     382     371
-## # ... with 9 more variables: `12-2` <int>, `17-3` <int>, `20-3` <int>,
-## #   `5-2` <int>, `55-4` <int>, `6-2` <int>, `7-2` <int>, `8-3` <int>,
-## #   `9-2` <int>
+##    source Isolate Severity   MCG State Source  Year   Host `110-4(H)`
+##     <chr>   <chr>    <dbl> <chr> <chr>  <chr> <chr>  <chr>      <int>
+## 1     syd     496      5.1    83    TS    wmn  2004   G122        386
+## 2     saj     496      5.1    83    AU    wmn  2004   G122        386
+## 3     syd     499      5.6    85    TS    wmn  2004 ExRico        378
+## 4     saj     499      5.6    85    AU    wmn  2004  Bunsi        378
+## 5     syd     500      1.4    83    TS    wmn  2004  Beryl        374
+## 6     saj     500      1.4    83    AU    wmn  2004  Beryl        374
+## 7     syd     501      3.3    84    TS    wmn  2004  Beryl        374
+## 8     saj     501      3.3    84    AU    wmn  2004  Beryl        374
+## 9     saj     805      5.8    18    ND    stc  2010    unk        382
+## 10    syd    805*      5.8    18    ND    stc  2010    unk        382
+## 11    syd     966      4.5    33    BL   flds  2012    unk        386
+## 12    saj     966      4.5    33    FR   flds  2012    unk        386
+## 13    syd     967      5.8    34    BL   flds  2012    unk        386
+## 14    saj     967      5.8    34    FR   flds  2012    unk        386
+## 15    syd     968      4.2    34    BL   flds  2012    unk        370
+## 16    saj     968      4.2    34    FR   flds  2012    unk        370
+## 17    syd     970      5.2    35    BL   flds  2012    unk        382
+## 18    saj     970      5.2    35    FR   flds  2012    unk        382
+## # ... with 10 more variables: `114-4(H)` <int>, `12-2(H)` <int>,
+## #   `17-3(H)` <int>, `20-3(F)` <int>, `5-2(F)` <int>, `55-4(F)` <int>,
+## #   `6-2(F)` <int>, `7-2(F)` <int>, `8-3(H)` <int>, `9-2(F)` <int>
 ```
 
 
@@ -402,6 +402,265 @@ TS was grouped into AU because it was too small of a sample size to do anything.
 From here on out, we will use Sajeewa's data for analysis.
 
 
+## Saving data as genclone object
+
+First we need to transform the data to something that
+
+
+```r
+dat <- saj %>% 
+  select(-(Isolate:Host)) %>% 
+  df2genind(ind.names = saj$Isolate, 
+            strata = select(saj, MCG:Host), # Filtering out severity and Isolate
+            ploidy = 1) %>%
+  as.genclone()
+```
+
+```
+## Error in function_list[[i]](value): could not find function "df2genind"
+```
+
+```r
+nameStrata(dat)[2] <- "Region"
+```
+
+```
+## Error in nameStrata(dat)[2] <- "Region": object 'dat' not found
+```
+
+```r
+pops <- levels(strata(dat)$Region)
+```
+
+```
+## Error in levels(strata(dat)$Region): could not find function "strata"
+```
+
+```r
+levels(strata(dat)$Region) <- case_when(pops == "FR" ~ "France", 
+                                        pops == "MX" ~ "Mexico", 
+                                        pops == "AU" ~ "Australia", 
+                                        TRUE ~ pops)
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'pops' not found
+```
+
+```r
+dat
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'dat' not found
+```
+
+```r
+locNames(dat)
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "locNames"
+```
+
+```r
+repeat_lengths <-
+  c(
+  `5-2(F)` = 2.000000,
+  `5-3(F)` = 0.500000,
+  `6-2(F)` = 6.000000,
+  `7-2(F)` = 2.000000,
+  `8-3(H)` = 2.000000,
+  `9-2(F)` = 2.000000,
+  `12-2(H)` = 2.000000,
+  `17-3(H)` = 3.000000,
+  `20-3(F)` = 2.000000,
+  `36-4(F)` = 0.500000,
+  `50-4(F)` = 0.500000,
+  `55-4(F)` = 4.000000,
+  `92-4(F)` = 2.000000,
+  `106-4(H)` = 4.000000,
+  `110-4(H)` = 4.000000,
+  `114-4(H)` = 4.000000
+  )
+repeat_lengths <- ifelse(repeat_lengths < 1, 4, repeat_lengths)
+```
+
+### Adding inconsistent loci
+
+Only 11 loci were manually curated by Sydney and Sajeewa. I'm taking a look at
+the other 5 loci because they may be informative. In order to do that, I'm going
+to have to clean them up by estimating the the true allele size.
+
+
+```r
+ex <- readxl::read_excel("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xlsx", sheet = "GenAlex", skip = 1) %>%
+  select(-1) %>%                # removing first column, which is empty
+  gather(locus, allele, -1) %>% # gather all loci into tidy columns
+  mutate(locus = trimws(locus)) %>% # remove (F) designator
+  mutate(allele = as.integer(allele)) %>% # force alleles to integers
+  spread(locus, allele) %>%
+  slice(-n())
+ex <- ex[!names(ex) %in% locNames(dat)]
+```
+
+```
+## Error in match(x, table, nomatch = 0L): could not find function "locNames"
+```
+
+```r
+# Function to select an adjacent allele. It will select the
+# next allele if the next allele is not missing and it's distance
+# is one away and the previous allele for the same conditions.
+# If none of the conditions are met, it will retain the allele.
+cromulent_allele <- Vectorize(function(lower, allele, higher){
+  if (!is.na(higher) && abs(allele - higher) == 1){
+    out <- higher
+  } else if (!is.na(lower) && abs(allele - lower) == 1){
+    out <- lower
+  } else {
+    out <- allele
+  }
+  out
+})
+ex
+```
+
+```
+## # A tibble: 366 × 17
+##    iso_st_mcg_org_loc_yr_hst_cult_rep `106-4(H)` `110-4(H)` `114-4(H)`
+##                                 <chr>      <int>      <int>      <int>
+## 1               152_3.9_4_NE__2003_GH        580        379        372
+## 2              274_5.4_45_NE__2003_GH        588        379        359
+## 3               443_6.3_5_NY__2003_GH        567        379        368
+## 4          444_4.4_4_MN_wmn_2003_G122        580        379        372
+## 5         445_4.7_4_MN_wmn_2003_Beryl        580        379        372
+## 6         446_6.1_3_MI_wmn_2003_Beryl        567        385        359
+## 7         447_5.5_5_MI_wmn_2003_Beryl        567        379        368
+## 8           448_5_3_MI_wmn_2003_Beryl        568        385        360
+## 9         449_5.2_3_MI_wmn_2003_Bunsi        568        386        368
+## 10        450_5.3_5_MI_wmn_2003_Bunsi        568        379        368
+## # ... with 356 more rows, and 13 more variables: `12-2(H)` <int>,
+## #   `17-3(H)` <int>, `20-3(F)` <int>, `36-4(F)` <int>, `5-2(F)` <int>,
+## #   `5-3(F)` <int>, `50-4(F)` <int>, `55-4(F)` <int>, `6-2(F)` <int>,
+## #   `7-2(F)` <int>, `8-3(H)` <int>, `9-2(F)` <int>, `92-4(F)` <int>
+```
+
+```r
+exsummary <- ex %>% 
+  gather(locus, allele, -1) %>% # tidy the data
+  group_by(locus, allele) %>%   
+  summarize(n = n()) %>%        # summarize by count 
+  ungroup() %>%
+  group_by(locus) %>%           # group the loci, add the lower and upper alleles,
+  mutate(lower = lag(allele), higher = lead(allele)) %>% # and then create new_alleles
+  mutate(new_allele = ifelse(n < 3, cromulent_allele(lower, allele, higher), allele)) %>%
+  select(locus, new_allele, allele)
+exsummary
+```
+
+```
+## Source: local data frame [173 x 3]
+## Groups: locus [16]
+## 
+##       locus new_allele allele
+##       <chr>      <int>  <int>
+## 1  106-4(H)        502    501
+## 2  106-4(H)        502    502
+## 3  106-4(H)        502    503
+## 4  106-4(H)        511    511
+## 5  106-4(H)        532    532
+## 6  106-4(H)        533    533
+## 7  106-4(H)        541    540
+## 8  106-4(H)        541    541
+## 9  106-4(H)        541    542
+## 10 106-4(H)        546    546
+## # ... with 163 more rows
+```
+
+Now that we have our data set filtered (to a degree), we can merge the data with
+`dat` that we defined above.
+
+
+```r
+corrected_loci <- ex %>% gather(locus, allele, -1) %>%
+  left_join(exsummary, by = c("locus", "allele")) %>%
+  mutate(allele = new_allele) %>%
+  select(-new_allele) %>%
+  spread(locus, allele) %>%
+  separate(iso_st_mcg_org_loc_yr_hst_cult_rep, # Note: this corresponds closer to the initial data
+           c("Isolate", "Severity", "MCG", "State", "Source", "Year", "Host"), 
+           sep = "_") %>%
+  arrange(Isolate) %>%
+  select(-(Severity:Host))
+datdf <- genind2df(dat, usepop = FALSE) %>% 
+  rownames_to_column(var = "Isolate") %>% 
+  left_join(corrected_loci, by = "Isolate")
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "genind2df"
+```
+
+```r
+stopifnot(identical(datdf$Isolate, indNames(dat)))
+```
+
+```
+## Error in identical(datdf$Isolate, indNames(dat)): object 'datdf' not found
+```
+
+```r
+dat   <- datdf %>% 
+  select(-Isolate) %>% 
+  df2genind(, ind.names = indNames(dat), strata = strata(dat), ploidy = 1) %>% 
+  as.genclone()
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'datdf' not found
+```
+
+The original data includes both Severity and Isolate. Since these are not
+necessary for delimiting the strata, we will place them in the "other" slot
+after converting Severity to numeric. Placing this information in the "other"
+slot ensures that these data will travel with the object.
+
+
+```r
+stopifnot(identical(indNames(dat), saj$Isolate))
+```
+
+```
+## Error in identical(indNames(dat), saj$Isolate): could not find function "indNames"
+```
+
+```r
+other(dat)$meta <- select(saj, Severity, Isolate)
+```
+
+```
+## Error in other(dat)$meta <- select(saj, Severity, Isolate): object 'dat' not found
+```
+
+```r
+other(dat)$REPLEN <- fix_replen(dat, repeat_lengths)
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "fix_replen"
+```
+
+
+```r
+save(dat, datdf, corrected_loci, file = "data/sclerotinia_16_loci.dat")
+```
+
+```
+## Error in save(dat, datdf, corrected_loci, file = "data/sclerotinia_16_loci.dat"): objects 'dat', 'datdf' not found
+```
+
+
 ## Session Information
 
 
@@ -422,7 +681,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-03-30
+##  date     2017-04-11
 ```
 
 ```
@@ -466,7 +725,7 @@ devtools::session_info()
 ##  R.oo          1.21.0     2016-11-01 CRAN (R 3.3.0)                  
 ##  R.utils       2.5.0      2016-11-07 CRAN (R 3.3.0)                  
 ##  R6            2.2.0      2016-10-05 cran (@2.2.0)                   
-##  Rcpp          0.12.9     2017-01-14 CRAN (R 3.3.2)                  
+##  Rcpp          0.12.10    2017-03-19 cran (@0.12.10)                 
 ##  readr       * 1.0.0      2016-08-03 CRAN (R 3.3.0)                  
 ##  readxl      * 0.1.1      2016-03-28 CRAN (R 3.3.0)                  
 ##  reshape2      1.4.2      2016-10-22 cran (@1.4.2)                   
@@ -474,7 +733,7 @@ devtools::session_info()
 ##  scales        0.4.1      2016-11-09 CRAN (R 3.3.2)                  
 ##  stringi       1.1.2      2016-10-01 CRAN (R 3.3.0)                  
 ##  stringr       1.2.0      2017-02-18 cran (@1.2.0)                   
-##  tibble      * 1.2        2016-08-26 cran (@1.2)                     
+##  tibble      * 1.3.0      2017-04-01 cran (@1.3.0)                   
 ##  tidyr       * 0.6.1      2017-01-10 CRAN (R 3.3.2)                  
 ##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.3.2)                  
 ##  withr         1.0.2      2016-06-20 cran (@1.0.2)                   
