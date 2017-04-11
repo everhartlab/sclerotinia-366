@@ -24,7 +24,7 @@ library("ggraph")
 I'm loading the data and splitting it into the 11 locus and 16 locus versions
 
 ```{r}
-load("data/sclerotinia_16_loci.dat")
+load("data/sclerotinia_16_loci.rda")
 setPop(dat) <- ~Region
 dat
 locNames(dat)

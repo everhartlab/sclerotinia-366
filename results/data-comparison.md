@@ -653,11 +653,11 @@ other(dat)$REPLEN <- fix_replen(dat, repeat_lengths)
 
 
 ```r
-save(dat, datdf, corrected_loci, file = "data/sclerotinia_16_loci.dat")
+save(dat, datdf, corrected_loci, file = "data/sclerotinia_16_loci.rda")
 ```
 
 ```
-## Error in save(dat, datdf, corrected_loci, file = "data/sclerotinia_16_loci.dat"): objects 'dat', 'datdf' not found
+## Error in save(dat, datdf, corrected_loci, file = "data/sclerotinia_16_loci.rda"): objects 'dat', 'datdf' not found
 ```
 
 
@@ -708,7 +708,7 @@ devtools::session_info()
 ##  hms           0.3        2016-11-22 CRAN (R 3.3.2)                  
 ##  httr          1.2.1      2016-07-03 cran (@1.2.1)                   
 ##  jsonlite      1.3        2017-02-28 CRAN (R 3.3.2)                  
-##  knitr       * 1.15.16    2017-03-29 Github (yihui/knitr@9f6a1c2)    
+##  knitr       * 1.15.19    2017-04-11 Github (yihui/knitr@6f166e2)    
 ##  lattice       0.20-34    2016-09-06 CRAN (R 3.3.0)                  
 ##  lazyeval      0.2.0.9000 2016-07-01 Github (hadley/lazyeval@c155c3d)
 ##  lubridate     1.6.0      2016-09-13 CRAN (R 3.3.0)                  

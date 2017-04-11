@@ -1,5 +1,5 @@
 ---
-title: "R Notebook"
+title: "Analyzing MLG distribution"
 output: 
   html_notebook:
     toc: true
@@ -120,7 +120,7 @@ I'm loading the data and splitting it into the 11 locus and 16 locus versions
 
 
 ```r
-load("data/sclerotinia_16_loci.dat")
+load("data/sclerotinia_16_loci.rda")
 setPop(dat) <- ~Region
 dat
 ```
@@ -601,6 +601,12 @@ ggsave(filename = "results/figures/publication/Figure3Z.svg", width = 88, height
 ```
 
 
+```r
+save(graph16loc, graph11loc, alt_layout, file = "data/mlg-crosspop-graph.rda")
+```
+
+
+
 ## Session Information
 
 
@@ -669,7 +675,7 @@ devtools::session_info()
 ##  httr          1.2.1      2016-07-03 cran (@1.2.1)                           
 ##  igraph      * 1.0.1      2015-06-26 CRAN (R 3.2.0)                          
 ##  jsonlite      1.3        2017-02-28 CRAN (R 3.3.2)                          
-##  knitr       * 1.15.16    2017-03-29 Github (yihui/knitr@9f6a1c2)            
+##  knitr       * 1.15.19    2017-04-11 Github (yihui/knitr@6f166e2)            
 ##  labeling      0.3        2014-08-23 CRAN (R 3.2.0)                          
 ##  lattice       0.20-34    2016-09-06 CRAN (R 3.3.0)                          
 ##  lazyeval      0.2.0.9000 2016-07-01 Github (hadley/lazyeval@c155c3d)        
