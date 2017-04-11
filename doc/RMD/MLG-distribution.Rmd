@@ -1,5 +1,5 @@
 ---
-title: "R Notebook"
+title: "Analyzing MLG distribution"
 output: 
   html_notebook:
     toc: true
@@ -271,6 +271,11 @@ regions that has a low probability of a second encounter.
 plot_mlg_graph(graph11loc$total, alt_layout) + labs(list(subtitle = "(11 loci)"))
 ggsave(filename = "results/figures/publication/Figure3Z.svg", width = 88, height = 88, units = "mm", scale = 2)
 ```
+
+```{r, saving_data}
+save(graph16loc, graph11loc, alt_layout, file = "data/mlg-crosspop-graph.rda")
+```
+
 
 
 ## Session Information
