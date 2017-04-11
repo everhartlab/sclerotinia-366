@@ -547,11 +547,7 @@ plot_mlg_graph(graph16loc$total, alt_layout) + labs(list(subtitle = "(16 loci)")
 ![plot of chunk graph-16-loci](./figures/MLG-distribution///graph-16-loci-1.png)
 
 ```r
-ggsave(filename = "results/figures/publication/FigureS1Z.svg", width = 88, units = "mm", scale = 2)
-```
-
-```
-## Saving 176 x 356 mm image
+ggsave(filename = "results/figures/publication/FigureS1Z.svg", width = 88, height = 88, units = "mm", scale = 2)
 ```
 
 ```
@@ -597,11 +593,7 @@ plot_mlg_graph(graph11loc$total, alt_layout) + labs(list(subtitle = "(11 loci)")
 ![plot of chunk graph-11-loci](./figures/MLG-distribution///graph-11-loci-1.png)
 
 ```r
-ggsave(filename = "results/figures/publication/Figure3Z.svg", width = 88, units = "mm", scale = 2)
-```
-
-```
-## Saving 176 x 356 mm image
+ggsave(filename = "results/figures/publication/Figure3Z.svg", width = 88, height = 88, units = "mm", scale = 2)
 ```
 
 ```

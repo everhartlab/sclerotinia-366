@@ -254,7 +254,7 @@ igraph function `cluster_optimal()` to cluster the nodes.
 par(mfrow = c(1, 1))
 (g16o <- cluster_optimal(graph16loc$total))
 plot_mlg_graph(graph16loc$total, alt_layout) + labs(list(subtitle = "(16 loci)"))
-ggsave(filename = "results/figures/publication/FigureS1Z.svg", width = 88, units = "mm", scale = 2)
+ggsave(filename = "results/figures/publication/FigureS1Z.svg", width = 88, height = 88, units = "mm", scale = 2)
 ```
 
 What we see is that We are given three clusters showing a clustering of the
@@ -269,7 +269,7 @@ regions that has a low probability of a second encounter.
 ```{r graph-11-loci, fig.width = 7, fig.height = 7}
 (g11o <- cluster_optimal(graph11loc$total))
 plot_mlg_graph(graph11loc$total, alt_layout) + labs(list(subtitle = "(11 loci)"))
-ggsave(filename = "results/figures/publication/Figure3Z.svg", width = 88, units = "mm", scale = 2)
+ggsave(filename = "results/figures/publication/Figure3Z.svg", width = 88, height = 88, units = "mm", scale = 2)
 ```
 
 
