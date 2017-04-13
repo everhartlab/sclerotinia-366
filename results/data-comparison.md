@@ -611,9 +611,17 @@ stopifnot(identical(datdf$Isolate, indNames(dat)))
 ```
 
 ```r
+datdf <- datdf[c("Isolate", names(repeat_lengths))]
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'datdf' not found
+```
+
+```r
 dat   <- datdf %>% 
   select(-Isolate) %>% 
-  df2genind(, ind.names = indNames(dat), strata = strata(dat), ploidy = 1) %>% 
+  df2genind(ind.names = indNames(dat), strata = strata(dat), ploidy = 1) %>% 
   as.genclone()
 ```
 
@@ -653,11 +661,78 @@ other(dat)$REPLEN <- fix_replen(dat, repeat_lengths)
 
 
 ```r
-save(dat, datdf, corrected_loci, file = "data/sclerotinia_16_loci.rda")
+setPop(dat) <- ~Region
 ```
 
 ```
-## Error in save(dat, datdf, corrected_loci, file = "data/sclerotinia_16_loci.rda"): objects 'dat', 'datdf' not found
+## Error in setPop(dat) <- ~Region: object 'dat' not found
+```
+
+```r
+dat
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'dat' not found
+```
+
+```r
+locNames(dat)
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "locNames"
+```
+
+```r
+other(dat)$REPLEN
+```
+
+```
+## Error in eval(expr, envir, enclos): could not find function "other"
+```
+
+```r
+head(other(dat)$meta)
+```
+
+```
+## Error in head(other(dat)$meta): could not find function "other"
+```
+
+```r
+keeploci <- !locNames(dat) %in% colnames(corrected_loci)
+```
+
+```
+## Error in match(x, table, nomatch = 0L): could not find function "locNames"
+```
+
+```r
+dat11 <- dat[loc = keeploci, mlg.reset = TRUE] # reducing to 11 loci and recalculating mlgs
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'dat' not found
+```
+
+```r
+dat11
+```
+
+```
+## Error in eval(expr, envir, enclos): object 'dat11' not found
+```
+
+
+
+
+```r
+save(dat, dat11, datdf, keeploci, corrected_loci, file = "data/sclerotinia_16_loci.rda")
+```
+
+```
+## Error in save(dat, dat11, datdf, keeploci, corrected_loci, file = "data/sclerotinia_16_loci.rda"): objects 'dat', 'dat11', 'datdf', 'keeploci' not found
 ```
 
 
@@ -681,7 +756,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-04-11
+##  date     2017-04-13
 ```
 
 ```

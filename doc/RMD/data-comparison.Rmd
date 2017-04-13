@@ -334,9 +334,10 @@ datdf <- genind2df(dat, usepop = FALSE) %>%
   rownames_to_column(var = "Isolate") %>% 
   left_join(corrected_loci, by = "Isolate")
 stopifnot(identical(datdf$Isolate, indNames(dat)))
+datdf <- datdf[c("Isolate", names(repeat_lengths))]
 dat   <- datdf %>% 
   select(-Isolate) %>% 
-  df2genind(, ind.names = indNames(dat), strata = strata(dat), ploidy = 1) %>% 
+  df2genind(ind.names = indNames(dat), strata = strata(dat), ploidy = 1) %>% 
   as.genclone()
 ```
 
@@ -351,8 +352,21 @@ other(dat)$meta <- select(saj, Severity, Isolate)
 other(dat)$REPLEN <- fix_replen(dat, repeat_lengths)
 ```
 
+```{r}
+setPop(dat) <- ~Region
+dat
+locNames(dat)
+other(dat)$REPLEN
+head(other(dat)$meta)
+keeploci <- !locNames(dat) %in% colnames(corrected_loci)
+dat11 <- dat[loc = keeploci, mlg.reset = TRUE] # reducing to 11 loci and recalculating mlgs
+dat11
+```
+
+
+
 ```{r, save_data}
-save(dat, datdf, corrected_loci, file = "data/sclerotinia_16_loci.rda")
+save(dat, dat11, datdf, keeploci, corrected_loci, file = "data/sclerotinia_16_loci.rda")
 ```
 
 

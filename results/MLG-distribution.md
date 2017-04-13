@@ -121,83 +121,6 @@ I'm loading the data and splitting it into the 11 locus and 16 locus versions
 
 ```r
 load("data/sclerotinia_16_loci.rda")
-setPop(dat) <- ~Region
-dat
-```
-
-```
-## 
-## This is a genclone object
-## -------------------------
-## Genotype information:
-## 
-##    215 original multilocus genotypes 
-##    366 haploid individuals
-##     16 codominant loci
-## 
-## Population information:
-## 
-##      5 strata - MCG, Region, Source, Year, Host
-##     14 populations defined - NE, NY, MN, ..., France, Mexico, ND
-```
-
-```r
-locNames(dat)
-```
-
-```
-##  [1] "110-4(H)" "114-4(H)" "12-2(H)"  "17-3(H)"  "20-3(F)"  "5-2(F)"  
-##  [7] "55-4(F)"  "6-2(F)"   "7-2(F)"   "8-3(H)"   "9-2(F)"   "106-4(H)"
-## [13] "36-4(F)"  "5-3(F)"   "50-4(F)"  "92-4(F)"
-```
-
-```r
-other(dat)$REPLEN
-```
-
-```
-## 110-4(H) 114-4(H)  12-2(H)  17-3(H)  20-3(F)   5-2(F)  55-4(F)   6-2(F) 
-##  3.99999  4.00000  2.00000  3.00000  2.00000  2.00000  4.00000  5.99999 
-##   7-2(F)   8-3(H)   9-2(F) 106-4(H)  36-4(F)   5-3(F)  50-4(F)  92-4(F) 
-##  2.00000  2.00000  2.00000  4.00000  4.00000  4.00000  4.00000  2.00000
-```
-
-```r
-head(other(dat)$meta)
-```
-
-```
-## # A tibble: 6 × 2
-##   Severity Isolate
-##      <dbl>   <chr>
-## 1      3.9     152
-## 2      5.4     274
-## 3      6.3     443
-## 4      4.4     444
-## 5      4.7     445
-## 6      6.1     446
-```
-
-```r
-keeploci <- !locNames(dat) %in% colnames(corrected_loci)
-dat11 <- dat[loc = keeploci, mlg.reset = TRUE] # reducing to 11 loci and recalculating mlgs
-dat11
-```
-
-```
-## 
-## This is a genclone object
-## -------------------------
-## Genotype information:
-## 
-##    165 original multilocus genotypes 
-##    366 haploid individuals
-##     11 codominant loci
-## 
-## Population information:
-## 
-##      5 strata - MCG, Region, Source, Year, Host
-##     14 populations defined - NE, NY, MN, ..., France, Mexico, ND
 ```
 
 Now we can inspect the genotype accumulation curves. Notice that the 16 loci
@@ -231,22 +154,22 @@ locus_table(dat)
 ```
 ##           summary
 ## locus      allele    1-D   Hexp Evenness
-##   110-4(H)  5.000  0.754  0.756    0.915
-##   114-4(H) 10.000  0.828  0.831    0.801
-##   12-2(H)   5.000  0.579  0.580    0.779
-##   17-3(H)   7.000  0.551  0.553    0.526
-##   20-3(F)   2.000  0.053  0.053    0.420
 ##   5-2(F)    4.000  0.451  0.452    0.616
-##   55-4(F)  10.000  0.721  0.723    0.656
+##   5-3(F)   12.000  0.839  0.841    0.790
 ##   6-2(F)    3.000  0.643  0.645    0.949
 ##   7-2(F)    7.000  0.727  0.729    0.764
 ##   8-3(H)    7.000  0.740  0.742    0.789
 ##   9-2(F)    9.000  0.347  0.348    0.406
-##   106-4(H) 32.000  0.918  0.920    0.605
+##   12-2(H)   5.000  0.579  0.580    0.779
+##   17-3(H)   7.000  0.551  0.553    0.526
+##   20-3(F)   2.000  0.053  0.053    0.420
 ##   36-4(F)   4.000  0.255  0.256    0.502
-##   5-3(F)   12.000  0.839  0.841    0.790
 ##   50-4(F)   3.000  0.257  0.257    0.629
+##   55-4(F)  10.000  0.721  0.723    0.656
 ##   92-4(F)   9.000  0.796  0.799    0.807
+##   106-4(H) 32.000  0.918  0.920    0.605
+##   110-4(H)  5.000  0.754  0.756    0.915
+##   114-4(H) 10.000  0.828  0.831    0.801
 ##   mean      8.062  0.591  0.593    0.685
 ```
 
@@ -627,7 +550,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-04-11
+##  date     2017-04-13
 ```
 
 ```
@@ -695,7 +618,7 @@ devtools::session_info()
 ##  permute       0.9-4      2016-09-09 cran (@0.9-4)                           
 ##  phangorn      2.2.0      2017-04-03 cran (@2.2.0)                           
 ##  plyr          1.8.4      2016-06-08 CRAN (R 3.3.0)                          
-##  poppr       * 2.4.1      2017-04-11 local                                   
+##  poppr       * 2.4.1      2017-04-13 local                                   
 ##  psych         1.6.12     2017-01-08 CRAN (R 3.3.2)                          
 ##  purrr       * 0.2.2      2016-06-18 CRAN (R 3.3.0)                          
 ##  quadprog      1.5-5      2013-04-17 CRAN (R 3.2.0)                          
