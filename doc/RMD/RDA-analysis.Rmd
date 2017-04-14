@@ -25,112 +25,112 @@ Below is my attempt at reproduction of Sajeewa's analysis.
 library('tidyverse')
 library('poppr')
 library('vegan')
+library('ggrepel')
 ```
 
 
 ```{r, load_data}
 load("data/sclerotinia_16_loci.rda")
-keeploci <- !locNames(dat) %in% colnames(corrected_loci)
-setPop(dat) <- ~Host/Source/Region/Year
-dat11 <- dat[loc = keeploci, mlg.reset = TRUE]
+setPop(dat)   <- ~Host/Source/Region/Year
+setPop(dat11) <- ~Host/Source/Region/Year
 dat11cc <- clonecorrect(dat11, ~Host/Source/Region/Year, keep = 1:4)
-dat16cc   <- clonecorrect(dat, ~Host/Source/Region/Year, keep = 1:4)
+dat16cc <- clonecorrect(dat, ~Host/Source/Region/Year, keep = 1:4)
 dat11cc
 dat16cc
 # environmental variables for dbRDA
 stopifnot(identical(indNames(dat11cc), other(dat11cc)$meta$Isolate))
-ENV11 <- bind_cols(select(other(dat11cc)$meta, Severity), 
-                   select(strata(dat11cc), -MCG))
-ENV11
 stopifnot(identical(indNames(dat16cc), other(dat16cc)$meta$Isolate))
-ENV16 <- bind_cols(select(other(dat16cc)$meta, Severity), 
-                   select(strata(dat16cc), -MCG))
+
+makeENV <- function(DAT, CC){
+  # Creating the data frame with severity
+  META   <- select(other(DAT)$meta, -Isolate)
+  STRATA <- select(strata(DAT), -MCG)
+  MLL    <- data.frame(MLG = mll(DAT))
+  sev    <- bind_cols(META, STRATA, MLL) %>%
+    group_by(Host, Source, Year, Region, MLG) %>% 
+    summarize(Severity = mean(Severity)) %>% # Get mean severity per MLG
+    ungroup()
+  # Ensuring the data is in the correct order
+  META   <- select(other(CC)$meta, -Isolate)
+  STRATA <- select(strata(CC), -MCG)
+  MLL    <- data.frame(MLG = mll(CC))
+  bind_cols(META, STRATA, MLL) %>% 
+    left_join(sev)
+}
+
+ENV11 <- makeENV(dat11, dat11cc)
+ENV11
+stopifnot(identical(ENV11$MLG, mll(dat11cc)))
+ENV11 <- select(ENV11, -MLG)
+ENV16 <- makeENV(dat, dat16cc)
 ENV16
+stopifnot(identical(ENV11$MLG, mll(dat11cc)))
+ENV16 <- select(ENV16, -MLG)
 ```
 
-## Calculate Bruvo's distance
+
+## Function to tie everything together
+
 
 ```{r}
-bruvo11cc <- bruvo.dist(dat11cc, replen = other(dat)$REPLEN)
-bruvo16cc <- bruvo.dist(dat16cc, replen = other(dat)$REPLEN)
+choose_dbrda <- function(bdist, ENV, CHOOSER = "ordistep", ...){
+  mod0  <- capscale(bdist ~ 1, data = ENV, add = TRUE)
+  mod1  <- capscale(bdist ~ ., data = ENV, add = TRUE)
+  CHOOSER <- match.fun(CHOOSER)
+  the_model <- CHOOSER(mod0, scope = formula(mod1), ...)
+  return(the_model)
+}
+arrowMul <- function(arrows, data, at = c(0, 0), fill = 0.75) {
+    u <- c(range(data[,1], range(data[,2])))
+    u <- u - rep(at, each = 2)
+    r <- c(range(arrows[, 1], na.rm = TRUE), range(arrows[, 2], na.rm = TRUE))
+    rev <- sign(diff(u))[-2]
+    if (rev[1] < 0)
+        u[1:2] <- u[2:1]
+    if (rev[2] < 0)
+        u[3:4] <- u[4:3]
+    u <- u/r
+    u <- u[is.finite(u) & u > 0]
+    fill * min(u)
+}
+plot_dbrda <- function(db){
+  dbsum     <- scores(db, display = c("cn", "bp", "sites"), scaling = "sites")
+  Centroids <- as.data.frame(dbsum$centroids)
+  Centroids <- rownames_to_column(Centroids, var = "cent_type")
+  Centroids <- mutate_(Centroids, .dots = list(Length = ~sqrt(CAP1^2 * CAP2^2)))
+  # Centroids
+  SampleCentroids <- rownames_to_column(data.frame(dbsum$sites), var = "isolate_names")
+  
+  mul     <- arrowMul(dbsum$biplot[, 1:2], dbsum$sites) * 10
+  Arrows  <- data.frame(dbsum$biplot * mul)
+  Arrows  <- rownames_to_column(Arrows, var = "class")
+  Arrows  <- mutate_(Arrows, .dots = list(Length = ~sqrt(CAP1^2 * CAP2^2)))
+  Arrows  <- arrange(Arrows, Length)
+  Arrows  <- top_n(Arrows, 8)
+  ggplot(DecendCentro, aes(x = CAP1, y = CAP2))+
+   geom_point(data = site_centroids, alpha = 1/2, fill = "dark orange", color = "black", size = 2.5, pch = 21)+
+   coord_cartesian() +
+   geom_segment(aes(x = 0, xend = CAP1, 
+                    y = 0, yend = CAP2),
+                arrow = arrow(length = unit(0.3, "cm")), 
+                data = Arrows
+                ) + 
+   geom_label_repel(aes(x = CAP1, y = CAP2, label = class), data = Arrows)
+}
+```
+
+
+# Calculations
+
+```{r rda_calculation, cache = TRUE}
+dat11cc.bruvo <- dat11cc %>% bruvo.dist(replen = other(.)$REPLEN)
+cap11cc       <- choose_dbrda(dat11cc.bruvo, ENV = ENV11, CHOOSER = "ordistep")
+dat16cc.bruvo <- dat16cc %>% bruvo.dist(replen = other(.)$REPLEN)
+cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ```
 
 ```{r}
-commtab <- mlg.table(dat11cc, plot = FALSE)
-cap11cc <- capscale(bruvo11cc ~ Region + Host + Year + Severity, 
-                    data = ENV11, 
-                    comm = , 
-                    add = TRUE)
-
-```
-
-```{r}
-capsum <- summary(cap11cc)
-summary(summary(cap11cc))
-##########Extracting 10 most important centroids for factor constrains 
-###############It doesn't matter how you start the ggplot aesthetics. Can be DecendCentro CAP1 and CAP2 or site_centroids
-############### CAP1 and CAP2. Same graph is resulted
-
-Centroids <- data.frame(capsum$centroids) #no need to convert to a dataframe
-LenCent <- sqrt((Centroids[,1]^2)*(Centroids[,2]^2))   ###  This calculates the arrow length (ie. strength of the eigenvector)
-NewCentro <- cbind(Centroids, LenCent)
-DecendCentro <- head(NewCentro[order(NewCentro[,7], decreasing = T),], n=23)   ###  this finds the n strongest eigenvectors by ordering them
-#above "head" is correct 
-
-DecendCentro$cent_type <- rownames(head(DecendCentro, n=23))
-DecendCentro <- head(DecendCentro, n = 10)
-DecendCentro #constraint factor cetroids
-
-## Testing plot in ggplot
-
-ggplot(data= DecendCentro, mapping = aes(x = CAP1, y = CAP2))+
-  geom_text(aes(label = cent_type))+ # label tells geom_text which text you want to plot
-  ylim(-3.5,3.5)+ #NB note that this is a convenience wrapper and may cut data out of your plot
-  xlim(-3,3.5) #important if you are calculating stats in the plot - these will be excluded
-
-# sites/isolates
-site_centroids <- data.frame(capsum$sites)
-site_centroids$isolate_names <- rownames(site_centroids) # you can also put label = rownames() etc in the ggplot code. But sometimes you may want it in a column for later
-
-##plotting both main centroids and isolates together
-# I am plotting isolates firest and then envt centroids, alpha = transparancy
-ggplot(DecendCentro, aes(x = CAP1, y = CAP2))+
-  geom_point(data = site_centroids, colour = "orange", size =3.5, alpha =0.7)+
-  geom_text(aes(label = cent_type))+
-  ylim(-4,3.5)+
-  xlim(-3.5,3.5)
-
-#######strongest arrows: THESE ARE BIPLOT scores#############
-
-arrws <- data.frame(capsum$biplot)
-lenarrw <- sqrt(arrws[,1]^2*arrws[,2]^2)   ###  This calculates the arrow length (ie. strength of the eigenvector)
-arrws <- cbind(arrws, lenarrw)
-arrws <- head(arrws[order(arrws[,7], decreasing = T),], n=10)   ###  this finds the n strongest eigenvectors by ordering them
-arrws
-
-arrws$class <- (rownames(arrws)) #turning rownames into a variable
-mult <- attributes(capsum)$const/2.5 # 97% sure this is the scaling for the arrows, pls let me know if I'm wrong
-arrws$class
-#arrws$class <- c("MX", "ND", "CA", "mtc", "NE", "MCG ")  # change this if you want to change how names are displayed
-#arrws$class <- c("MX", "mtc", "NE", "ND", "MCG", "CA")
-##locations abbreviations; see the original for full names
-
-#####plotting centroids, isolates and biplot arrows together#########
-##@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@########
-
-arrws$class <- c("Mexico", "2005", "CA", "Vista", "CO", "Host: unknown", "OR", "Severity", "MN", "WA")
-mult <- attributes(capsum)$const/3 
-
-(Cap_plot <- ggplot(DecendCentro, aes(x = CAP1, y = CAP2))+
-   geom_text(aes(label = cent_type), colour = "blue")+
-   geom_point(data = site_centroids, alpha=1/2, colour = "dark orange", size = 2.5, )+
-   #coord_cartesian(x = c(-3.5, 3.5), y = c(-4.5, 2.5))+# For bruvo
-   coord_cartesian(x = c(-3.5, 3.5), y = c(-2.5, 5))+
-   geom_segment(data = arrws,
-                aes(x = 0, xend = mult * CAP1, y = 0, yend = mult * CAP2),
-                arrow = arrow(length = unit(0.3, "cm")), colour = "dark grey") + #grid is required for arrow to work.
-   geom_text(data = arrws, color = "black",
-             aes(x= (mult + mult/10) * CAP1, y = (mult + mult/10) * CAP2, label = arrws$class), #otherwise you could use hjust and vjust. I prefer this option
-             size = 5, hjust = 0.5)+ theme_bw())
+plot_dbrda(cap11cc) + theme_bw() + theme(text = element_text(size = 14))
+plot_dbrda(cap16cc) + theme_bw() + theme(text = element_text(size = 14))
 ```
 
