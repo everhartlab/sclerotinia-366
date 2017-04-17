@@ -81,7 +81,7 @@ library('vegan')
 ```
 
 ```
-## This is vegan 2.4-2
+## This is vegan 2.4-3
 ```
 
 ```
@@ -95,15 +95,22 @@ library('vegan')
 ##     cca
 ```
 
+```r
+library('ggrepel')
+```
+
+
+So, here Sajeewa clone-corrected the data according to the combination of
+Host, Source (aka Field), Region (aka State/Country), and Year. 
+
 
 
 ```r
 load("data/sclerotinia_16_loci.rda")
-keeploci <- !locNames(dat) %in% colnames(corrected_loci)
-setPop(dat) <- ~Host/Source/Region/Year
-dat11 <- dat[loc = keeploci, mlg.reset = TRUE]
+setPop(dat)   <- ~Host/Source/Region/Year
+setPop(dat11) <- ~Host/Source/Region/Year
 dat11cc <- clonecorrect(dat11, ~Host/Source/Region/Year, keep = 1:4)
-dat16cc   <- clonecorrect(dat, ~Host/Source/Region/Year, keep = 1:4)
+dat16cc <- clonecorrect(dat, ~Host/Source/Region/Year, keep = 1:4)
 dat11cc
 ```
 
@@ -146,238 +153,396 @@ dat16cc
 ```
 
 ```r
-# environmental variables for dbRDA
+# Asserting that nothing messed up with the metadata.
 stopifnot(identical(indNames(dat11cc), other(dat11cc)$meta$Isolate))
-ENV11 <- bind_cols(select(other(dat11cc)$meta, Severity), 
-                   select(strata(dat11cc), -MCG))
+stopifnot(identical(indNames(dat16cc), other(dat16cc)$meta$Isolate))
+
+# function to gather Environmental variables, but averaging Severity
+# (aka Straw Test, Virulence). This function is necessary because the
+# data tends to randomly shuffle when being processed vai dplyr functions
+# for better or for worse. ¯\_(ツ)_/¯
+# 
+# @param DAT the full data set
+# @param CC The clone-corrected data set
+# 
+# @return A data frame containing Severity, Host, Source, Year, Region, and MLG
+makeENV <- function(DAT, CC){
+  # Creating the data frame with severity
+  META   <- select(other(DAT)$meta, -Isolate)
+  STRATA <- select(strata(DAT), -MCG)
+  MLL    <- data.frame(MLG = mll(DAT))
+  sev    <- bind_cols(META, STRATA, MLL) %>%
+    group_by(Host, Source, Year, Region, MLG) %>% 
+    summarize(Severity = mean(Severity)) %>% # Get mean severity per MLG
+    ungroup()
+  # Ensuring the data is in the correct order
+  META   <- select(other(CC)$meta, -Isolate)
+  STRATA <- select(strata(CC), -MCG)
+  MLL    <- data.frame(MLG = mll(CC))
+  bind_cols(META, STRATA, MLL) %>% 
+    left_join(sev)
+}
+
+# Get environmental variables for 11 loci
+ENV11 <- makeENV(dat11, dat11cc)
+```
+
+```
+## Joining, by = c("Severity", "Region", "Source", "Year", "Host", "MLG")
+```
+
+```r
 ENV11
 ```
 
 ```
-## # A tibble: 318 × 5
-##    Severity Region Source   Year   Host
-##       <dbl> <fctr> <fctr> <fctr> <fctr>
-## 1       3.9     NE    unk   2003     GH
-## 2       5.4     NE    unk   2003     GH
-## 3       6.3     NY    unk   2003     GH
-## 4       4.4     MN    wmn   2003   G122
-## 5       4.7     MN    wmn   2003  Beryl
-## 6       6.1     MI    wmn   2003  Beryl
-## 7       5.5     MI    wmn   2003  Beryl
-## 8       5.0     MI    wmn   2003  Beryl
-## 9       5.2     MI    wmn   2003  Bunsi
-## 10      5.3     MI    wmn   2003  Bunsi
+## # A tibble: 318 × 6
+##    Severity Region Source   Year   Host   MLG
+##       <dbl> <fctr> <fctr> <fctr> <fctr> <int>
+## 1       3.9     NE    unk   2003     GH   165
+## 2       5.4     NE    unk   2003     GH   164
+## 3       6.3     NY    unk   2003     GH    42
+## 4       4.4     MN    wmn   2003   G122   165
+## 5       4.7     MN    wmn   2003  Beryl   165
+## 6       6.1     MI    wmn   2003  Beryl    30
+## 7       5.5     MI    wmn   2003  Beryl    25
+## 8       5.0     MI    wmn   2003  Beryl    40
+## 9       5.2     MI    wmn   2003  Bunsi    27
+## 10      5.3     MI    wmn   2003  Bunsi    20
 ## # ... with 308 more rows
 ```
 
 ```r
-stopifnot(identical(indNames(dat16cc), other(dat16cc)$meta$Isolate))
-ENV16 <- bind_cols(select(other(dat16cc)$meta, Severity), 
-                   select(strata(dat16cc), -MCG))
+stopifnot(identical(ENV11$MLG, mll(dat11cc)))
+ENV11 <- select(ENV11, -MLG)
+
+# Get environmental variables for 16 loci
+ENV16 <- makeENV(dat, dat16cc)
+```
+
+```
+## Joining, by = c("Severity", "Region", "Source", "Year", "Host", "MLG")
+```
+
+```r
 ENV16
 ```
 
 ```
-## # A tibble: 342 × 5
-##    Severity Region Source   Year   Host
-##       <dbl> <fctr> <fctr> <fctr> <fctr>
-## 1       3.9     NE    unk   2003     GH
-## 2       5.4     NE    unk   2003     GH
-## 3       6.3     NY    unk   2003     GH
-## 4       4.4     MN    wmn   2003   G122
-## 5       4.7     MN    wmn   2003  Beryl
-## 6       6.1     MI    wmn   2003  Beryl
-## 7       5.5     MI    wmn   2003  Beryl
-## 8       5.0     MI    wmn   2003  Beryl
-## 9       5.2     MI    wmn   2003  Bunsi
-## 10      5.3     MI    wmn   2003  Bunsi
+## # A tibble: 342 × 6
+##    Severity Region Source   Year   Host   MLG
+##       <dbl> <fctr> <fctr> <fctr> <fctr> <int>
+## 1       3.9     NE    unk   2003     GH   215
+## 2       5.4     NE    unk   2003     GH   214
+## 3       6.3     NY    unk   2003     GH    62
+## 4       4.4     MN    wmn   2003   G122   211
+## 5       4.7     MN    wmn   2003  Beryl   215
+## 6       6.1     MI    wmn   2003  Beryl    17
+## 7       5.5     MI    wmn   2003  Beryl    41
+## 8       5.0     MI    wmn   2003  Beryl    49
+## 9       5.2     MI    wmn   2003  Bunsi    15
+## 10      5.3     MI    wmn   2003  Bunsi    28
 ## # ... with 332 more rows
 ```
 
-## Calculate Bruvo's distance
+```r
+stopifnot(identical(ENV16$MLG, mll(dat16cc)))
+ENV16 <- select(ENV16, -MLG)
+```
+
+
+## Functions to tie everything together
+
+The analysis has a couple of steps
+
+1. Model choice. Since we don't want to overparamaterize the model, we will use 
+*vegan*'s built in model choice function `ordistep()` to to forward-backward 
+selection of the appropriate model to fit our data. Yes, some (particularly 
+Bayesians) believe that model choice is evil and the proper analysis will find 
+the true pattern in the underlying data, but hey, I'm just trying to make sure 
+that I'm not making overconfident judgements.
+
+2. Plot the results of the model choice using ggplot2, overlaying the top 8 
+explanitory vectors
 
 
 ```r
-bruvo11cc <- bruvo.dist(dat11cc, replen = other(dat)$REPLEN)
-bruvo16cc <- bruvo.dist(dat16cc, replen = other(dat)$REPLEN)
+# model choice for dbrda/capscale
+# 
+# @param bdist a distance matrix (here, we use Bruvo's distances, which is why
+#        it's called 'bdist').
+# @param ENV a data frame of environmental variables with the same number of
+#        observatios as bdist
+# @param CHOOSER the name of the function to perform the forwards-backwards selection
+# @param ... arguments to be passed on to CHOOSER
+# 
+# @return a capscale object
+choose_dbrda <- function(bdist, ENV, CHOOSER = "ordistep", ...){
+  # Step 1: create null model
+  mod0  <- capscale(bdist ~ 1, data = ENV, add = TRUE)
+  # Step 2: create full model (all variables in ENV)
+  mod1  <- capscale(bdist ~ ., data = ENV, add = TRUE)
+  # Step 3: Run forward-backwards selection (this can take a while)
+  CHOOSER   <- match.fun(CHOOSER)
+  the_model <- CHOOSER(mod0, scope = formula(mod1), ...)
+  # Return the best model with the anova results
+  return(the_model)
+}
+
+# This was ganked from https://github.com/gavinsimpson/ggvegan/blob/59d233977a5b2d15d4de150b782fb1794aa1de8b/R/utils.R
+# 
+# @title Scale Vectors to Data
+# @description Scale vector arrows to \code{fill} proportion of the data.
+# @param arrows a two-column matrix-like object containing coordinates for the arrows/vectors on x and y axes.
+# @param data a two-column matrix-like object containing coordinates of the data on the x and y axes.
+# @param at numeric vector of length 2; location of the origin of the arrows.
+# @param fill numeric; what proportion of the range of the data to fill
+# @return a numeric multiplier that will scale the arrows
+# @author Gavin L. Simpson
+arrowMul <- function(arrows, data, at = c(0, 0), fill = 0.75) {
+    u <- c(range(data[,1], range(data[,2])))
+    u <- u - rep(at, each = 2)
+    r <- c(range(arrows[, 1], na.rm = TRUE), range(arrows[, 2], na.rm = TRUE))
+    rev <- sign(diff(u))[-2]
+    if (rev[1] < 0)
+        u[1:2] <- u[2:1]
+    if (rev[2] < 0)
+        u[3:4] <- u[4:3]
+    u <- u/r
+    u <- u[is.finite(u) & u > 0]
+    fill * min(u)
+}
+# Plotting the dbRDA results
+# 
+# @param db a capscale object
+# @return a ggplot2 object from the scores 
+plot_dbrda <- function(db){
+  dbsum     <- scores(db, display = c("cn", "bp", "sites"), scaling = "sites")
+  Centroids <- as.data.frame(dbsum$centroids)
+  Centroids <- rownames_to_column(Centroids, var = "cent_type")
+  Centroids <- mutate_(Centroids, .dots = list(Length = ~sqrt(CAP1^2 * CAP2^2)))
+  # Centroids
+  SampleCentroids <- rownames_to_column(data.frame(dbsum$sites), var = "isolate_names")
+  
+  mul     <- arrowMul(dbsum$biplot[, 1:2], dbsum$sites)
+  Arrows  <- data.frame(dbsum$biplot * mul)
+  Arrows  <- rownames_to_column(Arrows, var = "class")
+  Arrows  <- mutate_(Arrows, .dots = list(Length = ~sqrt(CAP1^2 * CAP2^2)))
+  Arrows  <- arrange(Arrows, Length)
+  Arrows  <- top_n(Arrows, 8)
+  ggplot(Centroids, aes(x = CAP1, y = CAP2))+
+   geom_point(data = SampleCentroids, alpha = 1/2, fill = "dark orange", color = "black", size = 2.5, pch = 21)+
+   coord_cartesian() +
+   geom_segment(aes(x = 0, xend = CAP1, 
+                    y = 0, yend = CAP2),
+                arrow = arrow(length = unit(0.3, "cm")), 
+                data = Arrows
+                ) + 
+   geom_label_repel(aes(x = CAP1, y = CAP2, label = class), data = Arrows)
+}
 ```
+
+
+# Calculations
+
+Here come the calculations. Note, since I am verifying that we get the same
+results from the 16 loci as we do for the 11 loci, we have to do this twice. 
+
+1. calculate Bruvo's genetic distance.
+2. model choice
 
 
 ```r
-commtab <- mlg.table(dat11cc, plot = FALSE)
-cap11cc <- capscale(bruvo11cc ~ Region + Host + Year + Severity, 
-                    data = ENV11, 
-                    comm = , 
-                    add = TRUE)
-```
-
-
-```r
-capsum <- summary(cap11cc)
-summary(summary(cap11cc))
+# 11 loci
+dat11cc.bruvo <- dat11cc %>% bruvo.dist(replen = other(.)$REPLEN)
+cap11cc       <- choose_dbrda(dat11cc.bruvo, ENV = ENV11, CHOOSER = "ordistep")
 ```
 
 ```
-##             Length Class             Mode     
-## species     1896   -none-            numeric  
-## sites       1908   -none-            numeric  
-## constraints 1908   -none-            numeric  
-## biplot       282   -none-            numeric  
-## centroids    294   -none-            numeric  
-## call           4   -none-            call     
-## tot.chi        1   -none-            numeric  
-## constr.chi     1   -none-            numeric  
-## unconst.chi    1   -none-            numeric  
-## cont           1   summary.eigenvals list     
-## concont        1   summary.eigenvals list     
-## scaling        1   -none-            numeric  
-## digits         1   -none-            numeric  
-## inertia        1   -none-            character
-## method         1   -none-            character
-```
-
-```r
-##########Extracting 10 most important centroids for factor constrains 
-###############It doesn't matter how you start the ggplot aesthetics. Can be DecendCentro CAP1 and CAP2 or site_centroids
-############### CAP1 and CAP2. Same graph is resulted
-
-Centroids <- data.frame(capsum$centroids) #no need to convert to a dataframe
-LenCent <- sqrt((Centroids[,1]^2)*(Centroids[,2]^2))   ###  This calculates the arrow length (ie. strength of the eigenvector)
-NewCentro <- cbind(Centroids, LenCent)
-DecendCentro <- head(NewCentro[order(NewCentro[,7], decreasing = T),], n=23)   ###  this finds the n strongest eigenvectors by ordering them
-#above "head" is correct 
-
-DecendCentro$cent_type <- rownames(head(DecendCentro, n=23))
-DecendCentro <- head(DecendCentro, n = 10)
-DecendCentro #constraint factor cetroids
-```
-
-```
-##                    CAP1       CAP2       CAP3        CAP4        CAP5
-## RegionMexico  1.7568225  2.9077793 -2.2014482 -0.72954306  0.34254863
-## HostBL        2.2435774 -2.0346669 -1.1668713 -1.39595487  0.05561283
-## HostVista     1.5876983 -1.7657525 -0.9754937 -0.50025166 -0.37326463
-## HostPO7104    1.3700045  1.7198961  1.5229257  0.96220846  1.06234196
-## HostPO7683   -2.0927428 -0.7876342 -0.2129480 -0.80665840  0.44813247
-## RegionCA      0.8456832  1.1772811  2.1807474 -0.50641958 -0.55190313
-## HostB07104   -1.9927561  0.4579972 -0.3473698 -1.68452154  1.07193458
-## RegionMN      0.6326911 -1.2790534 -0.1452030 -0.08927733 -1.55615056
-## Host37       -0.5208380  1.5041575  0.7716332 -1.86772581  1.82254789
-## HostWeihing   1.5778502 -0.4865792  0.3653847 -0.32639590 -1.26188012
-##                     CAP6   LenCent    cent_type
-## RegionMexico -0.08969353 5.1084520 RegionMexico
-## HostBL       -0.59405950 4.5649326       HostBL
-## HostVista    -0.35602106 2.8034822    HostVista
-## HostPO7104   -0.27298668 2.3562655   HostPO7104
-## HostPO7683    2.83627619 1.6483158   HostPO7683
-## RegionCA      1.23034277 0.9956069     RegionCA
-## HostB07104   -0.32561990 0.9126768   HostB07104
-## RegionMN      0.70383403 0.8092457     RegionMN
-## Host37        0.69418578 0.7834224       Host37
-## HostWeihing  -2.83983013 0.7677491  HostWeihing
-```
-
-```r
-## Testing plot in ggplot
-
-ggplot(data= DecendCentro, mapping = aes(x = CAP1, y = CAP2))+
-  geom_text(aes(label = cent_type))+ # label tells geom_text which text you want to plot
-  ylim(-3.5,3.5)+ #NB note that this is a convenience wrapper and may cut data out of your plot
-  xlim(-3,3.5) #important if you are calculating stats in the plot - these will be excluded
-```
-
-![plot of chunk unnamed-chunk-3](./figures/RDA-analysis///unnamed-chunk-3-1.png)
-
-```r
-# sites/isolates
-site_centroids <- data.frame(capsum$sites)
-site_centroids$isolate_names <- rownames(site_centroids) # you can also put label = rownames() etc in the ggplot code. But sometimes you may want it in a column for later
-
-##plotting both main centroids and isolates together
-# I am plotting isolates firest and then envt centroids, alpha = transparancy
-ggplot(DecendCentro, aes(x = CAP1, y = CAP2))+
-  geom_point(data = site_centroids, colour = "orange", size =3.5, alpha =0.7)+
-  geom_text(aes(label = cent_type))+
-  ylim(-4,3.5)+
-  xlim(-3.5,3.5)
-```
-
-```
-## Warning: Removed 2 rows containing missing values (geom_point).
-```
-
-![plot of chunk unnamed-chunk-3](./figures/RDA-analysis///unnamed-chunk-3-2.png)
-
-```r
-#######strongest arrows: THESE ARE BIPLOT scores#############
-
-arrws <- data.frame(capsum$biplot)
-lenarrw <- sqrt(arrws[,1]^2*arrws[,2]^2)   ###  This calculates the arrow length (ie. strength of the eigenvector)
-arrws <- cbind(arrws, lenarrw)
-arrws <- head(arrws[order(arrws[,7], decreasing = T),], n=10)   ###  this finds the n strongest eigenvectors by ordering them
-arrws
-```
-
-```
-##                     CAP1       CAP2        CAP3        CAP4        CAP5
-## RegionMexico  0.40574016  0.6715550 -0.50842697 -0.16848881  0.07911200
-## Year2005      0.34641695  0.4474926 -0.02323603  0.25933778  0.05863497
-## RegionCA      0.21502014  0.2993309  0.55446839 -0.12876028 -0.14032475
-## HostVista     0.20829393 -0.2316533 -0.12797735 -0.06562921 -0.04896948
-## RegionCO      0.16964747 -0.2166251 -0.09379121  0.06682042  0.11363009
-## Hostunk      -0.28460826 -0.1288368 -0.14610380 -0.14493989  0.21266245
-## RegionOR     -0.30406952  0.1011992  0.02100427 -0.27072362  0.03374797
-## Severity      0.09077622 -0.2997102 -0.16622844 -0.17460239  0.11907111
-## RegionMN      0.11208037 -0.2265826 -0.02572252 -0.01581536 -0.27566995
-## RegionWA     -0.21865232  0.1156311  0.22914626  0.23453333  0.18669368
-##                     CAP6    lenarrw
-## RegionMexico -0.02071482 0.27247682
-## Year2005     -0.18781863 0.15501902
-## RegionCA      0.31282219 0.06436218
-## HostVista    -0.04670725 0.04825197
-## RegionCO      0.10047921 0.03674990
-## Hostunk       0.04414344 0.03666801
-## RegionOR      0.15390310 0.03077159
-## Severity     -0.23300174 0.02720656
-## RegionMN      0.12468324 0.02539546
-## RegionWA      0.07463641 0.02528301
+## 
+## Start: bdist ~ 1 
+## 
+##            Df    AIC      F Pr(>F)   
+## + Severity  1 1787.5 1.3622  0.005 **
+## + Year      7 1790.8 1.4330  0.005 **
+## + Region   13 1793.2 1.4902  0.005 **
+## + Source   24 1808.2 1.0700  0.005 **
+## + Host     26 1810.2 1.0581  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Severity 
+## 
+##            Df    AIC      F Pr(>F)   
+## - Severity  1 1786.9 1.3622  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##          Df    AIC      F Pr(>F)   
+## + Year    7 1791.4 1.4253  0.005 **
+## + Region 13 1794.0 1.4790  0.005 **
+## + Source 24 1808.9 1.0624  0.005 **
+## + Host   26 1810.7 1.0603  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Severity + Year 
+## 
+##            Df    AIC      F Pr(>F)   
+## - Year      7 1787.5 1.4253  0.005 **
+## - Severity  1 1790.8 1.3112  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##          Df    AIC      F Pr(>F)   
+## + Region 13 1798.6 1.3854  0.005 **
+## + Source 23 1811.6 1.0521  0.005 **
+## + Host   26 1813.9 1.0578  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Severity + Year + Region 
+## 
+##            Df    AIC      F Pr(>F)   
+## - Severity  1 1798.0 1.2191  0.040 * 
+## - Region   13 1791.4 1.3854  0.005 **
+## - Year      7 1794.0 1.2581  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##          Df    AIC      F Pr(>F)   
+## + Host   26 1819.3 1.0739  0.005 **
+## + Source 23 1818.3 1.0261  0.045 * 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Severity + Year + Region + Host 
+## 
+##            Df    AIC      F Pr(>F)   
+## - Severity  1 1818.7 1.1541  0.060 . 
+## - Host     26 1798.6 1.0739  0.005 **
+## - Region   13 1813.9 1.3888  0.005 **
+## - Year      7 1816.2 1.3362  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##          Df    AIC      F Pr(>F)
+## + Source 21 1835.5 1.0018   0.52
 ```
 
 ```r
-arrws$class <- (rownames(arrws)) #turning rownames into a variable
-mult <- attributes(capsum)$const/2.5 # 97% sure this is the scaling for the arrows, pls let me know if I'm wrong
-arrws$class
+# 16 loci
+dat16cc.bruvo <- dat16cc %>% bruvo.dist(replen = other(.)$REPLEN)
+cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ```
 
 ```
-##  [1] "RegionMexico" "Year2005"     "RegionCA"     "HostVista"   
-##  [5] "RegionCO"     "Hostunk"      "RegionOR"     "Severity"    
-##  [9] "RegionMN"     "RegionWA"
+## 
+## Start: bdist ~ 1 
+## 
+##            Df    AIC      F Pr(>F)   
+## + Year      7 1928.0 1.4098  0.005 **
+## + Region   13 1930.8 1.4593  0.005 **
+## + Source   24 1944.1 1.1237  0.005 **
+## + Host     26 1946.7 1.0853  0.005 **
+## + Severity  1 1924.7 1.3085  0.015 * 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Year 
+## 
+##        Df  AIC      F Pr(>F)   
+## - Year  7 1924 1.4098  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##            Df    AIC      F Pr(>F)   
+## + Severity  1 1928.8 1.2208  0.005 **
+## + Region   13 1935.3 1.3893  0.005 **
+## + Source   23 1947.1 1.1100  0.005 **
+## + Host     26 1950.1 1.0827  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Year + Severity 
+## 
+##            Df    AIC      F Pr(>F)   
+## - Severity  1 1928.0 1.2208  0.030 * 
+## - Year      7 1924.7 1.3967  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##          Df    AIC      F Pr(>F)   
+## + Region 13 1936.1 1.3858  0.005 **
+## + Source 23 1947.9 1.1034  0.005 **
+## + Host   26 1950.8 1.0813  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Year + Severity + Region 
+## 
+##            Df    AIC      F Pr(>F)   
+## - Severity  1 1935.3 1.1830  0.040 * 
+## - Region   13 1928.8 1.3858  0.005 **
+## - Year      7 1931.5 1.2855  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##          Df    AIC      F Pr(>F)   
+## + Host   26 1956.7 1.0878  0.005 **
+## + Source 23 1955.3 1.0524  0.010 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Year + Severity + Region + Host 
+## 
+##            Df    AIC      F Pr(>F)   
+## - Severity  1 1955.9 1.0817  0.125   
+## - Host     26 1936.1 1.0878  0.005 **
+## - Region   13 1950.8 1.3745  0.005 **
+## - Year      7 1953.6 1.3645  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Year + Region + Host 
+## 
+##            Df    AIC      F Pr(>F)
+## + Severity  1 1956.7 1.0817  0.115
+## + Source   21 1972.3 1.0140  0.360
+## 
+##          Df    AIC      F Pr(>F)   
+## - Host   26 1935.3 1.0918  0.005 **
+## - Region 13 1950.1 1.3829  0.005 **
+## - Year    7 1952.8 1.3693  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##            Df    AIC      F Pr(>F)  
+## + Severity  1 1956.7 1.0817  0.085 .
+## + Source   21 1972.3 1.0140  0.380  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
+
+# Plot the results
 
 ```r
-#arrws$class <- c("MX", "ND", "CA", "mtc", "NE", "MCG ")  # change this if you want to change how names are displayed
-#arrws$class <- c("MX", "mtc", "NE", "ND", "MCG", "CA")
-##locations abbreviations; see the original for full names
-
-#####plotting centroids, isolates and biplot arrows together#########
-##@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@########
-
-arrws$class <- c("Mexico", "2005", "CA", "Vista", "CO", "Host: unknown", "OR", "Severity", "MN", "WA")
-mult <- attributes(capsum)$const/3 
-
-(Cap_plot <- ggplot(DecendCentro, aes(x = CAP1, y = CAP2))+
-   geom_text(aes(label = cent_type), colour = "blue")+
-   geom_point(data = site_centroids, alpha=1/2, colour = "dark orange", size = 2.5, )+
-   #coord_cartesian(x = c(-3.5, 3.5), y = c(-4.5, 2.5))+# For bruvo
-   coord_cartesian(x = c(-3.5, 3.5), y = c(-2.5, 5))+
-   geom_segment(data = arrws,
-                aes(x = 0, xend = mult * CAP1, y = 0, yend = mult * CAP2),
-                arrow = arrow(length = unit(0.3, "cm")), colour = "dark grey") + #grid is required for arrow to work.
-   geom_text(data = arrws, color = "black",
-             aes(x= (mult + mult/10) * CAP1, y = (mult + mult/10) * CAP2, label = arrws$class), #otherwise you could use hjust and vjust. I prefer this option
-             size = 5, hjust = 0.5)+ theme_bw())
+plot_dbrda(cap11cc) + theme_bw() + theme(text = element_text(size = 14))
 ```
 
-![plot of chunk unnamed-chunk-3](./figures/RDA-analysis///unnamed-chunk-3-3.png)
+```
+## Selecting by Length
+```
+
+![plot of chunk unnamed-chunk-1](./figures/RDA-analysis///unnamed-chunk-1-1.png)
+
+```r
+plot_dbrda(cap16cc) + theme_bw() + theme(text = element_text(size = 14))
+```
+
+```
+## Selecting by Length
+```
+
+![plot of chunk unnamed-chunk-1](./figures/RDA-analysis///unnamed-chunk-1-2.png)
 
