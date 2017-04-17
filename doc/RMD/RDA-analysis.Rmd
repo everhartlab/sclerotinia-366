@@ -29,6 +29,10 @@ library('ggrepel')
 ```
 
 
+So, here Sajeewa clone-corrected the data according to the combination of
+Host, Source (aka Field), Region (aka State/Country), and Year. 
+
+
 ```{r, load_data}
 load("data/sclerotinia_16_loci.rda")
 setPop(dat)   <- ~Host/Source/Region/Year
@@ -37,10 +41,19 @@ dat11cc <- clonecorrect(dat11, ~Host/Source/Region/Year, keep = 1:4)
 dat16cc <- clonecorrect(dat, ~Host/Source/Region/Year, keep = 1:4)
 dat11cc
 dat16cc
-# environmental variables for dbRDA
+# Asserting that nothing messed up with the metadata.
 stopifnot(identical(indNames(dat11cc), other(dat11cc)$meta$Isolate))
 stopifnot(identical(indNames(dat16cc), other(dat16cc)$meta$Isolate))
 
+# function to gather Environmental variables, but averaging Severity
+# (aka Straw Test, Virulence). This function is necessary because the
+# data tends to randomly shuffle when being processed vai dplyr functions
+# for better or for worse. ¯\_(ツ)_/¯
+# 
+# @param DAT the full data set
+# @param CC The clone-corrected data set
+# 
+# @return A data frame containing Severity, Host, Source, Year, Region, and MLG
 makeENV <- function(DAT, CC){
   # Creating the data frame with severity
   META   <- select(other(DAT)$meta, -Isolate)
@@ -58,28 +71,67 @@ makeENV <- function(DAT, CC){
     left_join(sev)
 }
 
+# Get environmental variables for 11 loci
 ENV11 <- makeENV(dat11, dat11cc)
 ENV11
 stopifnot(identical(ENV11$MLG, mll(dat11cc)))
 ENV11 <- select(ENV11, -MLG)
+
+# Get environmental variables for 16 loci
 ENV16 <- makeENV(dat, dat16cc)
 ENV16
-stopifnot(identical(ENV11$MLG, mll(dat11cc)))
+stopifnot(identical(ENV16$MLG, mll(dat16cc)))
 ENV16 <- select(ENV16, -MLG)
 ```
 
 
-## Function to tie everything together
+## Functions to tie everything together
 
+The analysis has a couple of steps
 
-```{r}
+1. Model choice. Since we don't want to overparamaterize the model, we will use 
+*vegan*'s built in model choice function `ordistep()` to to forward-backward 
+selection of the appropriate model to fit our data. Yes, some (particularly 
+Bayesians) believe that model choice is evil and the proper analysis will find 
+the true pattern in the underlying data, but hey, I'm just trying to make sure 
+that I'm not making overconfident judgements.
+
+2. Plot the results of the model choice using ggplot2, overlaying the top 8 
+explanitory vectors
+
+```{r modelfun}
+# model choice for dbrda/capscale
+# 
+# @param bdist a distance matrix (here, we use Bruvo's distances, which is why
+#        it's called 'bdist').
+# @param ENV a data frame of environmental variables with the same number of
+#        observatios as bdist
+# @param CHOOSER the name of the function to perform the forwards-backwards selection
+# @param ... arguments to be passed on to CHOOSER
+# 
+# @return a capscale object
 choose_dbrda <- function(bdist, ENV, CHOOSER = "ordistep", ...){
+  # Step 1: create null model
   mod0  <- capscale(bdist ~ 1, data = ENV, add = TRUE)
+  # Step 2: create full model (all variables in ENV)
   mod1  <- capscale(bdist ~ ., data = ENV, add = TRUE)
-  CHOOSER <- match.fun(CHOOSER)
+  # Step 3: Run forward-backwards selection (this can take a while)
+  CHOOSER   <- match.fun(CHOOSER)
   the_model <- CHOOSER(mod0, scope = formula(mod1), ...)
+  # Return the best model with the anova results
   return(the_model)
 }
+
+# This was ganked from https://github.com/gavinsimpson/ggvegan/blob/59d233977a5b2d15d4de150b782fb1794aa1de8b/R/utils.R
+# 
+# @title Scale Vectors to Data
+# @description Scale vector arrows to \code{fill} proportion of the data.
+# @param arrows a two-column matrix-like object containing coordinates for the arrows/vectors on x and y axes.
+# @param data a two-column matrix-like object containing coordinates of the data on the x and y axes.
+# @param at numeric vector of length 2; location of the origin of the arrows.
+# @param fill numeric; what proportion of the range of the data to fill
+# @return a numeric multiplier that will scale the arrows
+# @author Gavin L. Simpson
 arrowMul <- function(arrows, data, at = c(0, 0), fill = 0.75) {
     u <- c(range(data[,1], range(data[,2])))
     u <- u - rep(at, each = 2)
@@ -122,13 +174,22 @@ plot_dbrda <- function(db){
 
 # Calculations
 
+Here come the calculations. Note, since I am verifying that we get the same
+results from the 16 loci as we do for the 11 loci, we have to do this twice. 
+
+1. calculate Bruvo's genetic distance.
+2. model choice
+
 ```{r rda_calculation, cache = TRUE}
+# 11 loci
 dat11cc.bruvo <- dat11cc %>% bruvo.dist(replen = other(.)$REPLEN)
 cap11cc       <- choose_dbrda(dat11cc.bruvo, ENV = ENV11, CHOOSER = "ordistep")
+# 16 loci
 dat16cc.bruvo <- dat16cc %>% bruvo.dist(replen = other(.)$REPLEN)
 cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ```
 
+# Plot the results
 ```{r}
 plot_dbrda(cap11cc) + theme_bw() + theme(text = element_text(size = 14))
 plot_dbrda(cap16cc) + theme_bw() + theme(text = element_text(size = 14))
