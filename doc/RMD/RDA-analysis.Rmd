@@ -157,21 +157,28 @@ plot_dbrda <- function(db){
   # Centroids
   SampleCentroids <- rownames_to_column(data.frame(dbsum$sites), var = "isolate_names")
   
+  terms   <- paste0("(", paste(attr(db$terms, "term.labels"), collapse = "|"), ")")
   mul     <- arrowMul(dbsum$biplot[, 1:2], dbsum$sites)
   Arrows  <- data.frame(dbsum$biplot * mul)
   Arrows  <- rownames_to_column(Arrows, var = "class")
+  # Making the classes presentable
+  Arrows$class <- gsub(terms, "\\1: ", Arrows$class)
+  Arrows$class <- gsub(": $", "", Arrows$class)
+  Arrows$class <- gsub("unk", "unknown", Arrows$class)
   Arrows  <- mutate_(Arrows, .dots = list(Length = ~sqrt(CAP1^2 * CAP2^2)))
   Arrows  <- arrange(Arrows, Length)
   Arrows  <- top_n(Arrows, 8)
   ggplot(Centroids, aes(x = CAP1, y = CAP2))+
-   geom_point(data = SampleCentroids, alpha = 1/2, fill = "dark orange", color = "black", size = 2.5, pch = 21)+
-   coord_cartesian() +
-   geom_segment(aes(x = 0, xend = CAP1, 
-                    y = 0, yend = CAP2),
-                arrow = arrow(length = unit(0.3, "cm")), 
-                data = Arrows
-                ) + 
-   geom_label_repel(aes(x = CAP1, y = CAP2, label = class), data = Arrows)
+    geom_point(data = SampleCentroids, alpha = 1/2, fill = "dark orange", color = "black", size = 2.5, pch = 21)+
+    coord_cartesian() +
+    geom_segment(aes(x = 0, xend = CAP1, 
+                     y = 0, yend = CAP2),
+                 arrow = arrow(length = unit(0.3, "cm")), 
+                 data = Arrows
+                 ) + 
+    geom_label_repel(aes(x = CAP1, y = CAP2, label = class), data = Arrows) +
+    ylab("Eigenvalue 1") +
+    xlab("Eigenvalue 2")
 }
 ```
 
@@ -194,8 +201,19 @@ cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ```
 
 # Plot the results
-```{r}
-plot_dbrda(cap11cc) + theme_bw() + theme(text = element_text(size = 14))
-plot_dbrda(cap16cc) + theme_bw() + theme(text = element_text(size = 14))
+```{r resultplot, fig.width = 5, fig.height = 5}
+cap11cc
+cap11cc$anova
+plot_dbrda(cap11cc) + 
+  theme_classic() + 
+  theme(text = element_text(size = 14, color = "black")) +
+  theme(aspect.ratio = 1)
+ggsave(filename = "results/figures/publication/Figure7Z.svg", width = 88, height = 88, units = "mm", scale = 2)
+cap16cc
+cap16cc$anova
+plot_dbrda(cap16cc) +
+  theme_classic() + 
+  theme(text = element_text(size = 14, color = "black")) +
+  theme(aspect.ratio = 1)
 ```
 

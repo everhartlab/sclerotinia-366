@@ -324,21 +324,28 @@ plot_dbrda <- function(db){
   # Centroids
   SampleCentroids <- rownames_to_column(data.frame(dbsum$sites), var = "isolate_names")
   
+  terms   <- paste0("(", paste(attr(db$terms, "term.labels"), collapse = "|"), ")")
   mul     <- arrowMul(dbsum$biplot[, 1:2], dbsum$sites)
   Arrows  <- data.frame(dbsum$biplot * mul)
   Arrows  <- rownames_to_column(Arrows, var = "class")
+  # Making the classes presentable
+  Arrows$class <- gsub(terms, "\\1: ", Arrows$class)
+  Arrows$class <- gsub(": $", "", Arrows$class)
+  Arrows$class <- gsub("unk", "unknown", Arrows$class)
   Arrows  <- mutate_(Arrows, .dots = list(Length = ~sqrt(CAP1^2 * CAP2^2)))
   Arrows  <- arrange(Arrows, Length)
   Arrows  <- top_n(Arrows, 8)
   ggplot(Centroids, aes(x = CAP1, y = CAP2))+
-   geom_point(data = SampleCentroids, alpha = 1/2, fill = "dark orange", color = "black", size = 2.5, pch = 21)+
-   coord_cartesian() +
-   geom_segment(aes(x = 0, xend = CAP1, 
-                    y = 0, yend = CAP2),
-                arrow = arrow(length = unit(0.3, "cm")), 
-                data = Arrows
-                ) + 
-   geom_label_repel(aes(x = CAP1, y = CAP2, label = class), data = Arrows)
+    geom_point(data = SampleCentroids, alpha = 1/2, fill = "dark orange", color = "black", size = 2.5, pch = 21)+
+    coord_cartesian() +
+    geom_segment(aes(x = 0, xend = CAP1, 
+                     y = 0, yend = CAP2),
+                 arrow = arrow(length = unit(0.3, "cm")), 
+                 data = Arrows
+                 ) + 
+    geom_label_repel(aes(x = CAP1, y = CAP2, label = class), data = Arrows) +
+    ylab("Eigenvalue 1") +
+    xlab("Eigenvalue 2")
 }
 ```
 
@@ -527,22 +534,122 @@ cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 # Plot the results
 
 ```r
-plot_dbrda(cap11cc) + theme_bw() + theme(text = element_text(size = 14))
+cap11cc
 ```
 
 ```
-## Selecting by Length
+## Call: capscale(formula = bdist ~ Severity + Year + Region + Host,
+## data = ENV, add = TRUE)
+## 
+##               Inertia Proportion Rank
+## Total         274.797      1.000     
+## Constrained    48.358      0.176   47
+## Unconstrained 226.439      0.824  270
+## Inertia is Lingoes adjusted squared Bruvo distance 
+## 
+## Eigenvalues for constrained axes:
+##  CAP1  CAP2  CAP3  CAP4  CAP5  CAP6  CAP7  CAP8  CAP9 CAP10 CAP11 CAP12 
+## 5.304 3.249 2.473 2.199 1.712 1.422 1.308 1.066 1.036 1.013 0.895 0.879 
+## CAP13 CAP14 CAP15 CAP16 CAP17 CAP18 CAP19 CAP20 CAP21 CAP22 CAP23 CAP24 
+## 0.863 0.833 0.807 0.793 0.787 0.780 0.771 0.769 0.764 0.761 0.759 0.759 
+## CAP25 CAP26 CAP27 CAP28 CAP29 CAP30 CAP31 CAP32 CAP33 CAP34 CAP35 CAP36 
+## 0.757 0.756 0.755 0.754 0.751 0.750 0.749 0.743 0.742 0.734 0.729 0.728 
+## CAP37 CAP38 CAP39 CAP40 CAP41 CAP42 CAP43 CAP44 CAP45 CAP46 CAP47 
+## 0.720 0.713 0.711 0.709 0.703 0.682 0.668 0.662 0.645 0.634 0.563 
+## 
+## Eigenvalues for unconstrained axes:
+##  MDS1  MDS2  MDS3  MDS4  MDS5  MDS6  MDS7  MDS8 
+## 8.202 4.462 3.542 3.175 2.832 2.324 2.142 2.097 
+## (Showed only 8 of all 270 unconstrained eigenvalues)
+## 
+## Constant added to distances: 0.7593611
 ```
-
-![plot of chunk unnamed-chunk-1](./figures/RDA-analysis///unnamed-chunk-1-1.png)
 
 ```r
-plot_dbrda(cap16cc) + theme_bw() + theme(text = element_text(size = 14))
+cap11cc$anova
+```
+
+```
+##            Df    AIC      F Pr(>F)   
+## + Severity  1 1787.5 1.3622  0.005 **
+## + Year      7 1791.4 1.4253  0.005 **
+## + Region   13 1798.6 1.3854  0.005 **
+## + Host     26 1819.3 1.0739  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+plot_dbrda(cap11cc) + 
+  theme_classic() + 
+  theme(text = element_text(size = 14, color = "black")) +
+  theme(aspect.ratio = 1)
 ```
 
 ```
 ## Selecting by Length
 ```
 
-![plot of chunk unnamed-chunk-1](./figures/RDA-analysis///unnamed-chunk-1-2.png)
+![plot of chunk resultplot](./figures/RDA-analysis///resultplot-1.png)
+
+```r
+ggsave(filename = "results/figures/publication/Figure7Z.svg", width = 88, height = 88, units = "mm", scale = 2)
+cap16cc
+```
+
+```
+## Call: capscale(formula = bdist ~ Year + Region + Host, data = ENV,
+## add = TRUE)
+## 
+##                Inertia Proportion Rank
+## Total         276.6746     1.0000     
+## Constrained    44.5875     0.1612   46
+## Unconstrained 232.0871     0.8388  295
+## Inertia is Lingoes adjusted squared Bruvo distance 
+## 
+## Eigenvalues for constrained axes:
+##  CAP1  CAP2  CAP3  CAP4  CAP5  CAP6  CAP7  CAP8  CAP9 CAP10 CAP11 CAP12 
+## 5.227 2.587 2.087 1.885 1.612 1.399 1.104 1.025 0.983 0.913 0.903 0.875 
+## CAP13 CAP14 CAP15 CAP16 CAP17 CAP18 CAP19 CAP20 CAP21 CAP22 CAP23 CAP24 
+## 0.842 0.811 0.785 0.763 0.748 0.741 0.737 0.733 0.724 0.720 0.718 0.717 
+## CAP25 CAP26 CAP27 CAP28 CAP29 CAP30 CAP31 CAP32 CAP33 CAP34 CAP35 CAP36 
+## 0.717 0.717 0.715 0.713 0.711 0.709 0.706 0.704 0.702 0.701 0.695 0.690 
+## CAP37 CAP38 CAP39 CAP40 CAP41 CAP42 CAP43 CAP44 CAP45 CAP46 
+## 0.688 0.682 0.680 0.677 0.667 0.658 0.634 0.627 0.596 0.558 
+## 
+## Eigenvalues for unconstrained axes:
+##  MDS1  MDS2  MDS3  MDS4  MDS5  MDS6  MDS7  MDS8 
+## 7.342 3.739 3.258 3.005 2.249 2.056 1.816 1.720 
+## (Showed only 8 of all 295 unconstrained eigenvalues)
+## 
+## Constant added to distances: 0.7174933
+```
+
+```r
+cap16cc$anova
+```
+
+```
+##            Df    AIC      F Pr(>F)   
+## + Year      7 1928.0 1.4098  0.005 **
+## + Severity  1 1928.8 1.2208  0.005 **
+## + Region   13 1936.1 1.3858  0.005 **
+## + Host     26 1956.7 1.0878  0.005 **
+## - Severity  1 1955.9 1.0817  0.125   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+plot_dbrda(cap16cc) +
+  theme_classic() + 
+  theme(text = element_text(size = 14, color = "black")) +
+  theme(aspect.ratio = 1)
+```
+
+```
+## Selecting by Length
+```
+
+![plot of chunk resultplot](./figures/RDA-analysis///resultplot-2.png)
 
