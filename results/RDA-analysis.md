@@ -653,3 +653,38 @@ plot_dbrda(cap16cc) +
 
 ![plot of chunk resultplot](./figures/RDA-analysis///resultplot-2.png)
 
+## Variance partitioning
+
+First, we want to examine how the entire data fits with the model. We will use
+the alleles as the representative of the entire data.
+
+
+```r
+dat11raw <- genind2df(dat11cc, usepop = FALSE) %>% mutate_all(funs(as.integer(.)))
+dat16raw <- genind2df(dat16cc, usepop = FALSE) %>% mutate_all(funs(as.integer(.)))
+vp11     <- varpart(dat11cc.bruvo, ~Severity + Year + Region + Host, data = ENV11, comm = dat11raw, add = TRUE)
+plot(vp11, Xnames = c("Full Model", "No Model"))
+```
+
+![plot of chunk unnamed-chunk-1](./figures/RDA-analysis///unnamed-chunk-1-1.png)
+
+```r
+try(vp16     <- varpart(dat16cc.bruvo, ~Year + Region + Host, data = ENV16, comm = dat16raw, add = TRUE))
+```
+
+
+```r
+vp11 <- varpart(dat11cc.bruvo, ~Severity, ~Year, ~Region, ~Host, data = ENV11, add = TRUE)
+vp16 <- varpart(dat16cc.bruvo, ~Year, ~Region, ~Host, data = ENV16, add = TRUE)
+
+plot(vp11, digits = 2, Xnames = c("Severity", "Year", "Region", "Host"))
+```
+
+![plot of chunk unnamed-chunk-2](./figures/RDA-analysis///unnamed-chunk-2-1.png)
+
+```r
+plot(vp16, digits = 2, Xnames = c("Year", "Region", "Host"))
+```
+
+![plot of chunk unnamed-chunk-2](./figures/RDA-analysis///unnamed-chunk-2-2.png)
+
