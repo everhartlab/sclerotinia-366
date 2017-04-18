@@ -52,12 +52,16 @@ stopifnot(identical(indNames(dat16cc), other(dat16cc)$meta$Isolate))
 # 
 # @param DAT the full data set
 # @param CC The clone-corrected data set
+# @param wmn should the "Source" column be converted to a binary wmn
+#   factor? When this is true, everything that is not wmn will be converted
+#   to "other"
 # 
 # @return A data frame containing Severity, Host, Source, Year, Region, and MLG
-makeENV <- function(DAT, CC){
+makeENV <- function(DAT, CC, wmn = FALSE){
   # Creating the data frame with severity
   META   <- select(other(DAT)$meta, -Isolate)
   STRATA <- select(strata(DAT), -MCG)
+  STRATA <- if (wmn) mutate(STRATA, Source = ifelse(Source == "wmn", "wmn", "other")) else STRATA
   MLL    <- data.frame(MLG = mll(DAT))
   sev    <- bind_cols(META, STRATA, MLL) %>%
     group_by(Host, Source, Year, Region, MLG) %>% 
@@ -247,5 +251,24 @@ vp16 <- varpart(dat16cc.bruvo, ~Year, ~Region, ~Host, data = ENV16, add = TRUE)
 plot(vp11, digits = 2, Xnames = c("Severity", "Year", "Region", "Host"))
 
 plot(vp16, digits = 2, Xnames = c("Year", "Region", "Host"))
+```
+
+```{r}
+wmn11 <- seppop(dat11, ~Source)$wmn %>% setPop(~Region)
+wmn11_sub <- popsub(wmn11, blacklist = character(0))
+min_span_net <- bruvo.msn(wmn11_sub, replen = other(wmn11)$REPLEN, add = TRUE, loss = TRUE, showplot = FALSE, include.ties = TRUE)
+set.seed(67)
+plot_poppr_msn(wmn11,
+               min_span_net,
+               inds = "none",
+               mlg = TRUE,
+               gadj = 6,
+               nodelab = 100,
+               nodebase = 1.15,
+               palette = funky,
+               cutoff = (0.5/11)*3,
+               quantiles = FALSE,
+               beforecut = TRUE,
+               layfun = igraph::layout_with_lgl)
 ```
 
