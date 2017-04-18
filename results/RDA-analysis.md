@@ -316,7 +316,7 @@ arrowMul <- function(arrows, data, at = c(0, 0), fill = 0.75) {
 # 
 # @param db a capscale object
 # @return a ggplot2 object from the scores 
-plot_dbrda <- function(db){
+plot_dbrda <- function(db, arrows = 10){
   dbsum     <- scores(db, display = c("cn", "bp", "sites"), scaling = "sites")
   Centroids <- as.data.frame(dbsum$centroids)
   Centroids <- rownames_to_column(Centroids, var = "cent_type")
@@ -334,16 +334,25 @@ plot_dbrda <- function(db){
   Arrows$class <- gsub("unk", "unknown", Arrows$class)
   Arrows  <- mutate_(Arrows, .dots = list(Length = ~sqrt(CAP1^2 * CAP2^2)))
   Arrows  <- arrange(Arrows, Length)
-  Arrows  <- top_n(Arrows, 8)
+  Arrows  <- top_n(Arrows, arrows)
   ggplot(Centroids, aes(x = CAP1, y = CAP2))+
-    geom_point(data = SampleCentroids, alpha = 1/2, fill = "dark orange", color = "black", size = 2.5, pch = 21)+
+    geom_point(data = SampleCentroids, 
+               # alpha = 1/2, 
+               # fill = "white",
+               # fill = "dark orange", 
+               color = "grey45", 
+               size = 2.5, 
+               pch = 21)+
     coord_cartesian() +
     geom_segment(aes(x = 0, xend = CAP1, 
                      y = 0, yend = CAP2),
                  arrow = arrow(length = unit(0.3, "cm")), 
                  data = Arrows
                  ) + 
-    geom_label_repel(aes(x = CAP1, y = CAP2, label = class), data = Arrows) +
+    geom_label_repel(aes(x = CAP1, y = CAP2, label = class), 
+                     point.padding = unit(0.5, "lines"),
+                     segment.color = "grey25",
+                     data = Arrows) +
     ylab("Eigenvalue 1") +
     xlab("Eigenvalue 2")
 }
@@ -580,9 +589,10 @@ cap11cc$anova
 ```
 
 ```r
+set.seed(99)
 plot_dbrda(cap11cc) + 
-  theme_classic() + 
-  theme(text = element_text(size = 14, color = "black")) +
+  theme_classic(base_size = 16, base_family = "Helvetica") + 
+  theme(axis.text = element_text(color = "black")) +
   theme(aspect.ratio = 1)
 ```
 
@@ -593,7 +603,7 @@ plot_dbrda(cap11cc) +
 ![plot of chunk resultplot](./figures/RDA-analysis///resultplot-1.png)
 
 ```r
-ggsave(filename = "results/figures/publication/Figure7Z.svg", width = 88, height = 88, units = "mm", scale = 2)
+ggsave(filename = "results/figures/publication/Figure7Z.svg", width = 88, height = 88, units = "mm", scale = 1.5)
 cap16cc
 ```
 
@@ -642,8 +652,8 @@ cap16cc$anova
 
 ```r
 plot_dbrda(cap16cc) +
-  theme_classic() + 
-  theme(text = element_text(size = 14, color = "black")) +
+  theme_classic(base_size = 16, base_family = "Helvetica") + 
+  theme(axis.text = element_text(color = "black")) +
   theme(aspect.ratio = 1)
 ```
 
