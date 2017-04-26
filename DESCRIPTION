@@ -1,10 +1,10 @@
 Package: WorldSclerotinia
-Title:
+Title: 
 Version: 0.0.0.9000
-Author: Me
-Description: An analysis of...
+Author: Zhian N. Kamvar, B. Sajeewa Amadarasa, Sydney E. Everhart
+Description: An analysis of Sclerotinia sclerotiorum from around the world
 Depends: R (>= 3.4.0)
-License: Choose your license
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: tidyverse, ggraph, ggrepel, igraph, viridis, poppr, vegan, readxl, assertr
