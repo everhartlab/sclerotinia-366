@@ -64,8 +64,11 @@ library('poppr')
 ```
 
 ```
-## This is poppr version 2.4.1. To get started, type package?poppr
+## This is poppr version 2.4.1.99.2. To get started, type package?poppr
 ## OMP parallel support: available
+## 
+## This version of poppr is under development.
+## If you find any bugs, please report them at https://github.com/grunwaldlab/poppr/issues
 ```
 
 ```r
