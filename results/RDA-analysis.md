@@ -738,6 +738,9 @@ plot(vp16, digits = 2, Xnames = c("Year", "Region", "Host"))
 
 ![plot of chunk unnamed-chunk-3](./figures/RDA-analysis///unnamed-chunk-3-2.png)
 
+Out of both of the models, only Region explains the most variance, almost double
+that of Host or Year and Severity contributes almost nothing. 
+
 
 ```r
 wmn11 <- seppop(dat11, ~Source)$wmn %>% setPop(~Region)

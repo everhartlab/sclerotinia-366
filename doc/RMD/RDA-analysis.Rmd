@@ -279,6 +279,9 @@ plot(vp11, digits = 2, Xnames = c("Severity", "Year", "Region", "Host"))
 plot(vp16, digits = 2, Xnames = c("Year", "Region", "Host"))
 ```
 
+Out of both of the models, only Region explains the most variance, almost double
+that of Host or Year and Severity contributes almost nothing. 
+
 ```{r}
 wmn11 <- seppop(dat11, ~Source)$wmn %>% setPop(~Region)
 wmn11_sub <- popsub(wmn11, blacklist = character(0))
