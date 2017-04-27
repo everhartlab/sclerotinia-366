@@ -1,6 +1,7 @@
 .PHONY: all
 
-all: bootstrap results/data-comparison.md \
+all: bootstrap \
+	results/data-comparison.md \
 	results/MLG-distribution.md \
 	results/RDA-analysis.md
 
