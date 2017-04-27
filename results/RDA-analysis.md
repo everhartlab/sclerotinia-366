@@ -109,7 +109,7 @@ Host, Source (aka Field), Region (aka State/Country), and Year.
 
 
 ```r
-load("data/sclerotinia_16_loci.rda")
+load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
 setPop(dat)   <- ~Host/Source/Region/Year
 setPop(dat11) <- ~Host/Source/Region/Year
 dat11cc <- clonecorrect(dat11, ~Host/Source/Region/Year, keep = 1:4)
@@ -330,7 +330,7 @@ plot_dbrda <- function(db, arrows = 10){
   Centroids <- mutate_(Centroids, .dots = list(Length = ~sqrt(CAP1^2 * CAP2^2)))
   # Centroids
   SampleCentroids <- rownames_to_column(data.frame(dbsum$sites), var = "isolate_names")
-  
+  labs    <- summary(db, axes = 0)[["cont"]][["importance"]]["Proportion Explained", 1:2]
   terms   <- paste0("(", paste(attr(db$terms, "term.labels"), collapse = "|"), ")")
   mul     <- arrowMul(dbsum$biplot[, 1:2], dbsum$sites)
   Arrows  <- data.frame(dbsum$biplot * mul)
@@ -360,8 +360,8 @@ plot_dbrda <- function(db, arrows = 10){
                      point.padding = unit(0.5, "lines"),
                      segment.color = "grey25",
                      data = Arrows) +
-    ylab("Eigenvalue 1") +
-    xlab("Eigenvalue 2")
+    xlab(paste0("Eig 1 (", round(labs[[1]]*100, 2), "% variance explained)")) +
+    ylab(paste0("Eig 2 (", round(labs[[2]]*100, 2), "% variance explained)"))
 }
 ```
 
@@ -549,6 +549,7 @@ cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 
 # Plot the results
 
+
 ```r
 cap11cc
 ```
@@ -610,7 +611,8 @@ plot_dbrda(cap11cc) +
 ![plot of chunk resultplot](./figures/RDA-analysis///resultplot-1.png)
 
 ```r
-ggsave(filename = "results/figures/publication/Figure7Z.svg", width = 88, height = 88, units = "mm", scale = 1.5)
+FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.svg")
+ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
 cap16cc
 ```
 
@@ -670,6 +672,37 @@ plot_dbrda(cap16cc) +
 
 ![plot of chunk resultplot](./figures/RDA-analysis///resultplot-2.png)
 
+This is all well and good, but what exactly does it actually mean to have only 
+1.93 variance explained (for 11 loci, that is)? I was a bit stumped as well. 
+Luckily, Gavin Simpson has some answers: http://stackoverflow.com/a/22537820/2752888
+
+Basically, we have a situation where we have all of the variables only
+explaining a whopping 16 - 17% of the variance and the rest goes unexplained.
+
+
+11 loci:
+
+
+
+| Inertia| Proportion|
+|-------:|----------:|
+| 274.797|      1.000|
+|  48.358|      0.176|
+| 226.439|      0.824|
+
+
+
+16 loci:
+
+
+
+| Inertia| Proportion|
+|-------:|----------:|
+| 276.675|      1.000|
+|  44.587|      0.161|
+| 232.087|      0.839|
+
+
 ## Variance partitioning
 
 First, we want to examine how the entire data fits with the model. We will use
@@ -683,7 +716,7 @@ vp11     <- varpart(dat11cc.bruvo, ~Severity + Year + Region + Host, data = ENV1
 plot(vp11, Xnames = c("Full Model", "No Model"))
 ```
 
-![plot of chunk unnamed-chunk-1](./figures/RDA-analysis///unnamed-chunk-1-1.png)
+![plot of chunk unnamed-chunk-2](./figures/RDA-analysis///unnamed-chunk-2-1.png)
 
 ```r
 try(vp16     <- varpart(dat16cc.bruvo, ~Year + Region + Host, data = ENV16, comm = dat16raw, add = TRUE))
@@ -697,13 +730,13 @@ vp16 <- varpart(dat16cc.bruvo, ~Year, ~Region, ~Host, data = ENV16, add = TRUE)
 plot(vp11, digits = 2, Xnames = c("Severity", "Year", "Region", "Host"))
 ```
 
-![plot of chunk unnamed-chunk-2](./figures/RDA-analysis///unnamed-chunk-2-1.png)
+![plot of chunk unnamed-chunk-3](./figures/RDA-analysis///unnamed-chunk-3-1.png)
 
 ```r
 plot(vp16, digits = 2, Xnames = c("Year", "Region", "Host"))
 ```
 
-![plot of chunk unnamed-chunk-2](./figures/RDA-analysis///unnamed-chunk-2-2.png)
+![plot of chunk unnamed-chunk-3](./figures/RDA-analysis///unnamed-chunk-3-2.png)
 
 
 ```r
@@ -725,5 +758,5 @@ plot_poppr_msn(wmn11,
                layfun = igraph::layout_with_lgl)
 ```
 
-![plot of chunk unnamed-chunk-3](./figures/RDA-analysis///unnamed-chunk-3-1.png)
+![plot of chunk unnamed-chunk-4](./figures/RDA-analysis///unnamed-chunk-4-1.png)
 

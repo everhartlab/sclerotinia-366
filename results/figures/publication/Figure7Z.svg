@@ -418,6 +418,6 @@
 <g clip-path='url(#cpMHwzNzQuMTczfDM3NC4xNzN8MA==)'><text x='185.98' y='337.78' style='font-size: 12.80px; font-family: Helvetica;' textLength='17.79px' lengthAdjust='spacingAndGlyphs'>0.0</text></g>
 <g clip-path='url(#cpMHwzNzQuMTczfDM3NC4xNzN8MA==)'><text x='263.13' y='337.78' style='font-size: 12.80px; font-family: Helvetica;' textLength='17.79px' lengthAdjust='spacingAndGlyphs'>0.2</text></g>
 <g clip-path='url(#cpMHwzNzQuMTczfDM3NC4xNzN8MA==)'><text x='340.29' y='337.78' style='font-size: 12.80px; font-family: Helvetica;' textLength='17.79px' lengthAdjust='spacingAndGlyphs'>0.4</text></g>
-<g clip-path='url(#cpMHwzNzQuMTczfDM3NC4xNzN8MA==)'><text x='166.43' y='357.23' style='font-size: 16.00px; font-family: Helvetica;' textLength='92.52px' lengthAdjust='spacingAndGlyphs'>Eigenvalue 2</text></g>
-<g clip-path='url(#cpMHwzNzQuMTczfDM3NC4xNzN8MA==)'><text transform='translate(19.45,214.18) rotate(-90)' style='font-size: 16.00px; font-family: Helvetica;' textLength='92.52px' lengthAdjust='spacingAndGlyphs'>Eigenvalue 1</text></g>
+<g clip-path='url(#cpMHwzNzQuMTczfDM3NC4xNzN8MA==)'><text x='95.29' y='357.23' style='font-size: 16.00px; font-family: Helvetica;' textLength='234.80px' lengthAdjust='spacingAndGlyphs'>Eig 1 (1.93% variance explained)</text></g>
+<g clip-path='url(#cpMHwzNzQuMTczfDM3NC4xNzN8MA==)'><text transform='translate(19.45,285.32) rotate(-90)' style='font-size: 16.00px; font-family: Helvetica;' textLength='234.80px' lengthAdjust='spacingAndGlyphs'>Eig 2 (1.18% variance explained)</text></g>
 </svg>

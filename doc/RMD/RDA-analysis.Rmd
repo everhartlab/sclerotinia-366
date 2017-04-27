@@ -34,7 +34,7 @@ Host, Source (aka Field), Region (aka State/Country), and Year.
 
 
 ```{r, load_data}
-load("data/sclerotinia_16_loci.rda")
+load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
 setPop(dat)   <- ~Host/Source/Region/Year
 setPop(dat11) <- ~Host/Source/Region/Year
 dat11cc <- clonecorrect(dat11, ~Host/Source/Region/Year, keep = 1:4)
@@ -160,7 +160,7 @@ plot_dbrda <- function(db, arrows = 10){
   Centroids <- mutate_(Centroids, .dots = list(Length = ~sqrt(CAP1^2 * CAP2^2)))
   # Centroids
   SampleCentroids <- rownames_to_column(data.frame(dbsum$sites), var = "isolate_names")
-  
+  labs    <- summary(db, axes = 0)[["cont"]][["importance"]]["Proportion Explained", 1:2]
   terms   <- paste0("(", paste(attr(db$terms, "term.labels"), collapse = "|"), ")")
   mul     <- arrowMul(dbsum$biplot[, 1:2], dbsum$sites)
   Arrows  <- data.frame(dbsum$biplot * mul)
@@ -190,8 +190,8 @@ plot_dbrda <- function(db, arrows = 10){
                      point.padding = unit(0.5, "lines"),
                      segment.color = "grey25",
                      data = Arrows) +
-    ylab("Eigenvalue 1") +
-    xlab("Eigenvalue 2")
+    xlab(paste0("Eig 1 (", round(labs[[1]]*100, 2), "% variance explained)")) +
+    ylab(paste0("Eig 2 (", round(labs[[2]]*100, 2), "% variance explained)"))
 }
 ```
 
@@ -214,6 +214,7 @@ cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ```
 
 # Plot the results
+
 ```{r resultplot, fig.width = 5, fig.height = 5}
 cap11cc
 cap11cc$anova
@@ -222,7 +223,8 @@ plot_dbrda(cap11cc) +
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +
   theme(aspect.ratio = 1)
-ggsave(filename = "results/figures/publication/Figure7Z.svg", width = 88, height = 88, units = "mm", scale = 1.5)
+FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.svg")
+ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
 cap16cc
 cap16cc$anova
 plot_dbrda(cap16cc) +
@@ -230,6 +232,30 @@ plot_dbrda(cap16cc) +
   theme(axis.text = element_text(color = "black")) +
   theme(aspect.ratio = 1)
 ```
+
+This is all well and good, but what exactly does it actually mean to have only 
+1.93 variance explained (for 11 loci, that is)? I was a bit stumped as well. 
+Luckily, Gavin Simpson has some answers: http://stackoverflow.com/a/22537820/2752888
+
+Basically, we have a situation where we have all of the variables only
+explaining a whopping 16 - 17% of the variance and the rest goes unexplained.
+
+```{r, echo = FALSE, results = "asis"}
+cap11sum <- summary(cap11cc, axes = 0, scaling = "sites")
+cap16sum <- summary(cap16cc, axes = 0, scaling = "sites")
+vartab <- function(x){
+  tot <- x$tot.chi
+  con <- x$constr.chi
+  uco <- x$unconst.chi
+  data.frame(list(Inertia = c(tot, con, uco),
+                  Proportion = c(tot, con, uco)/tot))
+}
+cat("\n\n11 loci:\n\n")
+knitr::kable(vartab(cap11sum), digits = 3)
+cat("\n\n16 loci:\n\n")
+knitr::kable(vartab(cap16sum), digits = 3)
+```
+
 
 ## Variance partitioning
 
