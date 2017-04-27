@@ -303,7 +303,7 @@ plot_poppr_msn(wmn11,
 
 ```{r, echo = FALSE, results = "asis"}
 options(width = 100)
-cat("<details><summary>Session Information</summary>\n```\n")
+cat("<details><summary>Session Information</summary>\n\n```\n\n")
 devtools::session_info()
-cat("```\n</details>")
+cat("\n\n```\n\n</details>")
 ```

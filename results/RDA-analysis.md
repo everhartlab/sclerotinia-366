@@ -764,6 +764,7 @@ plot_poppr_msn(wmn11,
 ![plot of chunk unnamed-chunk-4](./figures/RDA-analysis///unnamed-chunk-4-1.png)
 
 <details><summary>Session Information</summary>
+
 ```
 
 ```
@@ -869,5 +870,7 @@ plot_poppr_msn(wmn11,
  withr         1.0.2      2016-06-20 CRAN (R 3.4.0)                          
  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                          
  xtable        1.8-2      2016-02-05 CRAN (R 3.4.0)                          
+
 ```
+
 </details>
