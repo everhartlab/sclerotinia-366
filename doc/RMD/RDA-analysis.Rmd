@@ -213,11 +213,37 @@ dat16cc.bruvo <- dat16cc %>% bruvo.dist(replen = other(.)$REPLEN)
 cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ```
 
+# ANOVA
+
+The results of our modeling and the marginal effects for each parameter on the
+model itself. 
+
+```{r}
+cap11cc
+cap11cc$anova
+cap16cc
+cap16cc$anova
+```
+
+
+We can test the effects of how much of the model explains the variance
+
+```{r total_anova, cache = TRUE}
+anova(cap11cc)
+anova(cap16cc)
+```
+
+We can also see the marginal effects with `by = "margin"`
+
+```{r marginal_anova, cache = TRUE}
+anova(cap11cc, by = "margin")
+anova(cap16cc, by = "margin")
+```
+
+
 # Plot the results
 
 ```{r resultplot, fig.width = 5, fig.height = 5}
-cap11cc
-cap11cc$anova
 set.seed(99)
 plot_dbrda(cap11cc) + 
   theme_classic(base_size = 16, base_family = "Helvetica") + 
@@ -225,8 +251,6 @@ plot_dbrda(cap11cc) +
   theme(aspect.ratio = 1)
 FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.svg")
 ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
-cap16cc
-cap16cc$anova
 plot_dbrda(cap16cc) +
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +

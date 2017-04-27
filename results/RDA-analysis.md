@@ -547,7 +547,10 @@ cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
-# Plot the results
+# ANOVA
+
+The results of our modeling and the marginal effects for each parameter on the
+model itself. 
 
 
 ```r
@@ -597,22 +600,6 @@ cap11cc$anova
 ```
 
 ```r
-set.seed(99)
-plot_dbrda(cap11cc) + 
-  theme_classic(base_size = 16, base_family = "Helvetica") + 
-  theme(axis.text = element_text(color = "black")) +
-  theme(aspect.ratio = 1)
-```
-
-```
-## Selecting by Length
-```
-
-![plot of chunk resultplot](./figures/RDA-analysis///resultplot-1.png)
-
-```r
-FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.svg")
-ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
 cap16cc
 ```
 
@@ -659,7 +646,109 @@ cap16cc$anova
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ```
 
+
+We can test the effects of how much of the model explains the variance
+
+
 ```r
+anova(cap11cc)
+```
+
+```
+## Permutation test for capscale under reduced model
+## Permutation: free
+## Number of permutations: 999
+## 
+## Model: capscale(formula = bdist ~ Severity + Year + Region + Host, data = ENV, add = TRUE)
+##           Df SumOfSqs      F Pr(>F)    
+## Model     47   48.358 1.2268  0.001 ***
+## Residual 270  226.439                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+anova(cap16cc)
+```
+
+```
+## Permutation test for capscale under reduced model
+## Permutation: free
+## Number of permutations: 999
+## 
+## Model: capscale(formula = bdist ~ Year + Region + Host, data = ENV, add = TRUE)
+##           Df SumOfSqs     F Pr(>F)    
+## Model     46   44.587 1.232  0.001 ***
+## Residual 295  232.087                 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+We can also see the marginal effects with `by = "margin"`
+
+
+```r
+anova(cap11cc, by = "margin")
+```
+
+```
+## Permutation test for capscale under reduced model
+## Marginal effects of terms
+## Permutation: free
+## Number of permutations: 999
+## 
+## Model: capscale(formula = bdist ~ Severity + Year + Region + Host, data = ENV, add = TRUE)
+##           Df SumOfSqs      F Pr(>F)    
+## Severity   1    0.968 1.1541  0.045 *  
+## Year       7    7.844 1.3362  0.001 ***
+## Region    13   15.141 1.3888  0.001 ***
+## Host      26   23.418 1.0739  0.001 ***
+## Residual 270  226.439                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+anova(cap16cc, by = "margin")
+```
+
+```
+## Permutation test for capscale under reduced model
+## Marginal effects of terms
+## Permutation: free
+## Number of permutations: 999
+## 
+## Model: capscale(formula = bdist ~ Year + Region + Host, data = ENV, add = TRUE)
+##           Df SumOfSqs      F Pr(>F)    
+## Year       7    7.541 1.3693  0.001 ***
+## Region    13   14.143 1.3829  0.001 ***
+## Host      26   22.332 1.0918  0.001 ***
+## Residual 295  232.087                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+# Plot the results
+
+
+```r
+set.seed(99)
+plot_dbrda(cap11cc) + 
+  theme_classic(base_size = 16, base_family = "Helvetica") + 
+  theme(axis.text = element_text(color = "black")) +
+  theme(aspect.ratio = 1)
+```
+
+```
+## Selecting by Length
+```
+
+![plot of chunk resultplot](./figures/RDA-analysis///resultplot-1.png)
+
+```r
+FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.svg")
+ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
 plot_dbrda(cap16cc) +
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +
@@ -716,7 +805,7 @@ vp11     <- varpart(dat11cc.bruvo, ~Severity + Year + Region + Host, data = ENV1
 plot(vp11, Xnames = c("Full Model", "No Model"))
 ```
 
-![plot of chunk unnamed-chunk-2](./figures/RDA-analysis///unnamed-chunk-2-1.png)
+![plot of chunk unnamed-chunk-3](./figures/RDA-analysis///unnamed-chunk-3-1.png)
 
 ```r
 try(vp16     <- varpart(dat16cc.bruvo, ~Year + Region + Host, data = ENV16, comm = dat16raw, add = TRUE))
@@ -730,13 +819,13 @@ vp16 <- varpart(dat16cc.bruvo, ~Year, ~Region, ~Host, data = ENV16, add = TRUE)
 plot(vp11, digits = 2, Xnames = c("Severity", "Year", "Region", "Host"))
 ```
 
-![plot of chunk unnamed-chunk-3](./figures/RDA-analysis///unnamed-chunk-3-1.png)
+![plot of chunk unnamed-chunk-4](./figures/RDA-analysis///unnamed-chunk-4-1.png)
 
 ```r
 plot(vp16, digits = 2, Xnames = c("Year", "Region", "Host"))
 ```
 
-![plot of chunk unnamed-chunk-3](./figures/RDA-analysis///unnamed-chunk-3-2.png)
+![plot of chunk unnamed-chunk-4](./figures/RDA-analysis///unnamed-chunk-4-2.png)
 
 Out of both of the models, only Region explains the most variance, almost double
 that of Host or Year and Severity contributes almost nothing. 
@@ -761,7 +850,7 @@ plot_poppr_msn(wmn11,
                layfun = igraph::layout_with_lgl)
 ```
 
-![plot of chunk unnamed-chunk-4](./figures/RDA-analysis///unnamed-chunk-4-1.png)
+![plot of chunk unnamed-chunk-5](./figures/RDA-analysis///unnamed-chunk-5-1.png)
 
 <details><summary>Session Information</summary>
 
@@ -795,6 +884,7 @@ plot_poppr_msn(wmn11,
  cellranger    1.1.0      2016-07-27 CRAN (R 3.4.0)                          
  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                          
  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                          
+ codetools     0.2-15     2016-10-05 CRAN (R 3.4.0)                          
  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                          
  DBI           0.6-1      2017-04-01 CRAN (R 3.4.0)                          
  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                          
