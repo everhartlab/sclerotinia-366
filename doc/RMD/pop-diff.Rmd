@@ -1,0 +1,138 @@
+---
+title: "Population Differentiation Analysis"
+output: 
+  html_notebook:
+    toc: true
+---
+
+
+
+```{r setup, include = FALSE}
+knitr::opts_knit$set(root.dir = PROJHOME)
+```
+
+
+
+
+## Packages and Data
+
+```{r load_packages}
+library('tidyverse')
+library('poppr')
+library('ggcompoplot')
+```
+
+```{r load_data}
+load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
+setPop(dat11) <- ~Host/Source/Region/Year
+dat11cc <- clonecorrect(dat11, ~Host/Source/Region/Year, keep = 1:4)
+dat11cc
+
+# Asserting that nothing messed up with the metadata.
+stopifnot(identical(indNames(dat11cc), other(dat11cc)$meta$Isolate))
+dat11.bruvo   <- bruvo.dist(dat11, replen = other(dat11)$REPLEN)
+dat11cc.bruvo <- bruvo.dist(dat11cc, replen = other(dat11)$REPLEN)
+```
+
+# AMOVA
+
+First, we can conduct an AMOVA analysis across all populations, with respect to
+year.
+
+```{r amova-no-cc}
+(res   <- poppr.amova(dat11cc, ~Region/Host/Year, dist = dat11cc.bruvo))
+set.seed(999)
+(res.p <- randtest(res, nrepet = 999))
+```
+
+## DAPC of Region
+
+This can tell us how well our regions separate
+
+```{r dapc-region, fig.width = 7, fig.height = 7}
+region.dapc <- dapc(dat11, strata(dat11)$Region, n.pca = 25, n.da = 14)
+scatter(region.dapc)
+ggcompoplot(region.dapc, setPop(dat11, ~Region), pal = funky, cols = 2)
+```
+
+
+## DAPC predictions
+
+Since we saw MLGs crossing populations, we want to find out what happens when
+we remove these MLGs, run DAPC on the regions, and then predict where they came
+from.
+
+```{r dapc-mlg, fig.width = 7, fig.height = 7}
+minds <- mlg.crosspop(dat11, ~Region, indexreturn = TRUE)
+dat11.nocross <- dat11[!mll(dat11) %in% minds]
+dat11.nocross
+dat11.nc.dapc <- dapc(dat11.nocross, strata(dat11.nocross)$Region, n.pca = 11, n.da = 14)
+scatter(dat11.nc.dapc)
+dat11.cross <- clonecorrect(dat11[mll(dat11) %in% minds], NA)
+pred <- predict.dapc(dat11.nc.dapc, dat11.cross)
+ggcompoplot(pred, setPop(dat11.cross, ~Region), cols = 2, pal = funky)
+posterior <- as.data.frame(pred$posterior) %>% 
+  rownames_to_column("Sample") %>%
+  bind_cols(data_frame(MLG = mll(dat11.cross))) %>%
+  gather(key = "population", value = "posterior", -Sample, -MLG) %>%
+  group_by(Sample) %>%
+  mutate(entropy = vegan::diversity(posterior)) %>%
+  mutate(label = ifelse(posterior == max(posterior), MLG, NA)) %>%
+  ungroup() %>%
+  mutate(bins = cut(entropy, quantile(entropy)))
+ggplot(posterior, aes(x = population, y = posterior, color = entropy, group = Sample)) +
+  geom_line() +
+  ggrepel::geom_label_repel(aes(label = label)) +
+  viridis::scale_color_viridis() +
+  facet_wrap(~bins, ncol = 1)
+```
+
+
+```{r}
+top5 <- table(mll(dat11)) %>% 
+  sort(decreasing = TRUE) %>% 
+  head(5) %>%
+  names() %>%
+  as.integer()
+top5
+center_point <- function(n){
+  fromto <- c(-1, 1)
+  if (n < 4){
+    fromto <- fromto/8
+  } else if (n < 10){
+    fromto <- fromto/4
+  } else {
+    fromto <- fromto/2
+  }
+  seq(from = fromto[1], to = fromto[2], length.out = n)
+}
+origins <- mlg.crosspop(dat11, ~Region, mlgsub = top5, quiet = TRUE, df = TRUE) %>%
+  mutate(MLG = gsub("MLG.", "", MLG)) %>%
+  mutate(population = match(as.character(Population), posterior$population %>% unique %>% sort)) %>%
+  # group_by(Population) %>%
+  # mutate(population = population + center_point(n())) %>%
+  I()
+posterior %>%
+  filter(MLG %in% top5) %>%
+  ggplot(aes(x = population, y = posterior, color = factor(MLG), group = MLG)) +
+  geom_line() +
+  geom_vline(aes(xintercept = population), data = origins, lty = 2) +
+  scale_color_brewer(palette = "Dark2") +
+  facet_wrap(~MLG, ncol = 1) +
+  labs(list(
+    lty = "Populations discovered in",
+    color = "MLG"
+  ))
+scatter(dat11.nc.dapc)
+```
+
+
+<details>
+<summary>Session Information</summary>
+
+```{r, echo = FALSE}
+options(width = 100)
+devtools::session_info()
+```
+
+</details>

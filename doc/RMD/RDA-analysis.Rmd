@@ -325,9 +325,12 @@ plot_poppr_msn(wmn11,
                layfun = igraph::layout_with_lgl)
 ```
 
-```{r, echo = FALSE, results = "asis"}
+<details>
+<summary>Session Information</summary>
+
+```{r, echo = FALSE}
 options(width = 100)
-cat("<details><summary>Session Information</summary>\n\n```\n\n")
 devtools::session_info()
-cat("\n\n```\n\n</details>")
 ```
+
+</details>

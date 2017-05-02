@@ -3,7 +3,8 @@
 all: bootstrap \
 	results/data-comparison.md \
 	results/MLG-distribution.md \
-	results/RDA-analysis.md
+	results/RDA-analysis.md \
+	results/pop-diff.md
 
 .PHONY: bootstrap
 
