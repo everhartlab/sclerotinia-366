@@ -3,6 +3,7 @@
 all: bootstrap \
 	results/data-comparison.md \
 	results/MLG-distribution.md \
+	results/mlg-mcg.md \
 	results/RDA-analysis.md \
 	results/pop-diff.md
 
