@@ -23,6 +23,8 @@ consistently coordinate with a single MCG, or if there are anything close.
 ## Packages and Data
 
 ```{r load_packages}
+library('igraph')
+library('ggraph')
 library('tidyverse')
 library('poppr')
 library('viridis')
@@ -54,10 +56,111 @@ pal <- c(pal, setNames(rep("#F6F6F6FF", 3), c("Mexico", "ID", "WI")))
 
 First, it would be nice to visualize the MLGs across populations
 
-```{r mlg_table, fig.width = 20, fig.height = 5}
+```{r mlg_table, fig.width = 20, fig.height = 5, keep = "last"}
 mtab <- mlg.table(dat11, color = TRUE)
 mplot <- last_plot()
 mplot + scale_fill_viridis(discrete = TRUE, direction = -1, option = "C") +
   aes(color = I("black")) 
+```
+
+Now we can take a look at the concordance of MLGs to MCGs
+
+
+```{r}
+mll.custom(dat11) <- strata(dat11)$MCG
+mcgmlg <- as.data.frame(table(mll(dat11, "original"), mll(dat11, "custom"))) %>%
+  setNames(c("MLG", "MCG", "Freq")) %>%
+  as_data_frame() %>%
+  filter(Freq > 0)
+mcgs <- mcgmlg %>%
+  group_by(MCG) %>%
+  summarize(MLGs = sum(Freq > 0), Samples = sum(Freq), Entropy = vegan::diversity(Freq), data = list(data_frame(MLG = MLG, Freq = Freq))) %>%
+  arrange(desc(MLGs))
+mlgs <- mcgmlg %>%
+  group_by(MLG) %>%
+  summarize(MCGs = sum(Freq > 0), Samples = sum(Freq), Entropy = vegan::diversity(Freq), data = list(data_frame(MCG = MCG, Freq = Freq))) %>%
+  arrange(desc(Samples), desc(MCGs))
+mcgs
+mlgs
+any(mcgs$MLGs > 1)
+```
+
+We can see that there are plenty of MLGs that contain multiple MCGs. This 
+
+
+```{r}
+mlg.filter(dat11, dist = bruvo.dist, replen = other(dat11)$REPLEN) <- .Machine$double.eps + (0.5/11)
+dat11
+
+fmcgmlg <- as.data.frame(table(mll(dat11, "contracted"), mll(dat11, "custom"))) %>%
+  setNames(c("MLG", "MCG", "Freq")) %>%
+  as_data_frame() %>%
+  filter(Freq > 0)
+fmcgs <- fmcgmlg %>%
+  group_by(MCG) %>%
+  summarize(MLGs = sum(Freq > 0), Samples = sum(Freq), Entropy = vegan::diversity(Freq), data = list(data_frame(MLG = MLG, Freq = Freq))) %>%
+  arrange(desc(MLGs))
+fmlgs <- fmcgmlg %>%
+  group_by(MLG) %>%
+  summarize(MCGs = sum(Freq > 0), Samples = sum(Freq), Entropy = vegan::diversity(Freq), data = list(data_frame(MCG = MCG, Freq = Freq))) %>%
+  arrange(desc(Samples), desc(MCGs))
+fmcgs
+fmlgs
+any(fmcgs$MLGs > 1)
+```
+
+
+## making a graph
+
+I believe that making a graph to visualize this might help me understand what the h\*ck is going on. 
+
+```{r}
+gdf <- mcgmlg %>% 
+  mutate(MLG = paste0('MLG.', MLG))
+MLGS <- gdf %>% 
+  group_by(MLG) %>%
+  summarize(size = sum(Freq)) %>%
+  rename(vertex = MLG)
+MCGS <- gdf %>% 
+  group_by(MCG) %>%
+  summarize(size = sum(Freq)) %>%
+  rename(vertex = MCG)
+VAT <- bind_rows(MLGS, MCGS)
+g <- gdf %>% 
+  select(MCG, MLG) %>%
+  graph_from_data_frame(vertices = VAT)
+osize <- V(g)$size
+```
+
+Because I have more control over the size and feel of the graph, I'm going to use
+ggraph. Of course, since this IS a complicated data set, It's not going to be
+very pretty to look at, but I'm going to save it as supplementary materials
+because it's valuable to at least look this ugliness in the face and say, "Yeah,
+I guess it's not so simple after all."
+
+```{r, fig.width = 10, fig.height = 10}
+
+V(g)$size <- sqrt(osize)/10
+V(g)$type <- ifelse(grepl("MLG", V(g)$name), "Multilocus Genotype", "Mycelial Compatibility Group")
+set.seed(2017-05-03)
+lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
+
+
+mcg_mlg_graph <- ggraph(lay2) +
+  geom_node_circle(aes(r = size, fill = type)) +
+  geom_node_text(aes(label = gsub("MLG.", "", name), color = type, size = size/4), show.legend = FALSE) +
+  geom_edge_link(aes(start_cap = circle(node1.size, unit = "native"), 
+                     end_cap = circle(node2.size, unit = "native")), 
+                 arrow = arrow(length = unit(0.0125, "native"))) +
+  coord_fixed() +
+  scale_color_manual(values = c("white", "black")) +
+  scale_fill_manual(values = c("black", "white")) +
+  theme_graph(base_size = 16, base_family = "Helvetica") +
+  theme(legend.position = "bottom") +
+  ggtitle("Relation of Multilocus Genotypes and MCGs") 
+  
+mcg_mlg_graph
+ggsave(file.path(PROJHOME, "results/figures/publication/FigureS2.svg"), 
+       width = 88*3, height = 88*3, units = "mm")
 ```
 
