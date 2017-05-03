@@ -63,7 +63,14 @@ mplot + scale_fill_viridis(discrete = TRUE, direction = -1, option = "C") +
   aes(color = I("black")) 
 ```
 
-Now we can take a look at the concordance of MLGs to MCGs
+Now we can take a look at the concordance of MLGs to MCGs. We can do this by 
+creating a contigency table. Of course, since we have 87 and well over 100 MLGs,
+this means that the contingency table is going to be big, so to summarize it
+further, I'm creating two tables, one based on MLGs that will count the number
+of MCGs within each MLG and vice-versa. Of course we lose information like, if
+an MCG contains several MLGs, how can we tell what the abundance is? A handy 
+measure is Evenness, which scales from 0 to 1, indicating how skewed the 
+observations are. 
 
 
 ```{r}
@@ -74,22 +81,63 @@ mcgmlg <- as.data.frame(table(mll(dat11, "original"), mll(dat11, "custom"))) %>%
   filter(Freq > 0)
 mcgs <- mcgmlg %>%
   group_by(MCG) %>%
-  summarize(MLGs = sum(Freq > 0), Samples = sum(Freq), Entropy = vegan::diversity(Freq), data = list(data_frame(MLG = MLG, Freq = Freq))) %>%
+  summarize(MLGs = sum(Freq > 0), 
+            Samples = sum(Freq), 
+            Evenness = diversity_stats(Freq)["E.5"], 
+            data = list(data_frame(MLG = MLG, Freq = Freq))) %>%
   arrange(desc(MLGs))
 mlgs <- mcgmlg %>%
   group_by(MLG) %>%
-  summarize(MCGs = sum(Freq > 0), Samples = sum(Freq), Entropy = vegan::diversity(Freq), data = list(data_frame(MCG = MCG, Freq = Freq))) %>%
+  summarize(MCGs = sum(Freq > 0), 
+            Samples = sum(Freq), 
+            Evenness = diversity_stats(Freq)["E.5"], 
+            data = list(data_frame(MCG = MCG, Freq = Freq))) %>%
   arrange(desc(Samples), desc(MCGs))
 mcgs
 mlgs
-any(mcgs$MLGs > 1)
+ 
 ```
+
+It might be better to visualize these data as barplots. Here we are mapping the
+type (MCG/Count) to color and the opacity (alpha) to Evenness.
+
+
+```{r barplots, fig.width = 10, fig.height = 4}
+mcgs %>% 
+  gather(type, count, MLGs, Samples, -Evenness) %>%
+  arrange(desc(type), desc(count)) %>%
+  mutate(MCG = forcats::fct_inorder(MCG, ordered = TRUE)) %>%
+  ggplot(aes(x = MCG, y = count, group = type, fill = type, alpha = Evenness)) +
+  geom_col(aes(width = ifelse(type == "MLGs", 0.5, 0.85)), color = "black", position = "identity") +
+  annotate(geom = "text", x = 13, y = 51, label = sprintf("Mean Evenness: %.3f", mean(mcgs$Evenness, na.rm = TRUE))) +
+  scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  scale_y_continuous(expand = c(0, 2)) +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0, hjust = 1)) +
+  ggtitle("How Evenly are Multilocus Genotypes (MLGs) spread across MCGs?")
+mlgs %>% 
+  gather(type, count, MCGs, Samples, -Evenness) %>%
+  arrange(desc(type), desc(count)) %>%
+  mutate(MLG = forcats::fct_inorder(MLG, ordered = TRUE)) %>%
+  ggplot(aes(x = MLG, y = count, group = type, fill = type)) +
+  geom_col(aes(width = ifelse(type == "MCGs", 0.5, 0.85), alpha = Evenness), color = "black", position = "identity") +
+  annotate(geom = "text", x = 20, y = 21, label = sprintf("Mean Evenness: %.3f", mean(mlgs$Evenness, na.rm = TRUE))) +
+  scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  scale_y_continuous(expand = c(0, 2)) +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0, hjust = 1)) +
+  ggtitle("How Evenly are MCGs spread across Multilocus Genotypes (MLGs)?")
+```
+
+
 
 We can see that there are plenty of MLGs that contain multiple MCGs. This 
 
 
 ```{r}
-mlg.filter(dat11, dist = bruvo.dist, replen = other(dat11)$REPLEN) <- .Machine$double.eps + (0.5/11)
+mlg.filter(dat11, dist = bruvo.dist, replen = other(dat11)$REPLEN) <- .Machine$double.eps + (3*(0.5/11))
 dat11
 
 fmcgmlg <- as.data.frame(table(mll(dat11, "contracted"), mll(dat11, "custom"))) %>%
@@ -115,21 +163,27 @@ any(fmcgs$MLGs > 1)
 I believe that making a graph to visualize this might help me understand what the h\*ck is going on. 
 
 ```{r}
-gdf <- mcgmlg %>% 
-  mutate(MLG = paste0('MLG.', MLG))
-MLGS <- gdf %>% 
-  group_by(MLG) %>%
-  summarize(size = sum(Freq)) %>%
-  rename(vertex = MLG)
-MCGS <- gdf %>% 
-  group_by(MCG) %>%
-  summarize(size = sum(Freq)) %>%
-  rename(vertex = MCG)
-VAT <- bind_rows(MLGS, MCGS)
-g <- gdf %>% 
-  select(MCG, MLG) %>%
-  graph_from_data_frame(vertices = VAT)
+make_mcgmlg_graph <- function(x){
+  gdf <- mutate(x, MLG = paste0('MLG.', MLG))
+  MLGS <- gdf %>% 
+    group_by(MLG) %>%
+    summarize(size = sum(Freq)) %>%
+    rename(vertex = MLG)
+  MCGS <- gdf %>% 
+    group_by(MCG) %>%
+    summarize(size = sum(Freq)) %>%
+    rename(vertex = MCG)
+  VAT <- bind_rows(MLGS, MCGS)
+  g <- gdf %>% 
+    select(MCG, MLG) %>%
+    graph_from_data_frame(vertices = VAT)
+  V(g)$type <- ifelse(grepl("MLG", V(g)$name), "Multilocus Genotype", "Mycelial Compatibility Group")
+  g
+}
+g <- make_mcgmlg_graph(mcgmlg)
+gf <- make_mcgmlg_graph(fmcgmlg)
 osize <- V(g)$size
+fosize <- V(gf)$size
 ```
 
 Because I have more control over the size and feel of the graph, I'm going to use
@@ -141,9 +195,10 @@ I guess it's not so simple after all."
 ```{r, fig.width = 10, fig.height = 10}
 
 V(g)$size <- sqrt(osize)/10
-V(g)$type <- ifelse(grepl("MLG", V(g)$name), "Multilocus Genotype", "Mycelial Compatibility Group")
+V(gf)$size <- sqrt(fosize)/10
 set.seed(2017-05-03)
 lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
+flay2 <- create_layout(gf, layout = "igraph", algorithm = "nicely")
 
 
 mcg_mlg_graph <- ggraph(lay2) +
@@ -160,7 +215,24 @@ mcg_mlg_graph <- ggraph(lay2) +
   ggtitle("Relation of Multilocus Genotypes and MCGs") 
   
 mcg_mlg_graph
+mcg_mlg_graph %+% flay2
 ggsave(file.path(PROJHOME, "results/figures/publication/FigureS2.svg"), 
        width = 88*3, height = 88*3, units = "mm")
 ```
 
+## Subgraph
+
+So that's a big hairy graph. What happens when we look at a subgraph of the
+top 5 MCGs?
+
+```{r top5graph, fig.height = 7, fig.width = 7}
+top5 <- filter(mcgmlg, as.character(MCG) %in% mcgs$MCG[1:5])
+top5g <- make_mcgmlg_graph(top5)
+tosize <- V(top5g)$size
+V(top5g)$size <- sqrt(tosize)/10
+set.seed(2017-05-03)
+top5lay <- create_layout(top5g, layout = "igraph", algorithm = "nicely")
+mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and associated MLGs")
+```
+
+Vey nice!
