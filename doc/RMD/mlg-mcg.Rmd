@@ -236,3 +236,27 @@ mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and ass
 ```
 
 Vey nice!
+
+There are a whole buttload of MLGs for those 5 MCGs. What are the severity 
+ratings for those?
+
+```{r severity, fig.width = 7, fig.height = 7}
+
+strat <- bind_cols(strata(dat11), 
+                   other(dat11)$meta, 
+                   data_frame(MLG = mll(dat11, "original")))
+Severity <- filter(strat, MCG %in% mcgs$MCG[1:5])
+ggplot(Severity, aes(x = MCG, y = Severity)) +
+  geom_point(aes(fill = ifelse(MLG %in% mlgs$MLG[1:5], MLG, "Other")), 
+             position = position_jitter(width = 0.25),
+             alpha = 0.75,
+             pch = 21) +
+  scale_fill_viridis(discrete = TRUE, direction = -1) +
+  facet_wrap(~Region, ncol = 2) +
+  labs(list(
+    title = "Severity by MCG and Region",
+    fill = "Multilocus Genotype",
+    caption = "Five most abundant multilocus genotypes shown"
+  ))
+```
+

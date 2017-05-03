@@ -196,7 +196,14 @@ mplot + scale_fill_viridis(discrete = TRUE, direction = -1, option = "C") +
 
 ![plot of chunk mlg_table](./figures/mlg-mcg///mlg_table-2.png)
 
-Now we can take a look at the concordance of MLGs to MCGs
+Now we can take a look at the concordance of MLGs to MCGs. We can do this by 
+creating a contigency table. Of course, since we have 87 and well over 100 MLGs,
+this means that the contingency table is going to be big, so to summarize it
+further, I'm creating two tables, one based on MLGs that will count the number
+of MCGs within each MLG and vice-versa. Of course we lose information like, if
+an MCG contains several MLGs, how can we tell what the abundance is? A handy 
+measure is Evenness, which scales from 0 to 1, indicating how skewed the 
+observations are. 
 
 
 
@@ -208,29 +215,35 @@ mcgmlg <- as.data.frame(table(mll(dat11, "original"), mll(dat11, "custom"))) %>%
   filter(Freq > 0)
 mcgs <- mcgmlg %>%
   group_by(MCG) %>%
-  summarize(MLGs = sum(Freq > 0), Samples = sum(Freq), Entropy = vegan::diversity(Freq), data = list(data_frame(MLG = MLG, Freq = Freq))) %>%
+  summarize(MLGs = sum(Freq > 0), 
+            Samples = sum(Freq), 
+            Evenness = diversity_stats(Freq)["E.5"], 
+            data = list(data_frame(MLG = MLG, Freq = Freq))) %>%
   arrange(desc(MLGs))
 mlgs <- mcgmlg %>%
   group_by(MLG) %>%
-  summarize(MCGs = sum(Freq > 0), Samples = sum(Freq), Entropy = vegan::diversity(Freq), data = list(data_frame(MCG = MCG, Freq = Freq))) %>%
+  summarize(MCGs = sum(Freq > 0), 
+            Samples = sum(Freq), 
+            Evenness = diversity_stats(Freq)["E.5"], 
+            data = list(data_frame(MCG = MCG, Freq = Freq))) %>%
   arrange(desc(Samples), desc(MCGs))
 mcgs
 ```
 
 ```
 ## # A tibble: 87 × 5
-##       MCG  MLGs Samples  Entropy              data
-##    <fctr> <int>   <int>    <dbl>            <list>
-## 1       5    37      73 3.050136 <tibble [37 × 2]>
-## 2      44    19      36 2.568269 <tibble [19 × 2]>
-## 3       1    10      15 2.153532 <tibble [10 × 2]>
-## 4       4     9      14 1.965237  <tibble [9 × 2]>
-## 5       2     9      10 2.163956  <tibble [9 × 2]>
-## 6      53     9       9 2.197225  <tibble [9 × 2]>
-## 7       3     8       8 2.079442  <tibble [8 × 2]>
-## 8       9     8      15 1.599015  <tibble [8 × 2]>
-## 9      45     7      16 1.559581  <tibble [7 × 2]>
-## 10     16     6       7 1.747868  <tibble [6 × 2]>
+##       MCG  MLGs Samples  Evenness              data
+##    <fctr> <int>   <int>     <dbl>            <list>
+## 1       5    37      73 0.4811239 <tibble [37 × 2]>
+## 2      44    19      36 0.6249418 <tibble [19 × 2]>
+## 3       1    10      15 0.8217819 <tibble [10 × 2]>
+## 4       4     9      14 0.7242515  <tibble [9 × 2]>
+## 5       2     9      10 0.9517005  <tibble [9 × 2]>
+## 6      53     9       9 1.0000000  <tibble [9 × 2]>
+## 7       3     8       8 1.0000000  <tibble [8 × 2]>
+## 8       9     8      15 0.5493741  <tibble [8 × 2]>
+## 9      45     7      16 0.6304310  <tibble [7 × 2]>
+## 10     16     6       7 0.9371824  <tibble [6 × 2]>
 ## # ... with 77 more rows
 ```
 
@@ -240,35 +253,78 @@ mlgs
 
 ```
 ## # A tibble: 165 × 5
-##       MLG  MCGs Samples   Entropy             data
+##       MLG  MCGs Samples  Evenness             data
 ##    <fctr> <int>   <int>     <dbl>           <list>
-## 1      25     5      27 0.9796882 <tibble [5 × 2]>
-## 2     163     2      15 0.6909233 <tibble [2 × 2]>
-## 3      65     2      11 0.3046361 <tibble [2 × 2]>
-## 4     140     3      10 1.0296530 <tibble [3 × 2]>
-## 5      66     1       8 0.0000000 <tibble [1 × 2]>
-## 6     165     3       7 0.7963116 <tibble [3 × 2]>
-## 7      78     4       6 1.2424533 <tibble [4 × 2]>
-## 8     160     4       5 1.3321790 <tibble [4 × 2]>
-## 9     104     2       5 0.5004024 <tibble [2 × 2]>
-## 10     75     3       4 1.0397208 <tibble [3 × 2]>
+## 1      25     5      27 0.5490333 <tibble [5 × 2]>
+## 2     163     2      15 0.9955736 <tibble [2 × 2]>
+## 3      65     2      11 0.5560301 <tibble [2 × 2]>
+## 4     140     3      10 0.9063854 <tibble [3 × 2]>
+## 5      66     1       8       NaN <tibble [1 × 2]>
+## 6     165     3       7 0.6693363 <tibble [3 × 2]>
+## 7      78     4       6 0.8116548 <tibble [4 × 2]>
+## 8     160     4       5 0.9218931 <tibble [4 × 2]>
+## 9     104     2       5 0.7246677 <tibble [2 × 2]>
+## 10     75     3       4 0.9115303 <tibble [3 × 2]>
 ## # ... with 155 more rows
 ```
 
+It might be better to visualize these data as barplots. Here we are mapping the
+type (MCG/Count) to color and the opacity (alpha) to Evenness.
+
+
+
 ```r
-any(mcgs$MLGs > 1)
+mcgs %>% 
+  gather(type, count, MLGs, Samples, -Evenness) %>%
+  arrange(desc(type), desc(count)) %>%
+  mutate(MCG = forcats::fct_inorder(MCG, ordered = TRUE)) %>%
+  ggplot(aes(x = MCG, y = count, group = type, fill = type, alpha = Evenness)) +
+  geom_col(aes(width = ifelse(type == "MLGs", 0.5, 0.85)), color = "black", position = "identity") +
+  annotate(geom = "text", x = 13, y = 51, label = sprintf("Mean Evenness: %.3f", mean(mcgs$Evenness, na.rm = TRUE))) +
+  scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  scale_y_continuous(expand = c(0, 2)) +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0, hjust = 1)) +
+  ggtitle("How Evenly are Multilocus Genotypes (MLGs) spread across MCGs?")
 ```
 
 ```
-## [1] TRUE
+## Warning: Ignoring unknown aesthetics: width
 ```
+
+![plot of chunk barplots](./figures/mlg-mcg///barplots-1.png)
+
+```r
+mlgs %>% 
+  gather(type, count, MCGs, Samples, -Evenness) %>%
+  arrange(desc(type), desc(count)) %>%
+  mutate(MLG = forcats::fct_inorder(MLG, ordered = TRUE)) %>%
+  ggplot(aes(x = MLG, y = count, group = type, fill = type)) +
+  geom_col(aes(width = ifelse(type == "MCGs", 0.5, 0.85), alpha = Evenness), color = "black", position = "identity") +
+  annotate(geom = "text", x = 20, y = 21, label = sprintf("Mean Evenness: %.3f", mean(mlgs$Evenness, na.rm = TRUE))) +
+  scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  scale_y_continuous(expand = c(0, 2)) +
+  theme_minimal() +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0, hjust = 1)) +
+  ggtitle("How Evenly are MCGs spread across Multilocus Genotypes (MLGs)?")
+```
+
+```
+## Warning: Ignoring unknown aesthetics: width
+```
+
+![plot of chunk barplots](./figures/mlg-mcg///barplots-2.png)
+
+
 
 We can see that there are plenty of MLGs that contain multiple MCGs. This 
 
 
 
 ```r
-mlg.filter(dat11, dist = bruvo.dist, replen = other(dat11)$REPLEN) <- .Machine$double.eps + (0.5/11)
+mlg.filter(dat11, dist = bruvo.dist, replen = other(dat11)$REPLEN) <- .Machine$double.eps + (3*(0.5/11))
 dat11
 ```
 
@@ -278,8 +334,8 @@ dat11
 ## -------------------------
 ## Genotype information:
 ## 
-##    136 contracted multilocus genotypes
-##        (0.045) [t], (bruvo.dist) [d], (farthest) [a] 
+##     91 contracted multilocus genotypes
+##        (0.136) [t], (bruvo.dist) [d], (farthest) [a] 
 ##    366 haploid individuals
 ##     11 codominant loci
 ## 
@@ -310,16 +366,16 @@ fmcgs
 ## # A tibble: 87 × 5
 ##       MCG  MLGs Samples  Entropy              data
 ##    <fctr> <int>   <int>    <dbl>            <list>
-## 1       5    29      73 2.789216 <tibble [29 × 2]>
-## 2      44    17      36 2.405295 <tibble [17 × 2]>
-## 3       1    10      15 2.153532 <tibble [10 × 2]>
-## 4       4     9      14 1.965237  <tibble [9 × 2]>
-## 5       2     9      10 2.163956  <tibble [9 × 2]>
-## 6       3     8       8 2.079442  <tibble [8 × 2]>
-## 7      53     8       9 2.043192  <tibble [8 × 2]>
-## 8      45     7      16 1.559581  <tibble [7 × 2]>
-## 9       9     7      15 1.506595  <tibble [7 × 2]>
-## 10     16     6       7 1.747868  <tibble [6 × 2]>
+## 1       5    19      73 2.374617 <tibble [19 × 2]>
+## 2      44    12      36 2.005068 <tibble [12 × 2]>
+## 3       4     9      14 1.965237  <tibble [9 × 2]>
+## 4       1     9      15 1.898927  <tibble [9 × 2]>
+## 5      45     7      16 1.559581  <tibble [7 × 2]>
+## 6       3     7       8 1.906155  <tibble [7 × 2]>
+## 7       2     7      10 1.886697  <tibble [7 × 2]>
+## 8      53     7       9 1.831020  <tibble [7 × 2]>
+## 9      16     6       7 1.747868  <tibble [6 × 2]>
+## 10     18     6       6 1.791759  <tibble [6 × 2]>
 ## # ... with 77 more rows
 ```
 
@@ -328,20 +384,20 @@ fmlgs
 ```
 
 ```
-## # A tibble: 136 × 5
+## # A tibble: 91 × 5
 ##       MLG  MCGs Samples   Entropy             data
 ##    <fctr> <int>   <int>     <dbl>           <list>
-## 1      25     5      28 0.9569788 <tibble [5 × 2]>
-## 2     163     3      16 0.8815323 <tibble [3 × 2]>
-## 3     140     4      11 1.2406843 <tibble [4 × 2]>
-## 4      65     2      11 0.3046361 <tibble [2 × 2]>
-## 5      75     6      10 1.4978661 <tibble [6 × 2]>
-## 6       9     2       8 0.3767702 <tibble [2 × 2]>
-## 7      66     1       8 0.0000000 <tibble [1 × 2]>
-## 8     165     3       7 0.7963116 <tibble [3 × 2]>
-## 9     104     2       7 0.6829081 <tibble [2 × 2]>
-## 10    152     5       6 1.5607104 <tibble [5 × 2]>
-## # ... with 126 more rows
+## 1      25     6      30 1.0503092 <tibble [6 × 2]>
+## 2      35     5      17 0.8717815 <tibble [5 × 2]>
+## 3     159     4      17 1.0533955 <tibble [4 × 2]>
+## 4      68     3      15 0.4850941 <tibble [3 × 2]>
+## 5     138     4      13 1.2047933 <tibble [4 × 2]>
+## 6     160     8      12 1.9792045 <tibble [8 × 2]>
+## 7      76     6      12 1.4735024 <tibble [6 × 2]>
+## 8     104     3      11 0.9949236 <tibble [3 × 2]>
+## 9     109     4      10 1.2798542 <tibble [4 × 2]>
+## 10     66     1      10 0.0000000 <tibble [1 × 2]>
+## # ... with 81 more rows
 ```
 
 ```r
@@ -359,21 +415,27 @@ I believe that making a graph to visualize this might help me understand what th
 
 
 ```r
-gdf <- mcgmlg %>% 
-  mutate(MLG = paste0('MLG.', MLG))
-MLGS <- gdf %>% 
-  group_by(MLG) %>%
-  summarize(size = sum(Freq)) %>%
-  rename(vertex = MLG)
-MCGS <- gdf %>% 
-  group_by(MCG) %>%
-  summarize(size = sum(Freq)) %>%
-  rename(vertex = MCG)
-VAT <- bind_rows(MLGS, MCGS)
-g <- gdf %>% 
-  select(MCG, MLG) %>%
-  graph_from_data_frame(vertices = VAT)
+make_mcgmlg_graph <- function(x){
+  gdf <- mutate(x, MLG = paste0('MLG.', MLG))
+  MLGS <- gdf %>% 
+    group_by(MLG) %>%
+    summarize(size = sum(Freq)) %>%
+    rename(vertex = MLG)
+  MCGS <- gdf %>% 
+    group_by(MCG) %>%
+    summarize(size = sum(Freq)) %>%
+    rename(vertex = MCG)
+  VAT <- bind_rows(MLGS, MCGS)
+  g <- gdf %>% 
+    select(MCG, MLG) %>%
+    graph_from_data_frame(vertices = VAT)
+  V(g)$type <- ifelse(grepl("MLG", V(g)$name), "Multilocus Genotype", "Mycelial Compatibility Group")
+  g
+}
+g <- make_mcgmlg_graph(mcgmlg)
+gf <- make_mcgmlg_graph(fmcgmlg)
 osize <- V(g)$size
+fosize <- V(gf)$size
 ```
 
 Because I have more control over the size and feel of the graph, I'm going to use
@@ -385,9 +447,10 @@ I guess it's not so simple after all."
 
 ```r
 V(g)$size <- sqrt(osize)/10
-V(g)$type <- ifelse(grepl("MLG", V(g)$name), "Multilocus Genotype", "Mycelial Compatibility Group")
+V(gf)$size <- sqrt(fosize)/10
 set.seed(2017-05-03)
 lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
+flay2 <- create_layout(gf, layout = "igraph", algorithm = "nicely")
 
 
 mcg_mlg_graph <- ggraph(lay2) +
@@ -409,7 +472,58 @@ mcg_mlg_graph
 ![plot of chunk unnamed-chunk-4](./figures/mlg-mcg///unnamed-chunk-4-1.png)
 
 ```r
+mcg_mlg_graph %+% flay2
+```
+
+![plot of chunk unnamed-chunk-4](./figures/mlg-mcg///unnamed-chunk-4-2.png)
+
+```r
 ggsave(file.path(PROJHOME, "results/figures/publication/FigureS2.svg"), 
        width = 88*3, height = 88*3, units = "mm")
 ```
+
+## Subgraph
+
+So that's a big hairy graph. What happens when we look at a subgraph of the
+top 5 MCGs?
+
+
+```r
+top5 <- filter(mcgmlg, as.character(MCG) %in% mcgs$MCG[1:5])
+top5g <- make_mcgmlg_graph(top5)
+tosize <- V(top5g)$size
+V(top5g)$size <- sqrt(tosize)/10
+set.seed(2017-05-03)
+top5lay <- create_layout(top5g, layout = "igraph", algorithm = "nicely")
+mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and associated MLGs")
+```
+
+![plot of chunk top5graph](./figures/mlg-mcg///top5graph-1.png)
+
+Vey nice!
+
+There are a whole buttload of MLGs for those 5 MCGs. What are the severity 
+ratings for those?
+
+
+```r
+strat <- bind_cols(strata(dat11), 
+                   other(dat11)$meta, 
+                   data_frame(MLG = mll(dat11, "original")))
+Severity <- filter(strat, MCG %in% mcgs$MCG[1:5])
+ggplot(Severity, aes(x = MCG, y = Severity)) +
+  geom_point(aes(fill = ifelse(MLG %in% mlgs$MLG[1:5], MLG, "Other")), 
+             position = position_jitter(width = 0.25),
+             alpha = 0.75,
+             pch = 21) +
+  scale_fill_viridis(discrete = TRUE, direction = -1) +
+  facet_wrap(~Region, ncol = 2) +
+  labs(list(
+    title = "Severity by MCG and Region",
+    fill = "Multilocus Genotype",
+    caption = "Five most abundant multilocus genotypes shown"
+  ))
+```
+
+![plot of chunk severity](./figures/mlg-mcg///severity-1.png)
 
