@@ -318,97 +318,6 @@ mlgs %>%
 ![plot of chunk barplots](./figures/mlg-mcg///barplots-2.png)
 
 
-
-We can see that there are plenty of MLGs that contain multiple MCGs. This 
-
-
-
-```r
-mlg.filter(dat11, dist = bruvo.dist, replen = other(dat11)$REPLEN) <- .Machine$double.eps + (3*(0.5/11))
-dat11
-```
-
-```
-## 
-## This is a genclone object
-## -------------------------
-## Genotype information:
-## 
-##     91 contracted multilocus genotypes
-##        (0.136) [t], (bruvo.dist) [d], (farthest) [a] 
-##    366 haploid individuals
-##     11 codominant loci
-## 
-## Population information:
-## 
-##      6 strata - MCG, Region, Source, Year, Host, MLGRegion
-##      6 populations defined - 
-## Midwest, Costal, International, WI, ID, Mexico
-```
-
-```r
-fmcgmlg <- as.data.frame(table(mll(dat11, "contracted"), mll(dat11, "custom"))) %>%
-  setNames(c("MLG", "MCG", "Freq")) %>%
-  as_data_frame() %>%
-  filter(Freq > 0)
-fmcgs <- fmcgmlg %>%
-  group_by(MCG) %>%
-  summarize(MLGs = sum(Freq > 0), Samples = sum(Freq), Entropy = vegan::diversity(Freq), data = list(data_frame(MLG = MLG, Freq = Freq))) %>%
-  arrange(desc(MLGs))
-fmlgs <- fmcgmlg %>%
-  group_by(MLG) %>%
-  summarize(MCGs = sum(Freq > 0), Samples = sum(Freq), Entropy = vegan::diversity(Freq), data = list(data_frame(MCG = MCG, Freq = Freq))) %>%
-  arrange(desc(Samples), desc(MCGs))
-fmcgs
-```
-
-```
-## # A tibble: 87 × 5
-##       MCG  MLGs Samples  Entropy              data
-##    <fctr> <int>   <int>    <dbl>            <list>
-## 1       5    19      73 2.374617 <tibble [19 × 2]>
-## 2      44    12      36 2.005068 <tibble [12 × 2]>
-## 3       4     9      14 1.965237  <tibble [9 × 2]>
-## 4       1     9      15 1.898927  <tibble [9 × 2]>
-## 5      45     7      16 1.559581  <tibble [7 × 2]>
-## 6       3     7       8 1.906155  <tibble [7 × 2]>
-## 7       2     7      10 1.886697  <tibble [7 × 2]>
-## 8      53     7       9 1.831020  <tibble [7 × 2]>
-## 9      16     6       7 1.747868  <tibble [6 × 2]>
-## 10     18     6       6 1.791759  <tibble [6 × 2]>
-## # ... with 77 more rows
-```
-
-```r
-fmlgs
-```
-
-```
-## # A tibble: 91 × 5
-##       MLG  MCGs Samples   Entropy             data
-##    <fctr> <int>   <int>     <dbl>           <list>
-## 1      25     6      30 1.0503092 <tibble [6 × 2]>
-## 2      35     5      17 0.8717815 <tibble [5 × 2]>
-## 3     159     4      17 1.0533955 <tibble [4 × 2]>
-## 4      68     3      15 0.4850941 <tibble [3 × 2]>
-## 5     138     4      13 1.2047933 <tibble [4 × 2]>
-## 6     160     8      12 1.9792045 <tibble [8 × 2]>
-## 7      76     6      12 1.4735024 <tibble [6 × 2]>
-## 8     104     3      11 0.9949236 <tibble [3 × 2]>
-## 9     109     4      10 1.2798542 <tibble [4 × 2]>
-## 10     66     1      10 0.0000000 <tibble [1 × 2]>
-## # ... with 81 more rows
-```
-
-```r
-any(fmcgs$MLGs > 1)
-```
-
-```
-## [1] TRUE
-```
-
-
 ## making a graph
 
 I believe that making a graph to visualize this might help me understand what the h\*ck is going on. 
@@ -427,15 +336,14 @@ make_mcgmlg_graph <- function(x){
     rename(vertex = MCG)
   VAT <- bind_rows(MLGS, MCGS)
   g <- gdf %>% 
-    select(MCG, MLG) %>%
+    select(MCG, MLG, Freq) %>%
+    rename(weight = Freq) %>%
     graph_from_data_frame(vertices = VAT)
   V(g)$type <- ifelse(grepl("MLG", V(g)$name), "Multilocus Genotype", "Mycelial Compatibility Group")
   g
 }
 g <- make_mcgmlg_graph(mcgmlg)
-gf <- make_mcgmlg_graph(fmcgmlg)
 osize <- V(g)$size
-fosize <- V(gf)$size
 ```
 
 Because I have more control over the size and feel of the graph, I'm going to use
@@ -447,35 +355,30 @@ I guess it's not so simple after all."
 
 ```r
 V(g)$size <- sqrt(osize)/10
-V(gf)$size <- sqrt(fosize)/10
-set.seed(2017-05-03)
+set.seed(2017-05-05)
 lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
-flay2 <- create_layout(gf, layout = "igraph", algorithm = "nicely")
 
 
 mcg_mlg_graph <- ggraph(lay2) +
   geom_node_circle(aes(r = size, fill = type)) +
-  geom_node_text(aes(label = gsub("MLG.", "", name), color = type, size = size/4), show.legend = FALSE) +
   geom_edge_link(aes(start_cap = circle(node1.size, unit = "native"), 
-                     end_cap = circle(node2.size, unit = "native")), 
-                 arrow = arrow(length = unit(0.0125, "native"))) +
+                     end_cap = circle(node2.size, unit = "native"), 
+                     width = weight),
+                 arrow = arrow(length = unit(0.01, "native"))) +
+  geom_node_text(aes(label = gsub("MLG.", "", name), color = type, size = size/10), show.legend = FALSE) +
   coord_fixed() +
+  scale_edge_width(range = c(0.25, 1.5)) +
+  # scale_edge_color_viridis(option = "C", end = 0.9) +
   scale_color_manual(values = c("white", "black")) +
   scale_fill_manual(values = c("black", "white")) +
   theme_graph(base_size = 16, base_family = "Helvetica") +
-  theme(legend.position = "bottom") +
+  theme(legend.position = "bottom", legend.direction = "vertical") +
   ggtitle("Relation of Multilocus Genotypes and MCGs") 
   
 mcg_mlg_graph
 ```
 
-![plot of chunk unnamed-chunk-4](./figures/mlg-mcg///unnamed-chunk-4-1.png)
-
-```r
-mcg_mlg_graph %+% flay2
-```
-
-![plot of chunk unnamed-chunk-4](./figures/mlg-mcg///unnamed-chunk-4-2.png)
+![plot of chunk unnamed-chunk-3](./figures/mlg-mcg///unnamed-chunk-3-1.png)
 
 ```r
 ggsave(file.path(PROJHOME, "results/figures/publication/FigureS2.svg"), 
@@ -503,27 +406,50 @@ mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and ass
 Vey nice!
 
 There are a whole buttload of MLGs for those 5 MCGs. What are the severity 
-ratings for those?
+ratings for those? Again, we take take a look at these AND simultaneously query
+the top 5 MLGs for this. 
 
 
 ```r
 strat <- bind_cols(strata(dat11), 
                    other(dat11)$meta, 
                    data_frame(MLG = mll(dat11, "original")))
-Severity <- filter(strat, MCG %in% mcgs$MCG[1:5])
-ggplot(Severity, aes(x = MCG, y = Severity)) +
-  geom_point(aes(fill = ifelse(MLG %in% mlgs$MLG[1:5], MLG, "Other")), 
-             position = position_jitter(width = 0.25),
+count_group <- . %>% 
+  mutate(nobs = n()) %>%  # count the number of samples/MCG
+  ungroup() %>%
+  arrange(desc(nobs)) # arrange by number of samples and reorder factors 
+Severity <- filter(strat, MCG %in% mcgs$MCG[1:5]) %>%
+  group_by(MCG) %>% 
+  count_group %>%
+  mutate(MCG = forcats::fct_inorder(factor(MCG), ordered = TRUE)) %>%
+  mutate(MLG = ifelse(MLG %in% mlgs$MLG[1:5], paste("MLG", MLG), "Other")) 
+  
+severity_plot <- ggplot(Severity, aes(x = MCG, y = Severity)) +
+  geom_point(aes(fill = MLG), 
+             position = position_jitter(width = 0.2),
              alpha = 0.75,
              pch = 21) +
   scale_fill_viridis(discrete = TRUE, direction = -1) +
-  facet_wrap(~Region, ncol = 2) +
+  theme_bw() +
+  theme(legend.position = "bottom") +
+  theme(aspect.ratio = 0.6) +
+  facet_wrap(~Region, nrow = 2) +
+  ylim(c(3.5, 8)) +
   labs(list(
     title = "Severity by MCG and Region",
     fill = "Multilocus Genotype",
-    caption = "Five most abundant multilocus genotypes shown"
+    subtitle = "Five most abundant multilocus genotypes shown"
   ))
+severity_plot
 ```
 
 ![plot of chunk severity](./figures/mlg-mcg///severity-1.png)
+
+```r
+ggsave(severity_plot, filename = "results/figures/publication/FigureS3.svg", width = 183, unit = "mm")
+```
+
+```
+## Saving 183 x 102 mm image
+```
 
