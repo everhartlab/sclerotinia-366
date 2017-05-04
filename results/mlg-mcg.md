@@ -396,10 +396,16 @@ top5 <- filter(mcgmlg, as.character(MCG) %in% mcgs$MCG[1:5])
 top5g <- make_mcgmlg_graph(top5)
 tosize <- V(top5g)$size
 V(top5g)$size <- sqrt(tosize)/10
-set.seed(2017-05-03)
+set.seed(2017-05-04)
 top5lay <- create_layout(top5g, layout = "igraph", algorithm = "nicely")
 t5g <- mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and associated MLGs")
-ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.svg"), width = 88, height = 88, units = "mm")
+t5g
+```
+
+![plot of chunk top5graph](./figures/mlg-mcg///top5graph-1.png)
+
+```r
+ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.svg"), width = 88, height = 88, scale = 3, units = "mm")
 ```
 
 Vey nice!
