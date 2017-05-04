@@ -179,17 +179,15 @@ V(g)$size <- sqrt(osize)/10
 set.seed(2017-05-05)
 lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
 
-cnames <- LETTERS[1:10]
-cnames[c(7, 5, 1)] <- LETTERS[1:3]
 the_communities <- data_frame(vertex = lay2$name, community = lay2$community) %>%
-  mutate(community = case_when(
+  mutate(comm = case_when(
     .$community == 7 ~ "A",
     .$community == 5 ~ "B",
     .$community == 1 ~ "C",
     TRUE ~ as.character(.$community)
   )) %>%
   group_by(community) %>%
-  mutate(comm = ifelse(n() > 10, paste("Community", community), "Other Communities (n < 10)")) %>%
+  mutate(comm = ifelse(n() > 10, paste("Community", comm), "Other Communities (n < 10)")) %>%
   mutate(comm = comm) # It just so happens that the communities are in order by size.
 lay2$community <- the_communities$comm
 mcg_mlg_graph <- ggraph(lay2) +
@@ -275,3 +273,53 @@ severity_plot
 ggsave(severity_plot, filename = "results/figures/publication/FigureS3.svg", width = 183, unit = "mm")
 ```
 
+
+## Assessing MCG/MLG community structure/cohesiveness
+
+The communities defined above are defined by the connections between different
+MCGs. There is still the question of how cohesive these communities are. I 
+believe one way to investigate this is to add the communities assignments back
+to the data and assess how well they split up on a dendrogram created with 
+genetic distance.
+
+Note in this case we are assigning MLGs to the communities indicated. This means
+that even though they share a connection with an MCG in a different community,
+they belong to the MCG community they were initially assigned to. We will also
+assign communities based on what MCG they belong to. 
+
+```{r treebuilding, cache = TRUE}
+the_communities
+strat_mlg <- strat %>% 
+  mutate(MLG = paste0("MLG.", MLG)) %>%
+  left_join(the_communities, by = c("MLG" = "vertex"))
+strat_mcg <- strat %>% 
+  left_join(the_communities, by = c("MCG" = "vertex"))
+
+datdist <- bruvo.dist(dat11, replen = other(dat)$REPLEN)
+datree <- phangorn::upgma(datdist)
+```
+
+Now we can visualize that tree.
+
+```{r, fig.width = 7, fig.height = 7}
+ape::plot.phylo(ape::ladderize(datree), type = "fan", no.margin = FALSE, tip.col = viridis(4, direction = -1)[as.integer(factor(strat_mlg$comm))])
+legend(-0.015, 0.11, legend = levels(factor(strat_mlg$comm)), fill = viridis(4, direction = -1), bty = "n")
+title("MLG-based assignment")
+ape::plot.phylo(ape::ladderize(datree), type = "fan", no.margin = FALSE, tip.col = viridis(4, direction = -1)[as.integer(factor(strat_mcg$comm))])
+legend(-0.015, 0.11, legend = levels(factor(strat_mcg$comm)), fill = viridis(4, direction = -1), bty = "n")
+title("MCG-based assignment")
+```
+
+From what I can see, it appears that there's not much of a tight correlation of 
+genetic structure and MCG.
+
+
+<details>
+<summary>Session Information</summary>
+
+```{r, echo = FALSE}
+options(width = 100)
+devtools::session_info()
+```
+
+</details>

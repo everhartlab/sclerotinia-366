@@ -366,17 +366,15 @@ V(g)$size <- sqrt(osize)/10
 set.seed(2017-05-05)
 lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
 
-cnames <- LETTERS[1:10]
-cnames[c(7, 5, 1)] <- LETTERS[1:3]
 the_communities <- data_frame(vertex = lay2$name, community = lay2$community) %>%
-  mutate(community = case_when(
+  mutate(comm = case_when(
     .$community == 7 ~ "A",
     .$community == 5 ~ "B",
     .$community == 1 ~ "C",
     TRUE ~ as.character(.$community)
   )) %>%
   group_by(community) %>%
-  mutate(comm = ifelse(n() > 10, paste("Community", community), "Other Communities (n < 10)")) %>%
+  mutate(comm = ifelse(n() > 10, paste("Community", comm), "Other Communities (n < 10)")) %>%
   mutate(comm = comm) # It just so happens that the communities are in order by size.
 lay2$community <- the_communities$comm
 mcg_mlg_graph <- ggraph(lay2) +
@@ -494,3 +492,211 @@ ggsave(severity_plot, filename = "results/figures/publication/FigureS3.svg", wid
 ## Saving 183 x 102 mm image
 ```
 
+
+## Assessing MCG/MLG community structure/cohesiveness
+
+The communities defined above are defined by the connections between different
+MCGs. There is still the question of how cohesive these communities are. I 
+believe one way to investigate this is to add the communities assignments back
+to the data and assess how well they split up on a dendrogram created with 
+genetic distance.
+
+Note in this case we are assigning MLGs to the communities indicated. This means
+that even though they share a connection with an MCG in a different community,
+they belong to the MCG community they were initially assigned to. We will also
+assign communities based on what MCG they belong to. 
+
+
+```r
+the_communities
+```
+
+```
+## Source: local data frame [252 x 3]
+## Groups: community [51]
+## 
+##     vertex community                       comm
+##     <fctr>    <fctr>                      <chr>
+## 1    MLG.1        39 Other Communities (n < 10)
+## 2   MLG.10        32 Other Communities (n < 10)
+## 3  MLG.100         8 Other Communities (n < 10)
+## 4  MLG.101        11 Other Communities (n < 10)
+## 5  MLG.102        10 Other Communities (n < 10)
+## 6  MLG.103         7                Community A
+## 7  MLG.104         7                Community A
+## 8  MLG.105        33 Other Communities (n < 10)
+## 9  MLG.106        22 Other Communities (n < 10)
+## 10 MLG.107        17 Other Communities (n < 10)
+## # ... with 242 more rows
+```
+
+```r
+strat_mlg <- strat %>% 
+  mutate(MLG = paste0("MLG.", MLG)) %>%
+  left_join(the_communities, by = c("MLG" = "vertex"))
+```
+
+```
+## Warning in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## factor and character vector, coercing into character vector
+```
+
+```r
+strat_mcg <- strat %>% 
+  left_join(the_communities, by = c("MCG" = "vertex"))
+```
+
+```
+## Warning in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## factors with different levels, coercing to character vector
+```
+
+```r
+datdist <- bruvo.dist(dat11, replen = other(dat)$REPLEN)
+datree <- phangorn::upgma(datdist)
+```
+
+Now we can visualize that tree.
+
+
+```r
+ape::plot.phylo(ape::ladderize(datree), type = "fan", no.margin = FALSE, tip.col = viridis(4, direction = -1)[as.integer(factor(strat_mlg$comm))])
+legend(-0.015, 0.11, legend = levels(factor(strat_mlg$comm)), fill = viridis(4, direction = -1), bty = "n")
+title("MLG-based assignment")
+```
+
+![plot of chunk unnamed-chunk-4](./figures/mlg-mcg///unnamed-chunk-4-1.png)
+
+```r
+ape::plot.phylo(ape::ladderize(datree), type = "fan", no.margin = FALSE, tip.col = viridis(4, direction = -1)[as.integer(factor(strat_mcg$comm))])
+legend(-0.015, 0.11, legend = levels(factor(strat_mcg$comm)), fill = viridis(4, direction = -1), bty = "n")
+title("MCG-based assignment")
+```
+
+![plot of chunk unnamed-chunk-4](./figures/mlg-mcg///unnamed-chunk-4-2.png)
+
+From what I can see, it appears that there's not much of a tight correlation of 
+genetic structure and MCG.
+
+
+<details>
+<summary>Session Information</summary>
+
+
+```
+## Session info ---------------------------------------------------------------------------------------
+```
+
+```
+##  setting  value                       
+##  version  R version 3.4.0 (2017-04-21)
+##  system   x86_64, darwin15.6.0        
+##  ui       X11                         
+##  language (EN)                        
+##  collate  en_US.UTF-8                 
+##  tz       America/Chicago             
+##  date     2017-05-04
+```
+
+```
+## Packages -------------------------------------------------------------------------------------------
+```
+
+```
+##  package     * version date       source                                  
+##  ade4        * 1.7-6   2017-03-23 CRAN (R 3.4.0)                          
+##  adegenet    * 2.1.0   2017-04-23 Github (thibautjombart/adegenet@2c5dbdf)
+##  ape           4.1     2017-02-14 CRAN (R 3.4.0)                          
+##  assertr       2.0.2   2017-03-23 CRAN (R 3.4.0)                          
+##  assertthat    0.2.0   2017-04-11 CRAN (R 3.4.0)                          
+##  boot          1.3-19  2017-04-21 CRAN (R 3.4.0)                          
+##  broom         0.4.2   2017-02-13 CRAN (R 3.4.0)                          
+##  cellranger    1.1.0   2016-07-27 CRAN (R 3.4.0)                          
+##  cluster       2.0.6   2017-03-16 CRAN (R 3.4.0)                          
+##  coda          0.19-1  2016-12-08 CRAN (R 3.4.0)                          
+##  colorspace    1.3-2   2016-12-14 CRAN (R 3.4.0)                          
+##  DBI           0.6-1   2017-04-01 CRAN (R 3.4.0)                          
+##  deldir        0.1-14  2017-04-22 CRAN (R 3.4.0)                          
+##  devtools      1.12.0  2016-12-05 CRAN (R 3.4.0)                          
+##  digest        0.6.12  2017-01-27 CRAN (R 3.4.0)                          
+##  dplyr       * 0.5.0   2016-06-24 cran (@0.5.0)                           
+##  evaluate      0.10    2016-10-11 CRAN (R 3.4.0)                          
+##  expm          0.999-2 2017-03-29 CRAN (R 3.4.0)                          
+##  ezknitr       0.6     2016-09-16 CRAN (R 3.4.0)                          
+##  fastmatch     1.1-0   2017-01-28 CRAN (R 3.4.0)                          
+##  forcats       0.2.0   2017-01-23 CRAN (R 3.4.0)                          
+##  foreign       0.8-68  2017-04-24 CRAN (R 3.4.0)                          
+##  gdata         2.17.0  2015-07-04 CRAN (R 3.4.0)                          
+##  gdtools     * 0.1.4   2017-03-17 CRAN (R 3.4.0)                          
+##  ggforce       0.1.1   2016-11-28 CRAN (R 3.4.0)                          
+##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.0)                          
+##  ggraph      * 1.0.0   2017-05-04 Github (zkamvar/ggraph@0d099f3)         
+##  ggrepel       0.6.6   2017-04-28 Github (slowkow/ggrepel@007318f)        
+##  gmodels       2.16.2  2015-07-22 CRAN (R 3.4.0)                          
+##  gridExtra     2.2.1   2016-02-29 CRAN (R 3.4.0)                          
+##  gtable        0.2.0   2016-02-26 CRAN (R 3.4.0)                          
+##  gtools        3.5.0   2015-05-29 CRAN (R 3.4.0)                          
+##  haven         1.0.0   2016-09-23 CRAN (R 3.4.0)                          
+##  highr         0.6     2016-05-09 CRAN (R 3.4.0)                          
+##  hms           0.3     2016-11-22 CRAN (R 3.4.0)                          
+##  htmltools     0.3.6   2017-04-28 CRAN (R 3.4.0)                          
+##  httpuv        1.3.3   2015-08-04 CRAN (R 3.4.0)                          
+##  httr          1.2.1   2016-07-03 CRAN (R 3.4.0)                          
+##  igraph      * 1.0.1   2015-06-26 CRAN (R 3.4.0)                          
+##  jsonlite      1.4     2017-04-08 CRAN (R 3.4.0)                          
+##  knitr       * 1.15.1  2016-11-22 CRAN (R 3.4.0)                          
+##  labeling      0.3     2014-08-23 CRAN (R 3.4.0)                          
+##  lattice       0.20-35 2017-03-25 CRAN (R 3.4.0)                          
+##  lazyeval      0.2.0   2016-06-12 CRAN (R 3.4.0)                          
+##  LearnBayes    2.15    2014-05-29 CRAN (R 3.4.0)                          
+##  lubridate     1.6.0   2016-09-13 CRAN (R 3.4.0)                          
+##  magrittr      1.5     2014-11-22 CRAN (R 3.4.0)                          
+##  MASS          7.3-47  2017-04-21 CRAN (R 3.4.0)                          
+##  Matrix        1.2-10  2017-04-28 CRAN (R 3.4.0)                          
+##  memoise       1.1.0   2017-04-21 CRAN (R 3.4.0)                          
+##  mgcv          1.8-17  2017-02-08 CRAN (R 3.4.0)                          
+##  mime          0.5     2016-07-07 CRAN (R 3.4.0)                          
+##  mnormt        1.5-5   2016-10-15 CRAN (R 3.4.0)                          
+##  modelr        0.1.0   2016-08-31 CRAN (R 3.4.0)                          
+##  munsell       0.4.3   2016-02-13 CRAN (R 3.4.0)                          
+##  nlme          3.1-131 2017-02-06 CRAN (R 3.4.0)                          
+##  pegas         0.10    2017-05-03 CRAN (R 3.4.0)                          
+##  permute       0.9-4   2016-09-09 CRAN (R 3.4.0)                          
+##  phangorn      2.2.0   2017-04-03 CRAN (R 3.4.0)                          
+##  plyr          1.8.4   2016-06-08 CRAN (R 3.4.0)                          
+##  poppr       * 2.4.1   2017-04-14 CRAN (R 3.4.0)                          
+##  psych         1.7.5   2017-05-03 CRAN (R 3.4.0)                          
+##  purrr       * 0.2.2   2016-06-18 CRAN (R 3.4.0)                          
+##  quadprog      1.5-5   2013-04-17 CRAN (R 3.4.0)                          
+##  R.methodsS3   1.7.1   2016-02-16 CRAN (R 3.4.0)                          
+##  R.oo          1.21.0  2016-11-01 CRAN (R 3.4.0)                          
+##  R.utils       2.5.0   2016-11-07 CRAN (R 3.4.0)                          
+##  R6            2.2.0   2016-10-05 CRAN (R 3.4.0)                          
+##  Rcpp          0.12.10 2017-03-19 CRAN (R 3.4.0)                          
+##  readr       * 1.1.0   2017-03-22 CRAN (R 3.4.0)                          
+##  readxl        1.0.0   2017-04-18 CRAN (R 3.4.0)                          
+##  reshape2      1.4.2   2016-10-22 CRAN (R 3.4.0)                          
+##  rvest         0.3.2   2016-06-17 CRAN (R 3.4.0)                          
+##  scales        0.4.1   2016-11-09 CRAN (R 3.4.0)                          
+##  seqinr        3.3-6   2017-04-06 CRAN (R 3.4.0)                          
+##  shiny         1.0.3   2017-04-26 CRAN (R 3.4.0)                          
+##  sp            1.2-4   2016-12-22 CRAN (R 3.4.0)                          
+##  spdep         0.6-13  2017-04-25 CRAN (R 3.4.0)                          
+##  stringi       1.1.5   2017-04-07 CRAN (R 3.4.0)                          
+##  stringr       1.2.0   2017-02-18 CRAN (R 3.4.0)                          
+##  svglite       1.2.0   2016-11-04 CRAN (R 3.4.0)                          
+##  tibble      * 1.3.0   2017-04-01 CRAN (R 3.4.0)                          
+##  tidyr       * 0.6.1   2017-01-10 CRAN (R 3.4.0)                          
+##  tidyverse   * 1.1.1   2017-01-27 CRAN (R 3.4.0)                          
+##  tweenr        0.1.5   2016-10-10 CRAN (R 3.4.0)                          
+##  udunits2      0.13    2016-11-17 CRAN (R 3.3.2)                          
+##  units         0.4-4   2017-04-20 CRAN (R 3.4.0)                          
+##  vegan         2.4-3   2017-04-07 CRAN (R 3.4.0)                          
+##  viridis     * 0.4.0   2017-03-27 CRAN (R 3.4.0)                          
+##  viridisLite * 0.2.0   2017-03-24 CRAN (R 3.4.0)                          
+##  withr         1.0.2   2016-06-20 CRAN (R 3.4.0)                          
+##  xml2          1.1.1   2017-01-24 CRAN (R 3.4.0)                          
+##  xtable        1.8-2   2016-02-05 CRAN (R 3.4.0)
+```
+
+</details>
