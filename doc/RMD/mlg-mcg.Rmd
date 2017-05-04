@@ -179,12 +179,19 @@ V(g)$size <- sqrt(osize)/10
 set.seed(2017-05-05)
 lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
 
+cnames <- LETTERS[1:10]
+cnames[c(7, 5, 1)] <- LETTERS[1:3]
 the_communities <- data_frame(vertex = lay2$name, community = lay2$community) %>%
+  mutate(community = case_when(
+    .$community == 7 ~ "A",
+    .$community == 5 ~ "B",
+    .$community == 1 ~ "C",
+    TRUE ~ as.character(.$community)
+  )) %>%
   group_by(community) %>%
   mutate(comm = ifelse(n() > 10, paste("Community", community), "Other Communities (n < 10)")) %>%
-  mutate(comm = forcats::fct_infreq(comm) %>% forcats::fct_shift(-1L))
+  mutate(comm = comm) # It just so happens that the communities are in order by size.
 lay2$community <- the_communities$comm
-
 mcg_mlg_graph <- ggraph(lay2) +
   geom_node_circle(aes(r = size, lty = type, fill = community)) +
   geom_edge_link(aes(start_cap = circle(node1.size, unit = "native"), 
@@ -192,12 +199,13 @@ mcg_mlg_graph <- ggraph(lay2) +
                      width = weight),
                  arrow = arrow(length = unit(0.01, "native"))) +
   geom_node_text(aes(label = gsub("MLG.", "", name), 
-                     color = ifelse(grepl("ther", community), "A", ifelse(grepl("3", community), "B", "C")), 
+                     color = community, 
                      size = size/10), 
                  show.legend = FALSE) +
   coord_fixed() +
+  scale_linetype_manual(values = c(1, 3)) +
   scale_edge_width(range = c(0.25, 1.5)) +
-  scale_color_manual(values = c("white", "grey75", "black")) +
+  scale_color_manual(values = c("black", "black", "white", "white")) +
   scale_fill_viridis(direction = -1, discrete = TRUE) +
   theme_graph(base_size = 16, base_family = "Helvetica") +
   theme(legend.position = "bottom", legend.direction = "vertical") +
@@ -215,7 +223,7 @@ top 5 MCGs?
 
 ```{r top5graph, fig.height = 7, fig.width = 7}
 top5 <- filter(mcgmlg, as.character(MCG) %in% mcgs$MCG[1:5])
-top5g <- make_mcgmlg_graph(top5) %>% add_communities(cluster_walktrap(g))
+top5g <- make_mcgmlg_graph(top5)
 tosize <- V(top5g)$size
 V(top5g)$size <- sqrt(tosize)/10
 set.seed(2017-05-04)
