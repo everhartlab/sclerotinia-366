@@ -155,7 +155,15 @@ make_mcgmlg_graph <- function(x){
   V(g)$type <- ifelse(grepl("MLG", V(g)$name), "Multilocus Genotype", "Mycelial Compatibility Group")
   g
 }
+
+add_communities <- function(g, clusters){
+  comm <- communities(clusters)
+  commlist <- setNames(rep(names(comm), lengths(comm)), unlist(comm, use.names = FALSE))
+  V(g)$community <- commlist[V(g)$name]
+  g
+}
 g <- make_mcgmlg_graph(mcgmlg)
+g <- add_communities(g, cluster_walktrap(g))
 osize <- V(g)$size
 ```
 
@@ -171,19 +179,26 @@ V(g)$size <- sqrt(osize)/10
 set.seed(2017-05-05)
 lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
 
+the_communities <- data_frame(vertex = lay2$name, community = lay2$community) %>%
+  group_by(community) %>%
+  mutate(comm = ifelse(n() > 10, paste("Community", community), "Other Communities (n < 10)")) %>%
+  mutate(comm = forcats::fct_infreq(comm) %>% forcats::fct_shift(-1L))
+lay2$community <- the_communities$comm
 
 mcg_mlg_graph <- ggraph(lay2) +
-  geom_node_circle(aes(r = size, fill = type)) +
+  geom_node_circle(aes(r = size, lty = type, fill = community)) +
   geom_edge_link(aes(start_cap = circle(node1.size, unit = "native"), 
                      end_cap = circle(node2.size, unit = "native"), 
                      width = weight),
                  arrow = arrow(length = unit(0.01, "native"))) +
-  geom_node_text(aes(label = gsub("MLG.", "", name), color = type, size = size/10), show.legend = FALSE) +
+  geom_node_text(aes(label = gsub("MLG.", "", name), 
+                     color = ifelse(grepl("ther", community), "A", ifelse(grepl("3", community), "B", "C")), 
+                     size = size/10), 
+                 show.legend = FALSE) +
   coord_fixed() +
   scale_edge_width(range = c(0.25, 1.5)) +
-  # scale_edge_color_viridis(option = "C", end = 0.9) +
-  scale_color_manual(values = c("white", "black")) +
-  scale_fill_manual(values = c("black", "white")) +
+  scale_color_manual(values = c("white", "grey75", "black")) +
+  scale_fill_viridis(direction = -1, discrete = TRUE) +
   theme_graph(base_size = 16, base_family = "Helvetica") +
   theme(legend.position = "bottom", legend.direction = "vertical") +
   ggtitle("Relation of Multilocus Genotypes and MCGs") 
@@ -200,11 +215,12 @@ top 5 MCGs?
 
 ```{r top5graph, fig.height = 7, fig.width = 7}
 top5 <- filter(mcgmlg, as.character(MCG) %in% mcgs$MCG[1:5])
-top5g <- make_mcgmlg_graph(top5)
+top5g <- make_mcgmlg_graph(top5) %>% add_communities(cluster_walktrap(g))
 tosize <- V(top5g)$size
 V(top5g)$size <- sqrt(tosize)/10
 set.seed(2017-05-04)
 top5lay <- create_layout(top5g, layout = "igraph", algorithm = "nicely")
+top5lay$community <- inner_join(data_frame(vertex = top5lay$name), the_communities)$comm
 t5g <- mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and associated MLGs")
 t5g
 ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.svg"), width = 88, height = 88, scale = 3, units = "mm")
