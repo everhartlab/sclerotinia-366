@@ -206,7 +206,7 @@ V(top5g)$size <- sqrt(tosize)/10
 set.seed(2017-05-03)
 top5lay <- create_layout(top5g, layout = "igraph", algorithm = "nicely")
 t5g <- mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and associated MLGs")
-ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.svg"), width = 88, height = 88, units = "mm")
+ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.svg"), width = 88, height = 88, scale = 3, units = "mm")
 ```
 
 Vey nice!
