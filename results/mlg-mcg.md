@@ -211,39 +211,47 @@ observations are.
 mll.custom(dat11) <- strata(dat11)$MCG
 mcgmlg <- as.data.frame(table(mll(dat11, "original"), mll(dat11, "custom"))) %>%
   setNames(c("MLG", "MCG", "Freq")) %>%
+  mutate(MLG = as.character(MLG)) %>%
+  mutate(MCG = as.character(MCG)) %>%
   as_data_frame() %>%
   filter(Freq > 0)
 mcgs <- mcgmlg %>%
+  arrange(MCG) %>%
   group_by(MCG) %>%
-  summarize(MLGs = sum(Freq > 0), 
-            Samples = sum(Freq), 
-            Evenness = diversity_stats(Freq)["E.5"], 
-            data = list(data_frame(MLG = MLG, Freq = Freq))) %>%
-  arrange(desc(MLGs))
+  mutate(MLGs = sum(Freq > 0), 
+         Samples = sum(Freq), 
+         Evenness = diversity_stats(Freq)["E.5"], 
+         data = list(data_frame(MLG = MLG, Freq = Freq) %>% arrange(desc(Freq)))) %>%
+  arrange(desc(MLGs)) %>%
+  ungroup() %>%
+  distinct(MCG, MLGs, Samples, Evenness, data)
 mlgs <- mcgmlg %>%
+  arrange(MLG) %>%
   group_by(MLG) %>%
-  summarize(MCGs = sum(Freq > 0), 
-            Samples = sum(Freq), 
-            Evenness = diversity_stats(Freq)["E.5"], 
-            data = list(data_frame(MCG = MCG, Freq = Freq))) %>%
-  arrange(desc(Samples), desc(MCGs))
+  mutate(MCGs     = sum(Freq > 0), 
+         Samples  = sum(Freq), 
+         Evenness = diversity_stats(Freq)["E.5"], 
+         data     = list(data_frame(MCG = MCG, Freq = Freq) %>% arrange(desc(Freq)))) %>%
+  arrange(desc(Samples), desc(MCGs)) %>%
+  ungroup() %>%
+  distinct(MLG, MCGs, Samples, Evenness, data)
 mcgs
 ```
 
 ```
 ## # A tibble: 87 × 5
-##       MCG  MLGs Samples  Evenness              data
-##    <fctr> <int>   <int>     <dbl>            <list>
-## 1       5    37      73 0.4811239 <tibble [37 × 2]>
-## 2      44    19      36 0.6249418 <tibble [19 × 2]>
-## 3       1    10      15 0.8217819 <tibble [10 × 2]>
-## 4       4     9      14 0.7242515  <tibble [9 × 2]>
-## 5       2     9      10 0.9517005  <tibble [9 × 2]>
-## 6      53     9       9 1.0000000  <tibble [9 × 2]>
-## 7       3     8       8 1.0000000  <tibble [8 × 2]>
-## 8       9     8      15 0.5493741  <tibble [8 × 2]>
-## 9      45     7      16 0.6304310  <tibble [7 × 2]>
-## 10     16     6       7 0.9371824  <tibble [6 × 2]>
+##      MCG  MLGs Samples  Evenness              data
+##    <chr> <int>   <int>     <dbl>            <list>
+## 1      5    37      73 0.4811239 <tibble [37 × 2]>
+## 2     44    19      36 0.6249418 <tibble [19 × 2]>
+## 3      1    10      15 0.8217819 <tibble [10 × 2]>
+## 4      2     9      10 0.9517005  <tibble [9 × 2]>
+## 5      4     9      14 0.7242515  <tibble [9 × 2]>
+## 6     53     9       9 1.0000000  <tibble [9 × 2]>
+## 7      3     8       8 1.0000000  <tibble [8 × 2]>
+## 8      9     8      15 0.5493741  <tibble [8 × 2]>
+## 9     45     7      16 0.6304310  <tibble [7 × 2]>
+## 10    16     6       7 0.9371824  <tibble [6 × 2]>
 ## # ... with 77 more rows
 ```
 
@@ -253,20 +261,93 @@ mlgs
 
 ```
 ## # A tibble: 165 × 5
-##       MLG  MCGs Samples  Evenness             data
-##    <fctr> <int>   <int>     <dbl>           <list>
-## 1      25     5      27 0.5490333 <tibble [5 × 2]>
-## 2     163     2      15 0.9955736 <tibble [2 × 2]>
-## 3      65     2      11 0.5560301 <tibble [2 × 2]>
-## 4     140     3      10 0.9063854 <tibble [3 × 2]>
-## 5      66     1       8       NaN <tibble [1 × 2]>
-## 6     165     3       7 0.6693363 <tibble [3 × 2]>
-## 7      78     4       6 0.8116548 <tibble [4 × 2]>
-## 8     160     4       5 0.9218931 <tibble [4 × 2]>
-## 9     104     2       5 0.7246677 <tibble [2 × 2]>
-## 10     75     3       4 0.9115303 <tibble [3 × 2]>
+##      MLG  MCGs Samples  Evenness             data
+##    <chr> <int>   <int>     <dbl>           <list>
+## 1     25     5      27 0.5490333 <tibble [5 × 2]>
+## 2    163     2      15 0.9955736 <tibble [2 × 2]>
+## 3     65     2      11 0.5560301 <tibble [2 × 2]>
+## 4    140     3      10 0.9063854 <tibble [3 × 2]>
+## 5     66     1       8       NaN <tibble [1 × 2]>
+## 6    165     3       7 0.6693363 <tibble [3 × 2]>
+## 7     78     4       6 0.8116548 <tibble [4 × 2]>
+## 8    160     4       5 0.9218931 <tibble [4 × 2]>
+## 9    104     2       5 0.7246677 <tibble [2 × 2]>
+## 10   109     3       4 0.9115303 <tibble [3 × 2]>
 ## # ... with 155 more rows
 ```
+
+These tables are a good start, but we want to have a publication-ready table:
+
+
+```r
+fct2int <- function(x) as.integer(as.character(x))
+
+psex_from_graph <- function(g, MLG){
+  weights <- setNames(E(g)$weight, E(g)$label)
+  weights <- split(weights, names(weights))[MLG]
+  1 -vapply(weights, unique, numeric(1))
+}
+
+mlg_table <- mlgs %>%
+  slice(1:5L) %>%
+  mutate(MLG = as.character(MLG)) %>%
+  mutate(Psex = psex_from_graph(graph11loc$total, MLG)) %>%
+  unnest() %>%
+  group_by(MLG, Samples, Psex) %>%
+  summarize(MCG = paste(MCG, collapse = ", ")) %>%
+  rename(N = Samples) %>%
+  arrange(desc(N))
+
+kable(mlg_table, caption = "Top 5 MLGs", format.args = list(digits = 3))
+```
+
+
+
+|MLG |  N|     Psex|MCG             |
+|:---|--:|--------:|:---------------|
+|25  | 27| 1.68e-02|5, 13, 60, 4, 1 |
+|163 | 15| 4.99e-02|45, 5           |
+|65  | 11| 7.07e-05|44, 5           |
+|140 | 10| 1.55e-04|8, 5, 20        |
+|66  |  8| 1.57e-05|9               |
+
+```r
+mcg_table <- mcgs %>%
+  slice(1:5L) %>%
+  mutate(MCG = as.character(MCG)) %>%
+  unnest() %>%
+  group_by(MCG, Samples, Evenness) %>%
+  summarize(MLG = list(strwrap(paste(MLG, collapse = ", "), 28))) %>%
+  rename(N = Samples) %>%
+  arrange(desc(N)) %>% 
+  unnest() %>%
+  ungroup() %>%
+  mutate(Evenness = ifelse(!duplicated(MCG), format(Evenness, digits = 3), "")) %>%
+  mutate(N = ifelse(!duplicated(MCG), N, "")) %>%
+  mutate(MCG = ifelse(!duplicated(MCG), MCG, ""))
+kable(mcg_table, caption = "Top 5 MCGs")
+```
+
+
+
+|MCG |N  |Evenness |MLG                         |
+|:---|:--|:--------|:---------------------------|
+|5   |73 |0.481    |25, 163, 15, 39, 9, 42,     |
+|    |   |         |140, 7, 12, 16, 20, 21, 22, |
+|    |   |         |23, 24, 26, 29, 35, 36, 37, |
+|    |   |         |43, 45, 46, 65, 72, 75, 76, |
+|    |   |         |83, 88, 90, 106, 109, 127,  |
+|    |   |         |130, 138, 146, 153          |
+|44  |36 |0.625    |65, 56, 68, 78, 75, 2, 3,   |
+|    |   |         |4, 52, 63, 70, 71, 76, 123, |
+|    |   |         |141, 145, 156, 160, 161     |
+|1   |15 |0.822    |104, 103, 128, 7, 17, 25,   |
+|    |   |         |47, 107, 134, 153           |
+|4   |14 |0.724    |165, 160, 5, 25, 57, 63,    |
+|    |   |         |68, 77, 154                 |
+|2   |10 |0.952    |103, 8, 12, 17, 18, 38, 69, |
+|    |   |         |120, 125                    |
+
 
 It might be better to visualize these data as barplots. Here we are mapping the
 type (MCG/Count) to color and the opacity (alpha) to Evenness.
@@ -285,7 +366,7 @@ mcgs %>%
   scale_y_continuous(expand = c(0, 2)) +
   theme_minimal() +
   theme(panel.grid.major.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   ggtitle("How Evenly are Multilocus Genotypes (MLGs) spread across MCGs?")
 ```
 
@@ -307,7 +388,7 @@ mlgs %>%
   scale_y_continuous(expand = c(0, 2)) +
   theme_minimal() +
   theme(panel.grid.major.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   ggtitle("How Evenly are MCGs spread across Multilocus Genotypes (MLGs)?")
 ```
 
@@ -363,7 +444,7 @@ I guess it's not so simple after all."
 
 ```r
 V(g)$size <- sqrt(osize)/10
-set.seed(2017-05-05)
+set.seed(2017-05-03)
 lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
 
 the_communities <- data_frame(vertex = lay2$name, community = lay2$community) %>%
@@ -417,7 +498,7 @@ top5 <- filter(mcgmlg, as.character(MCG) %in% mcgs$MCG[1:5])
 top5g <- make_mcgmlg_graph(top5)
 tosize <- V(top5g)$size
 V(top5g)$size <- sqrt(tosize)/10
-set.seed(2017-05-04)
+set.seed(2017-05-08)
 top5lay <- create_layout(top5g, layout = "igraph", algorithm = "nicely")
 top5lay$community <- inner_join(data_frame(vertex = top5lay$name), the_communities)$comm
 ```
@@ -595,7 +676,7 @@ genetic structure and MCG.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-05-04
+##  date     2017-05-05
 ```
 
 ```
@@ -605,7 +686,7 @@ genetic structure and MCG.
 ```
 ##  package     * version date       source                                  
 ##  ade4        * 1.7-6   2017-03-23 CRAN (R 3.4.0)                          
-##  adegenet    * 2.1.0   2017-04-23 Github (thibautjombart/adegenet@2c5dbdf)
+##  adegenet    * 2.1.0   2017-05-05 Github (thibautjombart/adegenet@2143246)
 ##  ape           4.1     2017-02-14 CRAN (R 3.4.0)                          
 ##  assertr       2.0.2   2017-03-23 CRAN (R 3.4.0)                          
 ##  assertthat    0.2.0   2017-04-11 CRAN (R 3.4.0)                          

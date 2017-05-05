@@ -77,26 +77,74 @@ observations are.
 mll.custom(dat11) <- strata(dat11)$MCG
 mcgmlg <- as.data.frame(table(mll(dat11, "original"), mll(dat11, "custom"))) %>%
   setNames(c("MLG", "MCG", "Freq")) %>%
+  mutate(MLG = as.character(MLG)) %>%
+  mutate(MCG = as.character(MCG)) %>%
   as_data_frame() %>%
   filter(Freq > 0)
 mcgs <- mcgmlg %>%
+  arrange(MCG) %>%
   group_by(MCG) %>%
-  summarize(MLGs = sum(Freq > 0), 
-            Samples = sum(Freq), 
-            Evenness = diversity_stats(Freq)["E.5"], 
-            data = list(data_frame(MLG = MLG, Freq = Freq))) %>%
-  arrange(desc(MLGs))
+  mutate(MLGs = sum(Freq > 0), 
+         Samples = sum(Freq), 
+         Evenness = diversity_stats(Freq)["E.5"], 
+         data = list(data_frame(MLG = MLG, Freq = Freq) %>% arrange(desc(Freq)))) %>%
+  arrange(desc(MLGs)) %>%
+  ungroup() %>%
+  distinct(MCG, MLGs, Samples, Evenness, data)
 mlgs <- mcgmlg %>%
+  arrange(MLG) %>%
   group_by(MLG) %>%
-  summarize(MCGs = sum(Freq > 0), 
-            Samples = sum(Freq), 
-            Evenness = diversity_stats(Freq)["E.5"], 
-            data = list(data_frame(MCG = MCG, Freq = Freq))) %>%
-  arrange(desc(Samples), desc(MCGs))
+  mutate(MCGs     = sum(Freq > 0), 
+         Samples  = sum(Freq), 
+         Evenness = diversity_stats(Freq)["E.5"], 
+         data     = list(data_frame(MCG = MCG, Freq = Freq) %>% arrange(desc(Freq)))) %>%
+  arrange(desc(Samples), desc(MCGs)) %>%
+  ungroup() %>%
+  distinct(MLG, MCGs, Samples, Evenness, data)
 mcgs
 mlgs
  
 ```
+
+These tables are a good start, but we want to have a publication-ready table:
+
+```{r production-tables, results = 'asis'}
+fct2int <- function(x) as.integer(as.character(x))
+
+psex_from_graph <- function(g, MLG){
+  weights <- setNames(E(g)$weight, E(g)$label)
+  weights <- split(weights, names(weights))[MLG]
+  1 -vapply(weights, unique, numeric(1))
+}
+
+mlg_table <- mlgs %>%
+  slice(1:5L) %>%
+  mutate(MLG = as.character(MLG)) %>%
+  mutate(Psex = psex_from_graph(graph11loc$total, MLG)) %>%
+  unnest() %>%
+  group_by(MLG, Samples, Psex) %>%
+  summarize(MCG = paste(MCG, collapse = ", ")) %>%
+  rename(N = Samples) %>%
+  arrange(desc(N))
+
+kable(mlg_table, caption = "Top 5 MLGs", format.args = list(digits = 3))
+
+mcg_table <- mcgs %>%
+  slice(1:5L) %>%
+  mutate(MCG = as.character(MCG)) %>%
+  unnest() %>%
+  group_by(MCG, Samples, Evenness) %>%
+  summarize(MLG = list(strwrap(paste(MLG, collapse = ", "), 28))) %>%
+  rename(N = Samples) %>%
+  arrange(desc(N)) %>% 
+  unnest() %>%
+  ungroup() %>%
+  mutate(Evenness = ifelse(!duplicated(MCG), format(Evenness, digits = 3), "")) %>%
+  mutate(N = ifelse(!duplicated(MCG), N, "")) %>%
+  mutate(MCG = ifelse(!duplicated(MCG), MCG, ""))
+kable(mcg_table, caption = "Top 5 MCGs")
+```
+
 
 It might be better to visualize these data as barplots. Here we are mapping the
 type (MCG/Count) to color and the opacity (alpha) to Evenness.
@@ -114,7 +162,7 @@ mcgs %>%
   scale_y_continuous(expand = c(0, 2)) +
   theme_minimal() +
   theme(panel.grid.major.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   ggtitle("How Evenly are Multilocus Genotypes (MLGs) spread across MCGs?")
 mlgs %>% 
   gather(type, count, MCGs, Samples, -Evenness) %>%
@@ -127,7 +175,7 @@ mlgs %>%
   scale_y_continuous(expand = c(0, 2)) +
   theme_minimal() +
   theme(panel.grid.major.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
   ggtitle("How Evenly are MCGs spread across Multilocus Genotypes (MLGs)?")
 ```
 
@@ -176,7 +224,7 @@ I guess it's not so simple after all."
 ```{r, fig.width = 10, fig.height = 10}
 
 V(g)$size <- sqrt(osize)/10
-set.seed(2017-05-05)
+set.seed(2017-05-03)
 lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
 
 the_communities <- data_frame(vertex = lay2$name, community = lay2$community) %>%
@@ -224,7 +272,7 @@ top5 <- filter(mcgmlg, as.character(MCG) %in% mcgs$MCG[1:5])
 top5g <- make_mcgmlg_graph(top5)
 tosize <- V(top5g)$size
 V(top5g)$size <- sqrt(tosize)/10
-set.seed(2017-05-04)
+set.seed(2017-05-08)
 top5lay <- create_layout(top5g, layout = "igraph", algorithm = "nicely")
 top5lay$community <- inner_join(data_frame(vertex = top5lay$name), the_communities)$comm
 t5g <- mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and associated MLGs")

@@ -187,37 +187,11 @@ $(document).ready(function () {
 <h2>Packages and Data</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSgndGlkeXZlcnNlJylcbmBgYCJ9 -->
-<pre class="r"><code>library('tidyverse')</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSgndGlkeXZlcnNlJylcbmxpYnJhcnkoJ3BvcHByJylcbmxpYnJhcnkoJ2dnY29tcG9wbG90JylcbmBgYCJ9 -->
+<pre class="r"><code>library('tidyverse')
+library('poppr')
+library('ggcompoplot')</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyB0aWR5dmVyc2U6IGdncGxvdDJcbkxvYWRpbmcgdGlkeXZlcnNlOiB0aWJibGVcbkxvYWRpbmcgdGlkeXZlcnNlOiB0aWR5clxuTG9hZGluZyB0aWR5dmVyc2U6IHJlYWRyXG5Mb2FkaW5nIHRpZHl2ZXJzZTogcHVycnJcbkxvYWRpbmcgdGlkeXZlcnNlOiBkcGx5clxuQ29uZmxpY3RzIHdpdGggdGlkeSBwYWNrYWdlcyAtLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5maWx0ZXIoKTogZHBseXIsIHN0YXRzXG5sYWcoKTogICAgZHBseXIsIHN0YXRzXG4ifQ== -->
-<pre><code>Loading tidyverse: ggplot2
-Loading tidyverse: tibble
-Loading tidyverse: tidyr
-Loading tidyverse: readr
-Loading tidyverse: purrr
-Loading tidyverse: dplyr
-Conflicts with tidy packages -------------------------------------------------------------------
-filter(): dplyr, stats
-lag():    dplyr, stats</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSgncG9wcHInKVxuYGBgIn0= -->
-<pre class="r"><code>library('poppr')</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBhZGVnZW5ldFxuTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBhZGU0XG5cbiAgIC8vLyBhZGVnZW5ldCAyLjEuMCBpcyBsb2FkZWQgLy8vLy8vLy8vLy8vXG5cbiAgID4gb3ZlcnZpZXc6ICc/YWRlZ2VuZXQnXG4gICA+IHR1dG9yaWFscy9kb2MvcXVlc3Rpb25zOiAnYWRlZ2VuZXRXZWIoKScgXG4gICA+IGJ1ZyByZXBvcnRzL2ZlYXR1cmUgcmVxdWVzdHM6IGFkZWdlbmV0SXNzdWVzKClcblxuXG5UaGlzIGlzIHBvcHByIHZlcnNpb24gMi40LjEuIFRvIGdldCBzdGFydGVkLCB0eXBlIHBhY2thZ2U/cG9wcHJcbk9NUCBwYXJhbGxlbCBzdXBwb3J0OiBhdmFpbGFibGVcbiJ9 -->
-<pre><code>Loading required package: adegenet
-Loading required package: ade4
-
-   /// adegenet 2.1.0 is loaded ////////////
-
-   &gt; overview: '?adegenet'
-   &gt; tutorials/doc/questions: 'adegenetWeb()' 
-   &gt; bug reports/feature requests: adegenetIssues()
-
-
-This is poppr version 2.4.1. To get started, type package?poppr
-OMP parallel support: available</code></pre>
-<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
@@ -228,7 +202,7 @@ setPop(dat11) &lt;- ~Host/Source/Region/Year
 dat11cc &lt;- clonecorrect(dat11, ~Host/Source/Region/Year, keep = 1:4)
 dat11cc</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5UaGlzIGlzIGEgZ2VuY2xvbmUgb2JqZWN0XG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5HZW5vdHlwZSBpbmZvcm1hdGlvbjpcblxuICAgMTY1IG9yaWdpbmFsIG11bHRpbG9jdXMgZ2Vub3R5cGVzIFxuICAgMzE4IGhhcGxvaWQgaW5kaXZpZHVhbHNcbiAgICAxMSBjb2RvbWluYW50IGxvY2lcblxuUG9wdWxhdGlvbiBpbmZvcm1hdGlvbjpcblxuICAgICA1IHN0cmF0YSAtIE1DRywgUmVnaW9uLCBTb3VyY2UsIFllYXIsIEhvc3RcbiAgIDEyOCBwb3B1bGF0aW9ucyBkZWZpbmVkIC0gXG5HSF91bmtfTkVfMjAwMywgR0hfdW5rX05ZXzIwMDMsIEcxMjJfd21uX01OXzIwMDMsIC4uLiwgdW5rX3BtY19ORF8yMDEwLCB1bmtfd2xjX05EXzIwMTAsIHVua19mbGRzX0ZyYW5jZV8yMDEyXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5UaGlzIGlzIGEgZ2VuY2xvbmUgb2JqZWN0XG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5HZW5vdHlwZSBpbmZvcm1hdGlvbjpcblxuICAgMTY1IG9yaWdpbmFsIG11bHRpbG9jdXMgZ2Vub3R5cGVzIFxuICAgMzE4IGhhcGxvaWQgaW5kaXZpZHVhbHNcbiAgICAxMSBjb2RvbWluYW50IGxvY2lcblxuUG9wdWxhdGlvbiBpbmZvcm1hdGlvbjpcblxuICAgICA1IHN0cmF0YSAtIE1DRywgUmVnaW9uLCBTb3VyY2UsIFllYXIsIEhvc3RcbiAgIDEyOCBwb3B1bGF0aW9ucyBkZWZpbmVkIC0gR0hfdW5rX05FXzIwMDMsIEdIX3Vua19OWV8yMDAzLCBHMTIyX3dtbl9NTl8yMDAzLCAuLi4sIHVua19wbWNfTkRfMjAxMCwgdW5rX3dsY19ORF8yMDEwLCB1bmtfZmxkc19GcmFuY2VfMjAxMlxuIn0= -->
 <pre><code>
 This is a genclone object
 -------------------------
@@ -241,8 +215,7 @@ Genotype information:
 Population information:
 
      5 strata - MCG, Region, Source, Year, Host
-   128 populations defined - 
-GH_unk_NE_2003, GH_unk_NY_2003, G122_wmn_MN_2003, ..., unk_pmc_ND_2010, unk_wlc_ND_2010, unk_flds_France_2012</code></pre>
+   128 populations defined - GH_unk_NE_2003, GH_unk_NY_2003, G122_wmn_MN_2003, ..., unk_pmc_ND_2010, unk_wlc_ND_2010, unk_flds_France_2012</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBBc3NlcnRpbmcgdGhhdCBub3RoaW5nIG1lc3NlZCB1cCB3aXRoIHRoZSBtZXRhZGF0YS5cbnN0b3BpZm5vdChpZGVudGljYWwoaW5kTmFtZXMoZGF0MTFjYyksIG90aGVyKGRhdDExY2MpJG1ldGEkSXNvbGF0ZSkpXG5kYXQxMS5icnV2byAgIDwtIGJydXZvLmRpc3QoZGF0MTEsIHJlcGxlbiA9IG90aGVyKGRhdDExKSRSRVBMRU4pXG5kYXQxMWNjLmJydXZvIDwtIGJydXZvLmRpc3QoZGF0MTFjYywgcmVwbGVuID0gb3RoZXIoZGF0MTEpJFJFUExFTilcbmBgYCJ9 -->
 <pre class="r"><code># Asserting that nothing messed up with the metadata.
@@ -344,7 +317,7 @@ scatter(region.dapc)</code></pre>
 dat11.nocross &lt;- dat11[!mll(dat11) %in% minds]
 dat11.nocross</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiXG5UaGlzIGlzIGEgZ2VuY2xvbmUgb2JqZWN0XG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5HZW5vdHlwZSBpbmZvcm1hdGlvbjpcblxuICAgIDg5IG9yaWdpbmFsIG11bHRpbG9jdXMgZ2Vub3R5cGVzIFxuICAgMTE0IGhhcGxvaWQgaW5kaXZpZHVhbHNcbiAgICAxMSBjb2RvbWluYW50IGxvY2lcblxuUG9wdWxhdGlvbiBpbmZvcm1hdGlvbjpcblxuICAgICA1IHN0cmF0YSAtIE1DRywgUmVnaW9uLCBTb3VyY2UsIFllYXIsIEhvc3RcbiAgICA1NCBwb3B1bGF0aW9ucyBkZWZpbmVkIC0gXG5HSF91bmtfTkVfMjAwMywgQmVyeWxfd21uX01JXzIwMDMsIEJ1bnNpX3dtbl9NSV8yMDAzLCAuLi4sIHVua19wbWNfTkRfMjAxMCwgdW5rX3dsY19ORF8yMDEwLCB1bmtfZmxkc19GcmFuY2VfMjAxMlxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5UaGlzIGlzIGEgZ2VuY2xvbmUgb2JqZWN0XG4tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5HZW5vdHlwZSBpbmZvcm1hdGlvbjpcblxuICAgIDg5IG9yaWdpbmFsIG11bHRpbG9jdXMgZ2Vub3R5cGVzIFxuICAgMTE0IGhhcGxvaWQgaW5kaXZpZHVhbHNcbiAgICAxMSBjb2RvbWluYW50IGxvY2lcblxuUG9wdWxhdGlvbiBpbmZvcm1hdGlvbjpcblxuICAgICA1IHN0cmF0YSAtIE1DRywgUmVnaW9uLCBTb3VyY2UsIFllYXIsIEhvc3RcbiAgICA1NCBwb3B1bGF0aW9ucyBkZWZpbmVkIC0gR0hfdW5rX05FXzIwMDMsIEJlcnlsX3dtbl9NSV8yMDAzLCBCdW5zaV93bW5fTUlfMjAwMywgLi4uLCB1bmtfcG1jX05EXzIwMTAsIHVua193bGNfTkRfMjAxMCwgdW5rX2ZsZHNfRnJhbmNlXzIwMTJcbiJ9 -->
 <pre><code>
 This is a genclone object
 -------------------------
@@ -357,8 +330,7 @@ Genotype information:
 Population information:
 
      5 strata - MCG, Region, Source, Year, Host
-    54 populations defined - 
-GH_unk_NE_2003, Beryl_wmn_MI_2003, Bunsi_wmn_MI_2003, ..., unk_pmc_ND_2010, unk_wlc_ND_2010, unk_flds_France_2012</code></pre>
+    54 populations defined - GH_unk_NE_2003, Beryl_wmn_MI_2003, Bunsi_wmn_MI_2003, ..., unk_pmc_ND_2010, unk_wlc_ND_2010, unk_flds_France_2012</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZGF0MTEubmMuZGFwYyA8LSBkYXBjKGRhdDExLm5vY3Jvc3MsIHN0cmF0YShkYXQxMS5ub2Nyb3NzKSRSZWdpb24sIG4ucGNhID0gMTEsIG4uZGEgPSAxNClcbmBgYCJ9 -->
 <pre class="r"><code>dat11.nc.dapc &lt;- dapc(dat11.nocross, strata(dat11.nocross)$Region, n.pca = 11, n.da = 14)</code></pre>
@@ -458,6 +430,121 @@ posterior %&gt;%
 <p><details> <summary>Session Information</summary></p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
+<!-- rnb-output-begin eyJkYXRhIjoiU2Vzc2lvbiBpbmZvIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuIn0= -->
+<pre><code>Session info ---------------------------------------------------------------------------------------</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIHNldHRpbmcgIHZhbHVlICAgICAgICAgICAgICAgICAgICAgICBcbiB2ZXJzaW9uICBSIHZlcnNpb24gMy40LjAgKDIwMTctMDQtMjEpXG4gc3lzdGVtICAgeDg2XzY0LCBkYXJ3aW4xNS42LjAgICAgICAgIFxuIHVpICAgICAgIFJTdHVkaW8gKDEuMC4xNDMpICAgICAgICAgICBcbiBsYW5ndWFnZSAoRU4pICAgICAgICAgICAgICAgICAgICAgICAgXG4gY29sbGF0ZSAgZW5fVVMuVVRGLTggICAgICAgICAgICAgICAgIFxuIHR6ICAgICAgIEFtZXJpY2EvQ2hpY2FnbyAgICAgICAgICAgICBcbiBkYXRlICAgICAyMDE3LTA1LTA1ICAgICAgICAgICAgICAgICAgXG4ifQ== -->
+<pre><code> setting  value                       
+ version  R version 3.4.0 (2017-04-21)
+ system   x86_64, darwin15.6.0        
+ ui       RStudio (1.0.143)           
+ language (EN)                        
+ collate  en_US.UTF-8                 
+ tz       America/Chicago             
+ date     2017-05-05                  </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUGFja2FnZXMgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuIn0= -->
+<pre><code>Packages -------------------------------------------------------------------------------------------</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIHBhY2thZ2UgICAgICAqIHZlcnNpb24gZGF0ZSAgICAgICBzb3VyY2UgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gYWRlNCAgICAgICAgICogMS43LTYgICAyMDE3LTAzLTIzIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBhZGVnZW5ldCAgICAgKiAyLjEuMCAgIDIwMTctMDUtMDUgR2l0aHViICh0aGliYXV0am9tYmFydC9hZGVnZW5ldEAyMTQzMjQ2KVxuIGFwZSAgICAgICAgICAgIDQuMSAgICAgMjAxNy0wMi0xNCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gYXNzZXJ0ciAgICAgICAgMi4wLjIgICAyMDE3LTAzLTIzIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBhc3NlcnR0aGF0ICAgICAwLjIuMCAgIDIwMTctMDQtMTEgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGJhY2twb3J0cyAgICAgIDEuMC41ICAgMjAxNy0wMS0xOCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gYmFzZTY0ZW5jICAgICAgMC4xLTMgICAyMDE1LTA3LTI4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBib290ICAgICAgICAgICAxLjMtMTkgIDIwMTctMDQtMjEgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGJyb29tICAgICAgICAgIDAuNC4yICAgMjAxNy0wMi0xMyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gY2VsbHJhbmdlciAgICAgMS4xLjAgICAyMDE2LTA3LTI3IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBjbHVzdGVyICAgICAgICAyLjAuNiAgIDIwMTctMDMtMTYgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGNvZGEgICAgICAgICAgIDAuMTktMSAgMjAxNi0xMi0wOCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gY29sb3JzcGFjZSAgICAgMS4zLTIgICAyMDE2LTEyLTE0IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBEQkkgICAgICAgICAgICAwLjYtMSAgIDIwMTctMDQtMDEgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGRlbGRpciAgICAgICAgIDAuMS0xNCAgMjAxNy0wNC0yMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZGV2dG9vbHMgICAgICAgMS4xMi4wICAyMDE2LTEyLTA1IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBkaWdlc3QgICAgICAgICAwLjYuMTIgIDIwMTctMDEtMjcgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGRwbHlyICAgICAgICAqIDAuNS4wICAgMjAxNi0wNi0yNCBjcmFuIChAMC41LjApICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZXZhbHVhdGUgICAgICAgMC4xMCAgICAyMDE2LTEwLTExIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBleHBtICAgICAgICAgICAwLjk5OS0yIDIwMTctMDMtMjkgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGZhc3RtYXRjaCAgICAgIDEuMS0wICAgMjAxNy0wMS0yOCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZm9yY2F0cyAgICAgICAgMC4yLjAgICAyMDE3LTAxLTIzIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBmb3JlaWduICAgICAgICAwLjgtNjggIDIwMTctMDQtMjQgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGdkYXRhICAgICAgICAgIDIuMTcuMCAgMjAxNS0wNy0wNCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZ2R0b29scyAgICAgICogMC4xLjQgICAyMDE3LTAzLTE3IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBnZ2NvbXBvcGxvdCAgKiAwLjEuMCAgIDIwMTYtMDctMjEgbG9jYWwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGdnZm9yY2UgICAgICAgIDAuMS4xICAgMjAxNi0xMS0yOCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZ2dwbG90MiAgICAgICogMi4yLjEgICAyMDE2LTEyLTMwIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBnZ3JhcGggICAgICAgKiAxLjAuMCAgIDIwMTctMDUtMDQgR2l0aHViICh6a2FtdmFyL2dncmFwaEAwZDA5OWYzKSAgICAgICAgIFxuIGdncmVwZWwgICAgICAgIDAuNi42ICAgMjAxNy0wNC0yOCBHaXRodWIgKHNsb3drb3cvZ2dyZXBlbEAwMDczMThmKSAgICAgICAgXG4gZ21vZGVscyAgICAgICAgMi4xNi4yICAyMDE1LTA3LTIyIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBncmlkRXh0cmEgICAgICAyLjIuMSAgIDIwMTYtMDItMjkgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGd0YWJsZSAgICAgICAgIDAuMi4wICAgMjAxNi0wMi0yNiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZ3Rvb2xzICAgICAgICAgMy41LjAgICAyMDE1LTA1LTI5IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBoYXZlbiAgICAgICAgICAxLjAuMCAgIDIwMTYtMDktMjMgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGhtcyAgICAgICAgICAgIDAuMyAgICAgMjAxNi0xMS0yMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gaHRtbHRvb2xzICAgICAgMC4zLjYgICAyMDE3LTA0LTI4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBodHRwdXYgICAgICAgICAxLjMuMyAgIDIwMTUtMDgtMDQgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGh0dHIgICAgICAgICAgIDEuMi4xICAgMjAxNi0wNy0wMyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gaWdyYXBoICAgICAgICogMS4wLjEgICAyMDE1LTA2LTI2IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBqc29ubGl0ZSAgICAgICAxLjQgICAgIDIwMTctMDQtMDggQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGtuaXRyICAgICAgICAqIDEuMTUuMSAgMjAxNi0xMS0yMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gbGFiZWxpbmcgICAgICAgMC4zICAgICAyMDE0LTA4LTIzIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBsYXR0aWNlICAgICAgICAwLjIwLTM1IDIwMTctMDMtMjUgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGxhenlldmFsICAgICAgIDAuMi4wICAgMjAxNi0wNi0xMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gTGVhcm5CYXllcyAgICAgMi4xNSAgICAyMDE0LTA1LTI5IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBsdWJyaWRhdGUgICAgICAxLjYuMCAgIDIwMTYtMDktMTMgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIG1hZ3JpdHRyICAgICAgIDEuNSAgICAgMjAxNC0xMS0yMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gTUFTUyAgICAgICAgICAgNy4zLTQ3ICAyMDE3LTA0LTIxIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBNYXRyaXggICAgICAgICAxLjItMTAgIDIwMTctMDQtMjggQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIG1lbW9pc2UgICAgICAgIDEuMS4wICAgMjAxNy0wNC0yMSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gbWdjdiAgICAgICAgICAgMS44LTE3ICAyMDE3LTAyLTA4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBtaW1lICAgICAgICAgICAwLjUgICAgIDIwMTYtMDctMDcgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIG1ub3JtdCAgICAgICAgIDEuNS01ICAgMjAxNi0xMC0xNSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gbW9kZWxyICAgICAgICAgMC4xLjAgICAyMDE2LTA4LTMxIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBtdW5zZWxsICAgICAgICAwLjQuMyAgIDIwMTYtMDItMTMgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIG5sbWUgICAgICAgICAgIDMuMS0xMzEgMjAxNy0wMi0wNiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gcGVnYXMgICAgICAgICAgMC4xMCAgICAyMDE3LTA1LTAzIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBwZXJtdXRlICAgICAgICAwLjktNCAgIDIwMTYtMDktMDkgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHBoYW5nb3JuICAgICAgIDIuMi4wICAgMjAxNy0wNC0wMyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gcGx5ciAgICAgICAgICAgMS44LjQgICAyMDE2LTA2LTA4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBwb3BwciAgICAgICAgKiAyLjQuMSAgIDIwMTctMDQtMTQgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHBzeWNoICAgICAgICAgIDEuNy41ICAgMjAxNy0wNS0wMyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gcHVycnIgICAgICAgICogMC4yLjIgICAyMDE2LTA2LTE4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBxdWFkcHJvZyAgICAgICAxLjUtNSAgIDIwMTMtMDQtMTcgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIFI2ICAgICAgICAgICAgIDIuMi4wICAgMjAxNi0xMC0wNSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gUkNvbG9yQnJld2VyICAgMS4xLTIgICAyMDE0LTEyLTA3IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBSY3BwICAgICAgICAgICAwLjEyLjEwIDIwMTctMDMtMTkgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHJlYWRyICAgICAgICAqIDEuMS4wICAgMjAxNy0wMy0yMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gcmVhZHhsICAgICAgICAgMS4wLjAgICAyMDE3LTA0LTE4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiByZXNoYXBlMiAgICAgICAxLjQuMiAgIDIwMTYtMTAtMjIgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHJtYXJrZG93biAgICAgIDEuNSAgICAgMjAxNy0wNC0yNiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gcnByb2pyb290ICAgICAgMS4yICAgICAyMDE3LTAxLTE2IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiByc3R1ZGlvYXBpICAgICAwLjYgICAgIDIwMTYtMDYtMjcgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHJ2ZXN0ICAgICAgICAgIDAuMy4yICAgMjAxNi0wNi0xNyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gc2NhbGVzICAgICAgICAgMC40LjEgICAyMDE2LTExLTA5IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBzZXFpbnIgICAgICAgICAzLjMtNiAgIDIwMTctMDQtMDYgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHNoaW55ICAgICAgICAgIDEuMC4zICAgMjAxNy0wNC0yNiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gc3AgICAgICAgICAgICAgMS4yLTQgICAyMDE2LTEyLTIyIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBzcGRlcCAgICAgICAgICAwLjYtMTMgIDIwMTctMDQtMjUgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHN0cmluZ2kgICAgICAgIDEuMS41ICAgMjAxNy0wNC0wNyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gc3RyaW5nciAgICAgICAgMS4yLjAgICAyMDE3LTAyLTE4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBzdmdsaXRlICAgICAgICAxLjIuMCAgIDIwMTYtMTEtMDQgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHRpYmJsZSAgICAgICAqIDEuMy4wICAgMjAxNy0wNC0wMSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gdGlkeXIgICAgICAgICogMC42LjEgICAyMDE3LTAxLTEwIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiB0aWR5dmVyc2UgICAgKiAxLjEuMSAgIDIwMTctMDEtMjcgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHR3ZWVuciAgICAgICAgIDAuMS41ICAgMjAxNi0xMC0xMCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gdWR1bml0czIgICAgICAgMC4xMyAgICAyMDE2LTExLTE3IENSQU4gKFIgMy4zLjIpICAgICAgICAgICAgICAgICAgICAgICAgICBcbiB1bml0cyAgICAgICAgICAwLjQtNCAgIDIwMTctMDQtMjAgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHZlZ2FuICAgICAgICAgIDIuNC0zICAgMjAxNy0wNC0wNyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gdmlyaWRpcyAgICAgICogMC40LjAgICAyMDE3LTAzLTI3IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiB2aXJpZGlzTGl0ZSAgKiAwLjIuMCAgIDIwMTctMDMtMjQgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHdpdGhyICAgICAgICAgIDEuMC4yICAgMjAxNi0wNi0yMCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4geG1sMiAgICAgICAgICAgMS4xLjEgICAyMDE3LTAxLTI0IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiB4dGFibGUgICAgICAgICAxLjgtMiAgIDIwMTYtMDItMDUgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHlhbWwgICAgICAgICAgIDIuMS4xNCAgMjAxNi0xMS0xMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4ifQ== -->
+<pre><code> package      * version date       source                                  
+ ade4         * 1.7-6   2017-03-23 CRAN (R 3.4.0)                          
+ adegenet     * 2.1.0   2017-05-05 Github (thibautjombart/adegenet@2143246)
+ ape            4.1     2017-02-14 CRAN (R 3.4.0)                          
+ assertr        2.0.2   2017-03-23 CRAN (R 3.4.0)                          
+ assertthat     0.2.0   2017-04-11 CRAN (R 3.4.0)                          
+ backports      1.0.5   2017-01-18 CRAN (R 3.4.0)                          
+ base64enc      0.1-3   2015-07-28 CRAN (R 3.4.0)                          
+ boot           1.3-19  2017-04-21 CRAN (R 3.4.0)                          
+ broom          0.4.2   2017-02-13 CRAN (R 3.4.0)                          
+ cellranger     1.1.0   2016-07-27 CRAN (R 3.4.0)                          
+ cluster        2.0.6   2017-03-16 CRAN (R 3.4.0)                          
+ coda           0.19-1  2016-12-08 CRAN (R 3.4.0)                          
+ colorspace     1.3-2   2016-12-14 CRAN (R 3.4.0)                          
+ DBI            0.6-1   2017-04-01 CRAN (R 3.4.0)                          
+ deldir         0.1-14  2017-04-22 CRAN (R 3.4.0)                          
+ devtools       1.12.0  2016-12-05 CRAN (R 3.4.0)                          
+ digest         0.6.12  2017-01-27 CRAN (R 3.4.0)                          
+ dplyr        * 0.5.0   2016-06-24 cran (@0.5.0)                           
+ evaluate       0.10    2016-10-11 CRAN (R 3.4.0)                          
+ expm           0.999-2 2017-03-29 CRAN (R 3.4.0)                          
+ fastmatch      1.1-0   2017-01-28 CRAN (R 3.4.0)                          
+ forcats        0.2.0   2017-01-23 CRAN (R 3.4.0)                          
+ foreign        0.8-68  2017-04-24 CRAN (R 3.4.0)                          
+ gdata          2.17.0  2015-07-04 CRAN (R 3.4.0)                          
+ gdtools      * 0.1.4   2017-03-17 CRAN (R 3.4.0)                          
+ ggcompoplot  * 0.1.0   2016-07-21 local                                   
+ ggforce        0.1.1   2016-11-28 CRAN (R 3.4.0)                          
+ ggplot2      * 2.2.1   2016-12-30 CRAN (R 3.4.0)                          
+ ggraph       * 1.0.0   2017-05-04 Github (zkamvar/ggraph@0d099f3)         
+ ggrepel        0.6.6   2017-04-28 Github (slowkow/ggrepel@007318f)        
+ gmodels        2.16.2  2015-07-22 CRAN (R 3.4.0)                          
+ gridExtra      2.2.1   2016-02-29 CRAN (R 3.4.0)                          
+ gtable         0.2.0   2016-02-26 CRAN (R 3.4.0)                          
+ gtools         3.5.0   2015-05-29 CRAN (R 3.4.0)                          
+ haven          1.0.0   2016-09-23 CRAN (R 3.4.0)                          
+ hms            0.3     2016-11-22 CRAN (R 3.4.0)                          
+ htmltools      0.3.6   2017-04-28 CRAN (R 3.4.0)                          
+ httpuv         1.3.3   2015-08-04 CRAN (R 3.4.0)                          
+ httr           1.2.1   2016-07-03 CRAN (R 3.4.0)                          
+ igraph       * 1.0.1   2015-06-26 CRAN (R 3.4.0)                          
+ jsonlite       1.4     2017-04-08 CRAN (R 3.4.0)                          
+ knitr        * 1.15.1  2016-11-22 CRAN (R 3.4.0)                          
+ labeling       0.3     2014-08-23 CRAN (R 3.4.0)                          
+ lattice        0.20-35 2017-03-25 CRAN (R 3.4.0)                          
+ lazyeval       0.2.0   2016-06-12 CRAN (R 3.4.0)                          
+ LearnBayes     2.15    2014-05-29 CRAN (R 3.4.0)                          
+ lubridate      1.6.0   2016-09-13 CRAN (R 3.4.0)                          
+ magrittr       1.5     2014-11-22 CRAN (R 3.4.0)                          
+ MASS           7.3-47  2017-04-21 CRAN (R 3.4.0)                          
+ Matrix         1.2-10  2017-04-28 CRAN (R 3.4.0)                          
+ memoise        1.1.0   2017-04-21 CRAN (R 3.4.0)                          
+ mgcv           1.8-17  2017-02-08 CRAN (R 3.4.0)                          
+ mime           0.5     2016-07-07 CRAN (R 3.4.0)                          
+ mnormt         1.5-5   2016-10-15 CRAN (R 3.4.0)                          
+ modelr         0.1.0   2016-08-31 CRAN (R 3.4.0)                          
+ munsell        0.4.3   2016-02-13 CRAN (R 3.4.0)                          
+ nlme           3.1-131 2017-02-06 CRAN (R 3.4.0)                          
+ pegas          0.10    2017-05-03 CRAN (R 3.4.0)                          
+ permute        0.9-4   2016-09-09 CRAN (R 3.4.0)                          
+ phangorn       2.2.0   2017-04-03 CRAN (R 3.4.0)                          
+ plyr           1.8.4   2016-06-08 CRAN (R 3.4.0)                          
+ poppr        * 2.4.1   2017-04-14 CRAN (R 3.4.0)                          
+ psych          1.7.5   2017-05-03 CRAN (R 3.4.0)                          
+ purrr        * 0.2.2   2016-06-18 CRAN (R 3.4.0)                          
+ quadprog       1.5-5   2013-04-17 CRAN (R 3.4.0)                          
+ R6             2.2.0   2016-10-05 CRAN (R 3.4.0)                          
+ RColorBrewer   1.1-2   2014-12-07 CRAN (R 3.4.0)                          
+ Rcpp           0.12.10 2017-03-19 CRAN (R 3.4.0)                          
+ readr        * 1.1.0   2017-03-22 CRAN (R 3.4.0)                          
+ readxl         1.0.0   2017-04-18 CRAN (R 3.4.0)                          
+ reshape2       1.4.2   2016-10-22 CRAN (R 3.4.0)                          
+ rmarkdown      1.5     2017-04-26 CRAN (R 3.4.0)                          
+ rprojroot      1.2     2017-01-16 CRAN (R 3.4.0)                          
+ rstudioapi     0.6     2016-06-27 CRAN (R 3.4.0)                          
+ rvest          0.3.2   2016-06-17 CRAN (R 3.4.0)                          
+ scales         0.4.1   2016-11-09 CRAN (R 3.4.0)                          
+ seqinr         3.3-6   2017-04-06 CRAN (R 3.4.0)                          
+ shiny          1.0.3   2017-04-26 CRAN (R 3.4.0)                          
+ sp             1.2-4   2016-12-22 CRAN (R 3.4.0)                          
+ spdep          0.6-13  2017-04-25 CRAN (R 3.4.0)                          
+ stringi        1.1.5   2017-04-07 CRAN (R 3.4.0)                          
+ stringr        1.2.0   2017-02-18 CRAN (R 3.4.0)                          
+ svglite        1.2.0   2016-11-04 CRAN (R 3.4.0)                          
+ tibble       * 1.3.0   2017-04-01 CRAN (R 3.4.0)                          
+ tidyr        * 0.6.1   2017-01-10 CRAN (R 3.4.0)                          
+ tidyverse    * 1.1.1   2017-01-27 CRAN (R 3.4.0)                          
+ tweenr         0.1.5   2016-10-10 CRAN (R 3.4.0)                          
+ udunits2       0.13    2016-11-17 CRAN (R 3.3.2)                          
+ units          0.4-4   2017-04-20 CRAN (R 3.4.0)                          
+ vegan          2.4-3   2017-04-07 CRAN (R 3.4.0)                          
+ viridis      * 0.4.0   2017-03-27 CRAN (R 3.4.0)                          
+ viridisLite  * 0.2.0   2017-03-24 CRAN (R 3.4.0)                          
+ withr          1.0.2   2016-06-20 CRAN (R 3.4.0)                          
+ xml2           1.1.1   2017-01-24 CRAN (R 3.4.0)                          
+ xtable         1.8-2   2016-02-05 CRAN (R 3.4.0)                          
+ yaml           2.1.14  2016-11-12 CRAN (R 3.4.0)                          </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <p></details></p>
@@ -500,7 +587,7 @@ $(document).ready(function () {
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>
