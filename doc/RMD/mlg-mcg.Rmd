@@ -49,6 +49,10 @@ strata(dat11) <- strata(dat11) %>%
 setPop(dat11) <- ~MLGRegion
 pal <- unlist(map2(LETTERS[2:4], comm, function(a, b) setNames(viridis::viridis(length(b), option = a), b)))
 pal <- c(pal, setNames(rep("#F6F6F6FF", 3), c("Mexico", "ID", "WI")))
+
+strat <- bind_cols(strata(dat11), 
+                   other(dat11)$meta, 
+                   data_frame(MLG = mll(dat11, "original")))
 ```
 
 
@@ -106,43 +110,75 @@ mlgs
  
 ```
 
-These tables are a good start, but we want to have a publication-ready table:
+These tables are a good start, but we want to have a publication-ready table.
 
 ```{r production-tables, results = 'asis'}
 fct2int <- function(x) as.integer(as.character(x))
 
 psex_from_graph <- function(g, MLG){
   weights <- setNames(E(g)$weight, E(g)$label)
-  weights <- split(weights, names(weights))[MLG]
-  1 -vapply(weights, unique, numeric(1))
+  weights <- split(weights, names(weights))
+  if (length(MLG) > 1){
+    weights <- weights[MLG]
+    res <- 1 - vapply(weights, unique, numeric(1))
+  } else {
+    res <- 1 - unique(weights[[MLG]])
+  }
+  res
 }
 
-mlg_table <- mlgs %>%
-  slice(1:5L) %>%
-  mutate(MLG = as.character(MLG)) %>%
-  mutate(Psex = psex_from_graph(graph11loc$total, MLG)) %>%
-  unnest() %>%
-  group_by(MLG, Samples, Psex) %>%
-  summarize(MCG = paste(MCG, collapse = ", ")) %>%
-  rename(N = Samples) %>%
-  arrange(desc(N))
+# Paste region and count vectors
+pasteRC <- function(R, C){
+  ord <- rev(order(C))
+  RC <- paste(R[ord], C[ord], sep = " (")
+  RC <- paste(RC, collapse = "), ")
+  paste0(RC, ")")
+}
 
-kable(mlg_table, caption = "Top 5 MLGs", format.args = list(digits = 3))
-
-mcg_table <- mcgs %>%
-  slice(1:5L) %>%
-  mutate(MCG = as.character(MCG)) %>%
-  unnest() %>%
-  group_by(MCG, Samples, Evenness) %>%
-  summarize(MLG = list(strwrap(paste(MLG, collapse = ", "), 28))) %>%
-  rename(N = Samples) %>%
-  arrange(desc(N)) %>% 
-  unnest() %>%
+mlg_table <- mcgmlg %>%
+  filter(MLG %in% mlgs$MLG[1:5]) %>%
+  mutate(MLG = as.integer(MLG)) %>%
+  select(-Freq) %>%
+  inner_join(strat) %>%
+  group_by(MLG, MCG, Region) %>%
+  summarize(N = n()) %>%
   ungroup() %>%
-  mutate(Evenness = ifelse(!duplicated(MCG), format(Evenness, digits = 3), "")) %>%
-  mutate(N = ifelse(!duplicated(MCG), N, "")) %>%
-  mutate(MCG = ifelse(!duplicated(MCG), MCG, ""))
-kable(mcg_table, caption = "Top 5 MCGs")
+  group_by(MLG, MCG) %>%
+  summarize(Region = pasteRC(Region, N), N = sum(N)) %>%
+  ungroup() %>%
+  mutate(mlmatch = match(MLG, mlgs$MLG[1:5])) %>%
+  arrange(mlmatch, desc(N), MCG) %>%
+  group_by(MLG) %>%
+  mutate(Psex = psex_from_graph(graph11loc$total, as.character(unique(MLG)))) %>%
+  ungroup() %>%
+  select(MLG, Psex, MCG, Region) %>%
+  mutate(Psex = ifelse(duplicated(MLG), "", format(Psex, scientific = FALSE, digits = 2))) %>%
+  mutate(MLG = ifelse(duplicated(MLG), "", as.character(MLG)))
+
+mcg_table <- mcgmlg %>%
+  filter(MCG %in% mcgs$MCG[1:5]) %>%
+  mutate(MLG = as.integer(MLG)) %>%
+  select(-Freq) %>%
+  inner_join(strat) %>%
+  group_by(MLG, MCG, Region) %>%
+  summarize(N = n()) %>%
+  ungroup() %>%
+  group_by(MLG, MCG) %>%
+  summarize(Region = pasteRC(Region, N), N = sum(N)) %>%
+  ungroup() %>%
+  mutate(mlmatch = match(MCG, mcgs$MCG[1:5])) %>%
+  arrange(mlmatch, desc(N), MLG) %>%
+  select(MCG, MLG, Region) %>%
+  mutate(MCG = ifelse(duplicated(MCG), "", as.character(MCG))) %>%
+  mutate(MLG = as.character(MLG))
+
+kable(mlg_table, caption = "Top 5 MLGs with associated MCGs and Regions (number of samples in parenthesis)")
+if (!dir.exists(file.path(PROJHOME, "results/tables"))) dir.create(file.path(PROJHOME, "results/tables"))
+readr::write_csv(mlg_table, path = file.path(PROJHOME, "results/tables/mlg_table.csv"))
+
+kable(mcg_table, caption = "Top 5 MCGs with associated MLGs and Regions (number of samples in parenthesis)")
+if (!dir.exists(file.path(PROJHOME, "results/tables"))) dir.create(file.path(PROJHOME, "results/tables"))
+readr::write_csv(mcg_table, path = file.path(PROJHOME, "results/tables/mcg_table.csv"))
 ```
 
 
@@ -158,7 +194,8 @@ mcgs %>%
   ggplot(aes(x = MCG, y = count, group = type, fill = type, alpha = Evenness)) +
   geom_col(aes(width = ifelse(type == "MLGs", 0.5, 0.85)), color = "black", position = "identity") +
   annotate(geom = "text", x = 13, y = 51, label = sprintf("Mean Evenness: %.3f", mean(mcgs$Evenness, na.rm = TRUE))) +
-  scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  # scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  scale_fill_manual(values = c("black", "white")) +
   scale_y_continuous(expand = c(0, 2)) +
   theme_minimal() +
   theme(panel.grid.major.x = element_blank()) +
@@ -171,7 +208,8 @@ mlgs %>%
   ggplot(aes(x = MLG, y = count, group = type, fill = type)) +
   geom_col(aes(width = ifelse(type == "MCGs", 0.5, 0.85), alpha = Evenness), color = "black", position = "identity") +
   annotate(geom = "text", x = 20, y = 21, label = sprintf("Mean Evenness: %.3f", mean(mlgs$Evenness, na.rm = TRUE))) +
-  scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  # scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  scale_fill_manual(values = c("black", "white")) +
   scale_y_continuous(expand = c(0, 2)) +
   theme_minimal() +
   theme(panel.grid.major.x = element_blank()) +
@@ -287,10 +325,6 @@ ratings for those? Again, we take take a look at these AND simultaneously query
 the top 5 MLGs for this. 
 
 ```{r severity, fig.width = 7, fig.height = 4}
-
-strat <- bind_cols(strata(dat11), 
-                   other(dat11)$meta, 
-                   data_frame(MLG = mll(dat11, "original")))
 count_group <- . %>% 
   mutate(nobs = n()) %>%  # count the number of samples/MCG
   ungroup() %>%
@@ -330,36 +364,53 @@ believe one way to investigate this is to add the communities assignments back
 to the data and assess how well they split up on a dendrogram created with 
 genetic distance.
 
-Note in this case we are assigning MLGs to the communities indicated. This means
-that even though they share a connection with an MCG in a different community,
-they belong to the MCG community they were initially assigned to. We will also
-assign communities based on what MCG they belong to. 
-
 ```{r treebuilding, cache = TRUE}
-the_communities
-strat_mlg <- strat %>% 
-  mutate(MLG = paste0("MLG.", MLG)) %>%
-  left_join(the_communities, by = c("MLG" = "vertex"))
-strat_mcg <- strat %>% 
-  left_join(the_communities, by = c("MCG" = "vertex"))
-
-datdist <- bruvo.dist(dat11, replen = other(dat)$REPLEN)
-datree <- phangorn::upgma(datdist)
+strat_mcg <- left_join(strat, the_communities, by = c("MCG" = "vertex"))
+datdist   <- bruvo.dist(dat11, replen = other(dat)$REPLEN)
+datree    <- phangorn::upgma(datdist)
 ```
 
-Now we can visualize that tree.
+Now we can visualize that trees.
 
-```{r, fig.width = 7, fig.height = 7}
-ape::plot.phylo(ape::ladderize(datree), type = "fan", no.margin = FALSE, tip.col = viridis(4, direction = -1)[as.integer(factor(strat_mlg$comm))])
-legend(-0.015, 0.11, legend = levels(factor(strat_mlg$comm)), fill = viridis(4, direction = -1), bty = "n")
-title("MLG-based assignment")
+```{r trees, fig.width = 7, fig.height = 7}
 ape::plot.phylo(ape::ladderize(datree), type = "fan", no.margin = FALSE, tip.col = viridis(4, direction = -1)[as.integer(factor(strat_mcg$comm))])
 legend(-0.015, 0.11, legend = levels(factor(strat_mcg$comm)), fill = viridis(4, direction = -1), bty = "n")
 title("MCG-based assignment")
+
+ape::plot.phylo(ape::ladderize(datree), type = "fan", no.margin = FALSE, tip.col = plasma(366)[rank(strat$Severity, ties.method = "first")])
+legend(-0.015, 0.125, legend = quantile(strat$Severity), fill = plasma(5), bty = "n")
+title("Severity")
 ```
 
 From what I can see, it appears that there's not much of a tight correlation of 
-genetic structure and MCG.
+genetic structure and MCG. There is the clear cluster of MLG 66 in Community C,
+but there are other isolates in distant parts of the tree. I'm wondering what
+happens if we average the distances between groups.
+
+```{r group_dist}
+datmat <- as.matrix(datdist)
+distmcg <- strat_mcg %>% 
+  group_by(comm) %>%
+  summarize(dist = list(as.dist(datmat[Isolate, Isolate])), N = n())
+distmcg %>%
+  group_by(comm) %>%
+  mutate(meandist = mean(dist[[1]]),
+         mediandist = median(dist[[1]])) %>%
+  ungroup() %>%
+  select(comm, N, meandist, mediandist)
+distmcg %>% 
+  unnest() %>%
+  ggplot(aes(x = dist, fill = comm)) +
+  geom_density(alpha = 0.5) +
+  geom_rug(aes(color = comm), alpha = 0.12) +
+  scale_fill_viridis(direction = -1, discrete = TRUE) +
+  scale_color_viridis(direction = -1, discrete = TRUE) +
+  ggtitle("Bruvo's distance by MCG community") +
+  theme_bw(base_size = 14)
+```
+
+This is quite distant. For reference, a distance of `r round((0.5/11)*7, 2)` is
+on average 7 steps. 
 
 
 <details>

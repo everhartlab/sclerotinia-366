@@ -174,6 +174,10 @@ strata(dat11) <- strata(dat11) %>%
 setPop(dat11) <- ~MLGRegion
 pal <- unlist(map2(LETTERS[2:4], comm, function(a, b) setNames(viridis::viridis(length(b), option = a), b)))
 pal <- c(pal, setNames(rep("#F6F6F6FF", 3), c("Mexico", "ID", "WI")))
+
+strat <- bind_cols(strata(dat11), 
+                   other(dat11)$meta, 
+                   data_frame(MLG = mll(dat11, "original")))
 ```
 
 
@@ -276,7 +280,7 @@ mlgs
 ## # ... with 155 more rows
 ```
 
-These tables are a good start, but we want to have a publication-ready table:
+These tables are a good start, but we want to have a publication-ready table.
 
 
 ```r
@@ -284,69 +288,204 @@ fct2int <- function(x) as.integer(as.character(x))
 
 psex_from_graph <- function(g, MLG){
   weights <- setNames(E(g)$weight, E(g)$label)
-  weights <- split(weights, names(weights))[MLG]
-  1 -vapply(weights, unique, numeric(1))
+  weights <- split(weights, names(weights))
+  if (length(MLG) > 1){
+    weights <- weights[MLG]
+    res <- 1 - vapply(weights, unique, numeric(1))
+  } else {
+    res <- 1 - unique(weights[[MLG]])
+  }
+  res
 }
 
-mlg_table <- mlgs %>%
-  slice(1:5L) %>%
-  mutate(MLG = as.character(MLG)) %>%
-  mutate(Psex = psex_from_graph(graph11loc$total, MLG)) %>%
-  unnest() %>%
-  group_by(MLG, Samples, Psex) %>%
-  summarize(MCG = paste(MCG, collapse = ", ")) %>%
-  rename(N = Samples) %>%
-  arrange(desc(N))
+# Paste region and count vectors
+pasteRC <- function(R, C){
+  ord <- rev(order(C))
+  RC <- paste(R[ord], C[ord], sep = " (")
+  RC <- paste(RC, collapse = "), ")
+  paste0(RC, ")")
+}
 
-kable(mlg_table, caption = "Top 5 MLGs", format.args = list(digits = 3))
+mlg_table <- mcgmlg %>%
+  filter(MLG %in% mlgs$MLG[1:5]) %>%
+  mutate(MLG = as.integer(MLG)) %>%
+  select(-Freq) %>%
+  inner_join(strat) %>%
+  group_by(MLG, MCG, Region) %>%
+  summarize(N = n()) %>%
+  ungroup() %>%
+  group_by(MLG, MCG) %>%
+  summarize(Region = pasteRC(Region, N), N = sum(N)) %>%
+  ungroup() %>%
+  mutate(mlmatch = match(MLG, mlgs$MLG[1:5])) %>%
+  arrange(mlmatch, desc(N), MCG) %>%
+  group_by(MLG) %>%
+  mutate(Psex = psex_from_graph(graph11loc$total, as.character(unique(MLG)))) %>%
+  ungroup() %>%
+  select(MLG, Psex, MCG, Region) %>%
+  mutate(Psex = ifelse(duplicated(MLG), "", format(Psex, scientific = FALSE, digits = 2))) %>%
+  mutate(MLG = ifelse(duplicated(MLG), "", as.character(MLG)))
 ```
 
+```
+## Joining, by = c("MLG", "MCG")
+```
 
-
-|MLG |  N|     Psex|MCG             |
-|:---|--:|--------:|:---------------|
-|25  | 27| 1.68e-02|5, 13, 60, 4, 1 |
-|163 | 15| 4.99e-02|45, 5           |
-|65  | 11| 7.07e-05|44, 5           |
-|140 | 10| 1.55e-04|8, 5, 20        |
-|66  |  8| 1.57e-05|9               |
+```
+## Warning in inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## character vector and factor, coercing into character vector
+```
 
 ```r
-mcg_table <- mcgs %>%
-  slice(1:5L) %>%
-  mutate(MCG = as.character(MCG)) %>%
-  unnest() %>%
-  group_by(MCG, Samples, Evenness) %>%
-  summarize(MLG = list(strwrap(paste(MLG, collapse = ", "), 28))) %>%
-  rename(N = Samples) %>%
-  arrange(desc(N)) %>% 
-  unnest() %>%
+mcg_table <- mcgmlg %>%
+  filter(MCG %in% mcgs$MCG[1:5]) %>%
+  mutate(MLG = as.integer(MLG)) %>%
+  select(-Freq) %>%
+  inner_join(strat) %>%
+  group_by(MLG, MCG, Region) %>%
+  summarize(N = n()) %>%
   ungroup() %>%
-  mutate(Evenness = ifelse(!duplicated(MCG), format(Evenness, digits = 3), "")) %>%
-  mutate(N = ifelse(!duplicated(MCG), N, "")) %>%
-  mutate(MCG = ifelse(!duplicated(MCG), MCG, ""))
-kable(mcg_table, caption = "Top 5 MCGs")
+  group_by(MLG, MCG) %>%
+  summarize(Region = pasteRC(Region, N), N = sum(N)) %>%
+  ungroup() %>%
+  mutate(mlmatch = match(MCG, mcgs$MCG[1:5])) %>%
+  arrange(mlmatch, desc(N), MLG) %>%
+  select(MCG, MLG, Region) %>%
+  mutate(MCG = ifelse(duplicated(MCG), "", as.character(MCG))) %>%
+  mutate(MLG = as.character(MLG))
+```
+
+```
+## Joining, by = c("MLG", "MCG")
+```
+
+```
+## Warning in inner_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
+## character vector and factor, coercing into character vector
+```
+
+```r
+kable(mlg_table, caption = "Top 5 MLGs with associated MCGs and Regions (number of samples in parenthesis)")
 ```
 
 
 
-|MCG |N  |Evenness |MLG                         |
-|:---|:--|:--------|:---------------------------|
-|5   |73 |0.481    |25, 163, 15, 39, 9, 42,     |
-|    |   |         |140, 7, 12, 16, 20, 21, 22, |
-|    |   |         |23, 24, 26, 29, 35, 36, 37, |
-|    |   |         |43, 45, 46, 65, 72, 75, 76, |
-|    |   |         |83, 88, 90, 106, 109, 127,  |
-|    |   |         |130, 138, 146, 153          |
-|44  |36 |0.625    |65, 56, 68, 78, 75, 2, 3,   |
-|    |   |         |4, 52, 63, 70, 71, 76, 123, |
-|    |   |         |141, 145, 156, 160, 161     |
-|1   |15 |0.822    |104, 103, 128, 7, 17, 25,   |
-|    |   |         |47, 107, 134, 153           |
-|4   |14 |0.724    |165, 160, 5, 25, 57, 63,    |
-|    |   |         |68, 77, 154                 |
-|2   |10 |0.952    |103, 8, 12, 17, 18, 38, 69, |
-|    |   |         |120, 125                    |
+|MLG |Psex     |MCG |Region                  |
+|:---|:--------|:---|:-----------------------|
+|25  |0.016824 |5   |ND (15), CO (2), MI (2) |
+|    |         |13  |ND (3)                  |
+|    |         |60  |ND (2), WA (1)          |
+|    |         |1   |NE (1)                  |
+|    |         |4   |MI (1)                  |
+|163 |0.049932 |45  |CO (5), ND (2), NE (1)  |
+|    |         |5   |MI (7)                  |
+|65  |0.000071 |44  |NE (10)                 |
+|    |         |5   |MI (1)                  |
+|140 |0.000155 |8   |CO (5)                  |
+|    |         |5   |MI (3)                  |
+|    |         |20  |MI (2)                  |
+|66  |0.000016 |9   |NE (4), CO (2), MI (2)  |
+
+```r
+if (!dir.exists(file.path(PROJHOME, "results/tables"))) dir.create(file.path(PROJHOME, "results/tables"))
+readr::write_csv(mlg_table, path = file.path(PROJHOME, "results/tables/mlg_table.csv"))
+
+kable(mcg_table, caption = "Top 5 MCGs with associated MLGs and Regions (number of samples in parenthesis)")
+```
+
+
+
+|MCG |MLG |Region                         |
+|:---|:---|:------------------------------|
+|5   |25  |ND (15), CO (2), MI (2)        |
+|    |163 |MI (7)                         |
+|    |15  |ND (1), CO (1), WA (1), MI (1) |
+|    |39  |WA (2), ND (1), CO (1)         |
+|    |9   |ND (2), MI (1)                 |
+|    |42  |OR (2), NY (1)                 |
+|    |140 |MI (3)                         |
+|    |7   |ND (1)                         |
+|    |12  |MI (1)                         |
+|    |16  |MI (1)                         |
+|    |20  |MI (1)                         |
+|    |21  |ND (1)                         |
+|    |22  |CO (1)                         |
+|    |23  |OR (1)                         |
+|    |24  |OR (1)                         |
+|    |26  |ND (1)                         |
+|    |29  |MI (1)                         |
+|    |35  |MI (1)                         |
+|    |36  |WA (1)                         |
+|    |37  |WI (1)                         |
+|    |43  |WI (1)                         |
+|    |45  |WA (1)                         |
+|    |46  |OR (1)                         |
+|    |65  |MI (1)                         |
+|    |72  |WA (1)                         |
+|    |75  |MI (1)                         |
+|    |76  |MI (1)                         |
+|    |83  |OR (1)                         |
+|    |88  |MI (1)                         |
+|    |90  |ND (1)                         |
+|    |106 |CO (1)                         |
+|    |109 |MI (1)                         |
+|    |127 |WA (1)                         |
+|    |130 |ND (1)                         |
+|    |138 |MI (1)                         |
+|    |146 |MI (1)                         |
+|    |153 |MI (1)                         |
+|44  |65  |NE (10)                        |
+|    |56  |NE (3), CO (1)                 |
+|    |68  |MN (3)                         |
+|    |78  |ND (3)                         |
+|    |75  |ND (2)                         |
+|    |2   |MN (1)                         |
+|    |3   |MN (1)                         |
+|    |4   |MN (1)                         |
+|    |52  |CO (1)                         |
+|    |63  |NE (1)                         |
+|    |70  |CO (1)                         |
+|    |71  |CO (1)                         |
+|    |76  |ND (1)                         |
+|    |123 |MN (1)                         |
+|    |141 |MN (1)                         |
+|    |145 |MI (1)                         |
+|    |156 |NE (1)                         |
+|    |160 |NE (1)                         |
+|    |161 |MI (1)                         |
+|1   |104 |NE (4)                         |
+|    |103 |NE (2)                         |
+|    |128 |NE (2)                         |
+|    |7   |NE (1)                         |
+|    |17  |NE (1)                         |
+|    |25  |NE (1)                         |
+|    |47  |NE (1)                         |
+|    |107 |France (1)                     |
+|    |134 |NE (1)                         |
+|    |153 |NE (1)                         |
+|2   |103 |WA (2)                         |
+|    |8   |WA (1)                         |
+|    |12  |WA (1)                         |
+|    |17  |OR (1)                         |
+|    |18  |WA (1)                         |
+|    |38  |WA (1)                         |
+|    |69  |WA (1)                         |
+|    |120 |WA (1)                         |
+|    |125 |WA (1)                         |
+|4   |165 |MN (2), CO (1), MI (1), NE (1) |
+|    |160 |OR (2)                         |
+|    |5   |OR (1)                         |
+|    |25  |MI (1)                         |
+|    |57  |CO (1)                         |
+|    |63  |WA (1)                         |
+|    |68  |MN (1)                         |
+|    |77  |WA (1)                         |
+|    |154 |ND (1)                         |
+
+```r
+if (!dir.exists(file.path(PROJHOME, "results/tables"))) dir.create(file.path(PROJHOME, "results/tables"))
+readr::write_csv(mcg_table, path = file.path(PROJHOME, "results/tables/mcg_table.csv"))
+```
 
 
 It might be better to visualize these data as barplots. Here we are mapping the
@@ -362,7 +501,8 @@ mcgs %>%
   ggplot(aes(x = MCG, y = count, group = type, fill = type, alpha = Evenness)) +
   geom_col(aes(width = ifelse(type == "MLGs", 0.5, 0.85)), color = "black", position = "identity") +
   annotate(geom = "text", x = 13, y = 51, label = sprintf("Mean Evenness: %.3f", mean(mcgs$Evenness, na.rm = TRUE))) +
-  scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  # scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  scale_fill_manual(values = c("black", "white")) +
   scale_y_continuous(expand = c(0, 2)) +
   theme_minimal() +
   theme(panel.grid.major.x = element_blank()) +
@@ -384,7 +524,8 @@ mlgs %>%
   ggplot(aes(x = MLG, y = count, group = type, fill = type)) +
   geom_col(aes(width = ifelse(type == "MCGs", 0.5, 0.85), alpha = Evenness), color = "black", position = "identity") +
   annotate(geom = "text", x = 20, y = 21, label = sprintf("Mean Evenness: %.3f", mean(mlgs$Evenness, na.rm = TRUE))) +
-  scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  # scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  scale_fill_manual(values = c("black", "white")) +
   scale_y_continuous(expand = c(0, 2)) +
   theme_minimal() +
   theme(panel.grid.major.x = element_blank()) +
@@ -531,9 +672,6 @@ the top 5 MLGs for this.
 
 
 ```r
-strat <- bind_cols(strata(dat11), 
-                   other(dat11)$meta, 
-                   data_frame(MLG = mll(dat11, "original")))
 count_group <- . %>% 
   mutate(nobs = n()) %>%  # count the number of samples/MCG
   ungroup() %>%
@@ -582,49 +720,9 @@ believe one way to investigate this is to add the communities assignments back
 to the data and assess how well they split up on a dendrogram created with 
 genetic distance.
 
-Note in this case we are assigning MLGs to the communities indicated. This means
-that even though they share a connection with an MCG in a different community,
-they belong to the MCG community they were initially assigned to. We will also
-assign communities based on what MCG they belong to. 
-
 
 ```r
-the_communities
-```
-
-```
-## Source: local data frame [252 x 3]
-## Groups: community [51]
-## 
-##     vertex community                       comm
-##     <fctr>    <fctr>                      <chr>
-## 1    MLG.1        39 Other Communities (n < 10)
-## 2   MLG.10        32 Other Communities (n < 10)
-## 3  MLG.100         8 Other Communities (n < 10)
-## 4  MLG.101        11 Other Communities (n < 10)
-## 5  MLG.102        10 Other Communities (n < 10)
-## 6  MLG.103         7                Community A
-## 7  MLG.104         7                Community A
-## 8  MLG.105        33 Other Communities (n < 10)
-## 9  MLG.106        22 Other Communities (n < 10)
-## 10 MLG.107        17 Other Communities (n < 10)
-## # ... with 242 more rows
-```
-
-```r
-strat_mlg <- strat %>% 
-  mutate(MLG = paste0("MLG.", MLG)) %>%
-  left_join(the_communities, by = c("MLG" = "vertex"))
-```
-
-```
-## Warning in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
-## factor and character vector, coercing into character vector
-```
-
-```r
-strat_mcg <- strat %>% 
-  left_join(the_communities, by = c("MCG" = "vertex"))
+strat_mcg <- left_join(strat, the_communities, by = c("MCG" = "vertex"))
 ```
 
 ```
@@ -633,20 +731,12 @@ strat_mcg <- strat %>%
 ```
 
 ```r
-datdist <- bruvo.dist(dat11, replen = other(dat)$REPLEN)
-datree <- phangorn::upgma(datdist)
+datdist   <- bruvo.dist(dat11, replen = other(dat)$REPLEN)
+datree    <- phangorn::upgma(datdist)
 ```
 
-Now we can visualize that tree.
+Now we can visualize that trees.
 
-
-```r
-ape::plot.phylo(ape::ladderize(datree), type = "fan", no.margin = FALSE, tip.col = viridis(4, direction = -1)[as.integer(factor(strat_mlg$comm))])
-legend(-0.015, 0.11, legend = levels(factor(strat_mlg$comm)), fill = viridis(4, direction = -1), bty = "n")
-title("MLG-based assignment")
-```
-
-![plot of chunk unnamed-chunk-4](./figures/mlg-mcg///unnamed-chunk-4-1.png)
 
 ```r
 ape::plot.phylo(ape::ladderize(datree), type = "fan", no.margin = FALSE, tip.col = viridis(4, direction = -1)[as.integer(factor(strat_mcg$comm))])
@@ -654,10 +744,61 @@ legend(-0.015, 0.11, legend = levels(factor(strat_mcg$comm)), fill = viridis(4, 
 title("MCG-based assignment")
 ```
 
-![plot of chunk unnamed-chunk-4](./figures/mlg-mcg///unnamed-chunk-4-2.png)
+![plot of chunk trees](./figures/mlg-mcg///trees-1.png)
+
+```r
+ape::plot.phylo(ape::ladderize(datree), type = "fan", no.margin = FALSE, tip.col = plasma(366)[rank(strat$Severity, ties.method = "first")])
+legend(-0.015, 0.125, legend = quantile(strat$Severity), fill = plasma(5), bty = "n")
+title("Severity")
+```
+
+![plot of chunk trees](./figures/mlg-mcg///trees-2.png)
 
 From what I can see, it appears that there's not much of a tight correlation of 
-genetic structure and MCG.
+genetic structure and MCG. There is the clear cluster of MLG 66 in Community C,
+but there are other isolates in distant parts of the tree. I'm wondering what
+happens if we average the distances between groups.
+
+
+```r
+datmat <- as.matrix(datdist)
+distmcg <- strat_mcg %>% 
+  group_by(comm) %>%
+  summarize(dist = list(as.dist(datmat[Isolate, Isolate])), N = n())
+distmcg %>%
+  group_by(comm) %>%
+  mutate(meandist = mean(dist[[1]]),
+         mediandist = median(dist[[1]])) %>%
+  ungroup() %>%
+  select(comm, N, meandist, mediandist)
+```
+
+```
+## # A tibble: 4 × 4
+##                         comm     N  meandist mediandist
+##                        <chr> <int>     <dbl>      <dbl>
+## 1                Community A   140 0.3464999  0.3920455
+## 2                Community B    62 0.3492688  0.4200994
+## 3                Community C    19 0.3775709  0.5309837
+## 4 Other Communities (n < 10)   145 0.4610922  0.4815341
+```
+
+```r
+distmcg %>% 
+  unnest() %>%
+  ggplot(aes(x = dist, fill = comm)) +
+  geom_density(alpha = 0.5) +
+  geom_rug(aes(color = comm), alpha = 0.12) +
+  scale_fill_viridis(direction = -1, discrete = TRUE) +
+  scale_color_viridis(direction = -1, discrete = TRUE) +
+  ggtitle("Bruvo's distance by MCG community") +
+  theme_bw(base_size = 14)
+```
+
+![plot of chunk group_dist](./figures/mlg-mcg///group_dist-1.png)
+
+This is quite distant. For reference, a distance of 0.32 is
+on average 7 steps. 
 
 
 <details>
@@ -695,6 +836,7 @@ genetic structure and MCG.
 ##  cellranger    1.1.0   2016-07-27 CRAN (R 3.4.0)                          
 ##  cluster       2.0.6   2017-03-16 CRAN (R 3.4.0)                          
 ##  coda          0.19-1  2016-12-08 CRAN (R 3.4.0)                          
+##  codetools     0.2-15  2016-10-05 CRAN (R 3.4.0)                          
 ##  colorspace    1.3-2   2016-12-14 CRAN (R 3.4.0)                          
 ##  DBI           0.6-1   2017-04-01 CRAN (R 3.4.0)                          
 ##  deldir        0.1-14  2017-04-22 CRAN (R 3.4.0)                          
@@ -712,7 +854,7 @@ genetic structure and MCG.
 ##  ggforce       0.1.1   2016-11-28 CRAN (R 3.4.0)                          
 ##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.0)                          
 ##  ggraph      * 1.0.0   2017-05-04 Github (zkamvar/ggraph@0d099f3)         
-##  ggrepel       0.6.6   2017-04-28 Github (slowkow/ggrepel@007318f)        
+##  ggrepel     * 0.6.6   2017-04-28 Github (slowkow/ggrepel@007318f)        
 ##  gmodels       2.16.2  2015-07-22 CRAN (R 3.4.0)                          
 ##  gridExtra     2.2.1   2016-02-29 CRAN (R 3.4.0)                          
 ##  gtable        0.2.0   2016-02-26 CRAN (R 3.4.0)                          
@@ -727,7 +869,7 @@ genetic structure and MCG.
 ##  jsonlite      1.4     2017-04-08 CRAN (R 3.4.0)                          
 ##  knitr       * 1.15.1  2016-11-22 CRAN (R 3.4.0)                          
 ##  labeling      0.3     2014-08-23 CRAN (R 3.4.0)                          
-##  lattice       0.20-35 2017-03-25 CRAN (R 3.4.0)                          
+##  lattice     * 0.20-35 2017-03-25 CRAN (R 3.4.0)                          
 ##  lazyeval      0.2.0   2016-06-12 CRAN (R 3.4.0)                          
 ##  LearnBayes    2.15    2014-05-29 CRAN (R 3.4.0)                          
 ##  lubridate     1.6.0   2016-09-13 CRAN (R 3.4.0)                          
@@ -742,7 +884,7 @@ genetic structure and MCG.
 ##  munsell       0.4.3   2016-02-13 CRAN (R 3.4.0)                          
 ##  nlme          3.1-131 2017-02-06 CRAN (R 3.4.0)                          
 ##  pegas         0.10    2017-05-03 CRAN (R 3.4.0)                          
-##  permute       0.9-4   2016-09-09 CRAN (R 3.4.0)                          
+##  permute     * 0.9-4   2016-09-09 CRAN (R 3.4.0)                          
 ##  phangorn      2.2.0   2017-04-03 CRAN (R 3.4.0)                          
 ##  plyr          1.8.4   2016-06-08 CRAN (R 3.4.0)                          
 ##  poppr       * 2.4.1   2017-04-14 CRAN (R 3.4.0)                          
@@ -772,7 +914,7 @@ genetic structure and MCG.
 ##  tweenr        0.1.5   2016-10-10 CRAN (R 3.4.0)                          
 ##  udunits2      0.13    2016-11-17 CRAN (R 3.3.2)                          
 ##  units         0.4-4   2017-04-20 CRAN (R 3.4.0)                          
-##  vegan         2.4-3   2017-04-07 CRAN (R 3.4.0)                          
+##  vegan       * 2.4-3   2017-04-07 CRAN (R 3.4.0)                          
 ##  viridis     * 0.4.0   2017-03-27 CRAN (R 3.4.0)                          
 ##  viridisLite * 0.2.0   2017-03-24 CRAN (R 3.4.0)                          
 ##  withr         1.0.2   2016-06-20 CRAN (R 3.4.0)                          
