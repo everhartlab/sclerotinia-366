@@ -28,6 +28,7 @@ library('ggraph')
 library('tidyverse')
 library('poppr')
 library('viridis')
+library('visNetwork')
 ```
 
 ```{r load_data}
@@ -299,6 +300,46 @@ mcg_mlg_graph
 ggsave(file.path(PROJHOME, "results/figures/publication/FigureS2.svg"), 
        width = 88*3, height = 88*3, units = "mm")
 ```
+
+### Interactive Visualizations
+
+The *visNetwork* package wraps a java library that has very good network
+visualization routines. I can conver this graph to that.
+
+```{r}
+
+make_rgb <- function(x, alpha = 1){
+  out <- col2rgb(x, alpha = TRUE)
+  out[4, ] <- floor(out[4, ]*alpha)
+  out      <- apply(out, 2, paste, collapse = ", ")
+  paste0("rgba(", out, ")")
+}
+vg <- g %>%
+  set_vertex_attr("size", value = osize) %>%
+  set_vertex_attr("value", value = osize) %>%
+  set_vertex_attr("color", value = viridis(4)[as.integer(factor(the_communities$comm))]) %>%
+  set_vertex_attr("shape", value = ifelse(V(.)$type == "Multilocus Genotype", "triangle", "circle")) %>%
+  set_edge_attr("width", value = E(.)$weight) %>%
+  toVisNetworkData()
+vg$nodes <- vg$nodes %>% 
+  group_by(id) %>%
+  mutate(color = list(list(background = make_rgb(color, 0.8), 
+                      border = make_rgb(rep("black", n()), 0.8),
+                      highlight = list(background = make_rgb(color),
+                                       border = make_rgb(rep("black", n()))
+                                       )
+                      )))
+vgn <- visNetwork(nodes = vg$nodes, edges = vg$edges,# height = "500px", 
+                  main = "Relation of Multilocus Genotypes and MCGs")
+set.seed(2017-05-03)
+vgn
+# vgn %>%
+#   visIgraphLayout("layout_nicely") %>%
+#   visOptions(highlightNearest = list(enabled = TRUE, hover = TRUE), 
+#              nodesIdSelection = TRUE)
+#   
+```
+
 
 ## Subgraph
 
