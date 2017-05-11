@@ -1,0 +1,48 @@
+---
+title: Population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean throughout the United States, and from Mexico, France, and Australia
+author:
+  - name: Zhian N. Kamvar
+    email: zkamvar@unl.edu
+    affiliation: University of Nebraska-Lincoln
+  -name: Bimal Sajeewa Amadarasa
+    email: bamadarasa2@unl.edu
+    affiliation: University of Nebraska-Lincoln
+  -name: R. Jhala
+    email: rjhala2@unl.edu
+    affiliation: University of Nebraska-Lincoln
+  -name: James Steadman
+    email: jsteadman1@unl.edu
+    affiliation: University of Nebraska-Lincoln
+  - name: Sydney E. Everhart
+    email: everhart@unl.edu
+    affiliation: University of Nebraska-Lincoln
+    corresponding: everhart@unl.edu
+address:
+  - code: University of Nebraska-Lincoln
+    address: Department of Plant Pathology, University of Nebraska-Lincoln, Lincoln 68583
+abstract: |
+  Characterization of pathogen population structure can yield important insight into pathogen biology and epidemiology. A worldwide collection of 366 *S. sclerotiorum* isolates from 26 dry and snap bean cultivars and experimental lines in Australia, France, Mexico, and 10 bean production states in the U.S. collected from 2003 to 2012 were genotyped at 16 microsatellite loci. A total of 165 multilocus genotypes were identified using a subset of 11 loci that followed an expected repeat motif.  There were a total of 87 mycelial compatibility groups (MCGs) in the collection of isolates. We did not detect an association of MLGs and MCGs. Discriminant analysis of principal components using clone corrected data showed region of origin was the best separator (AMOVA P = 0.001). The Mexican population was highly divergent from the rest, showing closest association with the California population. Despite overall genetic linkage, none was observed for populations from Washington in 2008, Oregon in 2003, California in 2004, or France in 2004 and 2005. AMOVA for populations based on year of sampling had a low PhiPT value of 0.07 (P = 0.001) while host cultivar, isolate virulence and sampling field did not have a significant impact on the microsatellite genotype.   The analysis of populations from same field over different years for linkage disequilibrium did not provide evidence for sexual outcrossing. However, analysis of molecular variance did show populations were significantly different in some locations between some years (eg. MI 2003 and 2005 populations; WA 2008 compared to both 2003 and 2005).  These results suggest that despite large physical separation, divergence of populations is low, which is not surprising given the low rate of heterothallic recombination thought to occur. However, some level of heterothallic recombination is also taking place in these fields in addition to natural mutations.  The lack of association of MLGs and MCGs in dry bean isolates is indicative of sexual outcrossing, and distribution of microsatellite MLGs across distant regions due to agricultural practices and human-mediated migration.  
+
+  
+author_summary: |
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget porta erat. Morbi consectetur est vel gravida pretium. Suspendisse ut dui eu ante cursus gravida non sed sem. Nullam sapien tellus, commodo id velit id, eleifend volutpat quam. Phasellus mauris velit, dapibus finibus elementum vel, pulvinar non tellus. Nunc pellentesque pretium diam, quis maximus dolor faucibus id. Nunc convallis sodales ante, ut ullamcorper est egestas vitae. Nam sit amet enim ultrices, ultrices elit pulvinar, volutpat risus.
+
+bibliography: mybibfile.bib
+output: rticles::plos_article
+csl: plos.csl
+---
+
+_Text based on plos sample manuscript, see [http://journals.plos.org/ploscompbiol/s/latex](http://journals.plos.org/ploscompbiol/s/latex)_
+
+# Introduction
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget porta erat. Morbi consectetur est vel gravida pretium. Suspendisse ut dui eu ante cursus gravida non sed sem. Phasellus mauris velit, dapibus finibus elementum vel, pulvinar non tellus. Nunc pellentesque pretium diam, quis maximus dolor faucibus id. Nunc convallis sodales ante, ut ullamcorper est egestas vitae. Nam sit amet enim ultrices, ultrices elit pulvinar, volutpat risus.
+
+A list
+
+- Item 1
+- Item 2
+
+Here are two sample references: @Feynman1963118 [@Dirac1953888].
+
+# References {#references .unnumbered}
