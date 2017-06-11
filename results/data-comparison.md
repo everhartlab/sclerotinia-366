@@ -39,6 +39,32 @@ library('tidyverse')
 ```r
 library('readxl')
 library('assertr')
+library('poppr')
+```
+
+```
+## Loading required package: adegenet
+```
+
+```
+## Loading required package: ade4
+```
+
+```
+## 
+##    /// adegenet 2.1.0 is loaded ////////////
+## 
+##    > overview: '?adegenet'
+##    > tutorials/doc/questions: 'adegenetWeb()' 
+##    > bug reports/feature requests: adegenetIssues()
+```
+
+```
+## This is poppr version 2.4.1.99.2. To get started, type package?poppr
+## OMP parallel support: available
+## 
+## This version of poppr is under development.
+## If you find any bugs, please report them at https://github.com/grunwaldlab/poppr/issues
 ```
 
 
@@ -72,18 +98,18 @@ sr
 ```
 
 ```
-## # A tibble: 11 × 4
+## # A tibble: 11 x 4
 ##       locus lower upper     n
-## *     <chr> <chr> <chr> <int>
-## 1    5-2(F)   318   324     4
-## 2    6-2(F)   483   495     3
-## 3    7-2(F)   158   174     7
-## 4    8-3(H)   244   270     7
-## 5    9-2(F)   360   382     9
-## 6   12-2(H)   214   222     5
-## 7   17-3(H)   342   363     7
-## 8   20-3(F)   280   282     2
-## 9   55-4(F)   153   216    10
+##  *    <chr> <chr> <chr> <int>
+##  1   5-2(F)   318   324     4
+##  2   6-2(F)   483   495     3
+##  3   7-2(F)   158   174     7
+##  4   8-3(H)   244   270     7
+##  5   9-2(F)   360   382     9
+##  6  12-2(H)   214   222     5
+##  7  17-3(H)   342   363     7
+##  8  20-3(F)   280   282     2
+##  9  55-4(F)   153   216    10
 ## 10 110-4(H)   370   386     5
 ## 11 114-4(H)   339   416    10
 ```
@@ -174,6 +200,8 @@ final result.
 There are always quirks with the data when it's in excel. Often, there are too
 many rows, so we have to remove them with `slice()`.
 
+> 2017-06-11: This has been fixed in readxl version 1.0
+
 Quirks specific to thse data:
 
  - GenAlEx format has an extra header region that should be ignored
@@ -198,7 +226,7 @@ syd <- read_excel("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xlsx",
   mutate_if(is.character, trimws) %>% # Trim whitespace forom all character columns
   mutate(Severity = as.numeric(Severity)) %>%
   mutate(Source = ifelse(Source == "", "unk", Source)) %>%
-  slice(-n()) %>% # remove last row
+  # slice(-n()) %>% # remove last row
   arrange(Isolate) %>%
   check_data_cromulence
 ```
@@ -222,18 +250,18 @@ syd
 ```
 
 ```
-## # A tibble: 366 × 18
+## # A tibble: 366 x 18
 ##    Isolate Severity   MCG State Source  Year  Host `110-4(H)` `114-4(H)`
 ##      <chr>    <dbl> <chr> <chr>  <chr> <chr> <chr>      <int>      <int>
-## 1      152      3.9     4    NE    unk  2003    GH        378        371
-## 2      274      5.4    45    NE    unk  2003    GH        378        359
-## 3      443      6.3     5    NY    unk  2003    GH        378        367
-## 4      444      4.4     4    MN    wmn  2003  G122        378        371
-## 5      445      4.7     4    MN    wmn  2003 Beryl        378        371
-## 6      446      6.1     3    MI    wmn  2003 Beryl        386        359
-## 7      447      5.5     5    MI    wmn  2003 Beryl        378        367
-## 8      448      5.0     3    MI    wmn  2003 Beryl        386        359
-## 9      449      5.2     3    MI    wmn  2003 Bunsi        386        367
+##  1     152      3.9     4    NE    unk  2003    GH        378        371
+##  2     274      5.4    45    NE    unk  2003    GH        378        359
+##  3     443      6.3     5    NY    unk  2003    GH        378        367
+##  4     444      4.4     4    MN    wmn  2003  G122        378        371
+##  5     445      4.7     4    MN    wmn  2003 Beryl        378        371
+##  6     446      6.1     3    MI    wmn  2003 Beryl        386        359
+##  7     447      5.5     5    MI    wmn  2003 Beryl        378        367
+##  8     448      5.0     3    MI    wmn  2003 Beryl        386        359
+##  9     449      5.2     3    MI    wmn  2003 Bunsi        386        367
 ## 10     450      5.3     5    MI    wmn  2003 Bunsi        378        367
 ## # ... with 356 more rows, and 9 more variables: `12-2(H)` <int>,
 ## #   `17-3(H)` <int>, `20-3(F)` <int>, `5-2(F)` <int>, `55-4(F)` <int>,
@@ -293,18 +321,18 @@ saj
 ```
 
 ```
-## # A tibble: 366 × 18
+## # A tibble: 366 x 18
 ##    Isolate Severity   MCG State Source  Year  Host `110-4(H)` `114-4(H)`
 ##      <chr>    <dbl> <chr> <chr>  <chr> <chr> <chr>      <int>      <int>
-## 1      152      3.9     4    NE    unk  2003    GH        378        371
-## 2      274      5.4    45    NE    unk  2003    GH        378        359
-## 3      443      6.3     5    NY    unk  2003    GH        378        367
-## 4      444      4.4     4    MN    wmn  2003  G122        378        371
-## 5      445      4.7     4    MN    wmn  2003 Beryl        378        371
-## 6      446      6.1     3    MI    wmn  2003 Beryl        386        359
-## 7      447      5.5     5    MI    wmn  2003 Beryl        378        367
-## 8      448      5.0     3    MI    wmn  2003 Beryl        386        359
-## 9      449      5.2     3    MI    wmn  2003 Bunsi        386        367
+##  1     152      3.9     4    NE    unk  2003    GH        378        371
+##  2     274      5.4    45    NE    unk  2003    GH        378        359
+##  3     443      6.3     5    NY    unk  2003    GH        378        367
+##  4     444      4.4     4    MN    wmn  2003  G122        378        371
+##  5     445      4.7     4    MN    wmn  2003 Beryl        378        371
+##  6     446      6.1     3    MI    wmn  2003 Beryl        386        359
+##  7     447      5.5     5    MI    wmn  2003 Beryl        378        367
+##  8     448      5.0     3    MI    wmn  2003 Beryl        386        359
+##  9     449      5.2     3    MI    wmn  2003 Bunsi        386        367
 ## 10     450      5.3     5    MI    wmn  2003 Bunsi        378        367
 ## # ... with 356 more rows, and 9 more variables: `12-2(H)` <int>,
 ## #   `17-3(H)` <int>, `20-3(F)` <int>, `5-2(F)` <int>, `55-4(F)` <int>,
@@ -324,7 +352,7 @@ dplyr::setequal(saj, syd)
 ```
 
 ```
-## FALSE: Rows in x but not y: 366, 365, 363, 260, 364, 41, 40, 39, 38. Rows in y but not x: 366, 365, 364, 363, 260, 41, 39, 38, 40.
+## FALSE: Rows in x but not y: 366, 365, 364, 260, 363, 41, 40, 39, 38. Rows in y but not x: 366, 363, 260, 41, 39, 38, 40, 365, 364.
 ```
 
 Okay, something's not cromulent here. We'll have to manaully inspect these:
@@ -338,18 +366,18 @@ head(the_difference, n = 20)
 ```
 
 ```
-## # A tibble: 18 × 19
+## # A tibble: 18 x 19
 ##    source Isolate Severity   MCG State Source  Year   Host `110-4(H)`
 ##     <chr>   <chr>    <dbl> <chr> <chr>  <chr> <chr>  <chr>      <int>
-## 1     syd     496      5.1    83    TS    wmn  2004   G122        386
-## 2     saj     496      5.1    83    AU    wmn  2004   G122        386
-## 3     syd     499      5.6    85    TS    wmn  2004 ExRico        378
-## 4     saj     499      5.6    85    AU    wmn  2004  Bunsi        378
-## 5     syd     500      1.4    83    TS    wmn  2004  Beryl        374
-## 6     saj     500      1.4    83    AU    wmn  2004  Beryl        374
-## 7     syd     501      3.3    84    TS    wmn  2004  Beryl        374
-## 8     saj     501      3.3    84    AU    wmn  2004  Beryl        374
-## 9     saj     805      5.8    18    ND    stc  2010    unk        382
+##  1    syd     496      5.1    83    TS    wmn  2004   G122        386
+##  2    saj     496      5.1    83    AU    wmn  2004   G122        386
+##  3    syd     499      5.6    85    TS    wmn  2004 ExRico        378
+##  4    saj     499      5.6    85    AU    wmn  2004  Bunsi        378
+##  5    syd     500      1.4    83    TS    wmn  2004  Beryl        374
+##  6    saj     500      1.4    83    AU    wmn  2004  Beryl        374
+##  7    syd     501      3.3    84    TS    wmn  2004  Beryl        374
+##  8    saj     501      3.3    84    AU    wmn  2004  Beryl        374
+##  9    saj     805      5.8    18    ND    stc  2010    unk        382
 ## 10    syd    805*      5.8    18    ND    stc  2010    unk        382
 ## 11    syd     966      4.5    33    BL   flds  2012    unk        386
 ## 12    saj     966      4.5    33    FR   flds  2012    unk        386
@@ -414,45 +442,29 @@ dat <- saj %>%
             strata = select(saj, MCG:Host), # Filtering out severity and Isolate
             ploidy = 1) %>%
   as.genclone()
-```
-
-```
-## Error in function_list[[i]](value): could not find function "df2genind"
-```
-
-```r
 nameStrata(dat)[2] <- "Region"
-```
-
-```
-## Error in nameStrata(dat)[2] <- "Region": object 'dat' not found
-```
-
-```r
 pops <- levels(strata(dat)$Region)
-```
-
-```
-## Error in levels(strata(dat)$Region): could not find function "strata"
-```
-
-```r
 levels(strata(dat)$Region) <- case_when(pops == "FR" ~ "France", 
                                         pops == "MX" ~ "Mexico", 
                                         pops == "AU" ~ "Australia", 
                                         TRUE ~ pops)
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'pops' not found
-```
-
-```r
 dat
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'dat' not found
+## 
+## This is a genclone object
+## -------------------------
+## Genotype information:
+## 
+##    165 original multilocus genotypes 
+##    366 haploid individuals
+##     11 codominant loci
+## 
+## Population information:
+## 
+##      5 strata - MCG, Region, Source, Year, Host
+##      0 populations defined.
 ```
 
 ```r
@@ -460,7 +472,8 @@ locNames(dat)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): could not find function "locNames"
+##  [1] "110-4(H)" "114-4(H)" "12-2(H)"  "17-3(H)"  "20-3(F)"  "5-2(F)"  
+##  [7] "55-4(F)"  "6-2(F)"   "7-2(F)"   "8-3(H)"   "9-2(F)"
 ```
 
 ```r
@@ -500,15 +513,10 @@ ex <- readxl::read_excel("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xl
   mutate(locus = trimws(locus)) %>% # remove (F) designator
   mutate(allele = as.integer(allele)) %>% # force alleles to integers
   spread(locus, allele) %>%
-  slice(-n())
+  # slice(-n()) %>%
+  I()
 ex <- ex[!names(ex) %in% locNames(dat)]
-```
 
-```
-## Error in match(x, table, nomatch = 0L): could not find function "locNames"
-```
-
-```r
 # Function to select an adjacent allele. It will select the
 # next allele if the next allele is not missing and it's distance
 # is one away and the previous allele for the same conditions.
@@ -527,23 +535,21 @@ ex
 ```
 
 ```
-## # A tibble: 366 × 17
-##    iso_st_mcg_org_loc_yr_hst_cult_rep `106-4(H)` `110-4(H)` `114-4(H)`
-##                                 <chr>      <int>      <int>      <int>
-## 1               152_3.9_4_NE__2003_GH        580        379        372
-## 2              274_5.4_45_NE__2003_GH        588        379        359
-## 3               443_6.3_5_NY__2003_GH        567        379        368
-## 4          444_4.4_4_MN_wmn_2003_G122        580        379        372
-## 5         445_4.7_4_MN_wmn_2003_Beryl        580        379        372
-## 6         446_6.1_3_MI_wmn_2003_Beryl        567        385        359
-## 7         447_5.5_5_MI_wmn_2003_Beryl        567        379        368
-## 8           448_5_3_MI_wmn_2003_Beryl        568        385        360
-## 9         449_5.2_3_MI_wmn_2003_Bunsi        568        386        368
-## 10        450_5.3_5_MI_wmn_2003_Bunsi        568        379        368
-## # ... with 356 more rows, and 13 more variables: `12-2(H)` <int>,
-## #   `17-3(H)` <int>, `20-3(F)` <int>, `36-4(F)` <int>, `5-2(F)` <int>,
-## #   `5-3(F)` <int>, `50-4(F)` <int>, `55-4(F)` <int>, `6-2(F)` <int>,
-## #   `7-2(F)` <int>, `8-3(H)` <int>, `9-2(F)` <int>, `92-4(F)` <int>
+## # A tibble: 366 x 6
+##    iso_st_mcg_org_loc_yr_hst_cult_rep `106-4(H)` `36-4(F)` `5-3(F)`
+##  *                              <chr>      <int>     <int>    <int>
+##  1              152_3.9_4_NE__2003_GH        580       415      328
+##  2             274_5.4_45_NE__2003_GH        588       415      328
+##  3              443_6.3_5_NY__2003_GH        567       415      308
+##  4         444_4.4_4_MN_wmn_2003_G122        580       415      328
+##  5        445_4.7_4_MN_wmn_2003_Beryl        580       415      328
+##  6        446_6.1_3_MI_wmn_2003_Beryl        567       415      339
+##  7        447_5.5_5_MI_wmn_2003_Beryl        567       415      308
+##  8          448_5_3_MI_wmn_2003_Beryl        568       414      339
+##  9        449_5.2_3_MI_wmn_2003_Bunsi        568       415      339
+## 10        450_5.3_5_MI_wmn_2003_Bunsi        568       415      308
+## # ... with 356 more rows, and 2 more variables: `50-4(F)` <int>,
+## #   `92-4(F)` <int>
 ```
 
 ```r
@@ -560,22 +566,21 @@ exsummary
 ```
 
 ```
-## Source: local data frame [173 x 3]
-## Groups: locus [16]
-## 
+## # A tibble: 71 x 3
+## # Groups:   locus [5]
 ##       locus new_allele allele
 ##       <chr>      <int>  <int>
-## 1  106-4(H)        502    501
-## 2  106-4(H)        502    502
-## 3  106-4(H)        502    503
-## 4  106-4(H)        511    511
-## 5  106-4(H)        532    532
-## 6  106-4(H)        533    533
-## 7  106-4(H)        541    540
-## 8  106-4(H)        541    541
-## 9  106-4(H)        541    542
+##  1 106-4(H)        502    501
+##  2 106-4(H)        502    502
+##  3 106-4(H)        502    503
+##  4 106-4(H)        511    511
+##  5 106-4(H)        532    532
+##  6 106-4(H)        533    533
+##  7 106-4(H)        541    540
+##  8 106-4(H)        541    541
+##  9 106-4(H)        541    542
 ## 10 106-4(H)        546    546
-## # ... with 163 more rows
+## # ... with 61 more rows
 ```
 
 Now that we have our data set filtered (to a degree), we can merge the data with
@@ -596,37 +601,12 @@ corrected_loci <- ex %>% gather(locus, allele, -1) %>%
 datdf <- genind2df(dat, usepop = FALSE) %>% 
   rownames_to_column(var = "Isolate") %>% 
   left_join(corrected_loci, by = "Isolate")
-```
-
-```
-## Error in eval(expr, envir, enclos): could not find function "genind2df"
-```
-
-```r
 stopifnot(identical(datdf$Isolate, indNames(dat)))
-```
-
-```
-## Error in identical(datdf$Isolate, indNames(dat)): object 'datdf' not found
-```
-
-```r
 datdf <- datdf[c("Isolate", names(repeat_lengths))]
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'datdf' not found
-```
-
-```r
 dat   <- datdf %>% 
   select(-Isolate) %>% 
   df2genind(ind.names = indNames(dat), strata = strata(dat), ploidy = 1) %>% 
   as.genclone()
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'datdf' not found
 ```
 
 The original data includes both Severity and Isolate. Since these are not
@@ -637,43 +617,39 @@ slot ensures that these data will travel with the object.
 
 ```r
 stopifnot(identical(indNames(dat), saj$Isolate))
-```
-
-```
-## Error in identical(indNames(dat), saj$Isolate): could not find function "indNames"
-```
-
-```r
 other(dat)$meta <- select(saj, Severity, Isolate)
-```
-
-```
-## Error in other(dat)$meta <- select(saj, Severity, Isolate): object 'dat' not found
-```
-
-```r
 other(dat)$REPLEN <- fix_replen(dat, repeat_lengths)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): could not find function "fix_replen"
+## Warning in fix_replen(dat, repeat_lengths): The repeat lengths for 5-3(F), 36-4(F), 50-4(F), 92-4(F), 106-4(H) are not consistent.
+## 
+##  This might be due to inconsistent allele calls or repeat lengths that are too large.
+##  Check the alleles to make sure there are no duplicated or similar alleles that might end up being the same after division.
+##  
+## Repeat lengths with some modification are being returned: 6-2(F), 110-4(H)
 ```
 
 
 ```r
 setPop(dat) <- ~Region
-```
-
-```
-## Error in setPop(dat) <- ~Region: object 'dat' not found
-```
-
-```r
 dat
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'dat' not found
+## 
+## This is a genclone object
+## -------------------------
+## Genotype information:
+## 
+##    215 original multilocus genotypes 
+##    366 haploid individuals
+##     16 codominant loci
+## 
+## Population information:
+## 
+##      5 strata - MCG, Region, Source, Year, Host
+##     14 populations defined - NE, NY, MN, ..., France, Mexico, ND
 ```
 
 ```r
@@ -681,7 +657,9 @@ locNames(dat)
 ```
 
 ```
-## Error in eval(expr, envir, enclos): could not find function "locNames"
+##  [1] "5-2(F)"   "5-3(F)"   "6-2(F)"   "7-2(F)"   "8-3(H)"   "9-2(F)"  
+##  [7] "12-2(H)"  "17-3(H)"  "20-3(F)"  "36-4(F)"  "50-4(F)"  "55-4(F)" 
+## [13] "92-4(F)"  "106-4(H)" "110-4(H)" "114-4(H)"
 ```
 
 ```r
@@ -689,7 +667,10 @@ other(dat)$REPLEN
 ```
 
 ```
-## Error in eval(expr, envir, enclos): could not find function "other"
+##   5-2(F)   5-3(F)   6-2(F)   7-2(F)   8-3(H)   9-2(F)  12-2(H)  17-3(H) 
+##  2.00000  4.00000  5.99999  2.00000  2.00000  2.00000  2.00000  3.00000 
+##  20-3(F)  36-4(F)  50-4(F)  55-4(F)  92-4(F) 106-4(H) 110-4(H) 114-4(H) 
+##  2.00000  4.00000  4.00000  4.00000  2.00000  4.00000  3.99999  4.00000
 ```
 
 ```r
@@ -697,31 +678,37 @@ head(other(dat)$meta)
 ```
 
 ```
-## Error in head(other(dat)$meta): could not find function "other"
+## # A tibble: 6 x 2
+##   Severity Isolate
+##      <dbl>   <chr>
+## 1      3.9     152
+## 2      5.4     274
+## 3      6.3     443
+## 4      4.4     444
+## 5      4.7     445
+## 6      6.1     446
 ```
 
 ```r
 keeploci <- !locNames(dat) %in% colnames(corrected_loci)
-```
-
-```
-## Error in match(x, table, nomatch = 0L): could not find function "locNames"
-```
-
-```r
 dat11 <- dat[loc = keeploci, mlg.reset = TRUE] # reducing to 11 loci and recalculating mlgs
-```
-
-```
-## Error in eval(expr, envir, enclos): object 'dat' not found
-```
-
-```r
 dat11
 ```
 
 ```
-## Error in eval(expr, envir, enclos): object 'dat11' not found
+## 
+## This is a genclone object
+## -------------------------
+## Genotype information:
+## 
+##    165 original multilocus genotypes 
+##    366 haploid individuals
+##     11 codominant loci
+## 
+## Population information:
+## 
+##      5 strata - MCG, Region, Source, Year, Host
+##     14 populations defined - NE, NY, MN, ..., France, Mexico, ND
 ```
 
 
@@ -729,10 +716,6 @@ dat11
 
 ```r
 save(dat, dat11, datdf, keeploci, corrected_loci, file = "data/sclerotinia_16_loci.rda")
-```
-
-```
-## Error in save(dat, dat11, datdf, keeploci, corrected_loci, file = "data/sclerotinia_16_loci.rda"): objects 'dat', 'dat11', 'datdf', 'keeploci' not found
 ```
 
 
@@ -745,73 +728,122 @@ devtools::session_info()
 ```
 
 ```
-## Session info ---------------------------------------------------------------------------------------
+## Session info --------------------------------------------------------------------------------------
 ```
 
 ```
 ##  setting  value                       
-##  version  R version 3.3.3 (2017-03-06)
-##  system   x86_64, darwin13.4.0        
+##  version  R version 3.4.0 (2017-04-21)
+##  system   x86_64, darwin15.6.0        
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-04-13
+##  date     2017-06-11
 ```
 
 ```
-## Packages -------------------------------------------------------------------------------------------
+## Packages ------------------------------------------------------------------------------------------
 ```
 
 ```
-##  package     * version    date       source                          
-##  assertr     * 2.0.0      2017-03-17 CRAN (R 3.3.2)                  
-##  assertthat    0.1        2013-12-06 CRAN (R 3.2.0)                  
-##  broom         0.4.2      2017-02-13 CRAN (R 3.3.2)                  
-##  colorspace    1.3-2      2016-12-14 CRAN (R 3.3.2)                  
-##  DBI           0.5-1      2016-09-10 CRAN (R 3.3.0)                  
-##  devtools      1.12.0     2016-06-24 CRAN (R 3.3.0)                  
-##  digest        0.6.12     2017-01-27 CRAN (R 3.3.2)                  
-##  dplyr       * 0.5.0      2016-06-24 CRAN (R 3.3.0)                  
-##  evaluate      0.10       2016-10-11 cran (@0.10)                    
-##  ezknitr       0.6        2016-09-16 CRAN (R 3.3.0)                  
-##  forcats       0.2.0      2017-01-23 CRAN (R 3.3.2)                  
-##  foreign       0.8-67     2016-09-13 CRAN (R 3.3.0)                  
-##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.3.2)                  
-##  gtable        0.2.0      2016-02-26 CRAN (R 3.2.3)                  
-##  haven         1.0.0      2016-09-23 CRAN (R 3.3.0)                  
-##  hms           0.3        2016-11-22 CRAN (R 3.3.2)                  
-##  httr          1.2.1      2016-07-03 cran (@1.2.1)                   
-##  jsonlite      1.3        2017-02-28 CRAN (R 3.3.2)                  
-##  knitr       * 1.15.19    2017-04-11 Github (yihui/knitr@6f166e2)    
-##  lattice       0.20-34    2016-09-06 CRAN (R 3.3.0)                  
-##  lazyeval      0.2.0.9000 2016-07-01 Github (hadley/lazyeval@c155c3d)
-##  lubridate     1.6.0      2016-09-13 CRAN (R 3.3.0)                  
-##  magrittr      1.5        2014-11-22 CRAN (R 3.2.0)                  
-##  memoise       1.0.0      2016-01-29 CRAN (R 3.2.3)                  
-##  mnormt        1.5-5      2016-10-15 cran (@1.5-5)                   
-##  modelr        0.1.0      2016-08-31 CRAN (R 3.3.0)                  
-##  munsell       0.4.3      2016-02-13 CRAN (R 3.2.3)                  
-##  nlme          3.1-131    2017-02-06 CRAN (R 3.3.2)                  
-##  plyr          1.8.4      2016-06-08 CRAN (R 3.3.0)                  
-##  psych         1.6.12     2017-01-08 CRAN (R 3.3.2)                  
-##  purrr       * 0.2.2      2016-06-18 CRAN (R 3.3.0)                  
-##  R.methodsS3   1.7.1      2016-02-16 CRAN (R 3.2.3)                  
-##  R.oo          1.21.0     2016-11-01 CRAN (R 3.3.0)                  
-##  R.utils       2.5.0      2016-11-07 CRAN (R 3.3.0)                  
-##  R6            2.2.0      2016-10-05 cran (@2.2.0)                   
-##  Rcpp          0.12.10    2017-03-19 cran (@0.12.10)                 
-##  readr       * 1.0.0      2016-08-03 CRAN (R 3.3.0)                  
-##  readxl      * 0.1.1      2016-03-28 CRAN (R 3.3.0)                  
-##  reshape2      1.4.2      2016-10-22 cran (@1.4.2)                   
-##  rvest         0.3.2      2016-06-17 CRAN (R 3.3.0)                  
-##  scales        0.4.1      2016-11-09 CRAN (R 3.3.2)                  
-##  stringi       1.1.2      2016-10-01 CRAN (R 3.3.0)                  
-##  stringr       1.2.0      2017-02-18 cran (@1.2.0)                   
-##  tibble      * 1.3.0      2017-04-01 cran (@1.3.0)                   
-##  tidyr       * 0.6.1      2017-01-10 CRAN (R 3.3.2)                  
-##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.3.2)                  
-##  withr         1.0.2      2016-06-20 cran (@1.0.2)                   
-##  xml2          1.1.1      2017-01-24 CRAN (R 3.3.2)
+##  package     * version    date       source                                  
+##  ade4        * 1.7-6      2017-03-23 CRAN (R 3.4.0)                          
+##  adegenet    * 2.1.0      2017-05-06 Github (thibautjombart/adegenet@e07c139)
+##  ape           4.1        2017-02-14 CRAN (R 3.4.0)                          
+##  assertr     * 2.0.2.2    2017-06-06 CRAN (R 3.4.0)                          
+##  assertthat    0.2.0      2017-04-11 CRAN (R 3.4.0)                          
+##  base        * 3.4.0      2017-04-21 local                                   
+##  bindr         0.1        2016-11-13 CRAN (R 3.4.0)                          
+##  bindrcpp    * 0.1        2016-12-11 CRAN (R 3.4.0)                          
+##  boot          1.3-19     2017-04-21 CRAN (R 3.4.0)                          
+##  broom         0.4.2      2017-02-13 CRAN (R 3.4.0)                          
+##  cellranger    1.1.0      2016-07-27 CRAN (R 3.4.0)                          
+##  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                          
+##  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                          
+##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                          
+##  compiler      3.4.0      2017-04-21 local                                   
+##  datasets    * 3.4.0      2017-04-21 local                                   
+##  DBI           0.6-1      2017-04-01 CRAN (R 3.4.0)                          
+##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                          
+##  devtools      1.13.2     2017-06-02 CRAN (R 3.4.0)                          
+##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                          
+##  dplyr       * 0.7.0      2017-06-09 CRAN (R 3.4.0)                          
+##  evaluate      0.10       2016-10-11 CRAN (R 3.4.0)                          
+##  expm          0.999-2    2017-03-29 CRAN (R 3.4.0)                          
+##  ezknitr       0.6        2016-09-16 CRAN (R 3.4.0)                          
+##  fastmatch     1.1-0      2017-01-28 CRAN (R 3.4.0)                          
+##  forcats       0.2.0      2017-01-23 CRAN (R 3.4.0)                          
+##  foreign       0.8-68     2017-04-24 CRAN (R 3.4.0)                          
+##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                          
+##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                          
+##  glue          1.0.0      2017-04-17 CRAN (R 3.4.0)                          
+##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                          
+##  graphics    * 3.4.0      2017-04-21 local                                   
+##  grDevices   * 3.4.0      2017-04-21 local                                   
+##  grid          3.4.0      2017-04-21 local                                   
+##  gtable        0.2.0      2016-02-26 CRAN (R 3.4.0)                          
+##  gtools        3.5.0      2015-05-29 CRAN (R 3.4.0)                          
+##  haven         1.0.0      2016-09-23 CRAN (R 3.4.0)                          
+##  hms           0.3        2016-11-22 CRAN (R 3.4.0)                          
+##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                          
+##  httpuv        1.3.3      2015-08-04 CRAN (R 3.4.0)                          
+##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                          
+##  igraph        1.0.1      2015-06-26 CRAN (R 3.4.0)                          
+##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                          
+##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                          
+##  lattice       0.20-35    2017-03-25 CRAN (R 3.4.0)                          
+##  lazyeval      0.2.0      2016-06-12 CRAN (R 3.4.0)                          
+##  LearnBayes    2.15       2014-05-29 CRAN (R 3.4.0)                          
+##  lubridate     1.6.0      2016-09-13 CRAN (R 3.4.0)                          
+##  magrittr      1.5        2014-11-22 CRAN (R 3.4.0)                          
+##  MASS          7.3-47     2017-04-21 CRAN (R 3.4.0)                          
+##  Matrix        1.2-10     2017-04-28 CRAN (R 3.4.0)                          
+##  memoise       1.1.0      2017-04-21 CRAN (R 3.4.0)                          
+##  methods     * 3.4.0      2017-04-21 local                                   
+##  mgcv          1.8-17     2017-02-08 CRAN (R 3.4.0)                          
+##  mime          0.5        2016-07-07 CRAN (R 3.4.0)                          
+##  mnormt        1.5-5      2016-10-15 CRAN (R 3.4.0)                          
+##  modelr        0.1.0      2016-08-31 CRAN (R 3.4.0)                          
+##  munsell       0.4.3      2016-02-13 CRAN (R 3.4.0)                          
+##  nlme          3.1-131    2017-02-06 CRAN (R 3.4.0)                          
+##  parallel      3.4.0      2017-04-21 local                                   
+##  pegas         0.10       2017-05-03 CRAN (R 3.4.0)                          
+##  permute       0.9-4      2016-09-09 CRAN (R 3.4.0)                          
+##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                          
+##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                          
+##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                          
+##  poppr       * 2.4.1.99-2 2017-05-06 Github (grunwaldlab/poppr@cd4cba2)      
+##  psych         1.7.5      2017-05-03 CRAN (R 3.4.0)                          
+##  purrr       * 0.2.2.2    2017-05-11 cran (@0.2.2.2)                         
+##  quadprog      1.5-5      2013-04-17 CRAN (R 3.4.0)                          
+##  R.methodsS3   1.7.1      2016-02-16 CRAN (R 3.4.0)                          
+##  R.oo          1.21.0     2016-11-01 CRAN (R 3.4.0)                          
+##  R.utils       2.5.0      2016-11-07 CRAN (R 3.4.0)                          
+##  R6            2.2.1      2017-05-10 CRAN (R 3.4.0)                          
+##  Rcpp          0.12.11    2017-05-22 cran (@0.12.11)                         
+##  readr       * 1.1.1      2017-05-16 CRAN (R 3.4.0)                          
+##  readxl      * 1.0.0      2017-04-18 CRAN (R 3.4.0)                          
+##  reshape2      1.4.2      2016-10-22 CRAN (R 3.4.0)                          
+##  rlang         0.1.1      2017-05-18 CRAN (R 3.4.0)                          
+##  rvest         0.3.2      2016-06-17 CRAN (R 3.4.0)                          
+##  scales        0.4.1      2016-11-09 CRAN (R 3.4.0)                          
+##  seqinr        3.3-6      2017-04-06 CRAN (R 3.4.0)                          
+##  shiny         1.0.3      2017-04-26 CRAN (R 3.4.0)                          
+##  sp            1.2-4      2016-12-22 CRAN (R 3.4.0)                          
+##  spdep         0.6-13     2017-04-25 CRAN (R 3.4.0)                          
+##  splines       3.4.0      2017-04-21 local                                   
+##  stats       * 3.4.0      2017-04-21 local                                   
+##  stringi       1.1.5      2017-04-07 CRAN (R 3.4.0)                          
+##  stringr       1.2.0      2017-02-18 CRAN (R 3.4.0)                          
+##  tibble      * 1.3.3      2017-05-28 CRAN (R 3.4.0)                          
+##  tidyr       * 0.6.3      2017-05-15 CRAN (R 3.4.0)                          
+##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.4.0)                          
+##  tools         3.4.0      2017-04-21 local                                   
+##  utils       * 3.4.0      2017-04-21 local                                   
+##  vegan         2.4-3      2017-04-07 CRAN (R 3.4.0)                          
+##  withr         1.0.2      2016-06-20 CRAN (R 3.4.0)                          
+##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                          
+##  xtable        1.8-2      2016-02-05 CRAN (R 3.4.0)
 ```
 
