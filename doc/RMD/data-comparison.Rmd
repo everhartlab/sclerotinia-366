@@ -19,6 +19,7 @@ knitr::opts_knit$set(root.dir = PROJHOME)
 library('tidyverse')
 library('readxl')
 library('assertr')
+library('poppr')
 ```
 
 
@@ -109,6 +110,8 @@ final result.
 There are always quirks with the data when it's in excel. Often, there are too
 many rows, so we have to remove them with `slice()`.
 
+> 2017-06-11: This has been fixed in readxl version 1.0
+
 Quirks specific to thse data:
 
  - GenAlEx format has an extra header region that should be ignored
@@ -132,7 +135,7 @@ syd <- read_excel("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xlsx",
   mutate_if(is.character, trimws) %>% # Trim whitespace forom all character columns
   mutate(Severity = as.numeric(Severity)) %>%
   mutate(Source = ifelse(Source == "", "unk", Source)) %>%
-  slice(-n()) %>% # remove last row
+  # slice(-n()) %>% # remove last row
   arrange(Isolate) %>%
   check_data_cromulence
 syd
@@ -286,7 +289,8 @@ ex <- readxl::read_excel("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xl
   mutate(locus = trimws(locus)) %>% # remove (F) designator
   mutate(allele = as.integer(allele)) %>% # force alleles to integers
   spread(locus, allele) %>%
-  slice(-n())
+  # slice(-n()) %>%
+  I()
 ex <- ex[!names(ex) %in% locNames(dat)]
 
 # Function to select an adjacent allele. It will select the
