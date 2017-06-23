@@ -303,9 +303,10 @@ ex <- readxl::read_excel("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xl
   gather(locus, allele, -1) %>% # gather all loci into tidy columns
   mutate(locus = trimws(locus)) %>% # remove (F) designator
   mutate(allele = as.integer(allele)) %>% # force alleles to integers
-  spread(locus, allele) %>%
-  # slice(-n()) %>%
-  I()
+  spread(locus, allele)
+
+readr::write_csv(ex, "data/raw_data.csv", col_names = TRUE)
+
 ex <- ex[!names(ex) %in% locNames(dat)]
 
 # Function to select an adjacent allele. It will select the
@@ -358,6 +359,11 @@ dat   <- datdf %>%
   select(-Isolate) %>% 
   df2genind(ind.names = indNames(dat), strata = strata(dat), ploidy = 1) %>% 
   as.genclone()
+
+strata(dat) %>%
+  bind_cols(datdf) %>%
+  as_data_frame() %>%
+  readr::write_csv("data/clean_data.csv", col_names = TRUE)
 ```
 
 The original data includes both Severity and Isolate. Since these are not
