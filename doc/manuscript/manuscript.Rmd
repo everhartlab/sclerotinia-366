@@ -4,13 +4,13 @@ author:
   - name: Zhian N. Kamvar
     email: zkamvar@unl.edu
     affiliation: University of Nebraska-Lincoln
-  -name: Bimal Sajeewa Amadarasa
+  - name: Bimal Sajeewa Amadarasa
     email: bamadarasa2@unl.edu
     affiliation: University of Nebraska-Lincoln
-  -name: R. Jhala
+  - name: R. Jhala
     email: rjhala2@unl.edu
     affiliation: University of Nebraska-Lincoln
-  -name: James Steadman
+  - name: James Steadman
     email: jsteadman1@unl.edu
     affiliation: University of Nebraska-Lincoln
   - name: Sydney E. Everhart
