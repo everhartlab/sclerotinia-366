@@ -349,7 +349,7 @@ dplyr::setequal(saj, syd)
 ```
 
 ```
-## FALSE: Rows in x but not y: 366, 365, 364, 363, 260, 41, 40, 39, 38. Rows in y but not x: 366, 365, 364, 363, 260, 41, 38, 39, 40.
+## FALSE: Rows in x but not y: 363, 260, 364, 41, 40, 39, 38, 365, 366. Rows in y but not x: 366, 363, 41, 40, 39, 38, 364, 260, 365.
 ```
 
 Okay, something's not cromulent here. We'll have to manaully inspect these:

@@ -367,7 +367,7 @@ scatter(dat11.nc.dapc)
 ##  gdata          2.18.0  2017-06-06 CRAN (R 3.4.0)                          
 ##  ggcompoplot  * 0.1.0   2016-07-21 local                                   
 ##  ggplot2      * 2.2.1   2016-12-30 CRAN (R 3.4.0)                          
-##  ggrepel        0.6.6   2017-05-10 Github (slowkow/ggrepel@007318f)        
+##  ggrepel        0.6.10  2017-06-23 Github (slowkow/ggrepel@102ca39)        
 ##  glue           1.1.1   2017-06-21 CRAN (R 3.4.0)                          
 ##  gmodels        2.16.2  2015-07-22 CRAN (R 3.4.0)                          
 ##  graphics     * 3.4.0   2017-04-21 local                                   
