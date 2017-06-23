@@ -236,7 +236,9 @@ From here on out, we will use Sajeewa's data for analysis.
 
 ## Saving data as genclone object
 
-First we need to transform the data to something that
+First we need to transform the data to something that is useable, aka a genclone
+object. To avoid confustion with states, we are also transforming the two-letter
+abbreviations for France, Mexico, and Australia to the full names. 
 
 ```{r}
 dat <- saj %>% 
@@ -253,27 +255,40 @@ levels(strata(dat)$Region) <- case_when(pops == "FR" ~ "France",
                                         TRUE ~ pops)
 dat
 locNames(dat)
+```
 
-repeat_lengths <-
-  c(
-  `5-2(F)` = 2.000000,
-  `5-3(F)` = 0.500000,
-  `6-2(F)` = 6.000000,
-  `7-2(F)` = 2.000000,
-  `8-3(H)` = 2.000000,
-  `9-2(F)` = 2.000000,
-  `12-2(H)` = 2.000000,
-  `17-3(H)` = 3.000000,
-  `20-3(F)` = 2.000000,
-  `36-4(F)` = 0.500000,
-  `50-4(F)` = 0.500000,
-  `55-4(F)` = 4.000000,
-  `92-4(F)` = 2.000000,
-  `106-4(H)` = 4.000000,
-  `110-4(H)` = 4.000000,
-  `114-4(H)` = 4.000000
-  )
+### Gathering Repeat Lengths
+
+The repeat lengths were contained in the `A1_Copy of binned-genotypes_SE.xlsx`
+spreadsheet in the "replen est" sheet. Because this sheet contained several
+merged cells and other oddities, I copy+pasted the relevant data here and 
+parsed it from the text.
+
+```{r}
+rl <- read_tsv("dinuc			compound			hexinuc			dinuc			dinuc			dinuc			dinuc			trinuc			dinuc			compound			compound			tetranuc			dinuc			tetranuc			tetranuc			tetranuc
+(GT)8			[(GT)2GAT]3(GT)14GAT(GT)5[GAT(GT)4]3(GAT)3			(TTTTTC)2(TTTTTG)2(TTTTTC)			(GA)14			(CA)12			(CA)9(CT)9			(CA)9			(TTA)9			(GT)7GG(GT)5			(CA)6(CGCA)2(CAT)2			(CA)7(TACA)2			(TACA)10			(CT)12			(CATA)25			(TATG)9			(AGAT)14(AAGC)4
+ 5-2(F)	bins	count	 5-3(F)	bins	count	 6-2(F)	bins	count	 7-2(F)	bins	count	 8-3(H)	bins	count	 9-2(F)	bins	count	 12-2(H)	bins	count	 17-3(H)	bins	count	 20-3(F)	bins	count	 36-4(F)	bins	count	 50-4(F)	bins	count	 55-4(F)	bins	count	 92-4(F)	bins	count	 106-4(H)	bins	count	110-4(H)	bins	count	114-4(H)")
+  
+x <- rl %>%
+  select(-starts_with("X")) %>% # removing non-informative columns
+  slice(-1) %>%                 # removing first row (repeat patterns)
+  gather(replen, locus) %>%
+  mutate(replen = strsplit(replen, "_") %>% map_chr(1)) %>% # fix duplicated column names
+  mutate(replen = case_when(
+    grepl("^di", .$replen)    ~ 2,
+    grepl("^tri", .$replen)   ~ 3,
+    grepl("^tetra", .$replen) ~ 4,
+    grepl("^hex", .$replen)   ~ 6,
+    TRUE                      ~ 0.5
+  ))
+
+x <- paste("c(", paste(paste0("`", x$locus, "`", " = ", x$replen), collapse = ",\n"), ")", sep = "\n")
+cat(x)
+
+
+repeat_lengths <- eval(parse(text = x))
 repeat_lengths <- ifelse(repeat_lengths < 1, 4, repeat_lengths)
+repeat_lengths
 ```
 
 ### Adding inconsistent loci
