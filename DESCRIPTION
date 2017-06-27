@@ -7,5 +7,5 @@ Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: tidyverse, ggraph, ggrepel (>= 0.6.9), igraph, viridis, poppr, vegan, readxl, assertr, ezknitr, visNetwork
+Imports: tidyverse, ggraph, ggrepel (>= 0.6.9), igraph, viridis, poppr, vegan, readxl, assertr, ezknitr, visNetwork, rticles
 Remotes: slowkow/ggrepel
