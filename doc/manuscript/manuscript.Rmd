@@ -94,7 +94,7 @@ The overall goal of this work was to identify representative isolates for use in
 Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or dry bean nurseries in Mexico, France, Australia, and 11 states of the United States of America (Table 1).
 The dry bean nurseries in different regions are indicated by wmn (white mold nursery) or mtc (Mitchell) and all other isolates came from commercial fields (Table 1).
 The bean nurseries were 5 m x 10 m in size and maintained without applying fungicides to observe natural incidence of white mold disease.
-The nursery plots were incorporated with a basal dressing of N: P: K = 1: 3: 2 and side dressing of 0:3:2 during the season.
+The nursery plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of 0:3:2 during the season.
 Although the nursery locations were the same over sampling years, sampling fields within a location varied for sampling years.
 Sampling was carried out on a 'W' or 'V' shape transect, or randomly.
 Sampling year and number of isolates collected were necessarily influenced by incidence and severity of white mold disease. 
@@ -194,7 +194,7 @@ Isolates with MLG 15 were identified from populations in MI, WA, CO, and ND.
 The MLGs 163, 165 and 15 had 15, 7, and 4 individuals across these populations, respectively.
 The highest number of clones was recorded from ND, NE, and MI, which included 20, 10 and 7 isolates, respectively (Table 4).
 
-Community analysis of the MLGs shared between populations revealed 4 communities with a modularity of 0.17 (Fig. 3Z): A costal community (CA, OR, WA, and NY), a mid-west community (CO, NE, ND, MI), and an international community (MN, France, Australia).
+Community analysis of the MLGs shared between populations revealed 4 communities with a modularity of 0.17 (Fig. 3Z): A coastal community (CA, OR, WA, and NY), a mid-west community (CO, NE, ND, MI), and an international community (MN, France, Australia).
 Analysis with 16 loci resulted in the removal of the NY node because it no longer shared a genotype with OR, but the same overall community structure was present with a modularity of 0.2 (Supplementary Figure S1Z).
 The international community appears to be driven by MLG 4, which is shared between all three populations and has a Psex value of 2.87 x 10-5, in contrast to the abundant MLG 25, which has a Psex value of 0.0168.
 
@@ -239,7 +239,7 @@ Pairwise comparisons of all populations according to region showed MX and CA pop
 The PhiPT values of Pairwise comparisons between CA and other populations ranged from 0.116 to 0.389 and from 0.355 to 0.493 between MX and other population.
 The CA population showed evidence of sexual recombination ( = 0.008; P = 0.27, Ia = 0.08; P = 0.3) while the  value of AU was 0.12 with a high P of 0.05 (Ia = 0.70; P = 0.05), whereas all other populations showed linkage disequilibrium for loci tested indicating high possibility of clonal reproduction. 
 
-The dapc for hosts was limited to six most common cultivars: G122 (N = 55), Beryl (N = 62), Bunsi (N = 47), Yellow (N = 26), Pinto (N = 15), and Merlot (N = 11).
+The DAPC for hosts was limited to six most common cultivars: G122 (N = 55), Beryl (N = 62), Bunsi (N = 47), Yellow (N = 26), Pinto (N = 15), and Merlot (N = 11).
 According to Fig. 8B, cultivar Merlot isolates group distant from others, but were not significantly different (P =0.325).  Interestingly, *S. sclerotiorum* populations from cultivars 'Beryl' and 'G122', which are known to have different level of white mold susceptibility, showed no difference in population genetic data.
 
 AMOVA revealed genetic differences among isolates sampled in different years (DAPC biplot not shown).
@@ -332,7 +332,7 @@ One study found release of spores from apothecia declined over 36- 168 H at low 
 The same study reported increased ascospores discharge at 20-25° C compared to 15° C and the survival of *S. sclerotiorum* ascospores was reduced at high temperature and RH.
 Our samples were collected from 2003 to 2012 and except for the dry bean nurseries, came from different fields.
 Different agro-ecological conditions prevailed during sampling seasons may have resulted in different rates of sexual outcrossing of the pathogen and hence reduced the chance of extracting a common genotype.
-When conditions are favorable for ascospore production, release, and survival, coinfection of a single site on a plant by multiple ascospores is possible (Sexton et al., 2006).
+When conditions are favorable for ascospore production, release, and survival, co-infection of a single site on a plant by multiple ascospores is possible (Sexton et al., 2006).
 This may eventually result in facilitating outcrossing and recombination.
 
 Interestingly, all Mexican genotypes were unique to that region.
@@ -375,7 +375,7 @@ When number of clusters was assigned less than that MX isolates did not group se
 DAPC analysis without population assignments revealed that in general geography is not a barrier for gene flow since isolates of different geographies from USA, Australia and France clustered together indicating genetic relatedness and possible sexual recombination within each region.
 For instance France isolates were present in cluster 1, 2, 4 and 5.
 As mentioned above only exception was the Mexican isolates.
-Njambere et al. (2014) studied S. trifoliorum, a close relative *S. sclerotiorum* and reported four cryptic genetic populations by Bayesian clustering analysis of microsatellite loci.
+Njambere et al. (2014) studied *S. trifoliorum*, a close relative *S. sclerotiorum* and reported four cryptic genetic populations by Bayesian clustering analysis of microsatellite loci.
 Those clusters had no correlation to geographic locations of samples.
 Similarly, a cluster analysis of microsatellite data of *S. sclerotiorum* collected from 12 geographically distant host populations in  England and Wales resulted only two main clusters pooling isolates from different populations together (Clarkson et al., 2013).
 However, some other studies found *S. sclerotiorum* isolates from distant locations did differ significantly when molecularly characterized (Attanayake et al., 2013; Cubeta et al., 1997; Ekins, 1999; Malvarez et al., 2007).
@@ -405,5 +405,5 @@ Our study did not find a widespread genotype among sampled regions from dry bean
 The analysis of populations from same field over different years for linkage disequilibrium did not provide evidence for sexual outcrossing.
 However, analysis of molecular variance did show populations were significantly different between some years (eg.
 MI 2003 and 2005 populations; WA 2008 compared to both 2003 and 2005).
-These results indicate some level of heterothalic recombination is taking place in these fields in addition to natural mutations.
+These results indicate some level of heterothallic recombination is taking place in these fields in addition to natural mutations.
 An understanding of sexual behavior and ability of form new genotypes by *S. sclerotiorum* in dry bean cropping systems is useful for formulating disease management strategies. 
