@@ -20,29 +20,390 @@ author:
 address:
   - code: University of Nebraska-Lincoln
     address: Department of Plant Pathology, University of Nebraska-Lincoln, Lincoln 68583
-abstract: |
-  Characterization of pathogen population structure can yield important insight into pathogen biology and epidemiology. A worldwide collection of 366 *S. sclerotiorum* isolates from 26 dry and snap bean cultivars and experimental lines in Australia, France, Mexico, and 10 bean production states in the U.S. collected from 2003 to 2012 were genotyped at 16 microsatellite loci. A total of 165 multilocus genotypes were identified using a subset of 11 loci that followed an expected repeat motif.  There were a total of 87 mycelial compatibility groups (MCGs) in the collection of isolates. We did not detect an association of MLGs and MCGs. Discriminant analysis of principal components using clone corrected data showed region of origin was the best separator (AMOVA P = 0.001). The Mexican population was highly divergent from the rest, showing closest association with the California population. Despite overall genetic linkage, none was observed for populations from Washington in 2008, Oregon in 2003, California in 2004, or France in 2004 and 2005. AMOVA for populations based on year of sampling had a low PhiPT value of 0.07 (P = 0.001) while host cultivar, isolate virulence and sampling field did not have a significant impact on the microsatellite genotype.   The analysis of populations from same field over different years for linkage disequilibrium did not provide evidence for sexual outcrossing. However, analysis of molecular variance did show populations were significantly different in some locations between some years (eg. MI 2003 and 2005 populations; WA 2008 compared to both 2003 and 2005).  These results suggest that despite large physical separation, divergence of populations is low, which is not surprising given the low rate of heterothallic recombination thought to occur. However, some level of heterothallic recombination is also taking place in these fields in addition to natural mutations.  The lack of association of MLGs and MCGs in dry bean isolates is indicative of sexual outcrossing, and distribution of microsatellite MLGs across distant regions due to agricultural practices and human-mediated migration.  
-
-  
+abstract: >
+  `r paste(readLines("abstract.md"), collapse = "\n  ")`
 author_summary: |
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget porta erat. Morbi consectetur est vel gravida pretium. Suspendisse ut dui eu ante cursus gravida non sed sem. Nullam sapien tellus, commodo id velit id, eleifend volutpat quam. Phasellus mauris velit, dapibus finibus elementum vel, pulvinar non tellus. Nunc pellentesque pretium diam, quis maximus dolor faucibus id. Nunc convallis sodales ante, ut ullamcorper est egestas vitae. Nam sit amet enim ultrices, ultrices elit pulvinar, volutpat risus.
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 
 bibliography: mybibfile.bib
 output: rticles::plos_article
 csl: plos.csl
 ---
 
-_Text based on plos sample manuscript, see [http://journals.plos.org/ploscompbiol/s/latex](http://journals.plos.org/ploscompbiol/s/latex)_
+# Introduction {-}
 
-# Introduction
 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur eget porta erat. Morbi consectetur est vel gravida pretium. Suspendisse ut dui eu ante cursus gravida non sed sem. Phasellus mauris velit, dapibus finibus elementum vel, pulvinar non tellus. Nunc pellentesque pretium diam, quis maximus dolor faucibus id. Nunc convallis sodales ante, ut ullamcorper est egestas vitae. Nam sit amet enim ultrices, ultrices elit pulvinar, volutpat risus.
+*Sclerotinia sclerotiorum* (Lib.) de Bary is an ascomycete plant pathogen found worldwide.
+This is a necrotrophic pathogen that is primarily homothallic (self-fertilization) (Bolton et al., 2006) (Sexton et al., 2006).
+It has a host range of more than 400 species of plants belonging to 75 families (Boland and Hall, 1994).
+Economically important crops affected by this pathogen include sunflower, soybean, oilseed rape, dry bean, chickpea, peanut, dry pea, lentils and vegetables (Bolton et al., 2006). *Sclerotinia sclerotiorum* causes white mold disease on dry bean (Phaseolus vulgaris L.), which can be a yield-limiting in temperate climates (Steadman, 1983).  
 
-A list
+Sclerotia are capable of surviving more than five years in soil (Steadman, 1983) and germinate carpogenically or myceliogenically to infect the plant when environmental conditions are favorable.
+A carpogenically geminated sclerotia gives rise to apothecia in which ascospores are formed.
+Ascospores infect senescent plant tissues that, when supplemented with cool and humid microclimate within the plant canopy, leads to mycelial infection of the host plant.
+Consequently, flowering, which coincide with canopy closure is a critical factor of disease initiation since sensing flower parts fallen on to leaves, petioles or stems provide the required energy source for plant infection.
+Myceliogenically geminated sclerotia result in formation of hyphae, which also have potential for directly plant infection, though this is considered rare and less important within the disease cycle of the pathogen (Abawi and Grogan, 1975).
+Diseased bean fields initially show scattered wilted leaves.
+Symptoms on individual plants are water-soaked lesions on leaves, pods and stems, which expand over time and show signs of white fungal mycelia.
+Lesions on stems and branches become necrotic as they age and dead tissues appear bleached.
+Sclerotia are often produced on dead or dying plants once conditions become unfavorable for fungal growth.
 
-- Item 1
-- Item 2
+Previous studies of *S. sclerotiorum* population biology in North America and Australia have reported clonal propagation of the pathogen (Cubeta et al., 1997; Ekins et al., 2011; Kohli and Kohn, 1998; Kohli et al., 1995) with evidence of outcrossing observed in some areas (Atallah et al., 2004; Kohli and Kohn, 1998; Malvarez et al., 2007; Sexton and Howlett, 2004).
+One such study examined *S. sclerotiorum* population structure using microsatellite markers from potato fields in the Columbia Basin of Washington state.
+Due to high crop diversity and high presence of the pathogen, it was important to understand the potential for outcrossing in order to develop disease management strategies.
+Molecular analysis revealed 92% of the isolate variability was found within subpopulations (Atallah et al., 2004).
+However, there was evidence of linkage equilibrium of microsatellite loci in 2 locations and illustrated the possibility of outcrossing in this region.  
 
-Here are two sample references: @Feynman1963118 [@Dirac1953888].
+A population study from Australian canola fields showed evidence of sexual outcrossing of *S. sclerotiorum* isolates (Sexton and Howlett, 2004).
+Another study characterized three populations of *S. sclerotiorum* from lettuce in California (CA) and Ontario (ON), and pea/lentil in Washington (WA) (Malvarez et al., 2007).
+While all three populations were  clonal, the index of association (IA) based on DNA fingerprint was closer to zero for CA than it was for the other populations.
+Populations from Australian sunflower with evidence of clonal reproduction were reported, and despite populations sampled from fields separated 50 to 400 km and from both head and basal rots, all showed similar gene diversity, with authors concluding isolates representing different geographies belong to one large genetic population of *S. sclerotiorum* (Ekins et al., 2011). 
 
-# References {#references .unnumbered}
+Attanayake et al. (2013) studied population differentiation of *S. sclerotiorum* isolates infecting canola from China and the USA.
+There were no shared microsatellite multilocus genotypes (MLG) between the two populations.
+Sexual outcrossing was detected in both populations with higher recombination rate in Chinese population than the US population.
+Additionally, phenotypic traits such as production of sclerotia, mycelial compatibility group (MCG), growth rate were also significantly different between the two populations.
+Genetic diversity of *S. sclerotiorum* from soy bean, canola, sunflower, and dry bean in the North Central region of the USA was studied by (Aldrich-Wolfe et al., 2015).
+Microsatellite analysis revealed little host- specificity or genetic-isolation of *S. sclerotiorum* isolates among host crops as 93% of the observed genetic variation was explained by within-host differences.
+Isolates from all host crops were primarily reproducing clonally while there were also evidence of genetic recombination of isolates from canola and sunflower.
+
+Most of the previous studies on *S. sclerotiorum* had been conducted in the USA, Canada and Australia but not in Europe.
+In those studies, different dry bean cultivars had been rarely used as  hosts to investigate any host-pathogen relationships or specificity.
+No white mold resistant dry bean cultivars exist.
+Canopy architecture and growth pattern of some cultivars enable improved disease avoidance (Kolkman and Kelly, 2002).
+Field trials in some regions of the US have shown G122 is white mold resistant and Beryl is susceptible (pers. comm. with J.
+Steadman).
+Understanding genetic relationships and reproduction behavior of *S. sclerotiorum* populations from locations worldwide is beneficial for plant breeders seeking to develop white mold resistance cultivars for deployment worldwide.
+This information is also helpful in making disease management decisions and developing disease resistance screening methods.
+
+Microsatellite markers (simple sequence repeats or SSR) are codominant, polymorphic and also able to detect multiple alleles per locus (Atallah et al., 2004; Sirjusingh and Kohn, 2001a).
+Reproducibility of microsatellites is higher compared other fingerprinting techniques such as random amplified polymorphic DNA (RAPD) (Atallah et al., 2004).
+High mutagenic rate and multiallelic nature of microsatellites render suitability for inferring population structure of organisms and their potential for outcrossing.
+In the case of plant pathogens like *S. sclerotiorum* that is predominantly clonal and occasionally outcrossing, microsatellites have been used successfully to ascertain their ability to reproduce by sexual outcrossing (Atallah et al., 2004; Sexton and Howlett, 2004) and also to detect differences among clonally propagated individuals. 
+
+We analyzed *S. sclerotiorum* isolates collected from dry bean cultivars from 2003 to 2012 from different geographic locations in America, Europe and Australia using microsatellite markers to delineate genetic differences and reproduction behavior.
+The specific aims of our study were:  a) To assess association of phenotypic data (virulence) and environmental data (bean cultivar, region, field, year) on genotypic variation of *S. sclerotiorum* isolates, b) To test the hypothesis that *S. sclerotiorum* populations of dry beans originated from different continents were genetically different, and c) although previous studies show that *S. sclerotiorum* populations are largely clonal, few compare populations from different continents (Lehner and Mizubuti, 2017), c) To identify localized genotypes representative of each location and also investigate if there are widespread genotypes common among locations. d) To test potential for sexual reproduction in sub populations of the pathogen isolates under different conditions such as year or field in each region, year/region, field/region/year, and e) Test if pathogen within-field populations differentiate over time.
+
+The overall goal of this work was to identify representative isolates for use in breeding programs.
+
+
+# Materials and Methods {-}
+
+## Isolate collection and DNA extraction {-}
+
+Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or dry bean nurseries in Mexico, France, Australia, and 11 states of the United States of America (Table 1).
+The dry bean nurseries in different regions are indicated by wmn (white mold nursery) or mtc (Mitchell) and all other isolates came from commercial fields (Table 1).
+The bean nurseries were 5 m x 10 m in size and maintained without applying fungicides to observe natural incidence of white mold disease.
+The nursery plots were incorporated with a basal dressing of N: P: K = 1: 3: 2 and side dressing of 0:3:2 during the season.
+Although the nursery locations were the same over sampling years, sampling fields within a location varied for sampling years.
+Sampling was carried out on a 'W' or 'V' shape transect, or randomly.
+Sampling year and number of isolates collected were necessarily influenced by incidence and severity of white mold disease. 
+
+Mycelial growth of each isolate was generated by activating sclerotia according to the method described previously (Matheron and Porchas, 2005).
+These isolates (N = 366) were phenotypically characterized by determining mycelial compatibility group MCG and virulence.
+MCG was determined through co-culturing isolates in pairs on PDA plates, where incompatibility of different MCG resulted in formation of a mycelial barrage (Kohn et al., 1990) and isolates belonging to the same MCG did not form a mycelial barrage.
+Virulence of each isolate was assessed using a straw test (Petzoldt and Dickson, 1996; Teran et al., 2006) that rates necrotic lesion on a scale of 1-9, with ascending numbers assigned for increasing aggressiveness.
+DNA was purified from mycelium of each isolate using a Qiagen DNeasy Plant Mini Kit (Qiagen Inc., Valencia, CA) according to the manufacturer's instructions.  
+
+
+## Microsatellite genotyping Analysis {-}
+
+We characterized *S. sclerotiorum* isolates for microsatellite polymorphism using 16 primer pairs developed by (Sirjusingh and Kohn, 2001b).
+Polymerase chain reaction (PCR) was carried out as described using primers labeled with FAM fluorophore, and resulting PCR products were first resolved in a 1.5% agarose gel stained with ethidium bromide to ensure product was within the expected size range.
+Capillary electrophoresis (fragment analysis) of PCR products added with size standard GeneScan™ 500 LIZ® was performed using an ABI 3730 genetic analyzer (Life Technologies Corporation, Carlsbad, CA) at the Michigan State University Genomic Sequencing Center. 
+
+## Data analysis {-}
+
+Isolates that fell into the 10 most abundant MCGs were subjected to an analysis of variance (ANOVA) in JMP version 12 to determine if their virulence levels were significantly different.
+The mean separation was carried out using Tukey's HSD test.
+Five microsatellite loci included compound repeats, where genotypes could not be unequivocally assigned based on the known repeat motifs and were consequently removed, resulting in 11 polymorphic loci selected for analysis (Table 2).
+Since it could not be ruled out that isolates possessing the same genotype within the same field, year, and host were duplicate collections from the same plant, the data were first clone-corrected to remove these genotypes.
+The data set was hierarchically reformatted to group isolates within each location/host/region/year and clones were removed at that level.
+The clone-corrected data set included 318 isolates.
+All analyses were performed on this data set unless otherwise mentioned.
+
+## Distance-based redundancy analysis  {-}
+
+A distance-based redundancy analysis (dbRDA) (Legendre and Anderson, 1999) was performed with the function capscale in the vegan 2.4-3 package in R (https://CRAN.R-project.org/package=vegan) to delineate relative contribution of phenotypic, spatial, and temporal components in influencing genetic composition of the populations. dbRDA is a method of conducting constrained ordinations on data matrices consisting of non-Euclidean distance measures.
+RDA is a multivariate linear regression analysis of independent (explanatory: eg. environmental and phenotypic) variables on dependent (non-explanatory or response) variables.
+In our case, a pairwise Bruvo's (Bruvo et al., 2004) distance matrix was generated from microsatellite data using poppr 2.4.1 (Kamvar et al., 2014; Kamvar et al., 2015) and employed it as the dependent matrix for RDA analysis.
+To identify environmental variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function ordistep to identify the set of variables that explained more variation than predicted with the global model containing all variables.
+An ANOVA was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
+The varpart function of vegan was used to determine variation partitioning of explanatory variables.
+ 
+
+## Shared Multilocus Genotype Community Analysis {-}
+
+To assess the connectivity of shared genotypes across populations, we first tabulated the multilocus genotypes shared between at least two populations (defined as states or countries) with the poppr function mlg.crosspop() (Kamvar et al. 2014).
+From these data, we were able to construct a graph with populations as nodes and shared genotypes as edges (connections) between the nodes using the R packages igraph version 1.0.1 (Csardi and Nepusz 2006), dplyr version 0.5.0 (Wickham and Francois 2016), and purrr version 0.2.2 (Wickham 2016).
+Each node was weighted by the fraction of shared MLGs.
+Each edge represents a single MLG, but because a single MLG could cross populations, that MLG may be represented by (n*(n-1))/2 edges where n represents the number of populations it crosses.
+Edges were weighted by 1- Psex, where Psex is the probability of encountering the same genotype via two independent meiotic events (Arnaud-Haond 2007, Parks and Werth 1993).
+We then used the cluster_optimal() function from igraph to define communities (Csardi and Nepusz 2006).
+The graph was plotted using the R packages ggplot2 version 2.2.1 (Wickham 2009) and ggraph version 1.0.0 (Pedersen 2017).
+To ensure that we were able to capture the same community signal, we additionally ran this analysis including the 5 polymorphic markers described above.
+
+## Discriminant analysis of principal components {-}
+
+DAPC is a multivariate method designed to identify and describe clusters of genetically related individuals.
+Discriminant analysis maximizes separation between groups while minimizing variation within groups (Jombart et al., 2010).
+The find.clusters function in Adegenet 2.0.1 (Jombart, 2008) uses a k-means clustering algorithm to identify the optimum number of clusters.
+It was not able to identify a single optimum and identified a range of optimal clusters between 5-15.
+Consequently, DAPC was performed several times with different optimal number of clusters to determine whether isolates (N = 318) fell into each cluster have any biological meaning such as belonging to a particular host or came from the same region etc.  the best summaries for the total isolates (N = 318).
+Since dbRDA identified region, host, and sampling year as the top three variables influencing microsatellite data, DAPC was also performed on data defined according to each of these variables, separately.
+Isolates (N = 318) were assigned to different levels of the three factors (region, host, year) and assessed predefined group size (original number of isolates at each level of the factor), post group size (number of isolates assigned by the DAPC algorithm) and the proportion of the original isolates assigned to the original group after analysis.
+This was performed to determine the suitability of explanatory variables (i.e. region, host, and year) in describing the clusters generated.
+Clone-corrected isolates sampled in different years from the white mold nurseries (wmn) were tested for population differentiation over time by DAPC analysis.
+Only WA, MI, and NE isolates were qualified since we filtered out the states that had at least ≥7 samples/year with at least two years of data for the analysis.
+Lastly, we pooled all isolates, clone corrected them (N = 165) and performed DAPC using the function find.clusters as described above to delineate how many clusters were formed by these unique genotypes.
+AMOVA was used to test the significance of clusters resulted by different DAPC analyses using GenAlEx version 6.41 (Peakall and Smouse, 2012).
+PhiPT which is an analogue of Wright's FST was used to ascertain the significance of populations.
+An FST value of 0.05 or less is generally considered as reasonably low and may be interpreted to mean that structuring between populations is weak (Balloux and Ugon-Moulin, 2002; Wright, 1978). 
+
+
+## Molecular population statistics and linkage disequilibrium {-}
+
+Genotypic evenness (Grunwald et al., 2003), which is a measure of distribution of genotype abundances and unbiased gene diversity (Hexp) (Nei, 1978) were calculated using poppr package in R.
+Microsatellite data were also tested for evidence of linkage disequilibrium, where significant disequilibrium between pairs of loci in a population is attributed to linkage between loci and may be an indication of clonal reproduction if loci are physically unlinked, whereas linkage equilibrium can be an indication of outcrossing populations.
+The linkage disequilibrium of clone-corrected data was determined by calculating the index of association (IA) and its standardized version () and a permutation approach with 999 permutations was used to test whether observed values were significantly different from data randomized at each locus (Agapow and Burt, 2001; Brown et al., 1980).
+Value of IA tends to increase with the number of loci and therefore we made our inferences based on the , which standardizes the number of loci tested and considered a more robust method (Agapow and Burt, 2001).
+Higher observed  or IA values would indicate clonally reproducing populations. 
+
+
+## Results {-}
+
+A total of 366 isolates were collected from 2003 to 2012 from diseased dry bean plants in 11 states in the US, Australia (2 mainland; 4 Tasmania), Mexico, and France (Fig. 1).
+Most isolates came from MI (62), ND (60), WA (59), NE (47), and CO (42).  Other regions in lesser representation were France (24), MX (18), OR (17), CA (16), MN (11), Australia (6), WI (2), ID (1), and NY (1).
+Four of the Australian isolates were collected from Tasmania while the other two came from Victoria state.
+There were no samples collected in 2006 and 2011.
+The highest number of samples were collected in 2005 (N = 63) and lowest in 2012 (N = 4).
+Pathogen isolates represented 26 commercial cultivars and breeding lines with some representing unknown dry bean hosts (Fig. 2).
+We investigated the population association with host for cultivars where more than 10 isolates were obtained, which included G122, Beryl, Bunsi, Yellow, Pinto, and Merlot.
+These six cultivars had a total of 238 *S. sclerotiorum* isolates (of 366 total isolates collected) belonging to 130 MLGs.
+Of these MLGs, 53 were singletons, while the rest were obtained from more than one host cultivar; only one private allele on locus 55-4 was identified, belonging to the *S. sclerotiorum* population from the cultivar 'Bunsi'.
+The number of unique MLGs recorded from each host is shown in Table 3.
+The majority of MLGs reported were found on multiple host cultivars and only a few unique to a cultivar.
+For instance, there were only 15 unique MLGs within the population of 68 *S. sclerotiorum* isolates obtained from the 'Beryl' cultivar.
+
+There were a total of 165 multilocus genotypes in the isolate collection.
+The most abundant MLG represented 27 isolates (Fig. 3 and Table 4) across five regions (NE, MI, WA, CO, and ND).
+Twenty isolates of this MLG were identified from ND.
+The genotypes that had either highest geographical distribution or found in high frequency are given in Table 4.
+MLG 163 was identified in NE, MI, CO and ND, while MLG 165 was identified in MN and all states aforementioned, except for ND.
+Isolates with MLG 15 were identified from populations in MI, WA, CO, and ND.
+The MLGs 163, 165 and 15 had 15, 7, and 4 individuals across these populations, respectively.
+The highest number of clones was recorded from ND, NE, and MI, which included 20, 10 and 7 isolates, respectively (Table 4).
+
+Community analysis of the MLGs shared between populations revealed 4 communities with a modularity of 0.17 (Fig. 3Z): A costal community (CA, OR, WA, and NY), a mid-west community (CO, NE, ND, MI), and an international community (MN, France, Australia).
+Analysis with 16 loci resulted in the removal of the NY node because it no longer shared a genotype with OR, but the same overall community structure was present with a modularity of 0.2 (Supplementary Figure S1Z).
+The international community appears to be driven by MLG 4, which is shared between all three populations and has a Psex value of 2.87 x 10-5, in contrast to the abundant MLG 25, which has a Psex value of 0.0168.
+
+The MCGs with the highest frequency were MCG 5 and MCG 44 representing 73 and 44 isolates, respectively (Fig. 4).
+MCGs that were unique to a region are shown in Fig. 5 while MCGs that represented at least 2 or more regions are in Fig 6. 20 MCGs were common in two or more regions and the rest were distributed uniquely in different regions.
+ID, MN, NE, NY, and WI did not have any unique/isolated MCGs.
+The virulence of isolates ranged from 1.4 to 7.9 with a mean of 5.01.
+There were six isolates that fell into upper outlier category (virulence > 7.6) and one isolate in the lower outlier range (virulence < 2.3) (box plot results not shown).
+The mean virulence of the 10 most abundant MCGs ranged from 4.6 (MCG 49) to 6.02 (MCG 44) (see Fig 4 for 10 most abundant MCGs).
+ANOVA of these 10 MCGs indicated significant difference for virulence levels at P <0.0001.
+Mean separation of 10 most common MCGs showed MCG 44 is different from MCGs 9, 1, 45, 4, 53, and 49 while the virulence levels of MCGs 2, 5, 3 failed to show any difference to MCG 44 or the other MCGs. 
+
+The number of observed alleles per locus ranged anywhere from 2 to 10 (Table 2).
+All loci were informative at cut off level of 2/N where N was the total number of individuals.
+The genetic diversity indices of *S. sclerotiorum* populations from different states of the USA, France, Mexico and Australia based on SSR analysis are given in Table 5.
+The 165 unique MLGs identified among all 366 isolates are given in Supplementary Table 1.
+Gene diversity (Hexp) of populations from different regions ranged from 0.259 to 0.596 (Table 5).
+Evenness of genotypes of all regions was high, with the exception of ND, where a single genotype was represented by 20 isolates.
+There was one private allele in the WA population (204 bp allele of 55-4 locus) and two private alleles in the ND population (two 366 bp alleles in 9-2 locus and two 220 bp alleles in 12-2 locus).
+
+## dbRDA {-}
+
+The dbRDA was performed on clone-corrected isolates (N = 318) after grouping them by location, host, region, and year.
+The forward-backward selection process revealed severity, year, region, and host to be the optimal variables for the reduced model, accounting for 17.6% of the variation.
+ANOVA revealed that the reduced model was significant with an adjusted R^2^ of 0.032 (P = 0.001).
+The marginal effects of state, host, and year were also significant (P = 0.001), but virulence was not significant (P = 0.045).
+Much of the variation appears to be driven by isolates from Mexico (Fig. 7) and 2005, but it's worth noting that all Mexican isolates were collected in 2005.
+Variance partitioning of the independent variables indicated virulence to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
+
+
+## DAPC analysis {-}
+
+DAPC analysis for different regions and hosts are depicted in Fig. 8.
+These isolates were clone-corrected at location/host/region/year level prior to the analysis (N =318).
+Accordingly, MX (N = 15) and CA (N =18) populations grouped separately from all other populations with MX isolates showing the highest deviation (Fig. 8A).
+Comparison of genotypes by region showed all of the nine MLGs in the Mexican population were unique, with no genotypes crossing over to other populations.
+MLGs of Californian isolates were found only in OR and WA populations.
+MLG 6, 84 and 100 were (see Supplementary Table 1 for SSR genotypes related to 165 MLGs of total isolates) unique to CA isolates. 
+
+Populations from different regions were compared with AMOVA, where differentiation was low among regions (PhiPT  = 0.11; P = 0.001).
+Pairwise comparisons of all populations according to region showed MX and CA populations were significantly different across all populations at P ≤ 0.001.
+The PhiPT values of Pairwise comparisons between CA and other populations ranged from 0.116 to 0.389 and from 0.355 to 0.493 between MX and other population.
+The CA population showed evidence of sexual recombination ( = 0.008; P = 0.27, Ia = 0.08; P = 0.3) while the  value of AU was 0.12 with a high P of 0.05 (Ia = 0.70; P = 0.05), whereas all other populations showed linkage disequilibrium for loci tested indicating high possibility of clonal reproduction. 
+
+The dapc for hosts was limited to six most common cultivars: G122 (N = 55), Beryl (N = 62), Bunsi (N = 47), Yellow (N = 26), Pinto (N = 15), and Merlot (N = 11).
+According to Fig. 8B, cultivar Merlot isolates group distant from others, but were not significantly different (P =0.325).  Interestingly, *S. sclerotiorum* populations from cultivars 'Beryl' and 'G122', which are known to have different level of white mold susceptibility, showed no difference in population genetic data.
+
+AMOVA revealed genetic differences among isolates sampled in different years (DAPC biplot not shown).
+The PhiPT was a low value of 0.07 with P = 0.001.
+Isolates from 2012 were not included in the analysis since there were only 4 samples.
+Samples for other years ranged from 19 in 2009 to 63 in 2005.
+Sampling year 2003 to 2005 and 2009 were different across every Pairwise comparison.
+None of the above sampling variables (i.e. region, year, host) seemed to influence distinct molecular composition of *S. sclerotiorum* populations since pre-defined (i.e. region, host, and year) isolates and isolates that were assigned into post groups by DAPC varied largely (Figs. 8A, 8B and 9).
+However, assignment of isolates by DAPC analysis of regions did show some promising results for MX and CA isolates (Fig. 8A).
+The original group size of each region and DAPC defined group sizes for different regions are given in Table 6.
+
+Since find.clusters function of Adegenet library did not result in a clear-cut number of clusters for 318 isolates, we arrived at six (6) as the best number of populations (Fig. 9) for our data after examining results of DAPC for different number of clusters.
+Three clusters, namely clusters one, three, and six were formed separately from the rest.
+The cluster 3 of the DAPC plot consisted entirely of MX isolates (N =13/15).
+Rest of the two MX isolates were grouped in cluster 1.
+Cluster 6 had 50 isolates in total representing mainly of NE (N = 15/37), MI (N = 12/58), and CO (N = 12/34).
+All CA (N = 18) isolates and 13/58 WA isolates dominated the cluster 1.
+AMOVA on these six clusters resulted 44% molecular variance among populations with P = 0.001.
+Pairwise comparison showed significant difference (P = 0.001) for all pairs.
+The DAPC plot after pooling all isolates together and removing clones (N =165) was compared with the plot of 318 isolates looked similar to Fig. 8C.
+The number of clusters was set to 6 for the analysis which resulted in a DAPC having similar topology to plot in Fig. 9 with 318 isolates(results not shown).
+Isolates of MX grouped separately while another distinct group had 24 isolates representing CO, NE, and ND. 
+
+We tested the clone corrected data for evidence of sexual outcrossing within *S. sclerotiorum* populations in different regions and different years/region.
+CA showed evidence of sexual outcrossing (Ia = 0.08, P.Ia = 0.317,  = 0.008, P. = 0.317) while all other regions implied clonal propagation (data not shown).
+Five populations showed evidence of sexual outcrossing: CA in 2004, FR in 2004 and 2005, OR in 2003, and WA in 2008.
+However, after clone-correction these populations had 6-7 isolates/population (Table 7) and therefore, may not be sufficient to make inferences about reproductive mode.
+Only exception was the WA_2008 population, which consisted of 12 isolates.
+Within sampling locations white mold nurseries (wmn) were tested for linkage disequilibrium since same wmn fields were used for sampling over different years.
+Only CA wmn showed evidence of sexual reproduction ( = 0.008; P = 0.29) while all other wmn locations suggested clonal reproduction.
+The DAPC analyses of WA, and MI isolates from same wmn fields over different years are in Fig. 10.
+Since *S. sclerotiorum* isolates are predominantly clonal, we wanted to explore whether there was any introduction of new isolates from other fields or if there were evidence of sexual reproduction.
+The AMOVA results for different clusters of Fig. 10A revealed significance difference between WA 2008 isolates from the rest (PhiPT ≥ 0.206, P = 0.001).
+The 2003 and 2005 isolates were genetically similar (PhiPT = 0.056, P = 0.129).
+MI isolates from 2008 and 2003 (Fig. 10B) showed significant difference (PhiPT = 0.127, P = 0.04) while 2005 isolates did not differ molecularly from both 2008 and 2003 isolates (PhiPT ≤ 0.078, P ≥ 0.076).
+NE wmn isolates sampled in 2004 and 2008 were genetically similar (PhiPT = 0.042, P = 0.179) (DAPC results not shown).
+The standardized index of association of wmn isolates from each region (i.e.
+MI, WA, and NE) for above mentioned sampling years suggested clonal reproduction ( ≥ 0.05, P ≤ 0.002).   
+
+
+# Discussion {-}
+
+Our study was conducted to characterize *S. sclerotiorum* isolates from different geographic areas to determine important phenotypic variables influencing genotypes; to ascertain reproductive behavior of the pathogen; to test whether different sampling years or locations have any effect on genotype/sexuality; and to identify abundant and unique genotypes across isolates and geographies.
+The dbRDA revealed region, year, and host as the most influential phenotypic variables on genotypes.
+However, further molecular analysis of pathogen isolates from selected hosts did not show any significant genetic difference among populations.
+According to dbRDA, virulence and location of isolates had little or no effect.
+Previous studies on *S. sclerotiorum* from alfalfa soil (Attanayake et al., 2012) and potato (Atallah et al., 2004), and canola (Attanayake et al., 2013) plants reported little or no correlation of genotypes on pathogen virulence.
+This is important information for resistant breeding since genotypes of *S. sclerotiorum* isolates seem to depend to a certain degree on different levels of region and also on environmental conditions of the sampling year.
+For instance our analysis indicated that MX, 2009, and 2005 were highly influential predictors of *S. sclerotiorum* genotypes (Fig. 7).
+Conversely, France and Australia, which are geographically distant to North America, were not within the top 10 predictors of genetic composition of isolates (Fig. 7).
+According to dbRDA, Mexican region imposed the highest impact on microsatellite loci of *S. sclerotiorum* isolates.
+We used Bruvo's distance for calculating genetic distances of different isolates since it incorporates stepwise mutation model and applicable to microsatellite analysis.
+
+The 366 isolates of our study belonged to 87 MCGs and 165 MLGs.
+MCGs with multiple isolates were represented by several to many microsatellite genotypes and demonstrated lack of similarity between MCGs and microsatellite genotypes.
+For instance, MCG 5 with the highest number of isolates (N = 73) represented 37 MLGs when characterized by 11 microsatellites.
+The most common genotype among these 73 isolates was MLG 25 with 19 isolates.
+Similarly, second most common MCG with 44 isolates was represented by 19 genotypes.
+Some studies on *S. sclerotiorum* found a strong association between MCG and multilocus genotypes (Aldrich-Wolfe et al., 2015) while others reported no evidence for such consistent association (Atallah et al., 2004; Attanayake et al., 2012) or either reported an association for a part of the sample (Kohn, 1995).
+Attanayake et al. (2013) carried out a genetic diversity study of *S. sclerotiorum* populations from canola in China and USA.
+They reported the MCGs were in accordance with the microsatellite MLGs in the U.S. population but not in the Chinese population.
+A study conducted on Canadian field populations of cultivated canola revealed MCGs and RFLP fingerprinting of *S. sclerotiorum* isolates were associated but MCGs of Norwegian isolates from wild perennial plant Ranunculua ficaria did not show such an association (Kohn, 1995).
+Aldrich-Wolfe et al.(2015) characterized 145 isolates from four different host crops in north central region of the USA.
+Isolates belonging to same MCG either shared identical genotypes or differed at no more than 2 of the 12 microsatellite loci.
+They reported only 14% of MCGs contained isolates with different genotypes.
+Different results were reported by Attanayake et al. (2012), who characterized 40 *S. sclerotiorum* isolates from 1 m^2^ area of alfalfa seed production soil using microsatellite markers.
+There were 15 MCGs with seven representing just a single isolate.
+Though single-isolate MCGs contained distinct multilocus genotype, they also found several instances where MCGs and microsatellite MLGs did not similarly correspond.
+Some isolates of the same multilocus genotype belonged to different MCGs.
+Our results agree with this type of relationship between MCGs and MLGs.
+Similarly, Attallah et al. (2004) did not find any strong correlation between microsatellite haplotypes and MCGs in 167 *S. sclerotiorum* isolates from four potato fields in the Columbia basin of WA state.
+These 167 isolates belonged to 82 MCGs with 64 single-isolate MCGs.
+We came across 43 single-isolate MCGs among 366 isolates from dry bean cultivars. 
+
+Our study did not find any multilocus genotype/s common across all or majority of sampling geographies.
+The most widespread and common genotype (MLG 25, Supplemental Table 1) was found only in five states of the USA with majority of isolates confined to ND.
+However, we did find some MLGs of France and Australian isolates to be present in the USA samples.
+Some studies on *S. sclerotiorum* did not detect any shared MLGs between geographically distant populations.
+Attanayake et al. (2013) were unable to detect any shared microsatellite MLGs in *S. sclerotiorum* populations from infected canola fields in China and USA.
+Isolate collections were limited to a single county in China whereas USA isolates were from ND state only.
+This may have limited the chance of discovering genotypes common to both regions.
+Atallah et al. (2004) examined the population structure of *S. sclerotiorum* in different potato fields of Columbia basin and reported only 15 isolates shared the most common microsatellite haplotype in a sample of 167.
+Similarly, several other studies did not detect common fingerprints of *S. sclerotiorum* isolates in geographically distant populations: Australia and North America (Ekins, 1999);  California, Washington, and Ontario (Malvarez et al., 2007); Canada, North Carolina, and Louisiana (Cubeta et al., 1997). 
+
+Contrary to above results Aldrich-Wolfe et al. (2015) who did a survey on *S. sclerotiorum* from different host crops in the North Central states of the United States found a single microsatellite haplotype to be prevalent throughout the region.
+A study in the UK that examined this pathogen from 12 populations in different crop plants and weed species *Ranunculus acris* (meadow buttercup) also reported one microsatellite haplotype was widely distributed across hosts and areas (Clarkson et al., 2013).
+Reason for our isolates from dry bean not to show a widespread MLG may be due to extensive sexual outcrossing and movement sclerotia by human activities.
+Though conditions of outcrossing for *S. sclerotiorum* is not well studied, it is believed weather and agricultural conditions play a role in production and release of ascospores of this pathogen (Huang, 1991; Sexton et al., 2006).
+One study found release of spores from apothecia declined over 36- 168 H at low RH of 65-75% but not at high RH of 90-95% (Clarkson et al., 2003).
+The same study reported increased ascospores discharge at 20-25° C compared to 15° C and the survival of *S. sclerotiorum* ascospores was reduced at high temperature and RH.
+Our samples were collected from 2003 to 2012 and except for the dry bean nurseries, came from different fields.
+Different agro-ecological conditions prevailed during sampling seasons may have resulted in different rates of sexual outcrossing of the pathogen and hence reduced the chance of extracting a common genotype.
+When conditions are favorable for ascospore production, release, and survival, coinfection of a single site on a plant by multiple ascospores is possible (Sexton et al., 2006).
+This may eventually result in facilitating outcrossing and recombination.
+
+Interestingly, all Mexican genotypes were unique to that region.
+On the other hand CA genotypes were present in the West Coast states of OR and WA which may be due to movement of sclerotia with planting material.
+Surprisingly, France and Australian genotypes were also isolated in the USA.
+MLG 4 (see supplemental Table 1) was recorded from France, Australia and MN while France and USA isolates had four common MLGs.
+Similarly, five MLGs were recorded common to both Australia and USA isolates.
+However, there were six unique genotypes in clone-corrected France population (N= 6/14) and three genotypes in CA population (N = 3/15).
+MLGs from Australian region, our samples were limited to 6, which is not a sufficient number to make inferences.
+Our results indicated that different continents were not a defining factor for microsatellite genotypes of *S. sclerotiorum* isolated from dry bean.
+This may be due to involuntary movement of sclerotia by human activities and probably because of recent speciation of *S. sclerotiorum*. 
+A phylogenetic study on Sclerotinaceae showed that most of the sclerotial lineages including different species of Sclerotinia had evolved relatively recently from a common ancestor (Carbone and Kohn, 1993).
+Few multilocus genotypes were unique to each sampling state of the USA but most of them were common among several states (Supplemental Table 1).
+For instance, Michigan state from which we had the largest collection of isolates (N = 62) consisted of 43 MLGs.
+Of these, 32 MLGs were present in at least one of the 5 states of NE, ND, WA, CO, MN; 4 MLGs were present in France isolates; and 11 were unique to MI sites (see Supplemental Table 1 for unique MLGs in different regions).
+When selecting *S. sclerotiorum* isolates for screening dry bean germplasm for disease resistance, plant breeders may find above information useful.
+A study on genetic diversity of *S. sclerotiorum* from multiple host crops in the North central region of the USA revealed there was little evidence for genetic isolation of this pathogen by host crop or by distance (Aldrich-Wolfe et al., 2015).
+Though our isolates didn't come from different crops, we had isolates from many resistant and susceptible dry bean cultivars, which also didn't show genetic differentiation according to AMOVA.
+It seems Mexican pathogen isolates are different from the rest and warrants further investigation using a larger population.
+Some France genotypes were common in USA isolates but at the same time 43% (6/14) of the France genotypes were unique to that region indicating white mold resistant cultivars produced in the USA might not work in that region.
+Geographic distance between different states of the USA seem not a barrier for gene transfer of *S. sclerotiorum* isolates though unique genotypes did prevail at a low frequency in each state.
+The genetic diversity of regions with >10 isolates had similar values (0.43 - 0.59) except for Mexican isolates.
+Hexp of MX was 0.26 and indicated less exposure of sampling sites to outside inocula.
+Test for linkage disequilibrium showed evidence of clonal reproduction for MX isolates (Ia = 2.61, P.Ia = 0.001,  = 0.37, P. = 0.001).
+This may have been another reason for low gene diversity.
+
+DAPC analysis by region followed by AMOVA corroborated the uniqueness of Mexican genotypes by grouping them away from the rest of the isolates (Fig. 8).
+Other populations based on geography were unable to group in separate clusters except for the Californian population.
+We tested whether genotypes of *S. sclerotiorum* populations were influenced by different dry bean host cultivars and year of sampling by DAPC and AMOVA.
+There was no host specificity but year of sampling did show a significant impact on genotypes.
+Other studies also reported host identity is no barrier for gene flow of this pathogen (Aldrich-Wolfe et al. 2015; Clarkson et al. 2013).
+Atallah et al. (2004) revealed statistically significant impact of the collection date of *S. sclerotiorum* isolates from four potato fields in the Columbia Basin on molecular variance.
+But there was no impact of the year or location of collection.
+We also did not detect location as a significant predictor of molecular variance but year had a significant impact.
+Our samples were collected on a single day in each year from each field and therefore did not warrant for an analysis of date of sample collection. 
+
+We performed DAPC without assigning isolates to different populations based on sampling information to see the how isolates fall into clusters according to their genetic relatedness.
+We decided the most appropriate number as six since the DAPC results had 87% (N = 13/15) of Mexican isolates in a single cluster (Fig. 9 cluster 3).
+When number of clusters was assigned less than that MX isolates did not group separately while higher number of cluster assignment resulted in breaking down of other clusters in Fig. 9 into smaller groups.
+DAPC analysis without population assignments revealed that in general geography is not a barrier for gene flow since isolates of different geographies from USA, Australia and France clustered together indicating genetic relatedness and possible sexual recombination within each region.
+For instance France isolates were present in cluster 1, 2, 4 and 5.
+As mentioned above only exception was the Mexican isolates.
+Njambere et al. (2014) studied S. trifoliorum, a close relative *S. sclerotiorum* and reported four cryptic genetic populations by Bayesian clustering analysis of microsatellite loci.
+Those clusters had no correlation to geographic locations of samples.
+Similarly, a cluster analysis of microsatellite data of *S. sclerotiorum* collected from 12 geographically distant host populations in  England and Wales resulted only two main clusters pooling isolates from different populations together (Clarkson et al., 2013).
+However, some other studies found *S. sclerotiorum* isolates from distant locations did differ significantly when molecularly characterized (Attanayake et al., 2013; Cubeta et al., 1997; Ekins, 1999; Malvarez et al., 2007).
+
+There were isolates that shared the same MLG belonging to different MCGs.
+For instance MLG 25 consisted of 27 isolates in 5 MCGs.
+This phenomenon is suggestive of a recombination by sexual outcrossing (Njambere et al., 2014; Sexton et al., 2006).  In general high level of MLG diversity; and lack of association of MCG and microsatellite genotype are evidence of *S. sclerotiorum* undergoing sexual outcrossing and movement of isolates due to agricultural practices(Njambere et al., 2014).
+Our isolates had a total of 165 MLGs and they did not correspond well with 87 MCGs.
+Linkage disequilibrium analysis of populations in white mold nurseries indicated the possibility of sexual outcrossing in some regions (ex.
+CA, FR, OR and WA) during certain sampling years while most locations indicated clonal reproduction.
+For example wmn of WA was sampled in 2003, 2004, 2005, and 2008 but only 2008 isolates had evidence of outcrossing.
+Similar to our results many studies have reported primarily clonal reproduction of *S. sclerotiorum* populations with evidence of occasional outcrossing:  canola and sunflower pathogen populations in north central region of the USA (Aldrich-Wolfe et al., 2015); cabbage population in North Carolina (Cubeta et al., 1997); Canadian canola and North Carolina cabbage populations (Kohli and Kohn, 1998); and 12 populations from five crops in England and Wales (Clarkson et al., 2013).
+Contrary to above, one study from an experimental cabbage field plot in Louisiana, found a population of 16 isolates of *S. sclerotiorum* were strictly clonal (Cubeta et al., 1997).
+Attalah et al. (2004) studied the genetic structure of *S. sclerotiorum* in four potato fields in the Columbia basin and reported evidence of potential outcrossing of populations in two fields.
+When all isolates were combined, there was significant linkage disequilibrium and hence the population was highly clonal.
+Our study supports this phenomenon since linkage disequilibrium analysis revealed evidence of sexual outcrossing only in CA when populations were based on region.
+However, when populations were sub divided according each year/region, we could detect evidence of sexual out crossing in some populations.
+One reason for this is the overshadowing of low frequency genotypes of heterothallic recombination by a few successful genotypes of clonal nature (Atallah et al, 2004).  
+
+*Sclerotinia sclerotiorum* isolates from dry bean represented high microsatellite diversity and lack of association MCGs and microsatellite MLGs.
+Analysis of molecular variance of populations based on region and sampling year showed low level of differentiation with majority of variance detected within populations.
+These features are indicative of sexual outcrossing and perhaps human mediated migration of *S. sclerotiorum* in dry bean.
+However, we also detected clones or identical microsatellite MLGs within and among populations indicating asexual reproduction.
+Further, linkage disequilibrium and index of association calculations suggested *S. sclerotiorum* populations are largely clonal.
+Although, there was low impact of region and year on population differentiation, we did not detect host cultivar as a barrier to gene flow of the pathogen.
+Our study did not find a widespread genotype among sampled regions from dry beans but some Australian and France MLGs were found in the USA isolates.
+The analysis of populations from same field over different years for linkage disequilibrium did not provide evidence for sexual outcrossing.
+However, analysis of molecular variance did show populations were significantly different between some years (eg.
+MI 2003 and 2005 populations; WA 2008 compared to both 2003 and 2005).
+These results indicate some level of heterothalic recombination is taking place in these fields in addition to natural mutations.
+An understanding of sexual behavior and ability of form new genotypes by *S. sclerotiorum* in dry bean cropping systems is useful for formulating disease management strategies. 
