@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 cache/*
+doc/manuscript/*pdf
+doc/manuscript/*tex
