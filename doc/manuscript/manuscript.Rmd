@@ -1,33 +1,38 @@
 ---
 title: Population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean throughout the United States, and from Mexico, France, and Australia
+preprint: false
 author:
   - name: Zhian N. Kamvar
     email: zkamvar@unl.edu
-    affiliation: University of Nebraska-Lincoln
+    affiliation: 1
   - name: Bimal Sajeewa Amadarasa
     email: bamadarasa2@unl.edu
-    affiliation: University of Nebraska-Lincoln
+    affiliation: 1
   - name: R. Jhala
     email: rjhala2@unl.edu
-    affiliation: University of Nebraska-Lincoln
+    affiliation: 1
   - name: James Steadman
     email: jsteadman1@unl.edu
-    affiliation: University of Nebraska-Lincoln
+    affiliation: 1
   - name: Sydney E. Everhart
     email: everhart@unl.edu
-    affiliation: University of Nebraska-Lincoln
-    corresponding: everhart@unl.edu
-address:
-  - code: University of Nebraska-Lincoln
+    affiliation: 1
+    corresponding: true
+affiliation:
+  - code: 1
     address: Department of Plant Pathology, University of Nebraska-Lincoln, Lincoln 68583
 abstract: >
   `r paste(readLines("abstract.md"), collapse = "\n  ")`
-author_summary: |
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-
+# author_summary: |
+#   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+header-includes: >
+  \usepackage{indentfirst}
 bibliography: mybibfile.bib
-output: rticles::plos_article
-csl: plos.csl
+biblio-style: apalike
+output: 
+  rticles::peerj_article:
+    citation_package: natbib
+    base_format: bookdown::pdf_document2 # for using \@ref()
 ---
 
 # Introduction {-}
@@ -36,7 +41,7 @@ csl: plos.csl
 *Sclerotinia sclerotiorum* (Lib.) de Bary is an ascomycete plant pathogen found worldwide.
 This is a necrotrophic pathogen that is primarily homothallic (self-fertilization) (Bolton et al., 2006) (Sexton et al., 2006).
 It has a host range of more than 400 species of plants belonging to 75 families (Boland and Hall, 1994).
-Economically important crops affected by this pathogen include sunflower, soybean, oilseed rape, dry bean, chickpea, peanut, dry pea, lentils and vegetables (Bolton et al., 2006). *Sclerotinia sclerotiorum* causes white mold disease on dry bean (Phaseolus vulgaris L.), which can be a yield-limiting in temperate climates (Steadman, 1983).  
+Economically important crops affected by this pathogen include sunflower, soybean, oilseed rape, dry bean, chickpea, peanut, dry pea, lentils and vegetables (Bolton et al., 2006). *Sclerotinia sclerotiorum* causes white mold disease on dry bean (*Phaseolus vulgaris* L.), which can be a yield-limiting in temperate climates (Steadman, 1983).  
 
 Sclerotia are capable of surviving more than five years in soil (Steadman, 1983) and germinate carpogenically or myceliogenically to infect the plant when environmental conditions are favorable.
 A carpogenically geminated sclerotia gives rise to apothecia in which ascospores are formed.
@@ -53,6 +58,8 @@ One such study examined *S. sclerotiorum* population structure using microsatell
 Due to high crop diversity and high presence of the pathogen, it was important to understand the potential for outcrossing in order to develop disease management strategies.
 Molecular analysis revealed 92% of the isolate variability was found within subpopulations (Atallah et al., 2004).
 However, there was evidence of linkage equilibrium of microsatellite loci in 2 locations and illustrated the possibility of outcrossing in this region.  
+
+deleteme: @Dirac1953888
 
 A population study from Australian canola fields showed evidence of sexual outcrossing of *S. sclerotiorum* isolates (Sexton and Howlett, 2004).
 Another study characterized three populations of *S. sclerotiorum* from lettuce in California (CA) and Ontario (ON), and pea/lentil in Washington (WA) (Malvarez et al., 2007).
@@ -126,7 +133,7 @@ All analyses were performed on this data set unless otherwise mentioned.
 
 A distance-based redundancy analysis (dbRDA) (Legendre and Anderson, 1999) was performed with the function capscale in the vegan 2.4-3 package in R (https://CRAN.R-project.org/package=vegan) to delineate relative contribution of phenotypic, spatial, and temporal components in influencing genetic composition of the populations. dbRDA is a method of conducting constrained ordinations on data matrices consisting of non-Euclidean distance measures.
 RDA is a multivariate linear regression analysis of independent (explanatory: eg. environmental and phenotypic) variables on dependent (non-explanatory or response) variables.
-In our case, a pairwise Bruvo's (Bruvo et al., 2004) distance matrix was generated from microsatellite data using poppr 2.4.1 (Kamvar et al., 2014; Kamvar et al., 2015) and employed it as the dependent matrix for RDA analysis.
+In our case, a pairwise Bruvo's [@bruvo2004simple] distance matrix was generated from microsatellite data using poppr 2.4.1 [@kamvar2014poppr; @kamvar2015novel] and employed it as the dependent matrix for RDA analysis.
 To identify environmental variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function ordistep to identify the set of variables that explained more variation than predicted with the global model containing all variables.
 An ANOVA was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
 The varpart function of vegan was used to determine variation partitioning of explanatory variables.
@@ -134,7 +141,7 @@ The varpart function of vegan was used to determine variation partitioning of ex
 
 ## Shared Multilocus Genotype Community Analysis {-}
 
-To assess the connectivity of shared genotypes across populations, we first tabulated the multilocus genotypes shared between at least two populations (defined as states or countries) with the poppr function mlg.crosspop() (Kamvar et al. 2014).
+To assess the connectivity of shared genotypes across populations, we first tabulated the multilocus genotypes shared between at least two populations (defined as states or countries) with the poppr function mlg.crosspop() [@kamvar2014poppr].
 From these data, we were able to construct a graph with populations as nodes and shared genotypes as edges (connections) between the nodes using the R packages igraph version 1.0.1 (Csardi and Nepusz 2006), dplyr version 0.5.0 (Wickham and Francois 2016), and purrr version 0.2.2 (Wickham 2016).
 Each node was weighted by the fraction of shared MLGs.
 Each edge represents a single MLG, but because a single MLG could cross populations, that MLG may be represented by (n*(n-1))/2 edges where n represents the number of populations it crosses.
@@ -154,7 +161,7 @@ Since dbRDA identified region, host, and sampling year as the top three variable
 Isolates (N = 318) were assigned to different levels of the three factors (region, host, year) and assessed predefined group size (original number of isolates at each level of the factor), post group size (number of isolates assigned by the DAPC algorithm) and the proportion of the original isolates assigned to the original group after analysis.
 This was performed to determine the suitability of explanatory variables (i.e. region, host, and year) in describing the clusters generated.
 Clone-corrected isolates sampled in different years from the white mold nurseries (wmn) were tested for population differentiation over time by DAPC analysis.
-Only WA, MI, and NE isolates were qualified since we filtered out the states that had at least ≥7 samples/year with at least two years of data for the analysis.
+Only WA, MI, and NE isolates were qualified since we filtered out the states that had at least $\geq$ 7 samples/year with at least two years of data for the analysis.
 Lastly, we pooled all isolates, clone corrected them (N = 165) and performed DAPC using the function find.clusters as described above to delineate how many clusters were formed by these unique genotypes.
 AMOVA was used to test the significance of clusters resulted by different DAPC analyses using GenAlEx version 6.41 (Peakall and Smouse, 2012).
 PhiPT which is an analogue of Wright's FST was used to ascertain the significance of populations.
@@ -235,7 +242,7 @@ MLGs of Californian isolates were found only in OR and WA populations.
 MLG 6, 84 and 100 were (see Supplementary Table 1 for SSR genotypes related to 165 MLGs of total isolates) unique to CA isolates. 
 
 Populations from different regions were compared with AMOVA, where differentiation was low among regions (PhiPT  = 0.11; P = 0.001).
-Pairwise comparisons of all populations according to region showed MX and CA populations were significantly different across all populations at P ≤ 0.001.
+Pairwise comparisons of all populations according to region showed MX and CA populations were significantly different across all populations at P $\leq$ 0.001.
 The PhiPT values of Pairwise comparisons between CA and other populations ranged from 0.116 to 0.389 and from 0.355 to 0.493 between MX and other population.
 The CA population showed evidence of sexual recombination ( = 0.008; P = 0.27, Ia = 0.08; P = 0.3) while the  value of AU was 0.12 with a high P of 0.05 (Ia = 0.70; P = 0.05), whereas all other populations showed linkage disequilibrium for loci tested indicating high possibility of clonal reproduction. 
 
@@ -272,12 +279,12 @@ Within sampling locations white mold nurseries (wmn) were tested for linkage dis
 Only CA wmn showed evidence of sexual reproduction ( = 0.008; P = 0.29) while all other wmn locations suggested clonal reproduction.
 The DAPC analyses of WA, and MI isolates from same wmn fields over different years are in Fig. 10.
 Since *S. sclerotiorum* isolates are predominantly clonal, we wanted to explore whether there was any introduction of new isolates from other fields or if there were evidence of sexual reproduction.
-The AMOVA results for different clusters of Fig. 10A revealed significance difference between WA 2008 isolates from the rest (PhiPT ≥ 0.206, P = 0.001).
+The AMOVA results for different clusters of Fig. 10A revealed significance difference between WA 2008 isolates from the rest (PhiPT $\geq$ 0.206, P = 0.001).
 The 2003 and 2005 isolates were genetically similar (PhiPT = 0.056, P = 0.129).
-MI isolates from 2008 and 2003 (Fig. 10B) showed significant difference (PhiPT = 0.127, P = 0.04) while 2005 isolates did not differ molecularly from both 2008 and 2003 isolates (PhiPT ≤ 0.078, P ≥ 0.076).
+MI isolates from 2008 and 2003 (Fig. 10B) showed significant difference (PhiPT = 0.127, P = 0.04) while 2005 isolates did not differ molecularly from both 2008 and 2003 isolates (PhiPT $\leq$ 0.078, P $\geq$ 0.076).
 NE wmn isolates sampled in 2004 and 2008 were genetically similar (PhiPT = 0.042, P = 0.179) (DAPC results not shown).
 The standardized index of association of wmn isolates from each region (i.e.
-MI, WA, and NE) for above mentioned sampling years suggested clonal reproduction ( ≥ 0.05, P ≤ 0.002).   
+MI, WA, and NE) for above mentioned sampling years suggested clonal reproduction ( $\geq$ 0.05, P $\leq$ 0.002).   
 
 
 # Discussion {-}
@@ -286,7 +293,7 @@ Our study was conducted to characterize *S. sclerotiorum* isolates from differen
 The dbRDA revealed region, year, and host as the most influential phenotypic variables on genotypes.
 However, further molecular analysis of pathogen isolates from selected hosts did not show any significant genetic difference among populations.
 According to dbRDA, virulence and location of isolates had little or no effect.
-Previous studies on *S. sclerotiorum* from alfalfa soil (Attanayake et al., 2012) and potato (Atallah et al., 2004), and canola (Attanayake et al., 2013) plants reported little or no correlation of genotypes on pathogen virulence.
+Previous studies on *S. sclerotiorum* from alfalfa soil (Attanayake et al., 2012) and potato (Atallah et al., 2004), and canola (Attanayake et al., 2013) plants reported little or no correlation of genotypes on pa25thogen virulence.
 This is important information for resistant breeding since genotypes of *S. sclerotiorum* isolates seem to depend to a certain degree on different levels of region and also on environmental conditions of the sampling year.
 For instance our analysis indicated that MX, 2009, and 2005 were highly influential predictors of *S. sclerotiorum* genotypes (Fig. 7).
 Conversely, France and Australia, which are geographically distant to North America, were not within the top 10 predictors of genetic composition of isolates (Fig. 7).
@@ -329,7 +336,7 @@ A study in the UK that examined this pathogen from 12 populations in different c
 Reason for our isolates from dry bean not to show a widespread MLG may be due to extensive sexual outcrossing and movement sclerotia by human activities.
 Though conditions of outcrossing for *S. sclerotiorum* is not well studied, it is believed weather and agricultural conditions play a role in production and release of ascospores of this pathogen (Huang, 1991; Sexton et al., 2006).
 One study found release of spores from apothecia declined over 36- 168 H at low RH of 65-75% but not at high RH of 90-95% (Clarkson et al., 2003).
-The same study reported increased ascospores discharge at 20-25° C compared to 15° C and the survival of *S. sclerotiorum* ascospores was reduced at high temperature and RH.
+The same study reported increased ascospores discharge at 20-25$^{\circ}$ C compared to 15$^{\circ}$ C and the survival of *S. sclerotiorum* ascospores was reduced at high temperature and RH.
 Our samples were collected from 2003 to 2012 and except for the dry bean nurseries, came from different fields.
 Different agro-ecological conditions prevailed during sampling seasons may have resulted in different rates of sexual outcrossing of the pathogen and hence reduced the chance of extracting a common genotype.
 When conditions are favorable for ascospore production, release, and survival, co-infection of a single site on a plant by multiple ascospores is possible (Sexton et al., 2006).
@@ -407,3 +414,5 @@ However, analysis of molecular variance did show populations were significantly 
 MI 2003 and 2005 populations; WA 2008 compared to both 2003 and 2005).
 These results indicate some level of heterothallic recombination is taking place in these fields in addition to natural mutations.
 An understanding of sexual behavior and ability of form new genotypes by *S. sclerotiorum* in dry bean cropping systems is useful for formulating disease management strategies. 
+
+
