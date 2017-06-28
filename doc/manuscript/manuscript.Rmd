@@ -241,8 +241,14 @@ The dbRDA was performed on clone-corrected isolates (N = 318) after grouping the
 The forward-backward selection process revealed severity, year, region, and host to be the optimal variables for the reduced model, accounting for 17.6% of the variation.
 ANOVA revealed that the reduced model was significant with an adjusted R^2^ of 0.032 (P = 0.001).
 The marginal effects of state, host, and year were also significant (P = 0.001), but virulence was not significant (P = 0.045).
-Much of the variation appears to be driven by isolates from Mexico (Fig. 7) and 2005, but it's worth noting that all Mexican isolates were collected in 2005.
+Much of the variation appears to be driven by isolates from Mexico (Fig. \@ref(rda-biplot)) and 2005, but it's worth noting that all Mexican isolates were collected in 2005.
 Variance partitioning of the independent variables indicated virulence to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
+
+![
+Biplot showing 10 most influential explanatory variables (arrows) overlayed on the first two eigenvectors of distance based redundancy analysis of *S. sclerotiorum* isolates. 
+The length of the arrows are directly proportional to the strength of the correlation between explanatory and molecular variables. 
+Points represent the 318 clone-corrected samples in ordination space. 
+](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=50%}
 
 
 ## DAPC analysis {-}
