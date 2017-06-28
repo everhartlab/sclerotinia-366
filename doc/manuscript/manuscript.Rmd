@@ -66,7 +66,7 @@ However, there was evidence of linkage equilibrium of microsatellite loci in 2 l
 
 A population study from Australian canola fields showed evidence of sexual outcrossing of *S. sclerotiorum* isolates [@sexton2004microsatellite].
 Another study characterized three populations of *S. sclerotiorum* from lettuce in California (CA) and Ontario (ON), and pea/lentil in Washington (WA) [@malvarez2007new].
-While all three populations were  clonal, the index of association (IA) based on DNA fingerprint was closer to zero for CA than it was for the other populations.
+While all three populations were  clonal, the index of association ($I_A$) based on DNA fingerprint was closer to zero for CA than it was for the other populations.
 Populations from Australian sunflower with evidence of clonal reproduction were reported, and despite populations sampled from fields separated 50 to 400 km and from both head and basal rots, all showed similar gene diversity, with authors concluding isolates representing different geographies belong to one large genetic population of *S. sclerotiorum* [@ekins2011population]. 
 
 @attanayake2013sclerotinia studied population differentiation of *S. sclerotiorum* isolates infecting canola from China and the USA.
@@ -91,7 +91,7 @@ High mutagenic rate and multiallelic nature of microsatellites render suitabilit
 In the case of plant pathogens like *S. sclerotiorum* that is predominantly clonal and occasionally outcrossing, microsatellites have been used successfully to ascertain their ability to reproduce by sexual outcrossing [@atallah2004high; @sexton2004microsatellite] and also to detect differences among clonally propagated individuals. 
 
 We analyzed *S. sclerotiorum* isolates collected from dry bean cultivars from 2003 to 2012 from different geographic locations in America, Europe and Australia using microsatellite markers to delineate genetic differences and reproduction behavior.
-The specific aims of our study were:  a) To assess association of phenotypic data (virulence) and environmental data (bean cultivar, region, field, year) on genotypic variation of *S. sclerotiorum* isolates, b) To test the hypothesis that *S. sclerotiorum* populations of dry beans originated from different continents were genetically different, and c) although previous studies show that *S. sclerotiorum* populations are largely clonal, few compare populations from different continents **(Lehner and Mizubuti, 2017)**, c) To identify localized genotypes representative of each location and also investigate if there are widespread genotypes common among locations. d) To test potential for sexual reproduction in sub populations of the pathogen isolates under different conditions such as year or field in each region, year/region, field/region/year, and e) Test if pathogen within-field populations differentiate over time.
+The specific aims of our study were:  a) To assess association of phenotypic data (virulence) and environmental data (bean cultivar, region, field, year) on genotypic variation of *S. sclerotiorum* isolates, b) To test the hypothesis that *S. sclerotiorum* populations of dry beans originated from different continents were genetically different, and c) although previous studies show that *S. sclerotiorum* populations are largely clonal, few compare populations from different continents [@lehner2017sclerotinia], c) To identify localized genotypes representative of each location and also investigate if there are widespread genotypes common among locations. d) To test potential for sexual reproduction in sub populations of the pathogen isolates under different conditions such as year or field in each region, year/region, field/region/year, and e) Test if pathogen within-field populations differentiate over time.
 
 The overall goal of this work was to identify representative isolates for use in breeding programs.
 
@@ -133,30 +133,30 @@ All analyses were performed on this data set unless otherwise mentioned.
 
 ## Distance-based redundancy analysis  {-}
 
-A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was performed with the function capscale in the vegan 2.4-3 package in R (https://CRAN.R-project.org/package=vegan) to delineate relative contribution of phenotypic, spatial, and temporal components in influencing genetic composition of the populations. dbRDA is a method of conducting constrained ordinations on data matrices consisting of non-Euclidean distance measures.
+A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was performed with the function `capscale()` in the *vegan* 2.4-3 package in R (https://CRAN.R-project.org/package=vegan) to delineate relative contribution of phenotypic, spatial, and temporal components in influencing genetic composition of the populations. dbRDA is a method of conducting constrained ordinations on data matrices consisting of non-Euclidean distance measures.
 RDA is a multivariate linear regression analysis of independent (explanatory: eg. environmental and phenotypic) variables on dependent (non-explanatory or response) variables.
-In our case, a pairwise Bruvo's [@bruvo2004simple] distance matrix was generated from microsatellite data using poppr 2.4.1 [@kamvar2014poppr; @kamvar2015novel] and employed it as the dependent matrix for RDA analysis.
-To identify environmental variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function ordistep to identify the set of variables that explained more variation than predicted with the global model containing all variables.
+In our case, a pairwise Bruvo's [@bruvo2004simple] distance matrix was generated from microsatellite data using *poppr* 2.4.1 [@kamvar2014poppr; @kamvar2015novel] and employed it as the dependent matrix for RDA analysis.
+To identify environmental variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function `ordistep()` to identify the set of variables that explained more variation than predicted with the global model containing all variables.
 An ANOVA was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
-The varpart function of vegan was used to determine variation partitioning of explanatory variables.
+The `varpart()` function of vegan was used to determine variation partitioning of explanatory variables.
  
 
 ## Shared Multilocus Genotype Community Analysis {-}
 
-To assess the connectivity of shared genotypes across populations, we first tabulated the multilocus genotypes shared between at least two populations (defined as states or countries) with the poppr function mlg.crosspop() [@kamvar2014poppr].
-From these data, we were able to construct a graph with populations as nodes and shared genotypes as edges (connections) between the nodes using the R packages igraph version 1.0.1 **(Csardi and Nepusz 2006)**, dplyr version 0.5.0 **(Wickham and Francois 2016)**, and purrr version 0.2.2 **(Wickham 2016)**.
+To assess the connectivity of shared genotypes across populations, we first tabulated the multilocus genotypes shared between at least two populations (defined as states or countries) with the *poppr* function `mlg.crosspop()` [@kamvar2014poppr].
+From these data, we were able to construct a graph with populations as nodes and shared genotypes as edges (connections) between the nodes using the R packages *igraph* version 1.0.1 **(Csardi and Nepusz 2006)**, *dplyr* version 0.5.0 **(Wickham and Francois 2016)**, and *purrr* version 0.2.2 **(Wickham 2016)**.
 Each node was weighted by the fraction of shared MLGs.
-Each edge represents a single MLG, but because a single MLG could cross populations, that MLG may be represented by (n*(n-1))/2 edges where n represents the number of populations it crosses.
-Edges were weighted by 1- Psex, where Psex is the probability of encountering the same genotype via two independent meiotic events (Arnaud-Haond 2007, Parks and Werth 1993).
-We then used the cluster_optimal() function from igraph to define communities **(Csardi and Nepusz 2006)**.
-The graph was plotted using the R packages ggplot2 version 2.2.1 **(Wickham 2009)** and ggraph version 1.0.0 **(Pedersen 2017)**.
+Each edge represents a single MLG, but because a single MLG could cross populations, that MLG may be represented by (n\*(n-1))/2 edges where n represents the number of populations it crosses.
+Edges were weighted by $1-P_{sex}$, where $P_{sex}$ is the probability of encountering the same genotype via two independent meiotic events [@arnaud2007standardizing, @parks1993study].
+We then used the `cluster_optimal()` function from *igraph* to define communities **(Csardi and Nepusz 2006)**.
+The graph was plotted using the R packages *ggplot2* version 2.2.1 **(Wickham 2009)** and *ggraph* version 1.0.0 **(Pedersen 2017)**.
 To ensure that we were able to capture the same community signal, we additionally ran this analysis including the 5 polymorphic markers described above.
 
 ## Discriminant analysis of principal components {-}
 
 DAPC is a multivariate method designed to identify and describe clusters of genetically related individuals.
 Discriminant analysis maximizes separation between groups while minimizing variation within groups [@jombart2010discriminant].
-The find.clusters function in Adegenet 2.0.1 [@jombart2008adegenet] uses a k-means clustering algorithm to identify the optimum number of clusters.
+The `find.clusters()` function in *adegenet* 2.0.1 [@jombart2008adegenet] uses a k-means clustering algorithm to identify the optimum number of clusters.
 It was not able to identify a single optimum and identified a range of optimal clusters between 5-15.
 Consequently, DAPC was performed several times with different optimal number of clusters to determine whether isolates (N = 318) fell into each cluster have any biological meaning such as belonging to a particular host or came from the same region etc.  the best summaries for the total isolates (N = 318).
 Since dbRDA identified region, host, and sampling year as the top three variables influencing microsatellite data, DAPC was also performed on data defined according to each of these variables, separately.
@@ -167,17 +167,17 @@ Only WA, MI, and NE isolates were qualified since we filtered out the states tha
 Lastly, we pooled all isolates, clone corrected them (N = 165) and performed DAPC using the function find.clusters as described above to delineate how many clusters were formed by these unique genotypes.
 AMOVA was used to test the significance of clusters resulted by different DAPC analyses using GenAlEx version 6.41 [@peakall2012genalex].
 PhiPT which is an analogue of Wright's FST was used to ascertain the significance of populations.
-An FST value of 0.05 or less is generally considered as reasonably low and may be interpreted to mean that structuring between populations is weak [@jost2008gst].
+An $F_{st}$ value of 0.05 or less is generally considered as reasonably low and may be interpreted to mean that structuring between populations is weak [@jost2008gst].
 <!-- **(Balloux and Ugon-Moulin, 2002; Wright, 1978)**.   -->
 
 
 ## Molecular population statistics and linkage disequilibrium {-}
 
-Genotypic evenness [@grunwald2003analysis], which is a measure of distribution of genotype abundances and unbiased gene diversity (Hexp) [@nei1978estimation] were calculated using poppr package in R.
+Genotypic evenness [@grunwald2003analysis], which is a measure of distribution of genotype abundances and unbiased gene diversity ($H_{exp}$) [@nei1978estimation] were calculated using *poppr* package in R [@kamvar2014poppr].
 Microsatellite data were also tested for evidence of linkage disequilibrium, where significant disequilibrium between pairs of loci in a population is attributed to linkage between loci and may be an indication of clonal reproduction if loci are physically unlinked, whereas linkage equilibrium can be an indication of outcrossing populations.
 The linkage disequilibrium of clone-corrected data was determined by calculating the index of association ($I_{A}$) and its standardized version ($\bar{r}_d$) and a permutation approach with 999 permutations was used to test whether observed values were significantly different from data randomized at each locus [@agapow2001indices; @brown1980multilocus].
-Value of IA tends to increase with the number of loci and therefore we made our inferences based on the , which standardizes the number of loci tested and considered a more robust method [@agapow2001indices].
-Higher observed  or IA values would indicate clonally reproducing populations. 
+Value of $I_A$ tends to increase with the number of loci and therefore we made our inferences based on the , which standardizes the number of loci tested and considered a more robust method [@agapow2001indices].
+Higher observed  or $I_A$ values would indicate clonally reproducing populations. 
 
 
 ## Results {-}
@@ -206,7 +206,7 @@ The highest number of clones was recorded from ND, NE, and MI, which included 20
 
 Community analysis of the MLGs shared between populations revealed 4 communities with a modularity of 0.17 (Fig. \@ref(community-graph)): A coastal community (CA, OR, WA, and NY), a mid-west community (CO, NE, ND, MI), and an international community (MN, France, Australia).
 Analysis with 16 loci resulted in the removal of the NY node because it no longer shared a genotype with OR, but the same overall community structure was present with a modularity of 0.2 (Supplementary Figure S1Z).
-The international community appears to be driven by MLG 4, which is shared between all three populations and has a Psex value of 2.87 x 10-5, in contrast to the abundant MLG 25, which has a Psex value of 0.0168.
+The international community appears to be driven by MLG 4, which is shared between all three populations and has a $P_{sex}$ value of 2.87 x 10^-5^, in contrast to the abundant MLG 25, which has a $P_{sex}$ value of 0.0168.
 
 <!-- community graph figure -->
 
@@ -232,7 +232,7 @@ The number of observed alleles per locus ranged anywhere from 2 to 10 (Table 2).
 All loci were informative at cut off level of 2/N where N was the total number of individuals.
 The genetic diversity indices of *S. sclerotiorum* populations from different states of the USA, France, Mexico and Australia based on SSR analysis are given in Table 5.
 The 165 unique MLGs identified among all 366 isolates are given in Supplementary Table 1.
-Gene diversity (Hexp) of populations from different regions ranged from 0.259 to 0.596 (Table 5).
+Gene diversity ($H_{exp}$) of populations from different regions ranged from 0.259 to 0.596 (Table 5).
 Evenness of genotypes of all regions was high, with the exception of ND, where a single genotype was represented by 20 isolates.
 There was one private allele in the WA population (204 bp allele of 55-4 locus) and two private alleles in the ND population (two 366 bp alleles in 9-2 locus and two 220 bp alleles in 12-2 locus).
 
@@ -278,7 +278,7 @@ None of the above sampling variables (i.e. region, year, host) seemed to influen
 However, assignment of isolates by DAPC analysis of regions did show some promising results for MX and CA isolates (Fig. 8A).
 The original group size of each region and DAPC defined group sizes for different regions are given in Table 6.
 
-Since find.clusters function of Adegenet library did not result in a clear-cut number of clusters for 318 isolates, we arrived at six (6) as the best number of populations (Fig. 9) for our data after examining results of DAPC for different number of clusters.
+Since `find.clusters()` function of *adegenet* did not result in a clear-cut number of clusters for 318 isolates, we arrived at six (6) as the best number of populations (Fig. 9) for our data after examining results of DAPC for different number of clusters.
 Three clusters, namely clusters one, three, and six were formed separately from the rest.
 The cluster 3 of the DAPC plot consisted entirely of MX isolates (N =13/15).
 Rest of the two MX isolates were grouped in cluster 1.
@@ -382,7 +382,7 @@ It seems Mexican pathogen isolates are different from the rest and warrants furt
 Some France genotypes were common in USA isolates but at the same time 43% (6/14) of the France genotypes were unique to that region indicating white mold resistant cultivars produced in the USA might not work in that region.
 Geographic distance between different states of the USA seem not a barrier for gene transfer of *S. sclerotiorum* isolates though unique genotypes did prevail at a low frequency in each state.
 The genetic diversity of regions with >10 isolates had similar values (0.43 - 0.59) except for Mexican isolates.
-Hexp of MX was 0.26 and indicated less exposure of sampling sites to outside inocula.
+$H_{exp}$ of MX was 0.26 and indicated less exposure of sampling sites to outside inocula.
 Test for linkage disequilibrium showed evidence of clonal reproduction for MX isolates (Ia = 2.61, P.Ia = 0.001,  = 0.37, P. = 0.001).
 This may have been another reason for low gene diversity.
 
