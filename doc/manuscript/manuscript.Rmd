@@ -146,12 +146,12 @@ The `varpart()` function of vegan was used to determine variation partitioning o
 ## Shared Multilocus Genotype Community Analysis {-}
 
 To assess the connectivity of shared genotypes across populations, we first tabulated the multilocus genotypes shared between at least two populations (defined as states or countries) with the *poppr* function `mlg.crosspop()` [@kamvar2014poppr].
-From these data, we were able to construct a graph with populations as nodes and shared genotypes as edges (connections) between the nodes using the R packages *igraph* version 1.0.1 **(Csardi and Nepusz 2006)**, *dplyr* version 0.5.0 **(Wickham and Francois 2016)**, and *purrr* version 0.2.2 **(Wickham 2016)**.
+From these data, we were able to construct a graph with populations as nodes and shared genotypes as edges (connections) between the nodes using the R packages *igraph* version 1.0.1 [@csardi2006igraph], *dplyr* version 0.7.1 [@dplyr], and *purrr* version 0.2.2.2 [@purrr].
 Each node was weighted by the fraction of shared MLGs.
 Each edge represents a single MLG, but because a single MLG could cross populations, that MLG may be represented by (n\*(n-1))/2 edges where n represents the number of populations it crosses.
 Edges were weighted by $1-P_{sex}$, where $P_{sex}$ is the probability of encountering the same genotype via two independent meiotic events [@arnaud2007standardizing, @parks1993study].
-We then used the `cluster_optimal()` function from *igraph* to define communities **(Csardi and Nepusz 2006)**.
-The graph was plotted using the R packages *ggplot2* version 2.2.1 **(Wickham 2009)** and *ggraph* version 1.0.0 **(Pedersen 2017)**.
+We then used the `cluster_optimal()` function from *igraph* to define communities [@csardi2006igraph].
+The graph was plotted using the R packages *ggplot2* version 2.2.1 [@ggplot2] and *ggraph* version 1.0.0 [@ggraph].
 To ensure that we were able to capture the same community signal, we additionally ran this analysis including the 5 polymorphic markers described above.
 
 ## Discriminant analysis of principal components {-}
