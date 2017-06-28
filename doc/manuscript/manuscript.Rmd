@@ -167,7 +167,7 @@ Only WA, MI, and NE isolates were qualified since we filtered out the states tha
 Lastly, we pooled all isolates, clone corrected them (N = 165) and performed DAPC using the function find.clusters as described above to delineate how many clusters were formed by these unique genotypes.
 AMOVA was used to test the significance of clusters resulted by different DAPC analyses using GenAlEx version 6.41 (Peakall and Smouse, 2012).
 PhiPT which is an analogue of Wright's FST was used to ascertain the significance of populations.
-An FST value of 0.05 or less is generally considered as reasonably low and may be interpreted to mean that structuring between populations is weak (Balloux and Ugon-Moulin, 2002; Wright, 1978). 
+An FST value of 0.05 or less is generally considered as reasonably low and may be interpreted to mean that structuring between populations is weak (Balloux and Ugon-Moulin, 2002; Wright, 1978).  
 
 
 ## Molecular population statistics and linkage disequilibrium {-}

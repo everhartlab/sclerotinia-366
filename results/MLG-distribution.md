@@ -174,6 +174,7 @@ locus_table(dat)
 ```
 
 ```r
+set.seed(2017-06-28)
 genotype_curve(dat, sample = 1000, quiet = TRUE)
 ```
 
@@ -312,7 +313,8 @@ make_graph_list <- function(dat){ # dat is a genclone/snpclone object
   popgraphs
 }
 
-plot_mlg_graph <- function(g, glayout = NULL, label = TRUE){
+plot_mlg_graph <- function(g, glayout = NULL, label = TRUE, seed = 2017-06-28){
+  set.seed(seed)
   if (is.null(glayout)){
     glayout <- layout_nicely(g)
   } else {

@@ -34,6 +34,7 @@ might not want to trust them.
 
 ```{r genotype_curves, fig.width = 5, fig.height = 5}
 locus_table(dat)
+set.seed(2017-06-28)
 genotype_curve(dat, sample = 1000, quiet = TRUE)
 genotype_curve(dat11, quiet = TRUE)
 ```
@@ -123,7 +124,8 @@ make_graph_list <- function(dat){ # dat is a genclone/snpclone object
   popgraphs
 }
 
-plot_mlg_graph <- function(g, glayout = NULL, label = TRUE){
+plot_mlg_graph <- function(g, glayout = NULL, label = TRUE, seed = 2017-06-28){
+  set.seed(seed)
   if (is.null(glayout)){
     glayout <- layout_nicely(g)
   } else {
