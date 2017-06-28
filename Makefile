@@ -1,13 +1,18 @@
 PARSE_DATA := results/data-comparison.md
 ANALYSES   := results/MLG-distribution.md \
-	results/mlg-mcg.md \
-	results/RDA-analysis.md \
-	results/pop-diff.md
+              results/mlg-mcg.md \
+              results/RDA-analysis.md \
+              results/pop-diff.md
+MANUSCRIPT := doc/manuscript/manuscript.pdf
+COMPONENTS := doc/manuscript/abstract.md \
+              doc/manuscript/ssc_bibliography.bib \
+              doc/manuscript/wlpeerj.cls
+
 
 # TARGETS
 # ---------------------------------------------------------
 .PHONY: all
-all: $(ANALYSES)
+all: $(ANALYSES) $(MANUSCRIPT)
 # In reality $(ANALYSES) -> shared_data -> $(PARSE_DATA) -> bootstrap
 
 # Bootstrap the  data by installing the dependencies
@@ -34,3 +39,5 @@ results/%.md : doc/RMD/%.Rmd
 	              keep_html = FALSE \
 	              )"
 
+doc/manuscript/%.pdf : doc/manuscript/%.Rmd $(COMPONENTS)
+	R --slave -e "rmarkdown::render('$<')"
