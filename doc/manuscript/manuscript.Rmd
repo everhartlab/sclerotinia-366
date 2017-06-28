@@ -27,7 +27,7 @@ abstract: >
 #   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 header-includes: >
   \usepackage{indentfirst}
-bibliography: mybibfile.bib
+bibliography: ssc_bibliography.bib
 output: 
   rticles::peerj_article:
     citation_package: natbib
@@ -207,11 +207,16 @@ Community analysis of the MLGs shared between populations revealed 4 communities
 Analysis with 16 loci resulted in the removal of the NY node because it no longer shared a genotype with OR, but the same overall community structure was present with a modularity of 0.2 (Supplementary Figure S1Z).
 The international community appears to be driven by MLG 4, which is shared between all three populations and has a Psex value of 2.87 x 10-5, in contrast to the abundant MLG 25, which has a Psex value of 0.0168.
 
-![Network of populations (nodes/circles) and their shared multilocus haplotypes (MLG) (edges/lines) genotyped over 11 loci. 
+<!-- community graph figure -->
+
+![
+Network of populations (nodes/circles) and their shared multilocus haplotypes (MLG) (edges/lines) genotyped over 11 loci. 
 Each node is labeled with **name (number of MLGs shared/number of MLGs total).** 
 The shade and area of the nodes are proportional to the number of unique MLGs within the node and the inner nodes are proportional to the number of private MLGs to the region. 
 Each edge represents a single MLG where its thickness represents the number of populations that share the MLG and the shade represents the value of $P_{sex}$, or the probability of encountering that MLG from two independent meiotic events.
 ](../../results/figures/publication/Figure3Z.pdf){#community-graph width=50%} 
+
+<!-- end fig -->
 
 The MCGs with the highest frequency were MCG 5 and MCG 44 representing 73 and 44 isolates, respectively (Fig. 4).
 MCGs that were unique to a region are shown in Fig. 5 while MCGs that represented at least 2 or more regions are in Fig 6. 20 MCGs were common in two or more regions and the rest were distributed uniquely in different regions.
