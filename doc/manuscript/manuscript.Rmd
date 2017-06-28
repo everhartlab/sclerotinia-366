@@ -28,12 +28,17 @@ abstract: >
 header-includes: >
   \usepackage{indentfirst}
 bibliography: mybibfile.bib
-biblio-style: apalike
 output: 
   rticles::peerj_article:
     citation_package: natbib
     base_format: bookdown::pdf_document2 # for using \@ref()
 ---
+
+```{r setup, include = FALSE, echo = FALSE}
+knitr::opts_knit$set(eval.after = c('fig.cap', 'fig.scap'))
+knitr::opts_chunk$set(message = FALSE, warning = FALSE)
+```
+
 
 # Introduction {-}
 
@@ -44,10 +49,10 @@ It has a host range of more than 400 species of plants belonging to 75 families 
 Economically important crops affected by this pathogen include sunflower, soybean, oilseed rape, dry bean, chickpea, peanut, dry pea, lentils and vegetables (Bolton et al., 2006). *Sclerotinia sclerotiorum* causes white mold disease on dry bean (*Phaseolus vulgaris* L.), which can be a yield-limiting in temperate climates (Steadman, 1983).  
 
 Sclerotia are capable of surviving more than five years in soil (Steadman, 1983) and germinate carpogenically or myceliogenically to infect the plant when environmental conditions are favorable.
-A carpogenically geminated sclerotia gives rise to apothecia in which ascospores are formed.
-Ascospores infect senescent plant tissues that, when supplemented with cool and humid microclimate within the plant canopy, leads to mycelial infection of the host plant.
+A carpogenically germinated sclerotia gives rise to apothecia in which ascospores are formed.
+Ascospores infect senescent plant tissues that, when supplemented with cool and humid micro-climate within the plant canopy, leads to mycelial infection of the host plant.
 Consequently, flowering, which coincide with canopy closure is a critical factor of disease initiation since sensing flower parts fallen on to leaves, petioles or stems provide the required energy source for plant infection.
-Myceliogenically geminated sclerotia result in formation of hyphae, which also have potential for directly plant infection, though this is considered rare and less important within the disease cycle of the pathogen (Abawi and Grogan, 1975).
+Myceliogenically germinated sclerotia result in formation of hyphae, which also have potential for directly plant infection, though this is considered rare and less important within the disease cycle of the pathogen (Abawi and Grogan, 1975).
 Diseased bean fields initially show scattered wilted leaves.
 Symptoms on individual plants are water-soaked lesions on leaves, pods and stems, which expand over time and show signs of white fungal mycelia.
 Lesions on stems and branches become necrotic as they age and dead tissues appear bleached.
@@ -58,8 +63,6 @@ One such study examined *S. sclerotiorum* population structure using microsatell
 Due to high crop diversity and high presence of the pathogen, it was important to understand the potential for outcrossing in order to develop disease management strategies.
 Molecular analysis revealed 92% of the isolate variability was found within subpopulations (Atallah et al., 2004).
 However, there was evidence of linkage equilibrium of microsatellite loci in 2 locations and illustrated the possibility of outcrossing in this region.  
-
-deleteme: @Dirac1953888
 
 A population study from Australian canola fields showed evidence of sexual outcrossing of *S. sclerotiorum* isolates (Sexton and Howlett, 2004).
 Another study characterized three populations of *S. sclerotiorum* from lettuce in California (CA) and Ontario (ON), and pea/lentil in Washington (WA) (Malvarez et al., 2007).
@@ -78,8 +81,7 @@ Most of the previous studies on *S. sclerotiorum* had been conducted in the USA,
 In those studies, different dry bean cultivars had been rarely used as  hosts to investigate any host-pathogen relationships or specificity.
 No white mold resistant dry bean cultivars exist.
 Canopy architecture and growth pattern of some cultivars enable improved disease avoidance (Kolkman and Kelly, 2002).
-Field trials in some regions of the US have shown G122 is white mold resistant and Beryl is susceptible (pers. comm. with J.
-Steadman).
+Field trials in some regions of the US have shown G122 is white mold resistant and Beryl is susceptible (pers. comm. with J. Steadman).
 Understanding genetic relationships and reproduction behavior of *S. sclerotiorum* populations from locations worldwide is beneficial for plant breeders seeking to develop white mold resistance cultivars for deployment worldwide.
 This information is also helpful in making disease management decisions and developing disease resistance screening methods.
 
@@ -201,9 +203,15 @@ Isolates with MLG 15 were identified from populations in MI, WA, CO, and ND.
 The MLGs 163, 165 and 15 had 15, 7, and 4 individuals across these populations, respectively.
 The highest number of clones was recorded from ND, NE, and MI, which included 20, 10 and 7 isolates, respectively (Table 4).
 
-Community analysis of the MLGs shared between populations revealed 4 communities with a modularity of 0.17 (Fig. 3Z): A coastal community (CA, OR, WA, and NY), a mid-west community (CO, NE, ND, MI), and an international community (MN, France, Australia).
+Community analysis of the MLGs shared between populations revealed 4 communities with a modularity of 0.17 (Fig. \@ref(community-graph)): A coastal community (CA, OR, WA, and NY), a mid-west community (CO, NE, ND, MI), and an international community (MN, France, Australia).
 Analysis with 16 loci resulted in the removal of the NY node because it no longer shared a genotype with OR, but the same overall community structure was present with a modularity of 0.2 (Supplementary Figure S1Z).
 The international community appears to be driven by MLG 4, which is shared between all three populations and has a Psex value of 2.87 x 10-5, in contrast to the abundant MLG 25, which has a Psex value of 0.0168.
+
+![Network of populations (nodes/circles) and their shared multilocus haplotypes (MLG) (edges/lines) genotyped over 11 loci. 
+Each node is labeled with **name (number of MLGs shared/number of MLGs total).** 
+The shade and area of the nodes are proportional to the number of unique MLGs within the node and the inner nodes are proportional to the number of private MLGs to the region. 
+Each edge represents a single MLG where its thickness represents the number of populations that share the MLG and the shade represents the value of $P_{sex}$, or the probability of encountering that MLG from two independent meiotic events.
+](../../results/figures/publication/Figure3Z.pdf){#community-graph width=50%} 
 
 The MCGs with the highest frequency were MCG 5 and MCG 44 representing 73 and 44 isolates, respectively (Fig. 4).
 MCGs that were unique to a region are shown in Fig. 5 while MCGs that represented at least 2 or more regions are in Fig 6. 20 MCGs were common in two or more regions and the rest were distributed uniquely in different regions.
