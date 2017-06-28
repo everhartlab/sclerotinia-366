@@ -3,6 +3,8 @@ title: "Multilocus Genotype And Mycelial Compatability Group Assessment"
 output: 
   html_notebook:
     toc: true
+editor_options: 
+  chunk_output_type: inline
 ---
 
 
@@ -637,7 +639,7 @@ mcg_mlg_graph
 ![plot of chunk unnamed-chunk-3](./figures/mlg-mcg///unnamed-chunk-3-1.png)
 
 ```r
-ggsave(file.path(PROJHOME, "results/figures/publication/FigureS2.svg"), 
+ggsave(file.path(PROJHOME, "results/figures/publication/FigureS2.pdf"), 
        width = 88*3, height = 88*3, units = "mm")
 ```
 
@@ -721,7 +723,7 @@ t5g
 ![plot of chunk top5graph](./figures/mlg-mcg///top5graph-1.png)
 
 ```r
-ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.svg"), width = 88, height = 88, scale = 3, units = "mm")
+ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.pdf"), width = 88, height = 88, scale = 3, units = "mm")
 ```
 
 Vey nice!
@@ -764,7 +766,7 @@ severity_plot
 ![plot of chunk severity](./figures/mlg-mcg///severity-1.png)
 
 ```r
-ggsave(severity_plot, filename = "results/figures/publication/FigureS3.svg", width = 183, unit = "mm")
+ggsave(severity_plot, filename = "results/figures/publication/FigureS3.pdf", width = 183, unit = "mm")
 ```
 
 ```
@@ -891,7 +893,7 @@ on average 7 steps.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-23
+##  date     2017-06-28
 ```
 
 ```
@@ -928,7 +930,6 @@ on average 7 steps.
 ##  forcats       0.2.0   2017-01-23 CRAN (R 3.4.0)                          
 ##  foreign       0.8-69  2017-06-21 CRAN (R 3.4.0)                          
 ##  gdata         2.18.0  2017-06-06 CRAN (R 3.4.0)                          
-##  gdtools     * 0.1.4   2017-03-17 CRAN (R 3.4.0)                          
 ##  ggforce       0.1.1   2016-11-28 CRAN (R 3.4.0)                          
 ##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.0)                          
 ##  ggraph      * 1.0.0   2017-02-24 CRAN (R 3.4.0)                          
@@ -996,7 +997,6 @@ on average 7 steps.
 ##  stats       * 3.4.0   2017-04-21 local                                   
 ##  stringi       1.1.5   2017-04-07 CRAN (R 3.4.0)                          
 ##  stringr       1.2.0   2017-02-18 CRAN (R 3.4.0)                          
-##  svglite       1.2.0   2016-11-04 CRAN (R 3.4.0)                          
 ##  tibble      * 1.3.3   2017-05-28 CRAN (R 3.4.0)                          
 ##  tidyr       * 0.6.3   2017-05-15 CRAN (R 3.4.0)                          
 ##  tidyverse   * 1.1.1   2017-01-27 CRAN (R 3.4.0)                          

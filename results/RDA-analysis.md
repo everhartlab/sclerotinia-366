@@ -3,6 +3,8 @@ title: "dbRDA analysis"
 output: 
   html_notebook:
     toc: true
+editor_options: 
+  chunk_output_type: inline
 ---
 
 
@@ -320,7 +322,8 @@ arrowMul <- function(arrows, data, at = c(0, 0), fill = 0.75) {
 # 
 # @param db a capscale object
 # @return a ggplot2 object from the scores 
-plot_dbrda <- function(db, arrows = 10){
+plot_dbrda <- function(db, arrows = 10, seed = 2017-06-28){
+  set.seed(seed)
   dbsum     <- scores(db, display = c("cn", "bp", "sites"), scaling = "sites")
   Centroids <- as.data.frame(dbsum$centroids)
   Centroids <- rownames_to_column(Centroids, var = "cent_type")
@@ -744,7 +747,7 @@ plot_dbrda(cap11cc) +
 ![plot of chunk resultplot](./figures/RDA-analysis///resultplot-1.png)
 
 ```r
-FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.svg")
+FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.pdf")
 ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
 plot_dbrda(cap16cc) +
   theme_classic(base_size = 16, base_family = "Helvetica") + 
@@ -865,7 +868,7 @@ plot_poppr_msn(wmn11,
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-23
+##  date     2017-06-28
 ```
 
 ```
@@ -902,7 +905,6 @@ plot_poppr_msn(wmn11,
 ##  forcats       0.2.0   2017-01-23 CRAN (R 3.4.0)                          
 ##  foreign       0.8-69  2017-06-21 CRAN (R 3.4.0)                          
 ##  gdata         2.18.0  2017-06-06 CRAN (R 3.4.0)                          
-##  gdtools     * 0.1.4   2017-03-17 CRAN (R 3.4.0)                          
 ##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.0)                          
 ##  ggrepel     * 0.6.10  2017-06-23 Github (slowkow/ggrepel@102ca39)        
 ##  glue          1.1.1   2017-06-21 CRAN (R 3.4.0)                          
@@ -966,7 +968,6 @@ plot_poppr_msn(wmn11,
 ##  stats       * 3.4.0   2017-04-21 local                                   
 ##  stringi       1.1.5   2017-04-07 CRAN (R 3.4.0)                          
 ##  stringr       1.2.0   2017-02-18 CRAN (R 3.4.0)                          
-##  svglite       1.2.0   2016-11-04 CRAN (R 3.4.0)                          
 ##  tibble      * 1.3.3   2017-05-28 CRAN (R 3.4.0)                          
 ##  tidyr       * 0.6.3   2017-05-15 CRAN (R 3.4.0)                          
 ##  tidyverse   * 1.1.1   2017-01-27 CRAN (R 3.4.0)                          

@@ -3,6 +3,8 @@ title: "Multilocus Genotype And Mycelial Compatability Group Assessment"
 output: 
   html_notebook:
     toc: true
+editor_options: 
+  chunk_output_type: inline
 ---
 
 
@@ -297,7 +299,7 @@ mcg_mlg_graph <- ggraph(lay2) +
   ggtitle("Relation of Multilocus Genotypes and MCGs") 
   
 mcg_mlg_graph
-ggsave(file.path(PROJHOME, "results/figures/publication/FigureS2.svg"), 
+ggsave(file.path(PROJHOME, "results/figures/publication/FigureS2.pdf"), 
        width = 88*3, height = 88*3, units = "mm")
 ```
 
@@ -356,7 +358,7 @@ top5lay <- create_layout(top5g, layout = "igraph", algorithm = "nicely")
 top5lay$community <- inner_join(data_frame(vertex = top5lay$name), the_communities)$comm
 t5g <- mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and associated MLGs")
 t5g
-ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.svg"), width = 88, height = 88, scale = 3, units = "mm")
+ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.pdf"), width = 88, height = 88, scale = 3, units = "mm")
 ```
 
 Vey nice!
@@ -393,7 +395,7 @@ severity_plot <- ggplot(Severity, aes(x = MCG, y = Severity)) +
     subtitle = "Five most abundant multilocus genotypes shown"
   ))
 severity_plot
-ggsave(severity_plot, filename = "results/figures/publication/FigureS3.svg", width = 183, unit = "mm")
+ggsave(severity_plot, filename = "results/figures/publication/FigureS3.pdf", width = 183, unit = "mm")
 ```
 
 
