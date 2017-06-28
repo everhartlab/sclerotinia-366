@@ -470,7 +470,7 @@ plot_mlg_graph(graph16loc$total, alt_layout) + labs(list(subtitle = "(16 loci)")
 ![plot of chunk graph-16-loci](./figures/MLG-distribution///graph-16-loci-1.png)
 
 ```r
-ggsave(filename = "results/figures/publication/FigureS1Z.svg", width = 88, height = 88, units = "mm", scale = 2)
+ggsave(filename = "results/figures/publication/FigureS1Z.pdf", width = 88, height = 88, units = "mm", scale = 2)
 ```
 
 ```
@@ -516,7 +516,7 @@ plot_mlg_graph(graph11loc$total, alt_layout) + labs(list(subtitle = "(11 loci)")
 ![plot of chunk graph-11-loci](./figures/MLG-distribution///graph-11-loci-1.png)
 
 ```r
-ggsave(filename = "results/figures/publication/Figure3Z.svg", width = 88, height = 88, units = "mm", scale = 2)
+ggsave(filename = "results/figures/publication/Figure3Z.pdf", width = 88, height = 88, units = "mm", scale = 2)
 ```
 
 ```
@@ -550,7 +550,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-23
+##  date     2017-06-28
 ```
 
 ```
@@ -587,7 +587,6 @@ devtools::session_info()
 ##  forcats       0.2.0   2017-01-23 CRAN (R 3.4.0)                          
 ##  foreign       0.8-69  2017-06-21 CRAN (R 3.4.0)                          
 ##  gdata         2.18.0  2017-06-06 CRAN (R 3.4.0)                          
-##  gdtools     * 0.1.4   2017-03-17 CRAN (R 3.4.0)                          
 ##  ggforce       0.1.1   2016-11-28 CRAN (R 3.4.0)                          
 ##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.0)                          
 ##  ggraph      * 1.0.0   2017-02-24 CRAN (R 3.4.0)                          
@@ -654,7 +653,6 @@ devtools::session_info()
 ##  stats       * 3.4.0   2017-04-21 local                                   
 ##  stringi       1.1.5   2017-04-07 CRAN (R 3.4.0)                          
 ##  stringr       1.2.0   2017-02-18 CRAN (R 3.4.0)                          
-##  svglite       1.2.0   2016-11-04 CRAN (R 3.4.0)                          
 ##  tibble      * 1.3.3   2017-05-28 CRAN (R 3.4.0)                          
 ##  tidyr       * 0.6.3   2017-05-15 CRAN (R 3.4.0)                          
 ##  tidyverse   * 1.1.1   2017-01-27 CRAN (R 3.4.0)                          
