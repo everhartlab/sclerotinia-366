@@ -101,13 +101,109 @@ The overall goal of this work was to identify representative isolates for use in
 
 ## Isolate collection and DNA extraction {-}
 
-Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or dry bean nurseries in Mexico, France, Australia, and 11 states of the United States of America (Table 1).
-The dry bean nurseries in different regions are indicated by wmn (white mold nursery) or mtc (Mitchell) and all other isolates came from commercial fields (Table 1).
+Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or dry bean nurseries in Mexico, France, Australia, and 11 states of the United States of America (Table \@ref(tab:isolate-table)).
+The dry bean nurseries in different regions are indicated by wmn (white mold nursery) or mtc (Mitchell) and all other isolates came from commercial fields (Table \@ref(tab:isolate-table)).
 The bean nurseries were 5m x 10 m in size and maintained without applying fungicides to observe natural incidence of white mold disease.
 The nursery plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of 0:3:2 during the season.
 Although the nursery locations were the same over sampling years, sampling fields within a location varied for sampling years.
 Sampling was carried out on a 'W' or 'V' shape transect, or randomly.
 Sampling year and number of isolates collected were necessarily influenced by incidence and severity of white mold disease. 
+
+-----------------------------------------------------------------------------
+Country   State  Field Code              Year Host                          N 
+--------- ------ ---------- ----------------- -------------------------- ----
+USA       CA     wmn               2004, 2005 Beryl, Bunsi, G122           18 
+
+USA       CO     eat               2007, 2010 Yellow                       13 
+
+                 gree              2007, 2010 Pinto, Yellow                14 
+
+                 luc               2007, 2010 Yellow                       14 
+
+                 wmn                     2003 GH                            1 
+
+USA       ID     unk                     2003 GH                            1 
+
+USA       MI     eln                     2009 unk                           1 
+
+                 hur               2008, 2009 BL, Black, SR06233, Vista     5 
+
+                 mung                    2009 Zorro                         1 
+
+                 sanc                    2008 Merlot                        3 
+
+                 Sebewaing               2009 Black                         1 
+
+                 tuc               2008, 2009 Black, Fuji, Vista            6 
+
+                 unk               2003, 2009 GH, unk                       2 
+
+                 wmn        2003, 2004, 2005, 11A, 37, 38, B07104,         43 
+                                   2008, 2009 Beryl, Bunsi, cornell,          
+                                              G122, Orion, PO7863, WM31       
+
+USA       MN     wmn               2003, 2004 Beryl, Bunsi, G122           11 
+
+USA       ND     gfc               2007, 2010 unk                           9 
+
+                 nec                     2010 unk                           1 
+
+                 pmc                     2010 unk                           7 
+
+                 rrv                     2007 unk                          21 
+
+                 stc                     2010 unk                           2 
+
+                 tlc                     2010 unk                           9 
+
+                 wlc                     2010 unk                           4 
+
+                 wmn                     2005 Beryl, Bunsi, G122            7 
+
+USA       NE     mtc               2007, 2010 Beryl, Emerson, Orion        12 
+
+                 sbf               2007, 2009 Beryl, Pinto, Weihing         6 
+
+                 unk                     2003 GH                            2 
+
+                 wmn        2004, 2005, 2008, Beryl, Bunsi, G122,          27 
+                                         2010 PO7683, unk                     
+
+USA       NY     unk                     2003 GH                            1 
+
+USA       OR     corv                    2003 G122                          1 
+
+                 unk                     2003 GH                            1 
+
+                 wmn               2003, 2004 Beryl, Bunsi, G122           15 
+
+USA       WA     prsr                    2007 Merlot, Pinto, redkid        22 
+
+                 unk                     2003 GH                            1 
+
+                 wmn        2003, 2004, 2005, 11A, 37, 38, Beryl, Bunsi,   36 
+                                         2008 cornell, G122, Orion,           
+                                              PO7104, PO7863, WM31               
+
+USA       WI     dfor                    2003 GH                            1 
+
+                 unk                     2003 GH                            1 
+
+Mexico           wmn                     2005 Beryl, Bunsi, G122           18 
+
+France           flds                    2012 unk                           4 
+
+                 wmn               2004, 2005 Beryl, Bunsi, G122           18 
+
+Australia        vic                     2004 Beryl                         2 
+
+                 wmn                     2004 Beryl, Bunsi, G122            4 
+
+-----------------------------------------------------------------------------
+
+Table: (\#tab:isolate-table) Description of *S. sclerotiorum* isolates used in this study. 
+N = Number of Isolates. 
+Key abbreviations: wmn = white mold nursery, unk = unknown.
 
 Mycelial growth of each isolate was generated by activating sclerotia according to the method described previously [@matheron1989in-vitro].
 These isolates (N = 366) were phenotypically characterized by determining mycelial compatibility group MCG and virulence.
