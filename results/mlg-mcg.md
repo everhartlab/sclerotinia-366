@@ -232,7 +232,7 @@ mcgmlg <- as.data.frame(table(mll(dat11, "original"), mll(dat11, "custom"))) %>%
   setNames(c("MLG", "MCG", "Freq")) %>%
   mutate(MLG = as.character(MLG)) %>%
   mutate(MCG = as.character(MCG)) %>%
-  as_data_frame() %>%
+  as_tibble() %>%
   filter(Freq > 0)
 mcgs <- mcgmlg %>%
   arrange(MCG) %>%
@@ -509,32 +509,87 @@ type (MCG/Count) to color and the opacity (alpha) to Evenness.
 
 
 ```r
-mcgs %>% 
+mcg_graph <- mcgs %>% 
   gather(type, count, MLGs, Samples, -Evenness) %>%
-  arrange(desc(type), desc(count)) %>%
+  arrange(desc(type), count) %>%
+  rename(Type = type) %>%
   mutate(MCG = forcats::fct_inorder(MCG, ordered = TRUE)) %>%
-  ggplot(aes(x = MCG, y = count, group = type, fill = type, alpha = Evenness)) +
-  geom_col(aes(width = ifelse(type == "MLGs", 0.5, 0.85)), color = "black", position = "identity") +
-  annotate(geom = "text", x = 13, y = 51, label = sprintf("Mean Evenness: %.3f", mean(mcgs$Evenness, na.rm = TRUE))) +
-  # scale_fill_viridis(end = 0.75, discrete = TRUE, direction = -1) +
+  ggplot(aes(x = MCG, y = count, group = Type, fill = Type, alpha = Evenness)) +
+  geom_col(aes(width = ifelse(Type == "MLGs", 0.5, 0.85)), color = "black", position = "identity") +
+  # annotate(geom = "text", x = 18, y =35, 
+  #          label = sprintf("Mean Evenness: %.3f", mean(mcgs$Evenness, na.rm = TRUE))) +
   scale_fill_manual(values = c("black", "white")) +
   scale_y_continuous(expand = c(0, 2)) +
-  theme_minimal() +
-  theme(panel.grid.major.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  ggtitle("How Evenly are Multilocus Genotypes (MLGs) spread across MCGs?")
+  theme_minimal(base_size = 16, base_family = "Helvetica") +
+  coord_flip() +
+  theme(panel.grid.major.y = element_blank()) +
+  theme(legend.position = c(.745, .85)) +
+  # theme(legend.box = "horizontal") +
+  theme(aspect.ratio = 3) +
+  labs(list(
+    alpha = "MLG Evenness"
+  ))
 ```
 
 ```
 ## Warning: Ignoring unknown aesthetics: width
 ```
 
+```r
+uneven <- mcgs %>% 
+  filter(MCG == 5) %>% 
+  unnest() %>% 
+  ggplot(aes(x = forcats::fct_inorder(MLG), y = Freq)) + 
+  geom_col(color = "grey62", fill = "grey72", width = 0.5) + 
+  theme_void() +
+  ggtitle("Evenness = 0.48") +
+  theme(aspect.ratio = 1) +
+  theme(title = element_text(hjust = 0.5, 
+                             size = rel(1.25),
+                             family = "Helvetica",
+                             color = "grey30"))
+
+even <- mcgs %>% 
+  filter(MCG == 53) %>% 
+  unnest() %>% 
+  ggplot(aes(x = forcats::fct_inorder(MLG), y = Freq)) + 
+  geom_col(color = "grey20", fill = "grey20", width = 0.75) + 
+  theme_void() +
+  ggtitle("Evenness = 1") +
+  theme(aspect.ratio = 1) +
+  theme(title = element_text(hjust = 0.5, 
+                             size = rel(1.25),
+                             family = "Helvetica",
+                             color = "grey30"))
+
+vp1 <- grid::viewport(width = 0.2, height = 0.2, x = 0.78, y = 0.67, just = "right")
+vp2 <- grid::viewport(width = 0.2, height = 0.2, x = 0.78, y = 0.555, just = "right")
+
+pdf(file.path(PROJHOME, "results/figures/publication/Figure1Z.pdf"), width = 5, height = 12)
+print(mcg_graph)
+print(uneven, vp = vp1)
+print(even, vp = vp2)
+dev.off()
+```
+
+```
+## quartz_off_screen 
+##                 2
+```
+
+```r
+print(mcg_graph)
+print(uneven, vp = vp1)
+print(even, vp = vp2)
+```
+
 ![plot of chunk barplots](./figures/mlg-mcg///barplots-1.png)
+
 
 ```r
 mlgs %>% 
   gather(type, count, MCGs, Samples, -Evenness) %>%
-  arrange(desc(type), desc(count)) %>%
+  arrange(desc(type), count) %>%
   mutate(MLG = forcats::fct_inorder(MLG, ordered = TRUE)) %>%
   ggplot(aes(x = MLG, y = count, group = type, fill = type)) +
   geom_col(aes(width = ifelse(type == "MCGs", 0.5, 0.85), alpha = Evenness), color = "black", position = "identity") +
@@ -544,15 +599,31 @@ mlgs %>%
   scale_y_continuous(expand = c(0, 2)) +
   theme_minimal() +
   theme(panel.grid.major.x = element_blank()) +
-  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-  ggtitle("How Evenly are MCGs spread across Multilocus Genotypes (MLGs)?")
+  coord_flip()
 ```
 
 ```
 ## Warning: Ignoring unknown aesthetics: width
 ```
 
-![plot of chunk barplots](./figures/mlg-mcg///barplots-2.png)
+![plot of chunk mlg_barplots](./figures/mlg-mcg///mlg_barplots-1.png)
+
+```r
+  # theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  ggtitle("How Evenly are MCGs spread across Multilocus Genotypes (MLGs)?")
+```
+
+```
+## $title
+## [1] "How Evenly are MCGs spread across Multilocus Genotypes (MLGs)?"
+## 
+## $subtitle
+## NULL
+## 
+## attr(,"class")
+## [1] "labels"
+```
+
 
 
 ## making a graph
@@ -675,13 +746,6 @@ vgn <- visNetwork(nodes = vg$nodes, edges = vg$edges,# height = "500px",
                   main = "Relation of Multilocus Genotypes and MCGs")
 set.seed(2017-05-03)
 vgn
-```
-
-```
-## Error in loadNamespace(name): there is no package called 'webshot'
-```
-
-```r
 # vgn %>%
 #   visIgraphLayout("layout_nicely") %>%
 #   visOptions(highlightNearest = list(enabled = TRUE, hover = TRUE), 
@@ -1011,8 +1075,7 @@ on average 7 steps.
 ##  visNetwork  * 1.0.3   2016-12-22 CRAN (R 3.4.0)                          
 ##  withr         1.0.2   2016-06-20 CRAN (R 3.4.0)                          
 ##  xml2          1.1.1   2017-01-24 CRAN (R 3.4.0)                          
-##  xtable        1.8-2   2016-02-05 CRAN (R 3.4.0)                          
-##  yaml          2.1.14  2016-11-12 CRAN (R 3.4.0)
+##  xtable        1.8-2   2016-02-05 CRAN (R 3.4.0)
 ```
 
 </details>

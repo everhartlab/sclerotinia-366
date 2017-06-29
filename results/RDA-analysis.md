@@ -733,8 +733,8 @@ anova(cap16cc, by = "margin")
 
 
 ```r
-set.seed(99)
-plot_dbrda(cap11cc) + 
+set.seed(999)
+plot_dbrda(cap11cc, arrows = 5) + 
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +
   theme(aspect.ratio = 1)
@@ -749,7 +749,7 @@ plot_dbrda(cap11cc) +
 ```r
 FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.pdf")
 ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
-plot_dbrda(cap16cc) +
+plot_dbrda(cap16cc, arrows = 10) +
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +
   theme(aspect.ratio = 1)
