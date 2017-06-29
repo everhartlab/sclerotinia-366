@@ -1,0 +1,84 @@
+---
+title: "Assessing Virulence by MCG"
+output: 
+  html_notebook:
+    toc: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = PROJHOME)
+```
+
+```{r}
+library("tidyverse")
+```
+
+# Purpose
+
+This document is to assess virulence associated with the 10 most common MCGs. We
+can get this from the cleaned data set that we saved in the
+`data-comparison.Rmd` file.
+
+```{r load_data}
+cols(
+  .default = col_integer(),
+  Severity = col_double(),
+  Region = col_character(),
+  Source = col_character(),
+  Host = col_character()
+)
+dat <- read_csv(file.path(PROJHOME, "data", "clean_data.csv")) %>%
+  select(MCG, Severity)
+dat
+```
+
+Now, I can filter out the top 10 MCGs:
+
+```{r filtering}
+top_mcg <- dat %>% 
+  group_by(MCG) %>%
+  summarize(N = n()) %>%
+  arrange(desc(N)) %>%
+  slice(1:10) %>% 
+  inner_join(dat, by = "MCG") %>%
+  select(-N) %>%
+  mutate(MCG = forcats::fct_inorder(as.character(MCG)))
+top_mcg
+```
+
+## Visualizing distributions
+
+```{r vis, fig.width = 5, fig.height = 4}
+ggplot(top_mcg, aes(x = MCG, y = Severity)) +
+  geom_boxplot() +
+  geom_point(position = position_jitter(width = 0.25), alpha = 0.5) +
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  theme(aspect.ratio = 1/2) +
+  labs(list(
+    title = "Severity for the top 10 MCGs",
+    caption = "MCG = Mycelial Compatibility Group"
+    ))
+```
+
+## AMOVA
+
+The default AMOVA in R sets contrasts as `contrast.treatment`, which compares
+everything to the first factor, considered the treatment. Since we are
+interested in whether or not there IS a difference between samples, this will
+be sufficient.
+
+```{r amova}
+AMOVA <- aov(Severity ~ MCG, data = top_mcg)
+AMOVA
+summary(AMOVA)
+```
+
+There appears to be a significant effect at p = `r formatC(broom::tidy(AMOVA)$p.value[1])`.
+
+
+## Session Information
+
+```{r session_info}
+options(width = 100)
+devtools::session_info()
+```
