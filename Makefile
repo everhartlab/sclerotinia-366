@@ -1,11 +1,14 @@
 PARSE_DATA := results/data-comparison.md
-ANALYSES   := results/MLG-distribution.md \
+THE_DATA   := data/clean_data.csv \
+              data/raw_data.csv \
+              data/sclerotinia_16_loci.rda
+ANALYSES   := results/table-1.md \
+              results/MLG-distribution.md \
               results/mlg-mcg.md \
               results/RDA-analysis.md \
               results/pop-diff.md
 MANUSCRIPT := doc/manuscript/manuscript.pdf
-COMPONENTS := results/table-1.md \
-              doc/manuscript/abstract.md \
+COMPONENTS := doc/manuscript/abstract.md \
               doc/manuscript/ssc_bibliography.bib \
               doc/manuscript/wlpeerj.cls
 
@@ -22,10 +25,10 @@ all: $(ANALYSES) $(MANUSCRIPT)
 bootstrap: results/bootstrap.txt
 
 # Create the shared data set
-data/sclerotinia_16_loci.rda : bootstrap $(PARSE_DATA)
+$(THE_DATA) : bootstrap $(PARSE_DATA)
 
 # All the analyses (defined above) depend on the shared data set
-$(ANALYSES): data/sclerotinia_16_loci.rda
+$(ANALYSES): $(THE_DATA)
 
 # RECIPES
 # ---------------------------------------------------------
