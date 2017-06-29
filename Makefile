@@ -4,7 +4,8 @@ ANALYSES   := results/MLG-distribution.md \
               results/RDA-analysis.md \
               results/pop-diff.md
 MANUSCRIPT := doc/manuscript/manuscript.pdf
-COMPONENTS := doc/manuscript/abstract.md \
+COMPONENTS := results/table-1.md \
+              doc/manuscript/abstract.md \
               doc/manuscript/ssc_bibliography.bib \
               doc/manuscript/wlpeerj.cls
 
