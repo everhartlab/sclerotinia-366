@@ -23,8 +23,6 @@ affiliation:
     address: Department of Plant Pathology, University of Nebraska-Lincoln, Lincoln 68583
 abstract: >
   `r paste(readLines("abstract.md"), collapse = "\n  ")`
-# author_summary: |
-#   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
 header-includes: >
   \usepackage{indentfirst}
 bibliography: ssc_bibliography.bib
@@ -211,27 +209,30 @@ MCG was determined through co-culturing isolates in pairs on PDA plates, where i
 Virulence of each isolate was assessed using a straw test [@petzoldt1996straw; @teran2006modified] that rates necrotic lesion on a scale of 1-9, with ascending numbers assigned for increasing aggressiveness.
 DNA was purified from mycelium of each isolate using a Qiagen DNeasy Plant Mini Kit (Qiagen Inc., Valencia, CA) according to the manufacturer's instructions.
 
-
-
-## Microsatellite genotyping Analysis {-}
+## Microsatellite genotyping {-}
 
 We characterized *S. sclerotiorum* isolates for microsatellite polymorphism using 16 primer pairs developed by @sirjusingh2001characterisation.
 Polymerase chain reaction (PCR) was carried out as described using primers labeled with FAM fluorophore, and resulting PCR products were first resolved in a 1.5% agarose gel stained with ethidium bromide to ensure product was within the expected size range.
 Capillary electrophoresis (fragment analysis) of PCR products added with size standard GeneScan™ 500 LIZ® was performed using an ABI 3730 genetic analyzer (Life Technologies Corporation, Carlsbad, CA) at the Michigan State University Genomic Sequencing Center. 
 
-## Data analysis {-}
+## Data processing and Analyses {-}
 
-Isolates that fell into the 10 most abundant MCGs were subjected to an analysis of variance (ANOVA) in JMP version 12 to determine if their virulence levels were significantly different.
-The mean separation was carried out using Tukey's HSD test.
-Five microsatellite loci included compound repeats, where genotypes could not be unequivocally assigned based on the known repeat motifs and were consequently removed, resulting in 11 polymorphic loci selected for analysis (Table 2).
-Since it could not be ruled out that isolates possessing the same genotype within the same field, year, and host were duplicate collections from the same plant, the data were first clone-corrected to remove these genotypes.
-The data set was hierarchically reformatted to group isolates within each location/host/region/year and clones were removed at that level.
+All data processing and analyses were performed in R version 3.4.0 [@R].
+Of the 16 microsatellite loci, five included compound repeats, making allele scoring difficult. 
+These loci were removed for the reported statistics, but were processed and included in data analyses to ensure the integrity of the results with 11 loci as compared to 16.
+To control for non-independent samples (i.e. those sampled from the same location, region, year, and plant), data were clone-corrected for subsequent analyses.
 The clone-corrected data set included 318 isolates.
 All analyses were performed on this data set unless otherwise mentioned.
+All data and analyses are openly available and reproducible at https://github.com/everhartlab/sclerotinia_366/
 
-## Distance-based redundancy analysis  {-}
+### Virulence Assessment {-}
 
-A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was performed with the function `capscale()` in the *vegan* 2.4-3 package in R (https://CRAN.R-project.org/package=vegan) to delineate relative contribution of phenotypic, spatial, and temporal components in influencing genetic composition of the populations. dbRDA is a method of conducting constrained ordinations on data matrices consisting of non-Euclidean distance measures.
+We used analysis of variance (ANOVA) to assess if MCGs differed in severity.
+We chose the top 10 MCGs, representing 57% of the isolates collected. Between-group differences were assessed using Tukey's HSD test using the `HSD.test()` function in the package *agricolae* version 1.2.4 [@mendiburu2015agricolae].
+
+### Distance-based redundancy analysis  {-}
+
+A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was performed with the function `capscale()` in the *vegan* package version 2.4-3 [@vegan] to delineate relative contribution of phenotypic, spatial, and temporal components in influencing genetic composition of the populations. dbRDA is a method of conducting constrained ordinations on data matrices consisting of non-Euclidean distance measures.
 RDA is a multivariate linear regression analysis of independent (explanatory: eg. environmental and phenotypic) variables on dependent (non-explanatory or response) variables.
 In our case, a pairwise Bruvo's [@bruvo2004simple] distance matrix was generated from microsatellite data using *poppr* 2.4.1 [@kamvar2014poppr; @kamvar2015novel] and employed it as the dependent matrix for RDA analysis.
 To identify environmental variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function `ordistep()` to identify the set of variables that explained more variation than predicted with the global model containing all variables.
@@ -239,7 +240,7 @@ An ANOVA was then performed to test for significance of the reduced model and ma
 The `varpart()` function of vegan was used to determine variation partitioning of explanatory variables.
  
 
-## Shared Multilocus Genotype Community Analysis {-}
+### Shared Multilocus Genotype Community Analysis {-}
 
 To assess the connectivity of shared genotypes across populations, we first tabulated the multilocus genotypes shared between at least two populations (defined as states or countries) with the *poppr* function `mlg.crosspop()` [@kamvar2014poppr].
 From these data, we were able to construct a graph with populations as nodes and shared genotypes as edges (connections) between the nodes using the R packages *igraph* version 1.0.1 [@csardi2006igraph], *dplyr* version 0.7.1 [@dplyr], and *purrr* version 0.2.2.2 [@purrr].
@@ -250,7 +251,7 @@ We then used the `cluster_optimal()` function from *igraph* to define communitie
 The graph was plotted using the R packages *ggplot2* version 2.2.1 [@ggplot2] and *ggraph* version 1.0.0 [@ggraph].
 To ensure that we were able to capture the same community signal, we additionally ran this analysis including the 5 polymorphic markers described above.
 
-## Discriminant analysis of principal components {-}
+### Discriminant analysis of principal components {-}
 
 DAPC is a multivariate method designed to identify and describe clusters of genetically related individuals.
 Discriminant analysis maximizes separation between groups while minimizing variation within groups [@jombart2010discriminant].
@@ -269,7 +270,7 @@ An $F_{st}$ value of 0.05 or less is generally considered as reasonably low and 
 <!-- **(Balloux and Ugon-Moulin, 2002; Wright, 1978)**.   -->
 
 
-## Molecular population statistics and linkage disequilibrium {-}
+### Molecular population statistics and linkage disequilibrium {-}
 
 Genotypic evenness [@grunwald2003analysis], which is a measure of distribution of genotype abundances and unbiased gene diversity ($H_{exp}$) [@nei1978estimation] were calculated using *poppr* package in R [@kamvar2014poppr].
 Microsatellite data were also tested for evidence of linkage disequilibrium, where significant disequilibrium between pairs of loci in a population is attributed to linkage between loci and may be an indication of clonal reproduction if loci are physically unlinked, whereas linkage equilibrium can be an indication of outcrossing populations.
@@ -278,7 +279,9 @@ The value of $I_A$ tends to increase with the number of loci and therefore we ma
 Higher observed $\bar{r}_d$ or $I_A$ values would indicate clonally reproducing populations. 
 
 
-## Results {-}
+# Results {-}
+
+## Genotypic Structure {-}
 
 <!--  ZNK: I think figures 1-4 are a bit redundant with the tables in the text. It might be better to simply remove them. -->
 A total of 366 isolates were collected from 2003 to 2012 from diseased dry bean plants in 11 states in the US, Australia (2 mainland; 4 Tasmania), Mexico, and France **(Fig. 1)**.
@@ -318,6 +321,8 @@ Each edge represents a single MLG where its thickness represents the number of p
 
 <!-- end fig -->
 
+## Virulence {-}
+
 The MCGs with the highest frequency were MCG 5 and MCG 44 representing 73 and 44 isolates, respectively **(Fig. 4)**. <!-- Maybe add aggressiveness information here. -->
 MCGs that were unique to a region are shown in Fig. 5 while MCGs that represented at least 2 or more regions are in Fig 6. 20 MCGs were common in two or more regions and the rest were distributed uniquely in different regions.
 ID, MN, NE, NY, and WI did not have any unique/isolated MCGs.
@@ -335,7 +340,7 @@ Gene diversity ($H_{exp}$) of populations from different regions ranged from 0.2
 Evenness of genotypes of all regions was high, with the exception of ND, where a single genotype was represented by 20 isolates.
 There was one private allele in the WA population (204 bp allele of 55-4 locus) and two private alleles in the ND population (two 366 bp alleles in 9-2 locus and two 220 bp alleles in 12-2 locus).
 
-## dbRDA {-}
+## Variable Importance {-}
 
 The dbRDA was performed on clone-corrected isolates (N = 318) after grouping them by location, host, region, and year.
 The forward-backward selection process revealed severity, year, region, and host to be the optimal variables for the reduced model, accounting for 17.6% of the variation.
