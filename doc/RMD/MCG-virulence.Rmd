@@ -73,20 +73,25 @@ top_mcg %>%
 ```
 
 
-## AMOVA
+## ANOVA
 
-The default AMOVA in R sets contrasts as `contrast.treatment`, which compares
+The default ANOVA in R sets contrasts as `contrast.treatment`, which compares
 everything to the first factor, considered the treatment. Since we are
 interested in whether or not there IS a difference between samples, this will
 be sufficient.
 
-```{r amova}
-AMOVA <- aov(Severity ~ MCG, data = top_mcg)
-AMOVA
-summary(AMOVA)
+After the ANOVA, we performed a Tukey's Honest Significant Difference test to
+see exactly what groups these fell into.
+
+```{r anova, fig.width = 4, fig.height = 8}
+ANOVA <- aov(Severity ~ MCG, data = top_mcg)
+ANOVA
+summary(ANOVA)
+plot(TukeyHSD(ANOVA), las = 2)
+agricolae::HSD.test(ANOVA, "MCG")$groups
 ```
 
-There appears to be a significant effect at p = `r formatC(broom::tidy(AMOVA)$p.value[1])`.
+There appears to be a significant effect at p = `r formatC(broom::tidy(ANOVA)$p.value[1])`.
 
 
 ## Session Information
