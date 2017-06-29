@@ -49,6 +49,7 @@ top_mcg
 ## Visualizing distributions
 
 ```{r vis, fig.width = 5, fig.height = 4}
+set.seed(2017-06-29)
 ggplot(top_mcg, aes(x = MCG, y = Severity)) +
   geom_boxplot() +
   geom_point(position = position_jitter(width = 0.25), alpha = 0.5) +
@@ -59,6 +60,18 @@ ggplot(top_mcg, aes(x = MCG, y = Severity)) +
     caption = "MCG = Mycelial Compatibility Group"
     ))
 ```
+
+```{r virulence_table}
+top_mcg %>% 
+  group_by(MCG) %>%
+  summarize(N = n(), 
+            `Min Severity` = min(Severity),
+            `Max Severity` = max(Severity),
+            `Average Severity` = mean(Severity)
+            ) %>%
+  knitr::kable(digits = 2)
+```
+
 
 ## AMOVA
 

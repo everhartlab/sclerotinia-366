@@ -134,6 +134,7 @@ top_mcg
 
 
 ```r
+set.seed(2017-06-29)
 ggplot(top_mcg, aes(x = MCG, y = Severity)) +
   geom_boxplot() +
   geom_point(position = position_jitter(width = 0.25), alpha = 0.5) +
@@ -146,6 +147,34 @@ ggplot(top_mcg, aes(x = MCG, y = Severity)) +
 ```
 
 ![plot of chunk vis](./figures/MCG-virulence///vis-1.png)
+
+
+```r
+top_mcg %>% 
+  group_by(MCG) %>%
+  summarize(N = n(), 
+            `Min Severity` = min(Severity),
+            `Max Severity` = max(Severity),
+            `Average Severity` = mean(Severity)
+            ) %>%
+  knitr::kable(digits = 2)
+```
+
+
+
+|MCG |  N| Min Severity| Max Severity| Average Severity|
+|:---|--:|------------:|------------:|----------------:|
+|5   | 73|          3.6|          7.8|             5.40|
+|44  | 36|          4.3|          7.9|             6.03|
+|45  | 16|          3.9|          7.0|             4.88|
+|1   | 15|          3.9|          6.5|             4.95|
+|9   | 15|          2.8|          7.2|             5.11|
+|4   | 14|          3.9|          5.9|             4.87|
+|49  | 11|          3.3|          6.1|             4.60|
+|2   | 10|          4.1|          6.2|             5.25|
+|53  |  9|          3.6|          5.4|             4.69|
+|3   |  8|          4.7|          6.1|             5.50|
+
 
 ## AMOVA
 
