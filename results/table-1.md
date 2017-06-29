@@ -23,20 +23,20 @@ library("dplyr")
 ```
 
 ```
-## 
-## Attaching package: 'dplyr'
+
+Attaching package: 'dplyr'
 ```
 
 ```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
+The following objects are masked from 'package:stats':
+
+    filter, lag
 ```
 
 ```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
+The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union
 ```
 
 ```r
@@ -44,20 +44,20 @@ library("huxtable")
 ```
 
 ```
-## 
-## Attaching package: 'huxtable'
+
+Attaching package: 'huxtable'
 ```
 
 ```
-## The following object is masked from 'package:dplyr':
-## 
-##     add_rownames
+The following object is masked from 'package:dplyr':
+
+    add_rownames
 ```
 
 ```
-## The following object is masked from 'package:stats':
-## 
-##     filter
+The following object is masked from 'package:stats':
+
+    filter
 ```
 
 ```r
@@ -105,6 +105,7 @@ col_width(dt) <- c(0.055, 0.035, 0.06, 0.1, 0.151, 0.025) # Specify width for ea
 print_md(dt)                                              # print in pandoc markdown format
 ```
 
+```
 -----------------------------------------------------------------------------
 Country   State  Field Code              Year Host                          N 
 --------- ------ ---------- ----------------- -------------------------- ----
@@ -196,6 +197,7 @@ Australia        vic                     2004 Beryl                         2
                  wmn                     2004 Beryl, Bunsi, G122            4 
 
 -----------------------------------------------------------------------------
+```
 
 
 

@@ -173,7 +173,6 @@ $(document).ready(function () {
 <div id="TOC">
 <ul>
 <li><a href="#creation-of-table-1">Creation of Table 1</a><ul>
-<li><a href="#section"><!-- rnb-source-end --></a></li>
 <li><a href="#session-information">Session Information</a></li>
 </ul></li>
 </ul>
@@ -187,100 +186,146 @@ $(document).ready(function () {
 <p>Table one is one of those long, descriptive tables that requires a lot of fiddling. The <em>huxtable</em> package makes working with these tables slightly less of a pain in the neck. Because this table involves wrapping and the text can get split up, I am manually copying and pasting the result into my document.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucHJpbnRfbWQoZHQpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgcHJpbnQgaW4gcGFuZG9jIG1hcmtkb3duIGZvcm1hdFxuXG5gYGAifQ== -->
-<pre class="r"><code>print_md(dt)                                              # print in pandoc markdown format
-</code></pre>
-<div id="section" class="section level2">
-<h2><!-- rnb-source-end --></h2>
-<table>
-<thead>
-<tr class="header">
-<th align="left">Country</th>
-<th align="left">State</th>
-<th>Field Code</th>
-<th align="right">Year</th>
-<th align="left">Host</th>
-<th align="right">N</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="left">USA</td>
-<td align="left">CA</td>
-<td>wmn</td>
-<td align="right">2004, 2005</td>
-<td align="left">Beryl, Bunsi, G122</td>
-<td align="right">18</td>
-</tr>
-</tbody>
-</table>
-<p>USA CO eat 2007, 2010 Yellow 13</p>
-<pre><code>             gree              2007, 2010 Pinto, Yellow                14 
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShcInJlYWRyXCIpXG5saWJyYXJ5KFwiZHBseXJcIilcbmxpYnJhcnkoXCJodXh0YWJsZVwiKVxuY2xtbiA8LSBjb2xzKFxuICAuZGVmYXVsdCA9IGNvbF9pbnRlZ2VyKCksXG4gIFJlZ2lvbiA9IGNvbF9jaGFyYWN0ZXIoKSxcbiAgU291cmNlID0gY29sX2NoYXJhY3RlcigpLFxuICBIb3N0ID0gY29sX2NoYXJhY3RlcigpXG4pXG4jIEhlbHBlciBmdW5jdGlvbiB0byBnZW5lcmF0ZSBwb3NpdGlvbnMgb2YgYmxhbmtzIGluIGEgY29sdW1uIGZvciBwcmV0dHkgcHJpbnRpbmdcbmJsYW5rX2l0IDwtIGZ1bmN0aW9uKHgpe1xuICByZXMgPC0gcmVwKFRSVUUsIGxlbmd0aCh4KSlcbiAgcmVzWzFdIDwtIEZBTFNFXG4gIHJlc1xufVxuZGF0IDwtIHJlYWRyOjpyZWFkX2NzdihmaWxlLnBhdGgoUFJPSkhPTUUsIFwiZGF0YS9jbGVhbl9kYXRhLmNzdlwiKSwgY29sX3R5cGVzID0gY2xtbikgJT4lXG4gIG11dGF0ZShDb3VudHJ5ID0gaWZlbHNlKG5jaGFyKFJlZ2lvbikgPT0gMiwgXCJVU0FcIiwgUmVnaW9uKSkgJT4lICMgRGVmaW5pbmcgY291bnRyeSBjb2x1bW5cbiAgbXV0YXRlKFJlZ2lvbiA9IGlmZWxzZShuY2hhcihSZWdpb24pID09IDIsIFJlZ2lvbiwgXCJcIikpICU+JSAgICAgIyBBZGRpbmcgYmxhbmtzIGZvciBpbnRlcm5hdGlvbmFsIFwic3RhdGVzXCJcbiAgc2VsZWN0KENvdW50cnksIFJlZ2lvbiwgU291cmNlLCBZZWFyLCBIb3N0KSAlPiUgICAgICAgICAgICAgICAgICMgU3VtbWFyaXppbmcgdGhlIG51bWJlciBvZiBpc29sYXRlc1xuICBncm91cF9ieV9hbGwoKSAlPiUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI1xuICBzdW1tYXJpemUoTiA9IG4oKSkgJT4lICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI1xuICBhcnJhbmdlKGRlc2MoQ291bnRyeSksIFJlZ2lvbiwgU291cmNlLCBZZWFyKSAlPiUgICAgICAgICAgICAgICAgIyBSZWFycmFuZ2luZyByb3dzXG4gIGdyb3VwX2J5KENvdW50cnksIFJlZ2lvbiwgU291cmNlKSAlPiUgICAgICAgICAgICAgICAgICAgICAgICAgICAjIENvbGxhcHNpbmcgWWVhcnMgYW5kIEhvc3RzXG4gIHN1bW1hcml6ZShZZWFyID0gcGFzdGUoc29ydCh1bmlxdWUoWWVhcikpLCBjb2xsYXBzZSA9IFwiLCBcIiksICAgICAjXG4gICAgICAgICAgICBIb3N0ID0gcGFzdGUoc29ydCh1bmlxdWUoSG9zdCkpLCBjb2xsYXBzZSA9IFwiLCBcIiksICAgICNcbiAgICAgICAgICAgIE4gPSBzdW0oTikpICU+JSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICNcbiAgYXJyYW5nZShkZXNjKENvdW50cnkpLCBSZWdpb24sIFNvdXJjZSwgTikgJT4lICAgICAgICAgICAgICAgICAgICMgUmVhcnJhbmdpbmcgcm93c1xuICBncm91cF9ieShDb3VudHJ5LCBSZWdpb24pICU+JSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIyBBZGRpbmcgYmxhbmtzIGluIHJlcGVhdGVkIENvdW50cnkgYW5kIFJlZ2lvbiBOYW1lc1xuICBtdXRhdGUoc2V0X2JsYW5rID0gYmxhbmtfaXQoUmVnaW9uKSkgJT4lICAgICAgICAgICAgICAgICAgICAgICAgI1xuICB1bmdyb3VwKCkgJT4lICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI1xuICBtdXRhdGUoQ291bnRyeSA9IGlmZWxzZShzZXRfYmxhbmssIFwiXCIsIENvdW50cnkpKSAlPiUgICAgICAgICAgICAjXG4gIG11dGF0ZShSZWdpb24gPSBpZmVsc2Uoc2V0X2JsYW5rLCBcIlwiLCBSZWdpb24pKSAlPiUgICAgICAgICAgICAgICNcbiAgc2VsZWN0KENvdW50cnksIFJlZ2lvbiwgU291cmNlLCBZZWFyLCBIb3N0LCBOKSAlPiUgICAgICAgICAgICAgICNcbiAgcmVuYW1lKFN0YXRlID0gUmVnaW9uKSAlPiUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgUmVuYW1pbmcgY29sdW1uc1xuICByZW5hbWUoYEZpZWxkIENvZGVgID0gU291cmNlKSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgI1xuICBcbmR0IDwtIGh1eHRhYmxlOjphc19odXh0YWJsZShkYXQsIGFkZF9jb2xuYW1lcyA9IFRSVUUpICU+JSAjIENyZWF0aW5nIHRoZSBodXh0YWJsZVxuICBzZXRfYWxpZ24oZXZlcnl3aGVyZSwgY29sID0gNCwgdmFsdWUgPSBcInJpZ2h0XCIpICU+JSAgICAgIyBBbGlnbmluZyBudW1lcmljIGNvbHVtbnMgdG8gdGhlIHJpZ2h0XG4gIHNldF9hbGlnbihldmVyeXdoZXJlLCBjb2wgPSA2LCB2YWx1ZSA9IFwicmlnaHRcIikgJT4lICAgICAjIFxuICBzZXRfd3JhcChUUlVFKSAlPiUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgV3JhcHBpbmcgY29sdW1uc1xuICBzZXRfbnVtYmVyX2Zvcm1hdCh2YWx1ZSA9IDApICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgUHJpbnQgbnVtYmVycyB3aXRob3V0IGRlY2ltYWxzXG5jb2xfd2lkdGgoZHQpIDwtIGMoMC4wNTUsIDAuMDM1LCAwLjA2LCAwLjEsIDAuMTUxLCAwLjAyNSkgIyBTcGVjaWZ5IHdpZHRoIGZvciBlYWNoIGNvbHVtblxucHJpbnRfbWQoZHQpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgcHJpbnQgaW4gcGFuZG9jIG1hcmtkb3duIGZvcm1hdFxuYGBgIn0= -->
+<pre class="r"><code>library(&quot;readr&quot;)
+library(&quot;dplyr&quot;)
+library(&quot;huxtable&quot;)
+clmn &lt;- cols(
+  .default = col_integer(),
+  Region = col_character(),
+  Source = col_character(),
+  Host = col_character()
+)
+# Helper function to generate positions of blanks in a column for pretty printing
+blank_it &lt;- function(x){
+  res &lt;- rep(TRUE, length(x))
+  res[1] &lt;- FALSE
+  res
+}
+dat &lt;- readr::read_csv(file.path(PROJHOME, &quot;data/clean_data.csv&quot;), col_types = clmn) %&gt;%
+  mutate(Country = ifelse(nchar(Region) == 2, &quot;USA&quot;, Region)) %&gt;% # Defining country column
+  mutate(Region = ifelse(nchar(Region) == 2, Region, &quot;&quot;)) %&gt;%     # Adding blanks for international &quot;states&quot;
+  select(Country, Region, Source, Year, Host) %&gt;%                 # Summarizing the number of isolates
+  group_by_all() %&gt;%                                              #
+  summarize(N = n()) %&gt;%                                          #
+  arrange(desc(Country), Region, Source, Year) %&gt;%                # Rearranging rows
+  group_by(Country, Region, Source) %&gt;%                           # Collapsing Years and Hosts
+  summarize(Year = paste(sort(unique(Year)), collapse = &quot;, &quot;),     #
+            Host = paste(sort(unique(Host)), collapse = &quot;, &quot;),    #
+            N = sum(N)) %&gt;%                                       #
+  arrange(desc(Country), Region, Source, N) %&gt;%                   # Rearranging rows
+  group_by(Country, Region) %&gt;%                                   # Adding blanks in repeated Country and Region Names
+  mutate(set_blank = blank_it(Region)) %&gt;%                        #
+  ungroup() %&gt;%                                                   #
+  mutate(Country = ifelse(set_blank, &quot;&quot;, Country)) %&gt;%            #
+  mutate(Region = ifelse(set_blank, &quot;&quot;, Region)) %&gt;%              #
+  select(Country, Region, Source, Year, Host, N) %&gt;%              #
+  rename(State = Region) %&gt;%                                      # Renaming columns
+  rename(`Field Code` = Source)                                   #
+  
+dt &lt;- huxtable::as_huxtable(dat, add_colnames = TRUE) %&gt;% # Creating the huxtable
+  set_align(everywhere, col = 4, value = &quot;right&quot;) %&gt;%     # Aligning numeric columns to the right
+  set_align(everywhere, col = 6, value = &quot;right&quot;) %&gt;%     # 
+  set_wrap(TRUE) %&gt;%                                      # Wrapping columns
+  set_number_format(value = 0)                            # Print numbers without decimals
+col_width(dt) &lt;- c(0.055, 0.035, 0.06, 0.1, 0.151, 0.025) # Specify width for each column
+print_md(dt)                                              # print in pandoc markdown format</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbkNvdW50cnkgICBTdGF0ZSAgRmllbGQgQ29kZSAgICAgICAgICAgICAgWWVhciBIb3N0ICAgICAgICAgICAgICAgICAgICAgICAgICBOIFxuLS0tLS0tLS0tIC0tLS0tLSAtLS0tLS0tLS0tIC0tLS0tLS0tLS0tLS0tLS0tIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tIC0tLS1cblVTQSAgICAgICBDQSAgICAgd21uICAgICAgICAgICAgICAgMjAwNCwgMjAwNSBCZXJ5bCwgQnVuc2ksIEcxMjIgICAgICAgICAgIDE4IFxuXG5VU0EgICAgICAgQ08gICAgIGVhdCAgICAgICAgICAgICAgIDIwMDcsIDIwMTAgWWVsbG93ICAgICAgICAgICAgICAgICAgICAgICAxMyBcblxuICAgICAgICAgICAgICAgICBncmVlICAgICAgICAgICAgICAyMDA3LCAyMDEwIFBpbnRvLCBZZWxsb3cgICAgICAgICAgICAgICAgMTQgXG5cbiAgICAgICAgICAgICAgICAgbHVjICAgICAgICAgICAgICAgMjAwNywgMjAxMCBZZWxsb3cgICAgICAgICAgICAgICAgICAgICAgIDE0IFxuXG4gICAgICAgICAgICAgICAgIHdtbiAgICAgICAgICAgICAgICAgICAgIDIwMDMgR0ggICAgICAgICAgICAgICAgICAgICAgICAgICAgMSBcblxuVVNBICAgICAgIElEICAgICB1bmsgICAgICAgICAgICAgICAgICAgICAyMDAzIEdIICAgICAgICAgICAgICAgICAgICAgICAgICAgIDEgXG5cblVTQSAgICAgICBNSSAgICAgZWxuICAgICAgICAgICAgICAgICAgICAgMjAwOSB1bmsgICAgICAgICAgICAgICAgICAgICAgICAgICAxIFxuXG4gICAgICAgICAgICAgICAgIGh1ciAgICAgICAgICAgICAgIDIwMDgsIDIwMDkgQkwsIEJsYWNrLCBTUjA2MjMzLCBWaXN0YSAgICAgNSBcblxuICAgICAgICAgICAgICAgICBtdW5nICAgICAgICAgICAgICAgICAgICAyMDA5IFpvcnJvICAgICAgICAgICAgICAgICAgICAgICAgIDEgXG5cbiAgICAgICAgICAgICAgICAgc2FuYyAgICAgICAgICAgICAgICAgICAgMjAwOCBNZXJsb3QgICAgICAgICAgICAgICAgICAgICAgICAzIFxuXG4gICAgICAgICAgICAgICAgIFNlYmV3YWluZyAgICAgICAgICAgICAgIDIwMDkgQmxhY2sgICAgICAgICAgICAgICAgICAgICAgICAgMSBcblxuICAgICAgICAgICAgICAgICB0dWMgICAgICAgICAgICAgICAyMDA4LCAyMDA5IEJsYWNrLCBGdWppLCBWaXN0YSAgICAgICAgICAgIDYgXG5cbiAgICAgICAgICAgICAgICAgdW5rICAgICAgICAgICAgICAgMjAwMywgMjAwOSBHSCwgdW5rICAgICAgICAgICAgICAgICAgICAgICAyIFxuXG4gICAgICAgICAgICAgICAgIHdtbiAgICAgICAgMjAwMywgMjAwNCwgMjAwNSwgMTFBLCAzNywgMzgsIEIwNzEwNCwgQmVyeWwgICA0MyBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMjAwOCwgMjAwOSAsIEJ1bnNpLCBjb3JuZWxsLCBHMTIyLCBPciAgICAgIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGlvbiwgUE83ODYzLCBXTTMxICAgICAgICAgICAgICAgXG5cblVTQSAgICAgICBNTiAgICAgd21uICAgICAgICAgICAgICAgMjAwMywgMjAwNCBCZXJ5bCwgQnVuc2ksIEcxMjIgICAgICAgICAgIDExIFxuXG5VU0EgICAgICAgTkQgICAgIGdmYyAgICAgICAgICAgICAgIDIwMDcsIDIwMTAgdW5rICAgICAgICAgICAgICAgICAgICAgICAgICAgOSBcblxuICAgICAgICAgICAgICAgICBuZWMgICAgICAgICAgICAgICAgICAgICAyMDEwIHVuayAgICAgICAgICAgICAgICAgICAgICAgICAgIDEgXG5cbiAgICAgICAgICAgICAgICAgcG1jICAgICAgICAgICAgICAgICAgICAgMjAxMCB1bmsgICAgICAgICAgICAgICAgICAgICAgICAgICA3IFxuXG4gICAgICAgICAgICAgICAgIHJydiAgICAgICAgICAgICAgICAgICAgIDIwMDcgdW5rICAgICAgICAgICAgICAgICAgICAgICAgICAyMSBcblxuICAgICAgICAgICAgICAgICBzdGMgICAgICAgICAgICAgICAgICAgICAyMDEwIHVuayAgICAgICAgICAgICAgICAgICAgICAgICAgIDIgXG5cbiAgICAgICAgICAgICAgICAgdGxjICAgICAgICAgICAgICAgICAgICAgMjAxMCB1bmsgICAgICAgICAgICAgICAgICAgICAgICAgICA5IFxuXG4gICAgICAgICAgICAgICAgIHdsYyAgICAgICAgICAgICAgICAgICAgIDIwMTAgdW5rICAgICAgICAgICAgICAgICAgICAgICAgICAgNCBcblxuICAgICAgICAgICAgICAgICB3bW4gICAgICAgICAgICAgICAgICAgICAyMDA1IEJlcnlsLCBCdW5zaSwgRzEyMiAgICAgICAgICAgIDcgXG5cblVTQSAgICAgICBORSAgICAgbXRjICAgICAgICAgICAgICAgMjAwNywgMjAxMCBCZXJ5bCwgRW1lcnNvbiwgT3Jpb24gICAgICAgIDEyIFxuXG4gICAgICAgICAgICAgICAgIHNiZiAgICAgICAgICAgICAgIDIwMDcsIDIwMDkgQmVyeWwsIFBpbnRvLCBXZWloaW5nICAgICAgICAgNiBcblxuICAgICAgICAgICAgICAgICB1bmsgICAgICAgICAgICAgICAgICAgICAyMDAzIEdIICAgICAgICAgICAgICAgICAgICAgICAgICAgIDIgXG5cbiAgICAgICAgICAgICAgICAgd21uICAgICAgICAyMDA0LCAyMDA1LCAyMDA4LCBCZXJ5bCwgQnVuc2ksIEcxMjIsIFBPNzY4MyAgIDI3IFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAyMDEwICwgdW5rICAgICAgICAgICAgICAgICAgICAgICAgICAgXG5cblVTQSAgICAgICBOWSAgICAgdW5rICAgICAgICAgICAgICAgICAgICAgMjAwMyBHSCAgICAgICAgICAgICAgICAgICAgICAgICAgICAxIFxuXG5VU0EgICAgICAgT1IgICAgIGNvcnYgICAgICAgICAgICAgICAgICAgIDIwMDMgRzEyMiAgICAgICAgICAgICAgICAgICAgICAgICAgMSBcblxuICAgICAgICAgICAgICAgICB1bmsgICAgICAgICAgICAgICAgICAgICAyMDAzIEdIICAgICAgICAgICAgICAgICAgICAgICAgICAgIDEgXG5cbiAgICAgICAgICAgICAgICAgd21uICAgICAgICAgICAgICAgMjAwMywgMjAwNCBCZXJ5bCwgQnVuc2ksIEcxMjIgICAgICAgICAgIDE1IFxuXG5VU0EgICAgICAgV0EgICAgIHByc3IgICAgICAgICAgICAgICAgICAgIDIwMDcgTWVybG90LCBQaW50bywgcmVka2lkICAgICAgICAyMiBcblxuICAgICAgICAgICAgICAgICB1bmsgICAgICAgICAgICAgICAgICAgICAyMDAzIEdIICAgICAgICAgICAgICAgICAgICAgICAgICAgIDEgXG5cbiAgICAgICAgICAgICAgICAgd21uICAgICAgICAyMDAzLCAyMDA0LCAyMDA1LCAxMUEsIDM3LCAzOCwgQmVyeWwsIEJ1bnNpLCAgIDM2IFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAyMDA4ICBjb3JuZWxsLCBHMTIyLCBPcmlvbiwgUE83ICAgICAgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgMTA0LCBQTzc4NjMsIFdNMzEgICAgICAgICAgICAgICBcblxuVVNBICAgICAgIFdJICAgICBkZm9yICAgICAgICAgICAgICAgICAgICAyMDAzIEdIICAgICAgICAgICAgICAgICAgICAgICAgICAgIDEgXG5cbiAgICAgICAgICAgICAgICAgdW5rICAgICAgICAgICAgICAgICAgICAgMjAwMyBHSCAgICAgICAgICAgICAgICAgICAgICAgICAgICAxIFxuXG5NZXhpY28gICAgICAgICAgIHdtbiAgICAgICAgICAgICAgICAgICAgIDIwMDUgQmVyeWwsIEJ1bnNpLCBHMTIyICAgICAgICAgICAxOCBcblxuRnJhbmNlICAgICAgICAgICBmbGRzICAgICAgICAgICAgICAgICAgICAyMDEyIHVuayAgICAgICAgICAgICAgICAgICAgICAgICAgIDQgXG5cbiAgICAgICAgICAgICAgICAgd21uICAgICAgICAgICAgICAgMjAwNCwgMjAwNSBCZXJ5bCwgQnVuc2ksIEcxMjIgICAgICAgICAgIDE4IFxuXG5BdXN0cmFsaWEgICAgICAgIHZpYyAgICAgICAgICAgICAgICAgICAgIDIwMDQgQmVyeWwgICAgICAgICAgICAgICAgICAgICAgICAgMiBcblxuICAgICAgICAgICAgICAgICB3bW4gICAgICAgICAgICAgICAgICAgICAyMDA0IEJlcnlsLCBCdW5zaSwgRzEyMiAgICAgICAgICAgIDQgXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG4ifQ== -->
+<pre><code>-----------------------------------------------------------------------------
+Country   State  Field Code              Year Host                          N 
+--------- ------ ---------- ----------------- -------------------------- ----
+USA       CA     wmn               2004, 2005 Beryl, Bunsi, G122           18 
 
-             luc               2007, 2010 Yellow                       14 
+USA       CO     eat               2007, 2010 Yellow                       13 
 
-             wmn                     2003 GH                            1 </code></pre>
-<p>USA ID unk 2003 GH 1</p>
-<p>USA MI eln 2009 unk 1</p>
-<pre><code>             hur               2008, 2009 BL, Black, SR06233, Vista     5 
+                 gree              2007, 2010 Pinto, Yellow                14 
 
-             mung                    2009 Zorro                         1 
+                 luc               2007, 2010 Yellow                       14 
 
-             sanc                    2008 Merlot                        3 
+                 wmn                     2003 GH                            1 
 
-             Sebewaing               2009 Black                         1 
+USA       ID     unk                     2003 GH                            1 
 
-             tuc               2008, 2009 Black, Fuji, Vista            6 
+USA       MI     eln                     2009 unk                           1 
 
-             unk               2003, 2009 GH, unk                       2 
+                 hur               2008, 2009 BL, Black, SR06233, Vista     5 
 
-             wmn        2003, 2004, 2005, 11A, 37, 38, B07104, Beryl   43 
-                               2008, 2009 , Bunsi, cornell, G122, Or      
-                                          ion, PO7863, WM31               </code></pre>
-<p>USA MN wmn 2003, 2004 Beryl, Bunsi, G122 11</p>
-<p>USA ND gfc 2007, 2010 unk 9</p>
-<pre><code>             nec                     2010 unk                           1 
+                 mung                    2009 Zorro                         1 
 
-             pmc                     2010 unk                           7 
+                 sanc                    2008 Merlot                        3 
 
-             rrv                     2007 unk                          21 
+                 Sebewaing               2009 Black                         1 
 
-             stc                     2010 unk                           2 
+                 tuc               2008, 2009 Black, Fuji, Vista            6 
 
-             tlc                     2010 unk                           9 
+                 unk               2003, 2009 GH, unk                       2 
 
-             wlc                     2010 unk                           4 
+                 wmn        2003, 2004, 2005, 11A, 37, 38, B07104, Beryl   43 
+                                   2008, 2009 , Bunsi, cornell, G122, Or      
+                                              ion, PO7863, WM31               
 
-             wmn                     2005 Beryl, Bunsi, G122            7 </code></pre>
-<p>USA NE mtc 2007, 2010 Beryl, Emerson, Orion 12</p>
-<pre><code>             sbf               2007, 2009 Beryl, Pinto, Weihing         6 
+USA       MN     wmn               2003, 2004 Beryl, Bunsi, G122           11 
 
-             unk                     2003 GH                            2 
+USA       ND     gfc               2007, 2010 unk                           9 
 
-             wmn        2004, 2005, 2008, Beryl, Bunsi, G122, PO7683   27 
-                                     2010 , unk                           </code></pre>
-<p>USA NY unk 2003 GH 1</p>
-<p>USA OR corv 2003 G122 1</p>
-<pre><code>             unk                     2003 GH                            1 
+                 nec                     2010 unk                           1 
 
-             wmn               2003, 2004 Beryl, Bunsi, G122           15 </code></pre>
-<p>USA WA prsr 2007 Merlot, Pinto, redkid 22</p>
-<pre><code>             unk                     2003 GH                            1 
+                 pmc                     2010 unk                           7 
 
-             wmn        2003, 2004, 2005, 11A, 37, 38, Beryl, Bunsi,   36 
-                                     2008  cornell, G122, Orion, PO7      
-                                          104, PO7863, WM31               </code></pre>
-<p>USA WI dfor 2003 GH 1</p>
-<pre><code>             unk                     2003 GH                            1 </code></pre>
-<p>Mexico wmn 2005 Beryl, Bunsi, G122 18</p>
-<p>France flds 2012 unk 4</p>
-<pre><code>             wmn               2004, 2005 Beryl, Bunsi, G122           18 </code></pre>
-<p>Australia vic 2004 Beryl 2</p>
-<pre><code>             wmn                     2004 Beryl, Bunsi, G122            4 </code></pre>
-<hr />
+                 rrv                     2007 unk                          21 
+
+                 stc                     2010 unk                           2 
+
+                 tlc                     2010 unk                           9 
+
+                 wlc                     2010 unk                           4 
+
+                 wmn                     2005 Beryl, Bunsi, G122            7 
+
+USA       NE     mtc               2007, 2010 Beryl, Emerson, Orion        12 
+
+                 sbf               2007, 2009 Beryl, Pinto, Weihing         6 
+
+                 unk                     2003 GH                            2 
+
+                 wmn        2004, 2005, 2008, Beryl, Bunsi, G122, PO7683   27 
+                                         2010 , unk                           
+
+USA       NY     unk                     2003 GH                            1 
+
+USA       OR     corv                    2003 G122                          1 
+
+                 unk                     2003 GH                            1 
+
+                 wmn               2003, 2004 Beryl, Bunsi, G122           15 
+
+USA       WA     prsr                    2007 Merlot, Pinto, redkid        22 
+
+                 unk                     2003 GH                            1 
+
+                 wmn        2003, 2004, 2005, 11A, 37, 38, Beryl, Bunsi,   36 
+                                         2008  cornell, G122, Orion, PO7      
+                                              104, PO7863, WM31               
+
+USA       WI     dfor                    2003 GH                            1 
+
+                 unk                     2003 GH                            1 
+
+Mexico           wmn                     2005 Beryl, Bunsi, G122           18 
+
+France           flds                    2012 unk                           4 
+
+                 wmn               2004, 2005 Beryl, Bunsi, G122           18 
+
+Australia        vic                     2004 Beryl                         2 
+
+                 wmn                     2004 Beryl, Bunsi, G122            4 
+
+-----------------------------------------------------------------------------</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-</div>
 <div id="session-information" class="section level2">
 <h2>Session Information</h2>
 <!-- rnb-text-end -->
@@ -441,7 +486,7 @@ devtools::session_info()</code></pre>
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiVGFibGUgMSIKb3V0cHV0OiAKICBodG1sX25vdGVib29rOgogICAgdG9jOiB0cnVlCmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogaW5saW5lCi0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2tuaXQkc2V0KHJvb3QuZGlyID0gUFJPSkhPTUUpCmBgYAojIENyZWF0aW9uIG9mIFRhYmxlIDEKClRhYmxlIG9uZSBpcyBvbmUgb2YgdGhvc2UgbG9uZywgZGVzY3JpcHRpdmUgdGFibGVzIHRoYXQgcmVxdWlyZXMgYSBsb3Qgb2YKZmlkZGxpbmcuIFRoZSAqaHV4dGFibGUqIHBhY2thZ2UgbWFrZXMgd29ya2luZyB3aXRoIHRoZXNlIHRhYmxlcyBzbGlnaHRseSBsZXNzCm9mIGEgcGFpbiBpbiB0aGUgbmVjay4gQmVjYXVzZSB0aGlzIHRhYmxlIGludm9sdmVzIHdyYXBwaW5nIGFuZCB0aGUgdGV4dApjYW4gZ2V0IHNwbGl0IHVwLCBJIGFtIG1hbnVhbGx5IGNvcHlpbmcgYW5kIHBhc3RpbmcgdGhlIHJlc3VsdCBpbnRvIG15IGRvY3VtZW50LgoKCmBgYHtyIGlzb2xhdGVfdGFibGUsIHJlc3VsdHMgPSAiYXNpcyJ9CmxpYnJhcnkoInJlYWRyIikKbGlicmFyeSgiZHBseXIiKQpsaWJyYXJ5KCJodXh0YWJsZSIpCgpjbG1uIDwtIGNvbHMoCiAgLmRlZmF1bHQgPSBjb2xfaW50ZWdlcigpLAogIFJlZ2lvbiA9IGNvbF9jaGFyYWN0ZXIoKSwKICBTb3VyY2UgPSBjb2xfY2hhcmFjdGVyKCksCiAgSG9zdCA9IGNvbF9jaGFyYWN0ZXIoKQopCgojIEhlbHBlciBmdW5jdGlvbiB0byBnZW5lcmF0ZSBwb3NpdGlvbnMgb2YgYmxhbmtzIGluIGEgY29sdW1uIGZvciBwcmV0dHkgcHJpbnRpbmcKYmxhbmtfaXQgPC0gZnVuY3Rpb24oeCl7CiAgcmVzIDwtIHJlcChUUlVFLCBsZW5ndGgoeCkpCiAgcmVzWzFdIDwtIEZBTFNFCiAgcmVzCn0KCmRhdCA8LSByZWFkcjo6cmVhZF9jc3YoZmlsZS5wYXRoKFBST0pIT01FLCAiZGF0YS9jbGVhbl9kYXRhLmNzdiIpLCBjb2xfdHlwZXMgPSBjbG1uKSAlPiUKICBtdXRhdGUoQ291bnRyeSA9IGlmZWxzZShuY2hhcihSZWdpb24pID09IDIsICJVU0EiLCBSZWdpb24pKSAlPiUgIyBEZWZpbmluZyBjb3VudHJ5IGNvbHVtbgogIG11dGF0ZShSZWdpb24gPSBpZmVsc2UobmNoYXIoUmVnaW9uKSA9PSAyLCBSZWdpb24sICIiKSkgJT4lICAgICAjIEFkZGluZyBibGFua3MgZm9yIGludGVybmF0aW9uYWwgInN0YXRlcyIKICBzZWxlY3QoQ291bnRyeSwgUmVnaW9uLCBTb3VyY2UsIFllYXIsIEhvc3QpICU+JSAgICAgICAgICAgICAgICAgIyBTdW1tYXJpemluZyB0aGUgbnVtYmVyIG9mIGlzb2xhdGVzCiAgZ3JvdXBfYnlfYWxsKCkgJT4lICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMKICBzdW1tYXJpemUoTiA9IG4oKSkgJT4lICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIwogIGFycmFuZ2UoZGVzYyhDb3VudHJ5KSwgUmVnaW9uLCBTb3VyY2UsIFllYXIpICU+JSAgICAgICAgICAgICAgICAjIFJlYXJyYW5naW5nIHJvd3MKICBncm91cF9ieShDb3VudHJ5LCBSZWdpb24sIFNvdXJjZSkgJT4lICAgICAgICAgICAgICAgICAgICAgICAgICAgIyBDb2xsYXBzaW5nIFllYXJzIGFuZCBIb3N0cwogIHN1bW1hcml6ZShZZWFyID0gcGFzdGUoc29ydCh1bmlxdWUoWWVhcikpLCBjb2xsYXBzZSA9ICIsICIpLCAgICAgIwogICAgICAgICAgICBIb3N0ID0gcGFzdGUoc29ydCh1bmlxdWUoSG9zdCkpLCBjb2xsYXBzZSA9ICIsICIpLCAgICAjCiAgICAgICAgICAgIE4gPSBzdW0oTikpICU+JSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMKICBhcnJhbmdlKGRlc2MoQ291bnRyeSksIFJlZ2lvbiwgU291cmNlLCBOKSAlPiUgICAgICAgICAgICAgICAgICAgIyBSZWFycmFuZ2luZyByb3dzCiAgZ3JvdXBfYnkoQ291bnRyeSwgUmVnaW9uKSAlPiUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgQWRkaW5nIGJsYW5rcyBpbiByZXBlYXRlZCBDb3VudHJ5IGFuZCBSZWdpb24gTmFtZXMKICBtdXRhdGUoc2V0X2JsYW5rID0gYmxhbmtfaXQoUmVnaW9uKSkgJT4lICAgICAgICAgICAgICAgICAgICAgICAgIwogIHVuZ3JvdXAoKSAlPiUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjCiAgbXV0YXRlKENvdW50cnkgPSBpZmVsc2Uoc2V0X2JsYW5rLCAiIiwgQ291bnRyeSkpICU+JSAgICAgICAgICAgICMKICBtdXRhdGUoUmVnaW9uID0gaWZlbHNlKHNldF9ibGFuaywgIiIsIFJlZ2lvbikpICU+JSAgICAgICAgICAgICAgIwogIHNlbGVjdChDb3VudHJ5LCBSZWdpb24sIFNvdXJjZSwgWWVhciwgSG9zdCwgTikgJT4lICAgICAgICAgICAgICAjCiAgcmVuYW1lKFN0YXRlID0gUmVnaW9uKSAlPiUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgUmVuYW1pbmcgY29sdW1ucwogIHJlbmFtZShgRmllbGQgQ29kZWAgPSBTb3VyY2UpICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjCiAgCmR0IDwtIGh1eHRhYmxlOjphc19odXh0YWJsZShkYXQsIGFkZF9jb2xuYW1lcyA9IFRSVUUpICU+JSAjIENyZWF0aW5nIHRoZSBodXh0YWJsZQogIHNldF9hbGlnbihldmVyeXdoZXJlLCBjb2wgPSA0LCB2YWx1ZSA9ICJyaWdodCIpICU+JSAgICAgIyBBbGlnbmluZyBudW1lcmljIGNvbHVtbnMgdG8gdGhlIHJpZ2h0CiAgc2V0X2FsaWduKGV2ZXJ5d2hlcmUsIGNvbCA9IDYsIHZhbHVlID0gInJpZ2h0IikgJT4lICAgICAjIAogIHNldF93cmFwKFRSVUUpICU+JSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIyBXcmFwcGluZyBjb2x1bW5zCiAgc2V0X251bWJlcl9mb3JtYXQodmFsdWUgPSAwKSAgICAgICAgICAgICAgICAgICAgICAgICAgICAjIFByaW50IG51bWJlcnMgd2l0aG91dCBkZWNpbWFscwpjb2xfd2lkdGgoZHQpIDwtIGMoMC4wNTUsIDAuMDM1LCAwLjA2LCAwLjEsIDAuMTUxLCAwLjAyNSkgIyBTcGVjaWZ5IHdpZHRoIGZvciBlYWNoIGNvbHVtbgpwcmludF9tZChkdCkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIyBwcmludCBpbiBwYW5kb2MgbWFya2Rvd24gZm9ybWF0CmBgYAoKCgojIyBTZXNzaW9uIEluZm9ybWF0aW9uCgpgYGB7ciBzZXNzaW9uX2luZm99Cm9wdGlvbnMod2lkdGggPSAxMDApCmRldnRvb2xzOjpzZXNzaW9uX2luZm8oKQpgYGAK</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiVGFibGUgMSIKb3V0cHV0OiAKICBodG1sX25vdGVib29rOgogICAgdG9jOiB0cnVlCmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogaW5saW5lCi0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2tuaXQkc2V0KHJvb3QuZGlyID0gUFJPSkhPTUUpCmBgYAojIENyZWF0aW9uIG9mIFRhYmxlIDEKClRhYmxlIG9uZSBpcyBvbmUgb2YgdGhvc2UgbG9uZywgZGVzY3JpcHRpdmUgdGFibGVzIHRoYXQgcmVxdWlyZXMgYSBsb3Qgb2YKZmlkZGxpbmcuIFRoZSAqaHV4dGFibGUqIHBhY2thZ2UgbWFrZXMgd29ya2luZyB3aXRoIHRoZXNlIHRhYmxlcyBzbGlnaHRseSBsZXNzCm9mIGEgcGFpbiBpbiB0aGUgbmVjay4gQmVjYXVzZSB0aGlzIHRhYmxlIGludm9sdmVzIHdyYXBwaW5nIGFuZCB0aGUgdGV4dApjYW4gZ2V0IHNwbGl0IHVwLCBJIGFtIG1hbnVhbGx5IGNvcHlpbmcgYW5kIHBhc3RpbmcgdGhlIHJlc3VsdCBpbnRvIG15IGRvY3VtZW50LgoKCmBgYHtyIGlzb2xhdGVfdGFibGUsIGNvbW1lbnQgPSBOQX0KbGlicmFyeSgicmVhZHIiKQpsaWJyYXJ5KCJkcGx5ciIpCmxpYnJhcnkoImh1eHRhYmxlIikKCmNsbW4gPC0gY29scygKICAuZGVmYXVsdCA9IGNvbF9pbnRlZ2VyKCksCiAgUmVnaW9uID0gY29sX2NoYXJhY3RlcigpLAogIFNvdXJjZSA9IGNvbF9jaGFyYWN0ZXIoKSwKICBIb3N0ID0gY29sX2NoYXJhY3RlcigpCikKCiMgSGVscGVyIGZ1bmN0aW9uIHRvIGdlbmVyYXRlIHBvc2l0aW9ucyBvZiBibGFua3MgaW4gYSBjb2x1bW4gZm9yIHByZXR0eSBwcmludGluZwpibGFua19pdCA8LSBmdW5jdGlvbih4KXsKICByZXMgPC0gcmVwKFRSVUUsIGxlbmd0aCh4KSkKICByZXNbMV0gPC0gRkFMU0UKICByZXMKfQoKZGF0IDwtIHJlYWRyOjpyZWFkX2NzdihmaWxlLnBhdGgoUFJPSkhPTUUsICJkYXRhL2NsZWFuX2RhdGEuY3N2IiksIGNvbF90eXBlcyA9IGNsbW4pICU+JQogIG11dGF0ZShDb3VudHJ5ID0gaWZlbHNlKG5jaGFyKFJlZ2lvbikgPT0gMiwgIlVTQSIsIFJlZ2lvbikpICU+JSAjIERlZmluaW5nIGNvdW50cnkgY29sdW1uCiAgbXV0YXRlKFJlZ2lvbiA9IGlmZWxzZShuY2hhcihSZWdpb24pID09IDIsIFJlZ2lvbiwgIiIpKSAlPiUgICAgICMgQWRkaW5nIGJsYW5rcyBmb3IgaW50ZXJuYXRpb25hbCAic3RhdGVzIgogIHNlbGVjdChDb3VudHJ5LCBSZWdpb24sIFNvdXJjZSwgWWVhciwgSG9zdCkgJT4lICAgICAgICAgICAgICAgICAjIFN1bW1hcml6aW5nIHRoZSBudW1iZXIgb2YgaXNvbGF0ZXMKICBncm91cF9ieV9hbGwoKSAlPiUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIwogIHN1bW1hcml6ZShOID0gbigpKSAlPiUgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjCiAgYXJyYW5nZShkZXNjKENvdW50cnkpLCBSZWdpb24sIFNvdXJjZSwgWWVhcikgJT4lICAgICAgICAgICAgICAgICMgUmVhcnJhbmdpbmcgcm93cwogIGdyb3VwX2J5KENvdW50cnksIFJlZ2lvbiwgU291cmNlKSAlPiUgICAgICAgICAgICAgICAgICAgICAgICAgICAjIENvbGxhcHNpbmcgWWVhcnMgYW5kIEhvc3RzCiAgc3VtbWFyaXplKFllYXIgPSBwYXN0ZShzb3J0KHVuaXF1ZShZZWFyKSksIGNvbGxhcHNlID0gIiwgIiksICAgICAjCiAgICAgICAgICAgIEhvc3QgPSBwYXN0ZShzb3J0KHVuaXF1ZShIb3N0KSksIGNvbGxhcHNlID0gIiwgIiksICAgICMKICAgICAgICAgICAgTiA9IHN1bShOKSkgJT4lICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIwogIGFycmFuZ2UoZGVzYyhDb3VudHJ5KSwgUmVnaW9uLCBTb3VyY2UsIE4pICU+JSAgICAgICAgICAgICAgICAgICAjIFJlYXJyYW5naW5nIHJvd3MKICBncm91cF9ieShDb3VudHJ5LCBSZWdpb24pICU+JSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIyBBZGRpbmcgYmxhbmtzIGluIHJlcGVhdGVkIENvdW50cnkgYW5kIFJlZ2lvbiBOYW1lcwogIG11dGF0ZShzZXRfYmxhbmsgPSBibGFua19pdChSZWdpb24pKSAlPiUgICAgICAgICAgICAgICAgICAgICAgICAjCiAgdW5ncm91cCgpICU+JSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMKICBtdXRhdGUoQ291bnRyeSA9IGlmZWxzZShzZXRfYmxhbmssICIiLCBDb3VudHJ5KSkgJT4lICAgICAgICAgICAgIwogIG11dGF0ZShSZWdpb24gPSBpZmVsc2Uoc2V0X2JsYW5rLCAiIiwgUmVnaW9uKSkgJT4lICAgICAgICAgICAgICAjCiAgc2VsZWN0KENvdW50cnksIFJlZ2lvbiwgU291cmNlLCBZZWFyLCBIb3N0LCBOKSAlPiUgICAgICAgICAgICAgICMKICByZW5hbWUoU3RhdGUgPSBSZWdpb24pICU+JSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIyBSZW5hbWluZyBjb2x1bW5zCiAgcmVuYW1lKGBGaWVsZCBDb2RlYCA9IFNvdXJjZSkgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICMKICAKZHQgPC0gaHV4dGFibGU6OmFzX2h1eHRhYmxlKGRhdCwgYWRkX2NvbG5hbWVzID0gVFJVRSkgJT4lICMgQ3JlYXRpbmcgdGhlIGh1eHRhYmxlCiAgc2V0X2FsaWduKGV2ZXJ5d2hlcmUsIGNvbCA9IDQsIHZhbHVlID0gInJpZ2h0IikgJT4lICAgICAjIEFsaWduaW5nIG51bWVyaWMgY29sdW1ucyB0byB0aGUgcmlnaHQKICBzZXRfYWxpZ24oZXZlcnl3aGVyZSwgY29sID0gNiwgdmFsdWUgPSAicmlnaHQiKSAlPiUgICAgICMgCiAgc2V0X3dyYXAoVFJVRSkgJT4lICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjIFdyYXBwaW5nIGNvbHVtbnMKICBzZXRfbnVtYmVyX2Zvcm1hdCh2YWx1ZSA9IDApICAgICAgICAgICAgICAgICAgICAgICAgICAgICMgUHJpbnQgbnVtYmVycyB3aXRob3V0IGRlY2ltYWxzCmNvbF93aWR0aChkdCkgPC0gYygwLjA1NSwgMC4wMzUsIDAuMDYsIDAuMSwgMC4xNTEsIDAuMDI1KSAjIFNwZWNpZnkgd2lkdGggZm9yIGVhY2ggY29sdW1uCnByaW50X21kKGR0KSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAjIHByaW50IGluIHBhbmRvYyBtYXJrZG93biBmb3JtYXQKYGBgCgoKCiMjIFNlc3Npb24gSW5mb3JtYXRpb24KCmBgYHtyIHNlc3Npb25faW5mb30Kb3B0aW9ucyh3aWR0aCA9IDEwMCkKZGV2dG9vbHM6OnNlc3Npb25faW5mbygpCmBgYAo=</div>
 
 
 

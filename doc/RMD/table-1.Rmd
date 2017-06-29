@@ -18,7 +18,7 @@ of a pain in the neck. Because this table involves wrapping and the text
 can get split up, I am manually copying and pasting the result into my document.
 
 
-```{r isolate_table, results = "asis"}
+```{r isolate_table, comment = NA}
 library("readr")
 library("dplyr")
 library("huxtable")
