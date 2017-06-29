@@ -4,6 +4,7 @@ THE_DATA   := data/clean_data.csv \
               data/sclerotinia_16_loci.rda
 ANALYSES   := results/table-1.md \
               results/MCG-virulence.md \
+              results/locus-stats.md \
               results/MLG-distribution.md \
               results/mlg-mcg.md \
               results/RDA-analysis.md \

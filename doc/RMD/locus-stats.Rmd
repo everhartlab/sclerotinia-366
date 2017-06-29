@@ -1,0 +1,50 @@
+---
+title: "Locus Statistics"
+output: 
+  html_notebook:
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = PROJHOME)
+```
+
+# Purpose
+
+This will tabulate statistics per locus for presentation in a table.
+
+```{r}
+library("poppr")
+load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
+```
+
+```{r locus_table, comment = NA}
+makerange <- . %>% as.integer() %>% range() %>% paste(collapse = "-")
+
+ranges <- map_chr(alleles(dat11), makerange)
+ranges <- c(ranges, alleles(dat11) %>% unlist(use.names = FALSE) %>% makerange)
+locus_table(dat11, information = FALSE) %>% 
+  as.data.frame() %>%
+  rownames_to_column("Locus") %>%
+  mutate(Locus = gsub("\\([FH]\\)", "", Locus)) %>%
+  add_column(Range = ranges) %>%
+  select(Locus, Range, allele, Hexp, Evenness) %>%
+  mutate(allele = round(allele, 2)) %>%
+  rename(`$H_{exp}$` = Hexp, `No. alleles` = allele) %>%
+  huxtable::as_huxtable(add_colnames = TRUE) %>%
+  huxtable::set_number_format(1:12, 3, 0) %>%
+  huxtable::set_number_format(everywhere, 4:5, 2) %>%
+  huxtable::set_align(everywhere, 3:5, "right") %>%
+  huxtable::set_col_width(c(0.06, 0.07, 0.123, 0.09, 0.08)) %>%
+  huxtable::print_md(max_width = 47)
+```
+
+
+## Session Information
+
+```{r session_info}
+options(width = 100)
+devtools::session_info()
+```
