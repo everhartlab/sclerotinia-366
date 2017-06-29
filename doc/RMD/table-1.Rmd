@@ -1,0 +1,77 @@
+---
+title: "Table 1"
+output: 
+  html_notebook:
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = PROJHOME)
+```
+# Creation of Table 1
+
+Table one is one of those long, descriptive tables that requires a lot of
+fiddling. The *huxtable* package makes working with these tables slightly less
+of a pain in the neck. Because this table involves wrapping and the text
+can get split up, I am manually copying and pasting the result into my document.
+
+
+```{r isolate_table, results = "asis"}
+library("readr")
+library("dplyr")
+library("huxtable")
+
+clmn <- cols(
+  .default = col_integer(),
+  Region = col_character(),
+  Source = col_character(),
+  Host = col_character()
+)
+
+# Helper function to generate positions of blanks in a column for pretty printing
+blank_it <- function(x){
+  res <- rep(TRUE, length(x))
+  res[1] <- FALSE
+  res
+}
+
+dat <- readr::read_csv(file.path(PROJHOME, "data/clean_data.csv"), col_types = clmn) %>%
+  mutate(Country = ifelse(nchar(Region) == 2, "USA", Region)) %>% # Defining country column
+  mutate(Region = ifelse(nchar(Region) == 2, Region, "")) %>%     # Adding blanks for international "states"
+  select(Country, Region, Source, Year, Host) %>%                 # Summarizing the number of isolates
+  group_by_all() %>%                                              #
+  summarize(N = n()) %>%                                          #
+  arrange(desc(Country), Region, Source, Year) %>%                # Rearranging rows
+  group_by(Country, Region, Source) %>%                           # Collapsing Years and Hosts
+  summarize(Year = paste(sort(unique(Year)), collapse = ", "),     #
+            Host = paste(sort(unique(Host)), collapse = ", "),    #
+            N = sum(N)) %>%                                       #
+  arrange(desc(Country), Region, Source, N) %>%                   # Rearranging rows
+  group_by(Country, Region) %>%                                   # Adding blanks in repeated Country and Region Names
+  mutate(set_blank = blank_it(Region)) %>%                        #
+  ungroup() %>%                                                   #
+  mutate(Country = ifelse(set_blank, "", Country)) %>%            #
+  mutate(Region = ifelse(set_blank, "", Region)) %>%              #
+  select(Country, Region, Source, Year, Host, N) %>%              #
+  rename(State = Region) %>%                                      # Renaming columns
+  rename(`Field Code` = Source)                                   #
+  
+dt <- huxtable::as_huxtable(dat, add_colnames = TRUE) %>% # Creating the huxtable
+  set_align(everywhere, col = 4, value = "right") %>%     # Aligning numeric columns to the right
+  set_align(everywhere, col = 6, value = "right") %>%     # 
+  set_wrap(TRUE) %>%                                      # Wrapping columns
+  set_number_format(value = 0)                            # Print numbers without decimals
+col_width(dt) <- c(0.055, 0.035, 0.06, 0.1, 0.151, 0.025) # Specify width for each column
+print_md(dt)                                              # print in pandoc markdown format
+```
+
+
+
+## Session Information
+
+```{r session_info}
+options(width = 100)
+devtools::session_info()
+```
