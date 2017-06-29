@@ -25,6 +25,7 @@ library("huxtable")
 
 clmn <- cols(
   .default = col_integer(),
+  Severity = col_double(),
   Region = col_character(),
   Source = col_character(),
   Host = col_character()
