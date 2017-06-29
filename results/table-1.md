@@ -63,6 +63,7 @@ The following object is masked from 'package:stats':
 ```r
 clmn <- cols(
   .default = col_integer(),
+  Severity = col_double(),
   Region = col_character(),
   Source = col_character(),
   Host = col_character()

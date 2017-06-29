@@ -349,7 +349,7 @@ dplyr::setequal(saj, syd)
 ```
 
 ```
-## FALSE: Rows in x but not y: 363, 260, 364, 41, 40, 39, 38, 365, 366. Rows in y but not x: 366, 363, 41, 40, 39, 38, 364, 260, 365.
+## FALSE: Rows in x but not y: 366, 364, 363, 365, 260, 40, 39, 38, 41. Rows in y but not x: 366, 364, 363, 260, 41, 40, 39, 38, 365.
 ```
 
 Okay, something's not cromulent here. We'll have to manaully inspect these:
@@ -438,10 +438,10 @@ abbreviations for France, Mexico, and Australia to the full names.
 dat <- saj %>% 
   select(-(Isolate:Host)) %>% 
   df2genind(ind.names = saj$Isolate, 
-            strata = select(saj, MCG:Host), # Filtering out severity and Isolate
+            strata = select(saj, Severity:Host), # Filtering out severity and Isolate
             ploidy = 1) %>%
   as.genclone()
-nameStrata(dat)[2] <- "Region"
+nameStrata(dat)[3] <- "Region"
 pops <- levels(strata(dat)$Region)
 levels(strata(dat)$Region) <- case_when(pops == "FR" ~ "France", 
                                         pops == "MX" ~ "Mexico", 
@@ -462,7 +462,7 @@ dat
 ## 
 ## Population information:
 ## 
-##      5 strata - MCG, Region, Source, Year, Host
+##      6 strata - Severity, MCG, Region, Source, Year, Host
 ##      0 populations defined.
 ```
 
@@ -658,7 +658,7 @@ corrected_loci <- ex %>% gather(locus, allele, -1) %>%
            c("Isolate", "Severity", "MCG", "State", "Source", "Year", "Host"), 
            sep = "_") %>%
   arrange(Isolate) %>%
-  select(-(Severity:Host))
+  select(-(MCG:Host))
 datdf <- genind2df(dat, usepop = FALSE) %>% 
   rownames_to_column(var = "Isolate") %>% 
   left_join(corrected_loci, by = "Isolate")
@@ -671,7 +671,7 @@ dat   <- datdf %>%
 
 strata(dat) %>%
   bind_cols(datdf) %>%
-  as_data_frame() %>%
+  dplyr::as_data_frame() %>%
   readr::write_csv("data/clean_data.csv", col_names = TRUE)
 ```
 
@@ -680,10 +680,15 @@ necessary for delimiting the strata, we will place them in the "other" slot
 after converting Severity to numeric. Placing this information in the "other"
 slot ensures that these data will travel with the object.
 
+> Note 2017-06-29: I realized that the severity data was not present in the
+> clean data, so I added that in the strata above. To avoid downstream effects,
+> I'm additionally removing it from the data set here:
+
 
 ```r
 stopifnot(identical(indNames(dat), saj$Isolate))
 other(dat)$meta <- select(saj, Severity, Isolate)
+strata(dat) <- select(strata(dat), -Severity)
 other(dat)$REPLEN <- fix_replen(dat, repeat_lengths)
 ```
 
@@ -805,7 +810,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-23
+##  date     2017-06-29
 ```
 
 ```

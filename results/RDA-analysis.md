@@ -868,7 +868,7 @@ plot_poppr_msn(wmn11,
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-28
+##  date     2017-06-29
 ```
 
 ```
