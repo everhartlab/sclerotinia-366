@@ -17,12 +17,15 @@ fiddling. The *huxtable* package makes working with these tables slightly less
 of a pain in the neck. Because this table involves wrapping and the text
 can get split up, I am manually copying and pasting the result into my document.
 
-
-```{r isolate_table, comment = NA}
+```{r load_packages, warnings = FALSE, messages = FALSE}
 library("readr")
 library("dplyr")
 library("huxtable")
+```
 
+
+
+```{r isolate_table, comment = NA}
 clmn <- cols(
   .default = col_integer(),
   Severity = col_double(),
@@ -40,16 +43,16 @@ blank_it <- function(x){
 
 dat <- readr::read_csv(file.path(PROJHOME, "data/clean_data.csv"), col_types = clmn) %>%
   mutate(Country = ifelse(nchar(Region) == 2, "USA", Region)) %>% # Defining country column
-  mutate(Region = ifelse(nchar(Region) == 2, Region, "")) %>%     # Adding blanks for international "states"
+  mutate(Region = ifelse(nchar(Region) == 2, Region, "-")) %>%     # Adding blanks for international "states"
   select(Country, Region, Source, Year, Host) %>%                 # Summarizing the number of isolates
   group_by_all() %>%                                              #
   summarize(N = n()) %>%                                          #
   arrange(desc(Country), Region, Source, Year) %>%                # Rearranging rows
   group_by(Country, Region, Source) %>%                           # Collapsing Years and Hosts
-  summarize(Year = paste(sort(unique(Year)), collapse = ", "),     #
+  summarize(Year = paste(sort(unique(Year)), collapse = ", "),    #
             Host = paste(sort(unique(Host)), collapse = ", "),    #
             N = sum(N)) %>%                                       #
-  arrange(desc(Country), Region, Source, N) %>%                   # Rearranging rows
+  arrange(desc(Country), Region, desc(N)) %>%                     # Rearranging rows
   group_by(Country, Region) %>%                                   # Adding blanks in repeated Country and Region Names
   mutate(set_blank = blank_it(Region)) %>%                        #
   ungroup() %>%                                                   #
@@ -70,9 +73,12 @@ print_md(dt)                                              # print in pandoc mark
 
 
 
-## Session Information
+<details>
+<summary>Session Information</summary>
 
-```{r session_info}
+```{r, echo = FALSE}
 options(width = 100)
 devtools::session_info()
 ```
+
+</details>
