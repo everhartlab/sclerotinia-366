@@ -304,7 +304,7 @@ Barplot showing abundance of each Mycelial Compatibility Group (MCG) in descendi
 Singletons (46) have been removed for clarity.
 White bars represent sample counts and grey bars represent counts of unique multilocus genotypes (MLG).
 The transparency associated with the grey bars represent the evenness of the distribution of the MLGs within a given MCG as shown in the inset histograms.
-](../../results/figures/publication/Figure1Z.pdf){#barplot width=70%}
+](../../results/figures/publication/Figure1Z.pdf){#barplot width=50%}
 
 <!--  ZNK: I think figures 1-4 are a bit redundant with the tables in the text. It might be better to simply remove them. -->
 A total of 366 isolates were collected from 2003 to 2012 from diseased dry bean plants in 11 states in the US, Australia (2 mainland; 4 Tasmania), Mexico, and France **(Fig. 1)**.
@@ -343,7 +343,14 @@ Isolates with MLG 15 were identified from populations in MI, WA, CO, and ND.
 The MLGs 163, 165 and 15 had 15, 7, and 4 individuals across these populations, respectively.
 The highest number of clones was recorded from ND, NE, and MI, which included 20, 10 and 7 isolates, respectively **(Table 4)**.
 
-The associations between MCGs and MLGs are complicated \@ref(biggraph)
+The associations between MCGs and MLGs are complicated (Fig. \@ref(biggraph))
+
+![
+Graph showing complex associations between Mycelial Compatibility Groups (dotted nodes) and Multilocus Genotypes (full nodes). 
+Node size reflect the number of samples represented by each node (circle).
+Edges (arrows) point from Mycelial Compatibility Group to Multilocus Genotype where the weight (thickness) of the edge represents the number of samples shared.
+Node color represents the community assignment based on the walktrap algorithm with a maximum of four steps [@pons2006computing].
+](../../results/figures/publication/FigureS2.pdf){#biggraph width=100%}
 
 <!-- community graph figure -->
 
@@ -629,8 +636,3 @@ Will not work with HTML outputs, though. -->
 \renewcommand{\thefigure}{S\arabic{figure}}
 
 
-![
-Graph showing associations between Mycelial Compatibility Groups dotted outline and Multilocus Genotypes full outline
-](../../results/figures/publication/FigureS2.pdf){#biggraph width=100%}
-
-\newpage
