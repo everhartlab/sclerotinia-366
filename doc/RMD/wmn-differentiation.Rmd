@@ -1,0 +1,107 @@
+---
+title: "R Notebook"
+output: 
+  html_notebook:
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+```{r setup, include = FALSE}
+knitr::opts_knit$set(root.dir = PROJHOME)
+```
+
+
+
+```{r packages, message = FALSE, warning = FALSE}
+library("tidyverse")
+library("poppr")
+(load("data/sclerotinia_16_loci.rda"))
+```
+
+# Purpose
+
+The white mold nursery populations are unique because they are not fungicide
+treated and have the same cultivars planted in them year after year.
+
+The question becomes, are white mold nurseries differentiated from each other or
+are they more or less homogeneous? We could use AMOVA to test for these with
+location and binary source (wmn or non-wmn) as the hierarchy.
+
+
+# Data Setup
+
+First, we want to clone-correct our data down to the field level so that we
+don't accidentally include non-independent samples.
+
+```{r correction}
+dat11
+dat11cc <- clonecorrect(dat11, ~Region/Source/Host/Year)
+dat11cc
+```
+
+Now that we've done that, we should make a new variable in the strata that 
+separates the white mold nurseries from the others. We'll call this stratum 
+"Source Type".
+
+```{r new_stratum}
+addStrata(dat11cc) <- strata(dat11cc) %>% 
+  mutate(SourceType = forcats::fct_inorder(ifelse(Source == "wmn", "wmn", "other"))) %>%
+  select(SourceType)
+setPop(dat11cc) <- ~SourceType
+dat11cc
+```
+
+I can perform AMOVA on the newly defined variable using Bruvo's distance.
+
+```{r AMOVA}
+other(dat11cc)$REPLEN
+bd <- bruvo.dist(dat11cc, replen = other(dat11cc)$REPLEN)
+(ssc_amova <- poppr.amova(dat11cc, ~SourceType, dist = bd, quiet = TRUE))
+ssc_amova_test <- randtest(ssc_amova, nrepet = 999)
+plot(ssc_amova_test)
+ssc_amova_test
+```
+
+
+This result is telling us that there is some subdivision between white mold
+nurseries and non-white mold nurseries. Of course, from previous analyses, we
+know that Mexico is differentiated from other populations, so what happens if we
+account for Region? Here, we are placing region lower in the heirarchy because
+we specifically want to test the effect of region on the differentiation between
+white mold nurseries within different regions.
+
+```{r AMOVA-Region, cache = TRUE}
+(ssc_amova_region <- poppr.amova(dat11cc, ~SourceType/Region, dist = bd, quiet = TRUE))
+ssc_amova_region_test <- randtest(ssc_amova_region, nrepet = 999)
+plot(ssc_amova_region_test)
+ssc_amova_region_test
+```
+
+Okay! This shows that when we account for Region after accounting for Source
+Type, we find that the differentiation is coming mainly from the Regions. What
+happens when we remove Mexico?
+
+```{r AMOVA-nomex, cache = TRUE}
+datnomex <- setPop(dat11cc, ~Region) %>% popsub(blacklist = "Mexico")
+bdnm     <- bruvo.dist(datnomex, replen = other(datnomex)$REPLEN)
+(ssc_amova_nm <- poppr.amova(datnomex, ~SourceType/Region, dist = bdnm, quiet = TRUE))
+ssc_amova_nm_test <- randtest(ssc_amova_nm, nrepet = 999)
+plot(ssc_amova_nm_test)
+ssc_amova_nm_test
+```
+
+When we remove the Mexican isolates (which only contained white mold nurseries
+and shared no genotypes), we see that indeed, the degree of differentiation
+went down. 
+
+<details>
+<summary>Session Information</summary>
+
+```{r, echo = FALSE}
+options(width = 100)
+devtools::session_info()
+```
+
+</details>
