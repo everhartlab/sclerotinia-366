@@ -19,44 +19,7 @@ can get split up, I am manually copying and pasting the result into my document.
 ```r
 library("readr")
 library("dplyr")
-```
-
-```
-## 
-## Attaching package: 'dplyr'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     filter, lag
-```
-
-```
-## The following objects are masked from 'package:base':
-## 
-##     intersect, setdiff, setequal, union
-```
-
-```r
 library("huxtable")
-```
-
-```
-## 
-## Attaching package: 'huxtable'
-```
-
-```
-## The following object is masked from 'package:dplyr':
-## 
-##     add_rownames
-```
-
-```
-## The following object is masked from 'package:stats':
-## 
-##     filter
 ```
 
 
