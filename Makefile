@@ -8,7 +8,8 @@ ANALYSES   := results/table-1.md \
               results/MLG-distribution.md \
               results/mlg-mcg.md \
               results/RDA-analysis.md \
-              results/pop-diff.md
+              results/pop-diff.md \
+              results/wmn-differentiation.md
 MANUSCRIPT := doc/manuscript/manuscript.pdf
 COMPONENTS := doc/manuscript/abstract.md \
               doc/manuscript/ssc_bibliography.bib \
