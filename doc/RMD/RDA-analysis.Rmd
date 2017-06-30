@@ -23,7 +23,7 @@ Below is my attempt at reproduction of Sajeewa's analysis.
 
 ## Packages and Data
 
-```{r, load_packages}
+```{r, load_packages, message = FALSE, warning = FALSE}
 library('tidyverse')
 library('poppr')
 library('vegan')

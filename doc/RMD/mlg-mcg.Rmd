@@ -24,7 +24,7 @@ consistently coordinate with a single MCG, or if there are anything close.
 
 ## Packages and Data
 
-```{r load_packages}
+```{r load_packages, message = FALSE, warning = FALSE}
 library('igraph')
 library('ggraph')
 library('tidyverse')
@@ -191,7 +191,7 @@ type (MCG/Count) to color and the opacity (alpha) to Evenness.
 
 ```{r barplots, fig.width = 5, fig.height = 10}
 mcg_graph <- mcgs %>% 
-  filter(MLGs > 1) %>%
+  filter(Samples > 1) %>%
   gather(type, count, MLGs, Samples, -Evenness) %>%
   arrange(desc(type), count) %>%
   rename(Type = type) %>%

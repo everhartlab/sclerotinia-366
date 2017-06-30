@@ -3,6 +3,8 @@ title: "Population Differentiation Analysis"
 output: 
   html_notebook:
     toc: true
+editor_options: 
+  chunk_output_type: inline
 ---
 
 
@@ -16,7 +18,7 @@ knitr::opts_knit$set(root.dir = PROJHOME)
 
 ## Packages and Data
 
-```{r load_packages}
+```{r load_packages, warning = FALSE, message = FALSE}
 library('tidyverse')
 library('poppr')
 library('ggcompoplot')
