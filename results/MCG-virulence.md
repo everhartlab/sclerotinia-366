@@ -12,24 +12,6 @@ output:
 library("tidyverse")
 ```
 
-```
-## Loading tidyverse: ggplot2
-## Loading tidyverse: tibble
-## Loading tidyverse: tidyr
-## Loading tidyverse: readr
-## Loading tidyverse: purrr
-## Loading tidyverse: dplyr
-```
-
-```
-## Conflicts with tidy packages ----------------------------------------------
-```
-
-```
-## filter(): dplyr, stats
-## lag():    dplyr, stats
-```
-
 # Purpose
 
 This document is to assess virulence associated with the 10 most common MCGs. We
@@ -244,13 +226,9 @@ agricolae::HSD.test(ANOVA, "MCG")$groups
 There appears to be a significant effect at p = 6.189e-06.
 
 
-## Session Information
+<details>
+<summary>Session Information</summary>
 
-
-```r
-options(width = 100)
-devtools::session_info()
-```
 
 ```
 ## Session info --------------------------------------------------------------------------------------
@@ -264,7 +242,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-29
+##  date     2017-06-30
 ```
 
 ```
@@ -357,3 +335,5 @@ devtools::session_info()
 ##  withr         1.0.2   2016-06-20 CRAN (R 3.4.0) 
 ##  xml2          1.1.1   2017-01-24 CRAN (R 3.4.0)
 ```
+
+</details>

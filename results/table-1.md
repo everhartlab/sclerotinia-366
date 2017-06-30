@@ -16,27 +16,26 @@ of a pain in the neck. Because this table involves wrapping and the text
 can get split up, I am manually copying and pasting the result into my document.
 
 
-
 ```r
 library("readr")
 library("dplyr")
 ```
 
 ```
-
-Attaching package: 'dplyr'
+## 
+## Attaching package: 'dplyr'
 ```
 
 ```
-The following objects are masked from 'package:stats':
-
-    filter, lag
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
 ```
 
 ```
-The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
 ```
 
 ```r
@@ -44,21 +43,24 @@ library("huxtable")
 ```
 
 ```
-
-Attaching package: 'huxtable'
+## 
+## Attaching package: 'huxtable'
 ```
 
 ```
-The following object is masked from 'package:dplyr':
-
-    add_rownames
+## The following object is masked from 'package:dplyr':
+## 
+##     add_rownames
 ```
 
 ```
-The following object is masked from 'package:stats':
-
-    filter
+## The following object is masked from 'package:stats':
+## 
+##     filter
 ```
+
+
+
 
 ```r
 clmn <- cols(
@@ -78,16 +80,16 @@ blank_it <- function(x){
 
 dat <- readr::read_csv(file.path(PROJHOME, "data/clean_data.csv"), col_types = clmn) %>%
   mutate(Country = ifelse(nchar(Region) == 2, "USA", Region)) %>% # Defining country column
-  mutate(Region = ifelse(nchar(Region) == 2, Region, "")) %>%     # Adding blanks for international "states"
+  mutate(Region = ifelse(nchar(Region) == 2, Region, "-")) %>%     # Adding blanks for international "states"
   select(Country, Region, Source, Year, Host) %>%                 # Summarizing the number of isolates
   group_by_all() %>%                                              #
   summarize(N = n()) %>%                                          #
   arrange(desc(Country), Region, Source, Year) %>%                # Rearranging rows
   group_by(Country, Region, Source) %>%                           # Collapsing Years and Hosts
-  summarize(Year = paste(sort(unique(Year)), collapse = ", "),     #
+  summarize(Year = paste(sort(unique(Year)), collapse = ", "),    #
             Host = paste(sort(unique(Host)), collapse = ", "),    #
             N = sum(N)) %>%                                       #
-  arrange(desc(Country), Region, Source, N) %>%                   # Rearranging rows
+  arrange(desc(Country), Region, desc(N)) %>%                     # Rearranging rows
   group_by(Country, Region) %>%                                   # Adding blanks in repeated Country and Region Names
   mutate(set_blank = blank_it(Region)) %>%                        #
   ungroup() %>%                                                   #
@@ -112,103 +114,99 @@ Country   State  Field Code              Year Host                          N
 --------- ------ ---------- ----------------- -------------------------- ----
 USA       CA     wmn               2004, 2005 Beryl, Bunsi, G122           18 
 
-USA       CO     eat               2007, 2010 Yellow                       13 
-
-                 gree              2007, 2010 Pinto, Yellow                14 
+USA       CO     gree              2007, 2010 Pinto, Yellow                14 
 
                  luc               2007, 2010 Yellow                       14 
+
+                 eat               2007, 2010 Yellow                       13 
 
                  wmn                     2003 GH                            1 
 
 USA       ID     unk                     2003 GH                            1 
 
-USA       MI     eln                     2009 unk                           1 
-
-                 hur               2008, 2009 BL, Black, SR06233, Vista     5 
-
-                 mung                    2009 Zorro                         1 
-
-                 sanc                    2008 Merlot                        3 
-
-                 Sebewaing               2009 Black                         1 
-
-                 tuc               2008, 2009 Black, Fuji, Vista            6 
-
-                 unk               2003, 2009 GH, unk                       2 
-
-                 wmn        2003, 2004, 2005, 11A, 37, 38, B07104, Beryl   43 
+USA       MI     wmn        2003, 2004, 2005, 11A, 37, 38, B07104, Beryl   43 
                                    2008, 2009 , Bunsi, cornell, G122, Or      
                                               ion, PO7863, WM31               
 
+                 tuc               2008, 2009 Black, Fuji, Vista            6 
+
+                 hur               2008, 2009 BL, Black, SR06233, Vista     5 
+
+                 sanc                    2008 Merlot                        3 
+
+                 unk               2003, 2009 GH, unk                       2 
+
+                 eln                     2009 unk                           1 
+
+                 mung                    2009 Zorro                         1 
+
+                 Sebewaing               2009 Black                         1 
+
 USA       MN     wmn               2003, 2004 Beryl, Bunsi, G122           11 
 
-USA       ND     gfc               2007, 2010 unk                           9 
+USA       ND     rrv                     2007 unk                          21 
 
-                 nec                     2010 unk                           1 
-
-                 pmc                     2010 unk                           7 
-
-                 rrv                     2007 unk                          21 
-
-                 stc                     2010 unk                           2 
+                 gfc               2007, 2010 unk                           9 
 
                  tlc                     2010 unk                           9 
 
-                 wlc                     2010 unk                           4 
+                 pmc                     2010 unk                           7 
 
                  wmn                     2005 Beryl, Bunsi, G122            7 
 
-USA       NE     mtc               2007, 2010 Beryl, Emerson, Orion        12 
+                 wlc                     2010 unk                           4 
+
+                 stc                     2010 unk                           2 
+
+                 nec                     2010 unk                           1 
+
+USA       NE     wmn        2004, 2005, 2008, Beryl, Bunsi, G122, PO7683   27 
+                                         2010 , unk                           
+
+                 mtc               2007, 2010 Beryl, Emerson, Orion        12 
 
                  sbf               2007, 2009 Beryl, Pinto, Weihing         6 
 
                  unk                     2003 GH                            2 
 
-                 wmn        2004, 2005, 2008, Beryl, Bunsi, G122, PO7683   27 
-                                         2010 , unk                           
-
 USA       NY     unk                     2003 GH                            1 
 
-USA       OR     corv                    2003 G122                          1 
+USA       OR     wmn               2003, 2004 Beryl, Bunsi, G122           15 
+
+                 corv                    2003 G122                          1 
 
                  unk                     2003 GH                            1 
 
-                 wmn               2003, 2004 Beryl, Bunsi, G122           15 
-
-USA       WA     prsr                    2007 Merlot, Pinto, redkid        22 
-
-                 unk                     2003 GH                            1 
-
-                 wmn        2003, 2004, 2005, 11A, 37, 38, Beryl, Bunsi,   36 
+USA       WA     wmn        2003, 2004, 2005, 11A, 37, 38, Beryl, Bunsi,   36 
                                          2008  cornell, G122, Orion, PO7      
                                               104, PO7863, WM31               
+
+                 prsr                    2007 Merlot, Pinto, redkid        22 
+
+                 unk                     2003 GH                            1 
 
 USA       WI     dfor                    2003 GH                            1 
 
                  unk                     2003 GH                            1 
 
-Mexico           wmn                     2005 Beryl, Bunsi, G122           18 
+Mexico    -      wmn                     2005 Beryl, Bunsi, G122           18 
 
-France           flds                    2012 unk                           4 
+France    -      wmn               2004, 2005 Beryl, Bunsi, G122           18 
 
-                 wmn               2004, 2005 Beryl, Bunsi, G122           18 
+                 flds                    2012 unk                           4 
 
-Australia        vic                     2004 Beryl                         2 
+Australia -      wmn                     2004 Beryl, Bunsi, G122            4 
 
-                 wmn                     2004 Beryl, Bunsi, G122            4 
+                 vic                     2004 Beryl                         2 
 
 -----------------------------------------------------------------------------
 ```
 
 
 
-## Session Information
+<details>
+<summary>Session Information</summary>
 
-
-```r
-options(width = 100)
-devtools::session_info()
-```
 
 ```
 ## Session info --------------------------------------------------------------------------------------
@@ -222,7 +220,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-29
+##  date     2017-06-30
 ```
 
 ```
@@ -267,3 +265,5 @@ devtools::session_info()
 ##  utils       * 3.4.0   2017-04-21 local          
 ##  withr         1.0.2   2016-06-20 CRAN (R 3.4.0)
 ```
+
+</details>

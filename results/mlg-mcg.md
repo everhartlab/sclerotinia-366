@@ -586,8 +586,8 @@ mcg_mlg_graph <- ggraph(lay2) +
   scale_color_manual(values = c("black", "black", "white", "white")) +
   scale_fill_viridis(direction = -1, discrete = TRUE) +
   theme_graph(base_size = 16, base_family = "Helvetica") +
-  theme(legend.position = "bottom", legend.direction = "vertical") +
-  ggtitle("Relation of Multilocus Genotypes and MCGs") 
+  theme(legend.position = "bottom", legend.direction = "vertical")
+  # ggtitle("Relation of Multilocus Genotypes and MCGs") 
   
 mcg_mlg_graph
 ```

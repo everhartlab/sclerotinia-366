@@ -16,53 +16,7 @@ This will tabulate statistics per locus for presentation in a table.
 
 ```r
 library("tidyverse")
-```
-
-```
-## Loading tidyverse: ggplot2
-## Loading tidyverse: tibble
-## Loading tidyverse: tidyr
-## Loading tidyverse: readr
-## Loading tidyverse: purrr
-## Loading tidyverse: dplyr
-```
-
-```
-## Conflicts with tidy packages ----------------------------------------------
-```
-
-```
-## filter(): dplyr, stats
-## lag():    dplyr, stats
-```
-
-```r
 library("poppr")
-```
-
-```
-## Loading required package: adegenet
-```
-
-```
-## Loading required package: ade4
-```
-
-```
-## 
-##    /// adegenet 2.1.0 is loaded ////////////
-## 
-##    > overview: '?adegenet'
-##    > tutorials/doc/questions: 'adegenetWeb()' 
-##    > bug reports/feature requests: adegenetIssues()
-```
-
-```
-## This is poppr version 2.4.1. To get started, type package?poppr
-## OMP parallel support: available
-```
-
-```r
 load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
 ```
 
@@ -119,14 +73,9 @@ mean   153-495         6.27   0.58      0.69
 --------------------------------------------
 ```
 
+<details>
+<summary>Session Information</summary>
 
-## Session Information
-
-
-```r
-options(width = 100)
-devtools::session_info()
-```
 
 ```
 ## Session info --------------------------------------------------------------------------------------
@@ -150,7 +99,7 @@ devtools::session_info()
 ```
 ##  package     * version date       source                                  
 ##  ade4        * 1.7-6   2017-03-23 CRAN (R 3.4.0)                          
-##  adegenet    * 2.1.0   2017-05-06 Github (thibautjombart/adegenet@e07c139)
+##  adegenet    * 2.1.0   2017-06-30 Github (thibautjombart/adegenet@43b4360)
 ##  ape           4.1     2017-02-14 CRAN (R 3.4.0)                          
 ##  assertr       2.0.2.2 2017-06-06 CRAN (R 3.4.0)                          
 ##  assertthat    0.2.0   2017-04-11 CRAN (R 3.4.0)                          
@@ -248,3 +197,5 @@ devtools::session_info()
 ##  xml2          1.1.1   2017-01-24 CRAN (R 3.4.0)                          
 ##  xtable        1.8-2   2016-02-05 CRAN (R 3.4.0)
 ```
+
+</details>
