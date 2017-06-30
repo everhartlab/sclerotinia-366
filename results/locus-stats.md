@@ -15,6 +15,28 @@ This will tabulate statistics per locus for presentation in a table.
 
 
 ```r
+library("tidyverse")
+```
+
+```
+## Loading tidyverse: ggplot2
+## Loading tidyverse: tibble
+## Loading tidyverse: tidyr
+## Loading tidyverse: readr
+## Loading tidyverse: purrr
+## Loading tidyverse: dplyr
+```
+
+```
+## Conflicts with tidy packages ----------------------------------------------
+```
+
+```
+## filter(): dplyr, stats
+## lag():    dplyr, stats
+```
+
+```r
 library("poppr")
 ```
 
@@ -49,21 +71,7 @@ load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
 makerange <- . %>% as.integer() %>% range() %>% paste(collapse = "-")
 
 ranges <- map_chr(alleles(dat11), makerange)
-```
-
-```
-Error in map_chr(alleles(dat11), makerange): could not find function "map_chr"
-```
-
-```r
 ranges <- c(ranges, alleles(dat11) %>% unlist(use.names = FALSE) %>% makerange)
-```
-
-```
-Error in eval(expr, envir, enclos): object 'ranges' not found
-```
-
-```r
 locus_table(dat11, information = FALSE) %>% 
   as.data.frame() %>%
   rownames_to_column("Locus") %>%
@@ -71,17 +79,44 @@ locus_table(dat11, information = FALSE) %>%
   add_column(Range = ranges) %>%
   select(Locus, Range, allele, Hexp, Evenness) %>%
   mutate(allele = round(allele, 2)) %>%
-  rename(`$H_{exp}$` = Hexp, `No. alleles` = allele) %>%
+  rename(`*h*` = Hexp, `No. alleles` = allele) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>%
   huxtable::set_number_format(1:12, 3, 0) %>%
-  huxtable::set_number_format(everywhere, 4:5, 2) %>%
-  huxtable::set_align(everywhere, 3:5, "right") %>%
-  huxtable::set_col_width(c(0.06, 0.07, 0.123, 0.09, 0.08)) %>%
+  huxtable::set_number_format(huxtable::everywhere, 4:5, 2) %>%
+  huxtable::set_align(huxtable::everywhere, 3:5, "right") %>%
+  huxtable::set_col_width(c(0.06, 0.07, 0.12, 0.06, 0.09)) %>%
   huxtable::print_md(max_width = 47)
 ```
 
 ```
-Error in rownames_to_column(., "Locus"): could not find function "rownames_to_column"
+--------------------------------------------
+Locus  Range    No. alleles    *h*  Evenness 
+------ ------- ------------ ------ ---------
+5-2    318-324            4   0.45      0.62 
+
+6-2    483-495            3   0.64      0.95 
+
+7-2    158-174            7   0.73      0.76 
+
+8-3    244-270            7   0.74      0.79 
+
+9-2    360-382            9   0.35      0.41 
+
+12-2   214-222            5   0.58      0.78 
+
+17-3   342-363            7   0.55      0.53 
+
+20-3   280-282            2   0.05      0.42 
+
+55-4   153-216           10   0.72      0.66 
+
+110-4  370-386            5   0.76      0.91 
+
+114-4  339-416           10   0.83      0.80 
+
+mean   153-495         6.27   0.58      0.69 
+
+--------------------------------------------
 ```
 
 
@@ -105,7 +140,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-29
+##  date     2017-06-30
 ```
 
 ```
@@ -121,8 +156,10 @@ devtools::session_info()
 ##  assertthat    0.2.0   2017-04-11 CRAN (R 3.4.0)                          
 ##  base        * 3.4.0   2017-04-21 local                                   
 ##  bindr         0.1     2016-11-13 CRAN (R 3.4.0)                          
-##  bindrcpp      0.2     2017-06-17 CRAN (R 3.4.0)                          
+##  bindrcpp    * 0.2     2017-06-17 CRAN (R 3.4.0)                          
 ##  boot          1.3-19  2017-04-21 CRAN (R 3.4.0)                          
+##  broom         0.4.2   2017-02-13 CRAN (R 3.4.0)                          
+##  cellranger    1.1.0   2016-07-27 CRAN (R 3.4.0)                          
 ##  cluster       2.0.6   2017-03-16 CRAN (R 3.4.0)                          
 ##  coda          0.19-1  2016-12-08 CRAN (R 3.4.0)                          
 ##  colorspace    1.3-2   2016-12-14 CRAN (R 3.4.0)                          
@@ -132,13 +169,15 @@ devtools::session_info()
 ##  deldir        0.1-14  2017-04-22 CRAN (R 3.4.0)                          
 ##  devtools      1.13.2  2017-06-02 CRAN (R 3.4.0)                          
 ##  digest        0.6.12  2017-01-27 CRAN (R 3.4.0)                          
-##  dplyr         0.7.1   2017-06-22 CRAN (R 3.4.0)                          
+##  dplyr       * 0.7.1   2017-06-22 CRAN (R 3.4.0)                          
 ##  evaluate      0.10    2016-10-11 CRAN (R 3.4.0)                          
 ##  expm          0.999-2 2017-03-29 CRAN (R 3.4.0)                          
 ##  ezknitr       0.6     2016-09-16 CRAN (R 3.4.0)                          
 ##  fastmatch     1.1-0   2017-01-28 CRAN (R 3.4.0)                          
+##  forcats       0.2.0   2017-01-23 CRAN (R 3.4.0)                          
+##  foreign       0.8-69  2017-06-21 CRAN (R 3.4.0)                          
 ##  gdata         2.18.0  2017-06-06 CRAN (R 3.4.0)                          
-##  ggplot2       2.2.1   2016-12-30 CRAN (R 3.4.0)                          
+##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.0)                          
 ##  glue          1.1.1   2017-06-21 CRAN (R 3.4.0)                          
 ##  gmodels       2.16.2  2015-07-22 CRAN (R 3.4.0)                          
 ##  graphics    * 3.4.0   2017-04-21 local                                   
@@ -146,13 +185,19 @@ devtools::session_info()
 ##  grid          3.4.0   2017-04-21 local                                   
 ##  gtable        0.2.0   2016-02-26 CRAN (R 3.4.0)                          
 ##  gtools        3.5.0   2015-05-29 CRAN (R 3.4.0)                          
+##  haven         1.0.0   2016-09-23 CRAN (R 3.4.0)                          
+##  hms           0.3     2016-11-22 CRAN (R 3.4.0)                          
 ##  htmltools     0.3.6   2017-04-28 CRAN (R 3.4.0)                          
 ##  httpuv        1.3.3   2015-08-04 CRAN (R 3.4.0)                          
+##  httr          1.2.1   2016-07-03 CRAN (R 3.4.0)                          
+##  huxtable      0.3.0   2017-05-18 CRAN (R 3.4.0)                          
 ##  igraph        1.0.1   2015-06-26 CRAN (R 3.4.0)                          
+##  jsonlite      1.5     2017-06-01 CRAN (R 3.4.0)                          
 ##  knitr       * 1.16    2017-05-18 CRAN (R 3.4.0)                          
 ##  lattice       0.20-35 2017-03-25 CRAN (R 3.4.0)                          
 ##  lazyeval      0.2.0   2016-06-12 CRAN (R 3.4.0)                          
 ##  LearnBayes    2.15    2014-05-29 CRAN (R 3.4.0)                          
+##  lubridate     1.6.0   2016-09-13 CRAN (R 3.4.0)                          
 ##  magrittr      1.5     2014-11-22 CRAN (R 3.4.0)                          
 ##  MASS          7.3-47  2017-04-21 CRAN (R 3.4.0)                          
 ##  Matrix        1.2-10  2017-04-28 CRAN (R 3.4.0)                          
@@ -160,6 +205,8 @@ devtools::session_info()
 ##  methods     * 3.4.0   2017-04-21 local                                   
 ##  mgcv          1.8-17  2017-02-08 CRAN (R 3.4.0)                          
 ##  mime          0.5     2016-07-07 CRAN (R 3.4.0)                          
+##  mnormt        1.5-5   2016-10-15 CRAN (R 3.4.0)                          
+##  modelr        0.1.0   2016-08-31 CRAN (R 3.4.0)                          
 ##  munsell       0.4.3   2016-02-13 CRAN (R 3.4.0)                          
 ##  nlme          3.1-131 2017-02-06 CRAN (R 3.4.0)                          
 ##  parallel      3.4.0   2017-04-21 local                                   
@@ -169,14 +216,19 @@ devtools::session_info()
 ##  pkgconfig     2.0.1   2017-03-21 CRAN (R 3.4.0)                          
 ##  plyr          1.8.4   2016-06-08 CRAN (R 3.4.0)                          
 ##  poppr       * 2.4.1   2017-04-14 CRAN (R 3.4.0)                          
+##  psych         1.7.5   2017-05-03 CRAN (R 3.4.0)                          
+##  purrr       * 0.2.2.2 2017-05-11 cran (@0.2.2.2)                         
 ##  quadprog      1.5-5   2013-04-17 CRAN (R 3.4.0)                          
 ##  R.methodsS3   1.7.1   2016-02-16 CRAN (R 3.4.0)                          
 ##  R.oo          1.21.0  2016-11-01 CRAN (R 3.4.0)                          
 ##  R.utils       2.5.0   2016-11-07 CRAN (R 3.4.0)                          
 ##  R6            2.2.2   2017-06-17 cran (@2.2.2)                           
 ##  Rcpp          0.12.11 2017-05-22 cran (@0.12.11)                         
+##  readr       * 1.1.1   2017-05-16 CRAN (R 3.4.0)                          
+##  readxl        1.0.0   2017-04-18 CRAN (R 3.4.0)                          
 ##  reshape2      1.4.2   2016-10-22 CRAN (R 3.4.0)                          
 ##  rlang         0.1.1   2017-05-18 CRAN (R 3.4.0)                          
+##  rvest         0.3.2   2016-06-17 CRAN (R 3.4.0)                          
 ##  scales        0.4.1   2016-11-09 CRAN (R 3.4.0)                          
 ##  seqinr        3.3-6   2017-04-06 CRAN (R 3.4.0)                          
 ##  shiny         1.0.3   2017-04-26 CRAN (R 3.4.0)                          
@@ -186,10 +238,13 @@ devtools::session_info()
 ##  stats       * 3.4.0   2017-04-21 local                                   
 ##  stringi       1.1.5   2017-04-07 CRAN (R 3.4.0)                          
 ##  stringr       1.2.0   2017-02-18 CRAN (R 3.4.0)                          
-##  tibble        1.3.3   2017-05-28 CRAN (R 3.4.0)                          
+##  tibble      * 1.3.3   2017-05-28 CRAN (R 3.4.0)                          
+##  tidyr       * 0.6.3   2017-05-15 CRAN (R 3.4.0)                          
+##  tidyverse   * 1.1.1   2017-01-27 CRAN (R 3.4.0)                          
 ##  tools         3.4.0   2017-04-21 local                                   
 ##  utils       * 3.4.0   2017-04-21 local                                   
 ##  vegan         2.4-3   2017-04-07 CRAN (R 3.4.0)                          
 ##  withr         1.0.2   2016-06-20 CRAN (R 3.4.0)                          
+##  xml2          1.1.1   2017-01-24 CRAN (R 3.4.0)                          
 ##  xtable        1.8-2   2016-02-05 CRAN (R 3.4.0)
 ```

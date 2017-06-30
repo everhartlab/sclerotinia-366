@@ -3,6 +3,8 @@ title: "Population Differentiation Analysis"
 output: 
   html_notebook:
     toc: true
+editor_options: 
+  chunk_output_type: inline
 ---
 
 
@@ -17,53 +19,7 @@ output:
 
 ```r
 library('tidyverse')
-```
-
-```
-## Loading tidyverse: ggplot2
-## Loading tidyverse: tibble
-## Loading tidyverse: tidyr
-## Loading tidyverse: readr
-## Loading tidyverse: purrr
-## Loading tidyverse: dplyr
-```
-
-```
-## Conflicts with tidy packages ----------------------------------------------
-```
-
-```
-## filter(): dplyr, stats
-## lag():    dplyr, stats
-```
-
-```r
 library('poppr')
-```
-
-```
-## Loading required package: adegenet
-```
-
-```
-## Loading required package: ade4
-```
-
-```
-## 
-##    /// adegenet 2.1.0 is loaded ////////////
-## 
-##    > overview: '?adegenet'
-##    > tutorials/doc/questions: 'adegenetWeb()' 
-##    > bug reports/feature requests: adegenetIssues()
-```
-
-```
-## This is poppr version 2.4.1. To get started, type package?poppr
-## OMP parallel support: available
-```
-
-```r
 library('ggcompoplot')
 ```
 
@@ -328,7 +284,7 @@ scatter(dat11.nc.dapc)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-29
+##  date     2017-06-30
 ```
 
 ```
@@ -338,7 +294,7 @@ scatter(dat11.nc.dapc)
 ```
 ##  package      * version date       source                                  
 ##  ade4         * 1.7-6   2017-03-23 CRAN (R 3.4.0)                          
-##  adegenet     * 2.1.0   2017-05-06 Github (thibautjombart/adegenet@e07c139)
+##  adegenet     * 2.1.0   2017-06-30 Github (thibautjombart/adegenet@43b4360)
 ##  ape            4.1     2017-02-14 CRAN (R 3.4.0)                          
 ##  assertr        2.0.2.2 2017-06-06 CRAN (R 3.4.0)                          
 ##  assertthat     0.2.0   2017-04-11 CRAN (R 3.4.0)                          
@@ -365,7 +321,7 @@ scatter(dat11.nc.dapc)
 ##  forcats        0.2.0   2017-01-23 CRAN (R 3.4.0)                          
 ##  foreign        0.8-69  2017-06-21 CRAN (R 3.4.0)                          
 ##  gdata          2.18.0  2017-06-06 CRAN (R 3.4.0)                          
-##  ggcompoplot  * 0.1.0   2016-07-21 local                                   
+##  ggcompoplot  * 0.1.0   2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)    
 ##  ggplot2      * 2.2.1   2016-12-30 CRAN (R 3.4.0)                          
 ##  ggrepel        0.6.10  2017-06-23 Github (slowkow/ggrepel@102ca39)        
 ##  glue           1.1.1   2017-06-21 CRAN (R 3.4.0)                          

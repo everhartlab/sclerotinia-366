@@ -25,115 +25,11 @@ consistently coordinate with a single MCG, or if there are anything close.
 
 ```r
 library('igraph')
-```
-
-```
-## 
-## Attaching package: 'igraph'
-```
-
-```
-## The following objects are masked from 'package:stats':
-## 
-##     decompose, spectrum
-```
-
-```
-## The following object is masked from 'package:base':
-## 
-##     union
-```
-
-```r
 library('ggraph')
-```
-
-```
-## Loading required package: ggplot2
-```
-
-```r
 library('tidyverse')
-```
-
-```
-## Loading tidyverse: tibble
-## Loading tidyverse: tidyr
-## Loading tidyverse: readr
-## Loading tidyverse: purrr
-## Loading tidyverse: dplyr
-```
-
-```
-## Conflicts with tidy packages ----------------------------------------------
-```
-
-```
-## as_data_frame(): dplyr, tibble, igraph
-## compose():       purrr, igraph
-## crossing():      tidyr, igraph
-## filter():        dplyr, stats
-## groups():        dplyr, igraph
-## lag():           dplyr, stats
-## simplify():      purrr, igraph
-```
-
-```r
 library('poppr')
-```
-
-```
-## Loading required package: adegenet
-```
-
-```
-## Loading required package: ade4
-```
-
-```
-## 
-##    /// adegenet 2.1.0 is loaded ////////////
-## 
-##    > overview: '?adegenet'
-##    > tutorials/doc/questions: 'adegenetWeb()' 
-##    > bug reports/feature requests: adegenetIssues()
-```
-
-```
-## This is poppr version 2.4.1. To get started, type package?poppr
-## OMP parallel support: available
-```
-
-```
-## 
-## Attaching package: 'poppr'
-```
-
-```
-## The following object is masked from 'package:igraph':
-## 
-##     %>%
-```
-
-```r
 library('viridis')
-```
-
-```
-## Loading required package: viridisLite
-```
-
-```r
 library('visNetwork')
-```
-
-```
-## 
-## Attaching package: 'visNetwork'
-## 
-## The following object is masked from 'package:igraph':
-## 
-##     %>%
 ```
 
 
@@ -510,7 +406,7 @@ type (MCG/Count) to color and the opacity (alpha) to Evenness.
 
 ```r
 mcg_graph <- mcgs %>% 
-  filter(MLGs > 1) %>%
+  filter(Samples > 1) %>%
   gather(type, count, MLGs, Samples, -Evenness) %>%
   arrange(desc(type), count) %>%
   rename(Type = type) %>%
@@ -956,7 +852,7 @@ on average 7 steps.
 ```
 ##  package     * version date       source                                  
 ##  ade4        * 1.7-6   2017-03-23 CRAN (R 3.4.0)                          
-##  adegenet    * 2.1.0   2017-05-06 Github (thibautjombart/adegenet@e07c139)
+##  adegenet    * 2.1.0   2017-06-30 Github (thibautjombart/adegenet@43b4360)
 ##  ape           4.1     2017-02-14 CRAN (R 3.4.0)                          
 ##  assertr       2.0.2.2 2017-06-06 CRAN (R 3.4.0)                          
 ##  assertthat    0.2.0   2017-04-11 CRAN (R 3.4.0)                          
