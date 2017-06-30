@@ -586,7 +586,9 @@ mcg_mlg_graph <- ggraph(lay2) +
   scale_color_manual(values = c("black", "black", "white", "white")) +
   scale_fill_viridis(direction = -1, discrete = TRUE) +
   theme_graph(base_size = 16, base_family = "Helvetica") +
-  theme(legend.position = "bottom", legend.direction = "vertical")
+  theme(legend.position = "bottom", legend.direction = "vertical") +
+  theme(legend.box.spacing = unit(-1, "lines")) +
+  theme(plot.margin = unit(c(0, 0, 0, 0), "lines"))
   # ggtitle("Relation of Multilocus Genotypes and MCGs") 
   
 mcg_mlg_graph
@@ -595,8 +597,8 @@ mcg_mlg_graph
 ![plot of chunk unnamed-chunk-3](./figures/mlg-mcg///unnamed-chunk-3-1.png)
 
 ```r
-ggsave(file.path(PROJHOME, "results/figures/publication/FigureS2.pdf"), 
-       width = 88*3, height = 88*3, units = "mm")
+ggsave(plot = mcg_mlg_graph, filename = file.path(PROJHOME, "results/figures/publication/FigureS2.pdf"), 
+       width = 88*3, height = 88*3.5, units = "mm")
 ```
 
 ### Interactive Visualizations

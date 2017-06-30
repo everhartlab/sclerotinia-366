@@ -16,7 +16,8 @@ library("tidyverse")
 
 This document is to assess virulence associated with the 10 most common MCGs. We
 can get this from the cleaned data set that we saved in the
-`data-comparison.Rmd` file.
+`data-comparison.Rmd` file. Note, we will be labelling the plot with 
+"Aggressiveness" as that is the preferred term.
 
 
 ```r
@@ -123,8 +124,9 @@ ggplot(top_mcg, aes(x = MCG, y = Severity)) +
   theme_bw(base_size = 16, base_family = "Helvetica") +
   theme(aspect.ratio = 1/2) +
   labs(list(
-    title = "Severity for the top 10 MCGs",
-    caption = "MCG = Mycelial Compatibility Group"
+    # title = "Aggressiveness for the top 10 MCGs",
+    y = "Aggressiveness",
+    x = "Mycelial Compatibility Group"
     ))
 ```
 
@@ -135,27 +137,27 @@ ggplot(top_mcg, aes(x = MCG, y = Severity)) +
 top_mcg %>% 
   group_by(MCG) %>%
   summarize(N = n(), 
-            `Min Severity` = min(Severity),
-            `Max Severity` = max(Severity),
-            `Average Severity` = mean(Severity)
+            `Min Aggressiveness` = min(Severity),
+            `Max Aggressiveness` = max(Severity),
+            `Average Aggressiveness` = mean(Severity)
             ) %>%
   knitr::kable(digits = 2)
 ```
 
 
 
-|MCG |  N| Min Severity| Max Severity| Average Severity|
-|:---|--:|------------:|------------:|----------------:|
-|5   | 73|          3.6|          7.8|             5.40|
-|44  | 36|          4.3|          7.9|             6.03|
-|45  | 16|          3.9|          7.0|             4.88|
-|1   | 15|          3.9|          6.5|             4.95|
-|9   | 15|          2.8|          7.2|             5.11|
-|4   | 14|          3.9|          5.9|             4.87|
-|49  | 11|          3.3|          6.1|             4.60|
-|2   | 10|          4.1|          6.2|             5.25|
-|53  |  9|          3.6|          5.4|             4.69|
-|3   |  8|          4.7|          6.1|             5.50|
+|MCG |  N| Min Aggressiveness| Max Aggressiveness| Average Aggressiveness|
+|:---|--:|------------------:|------------------:|----------------------:|
+|5   | 73|                3.6|                7.8|                   5.40|
+|44  | 36|                4.3|                7.9|                   6.03|
+|45  | 16|                3.9|                7.0|                   4.88|
+|1   | 15|                3.9|                6.5|                   4.95|
+|9   | 15|                2.8|                7.2|                   5.11|
+|4   | 14|                3.9|                5.9|                   4.87|
+|49  | 11|                3.3|                6.1|                   4.60|
+|2   | 10|                4.1|                6.2|                   5.25|
+|53  |  9|                3.6|                5.4|                   4.69|
+|3   |  8|                4.7|                6.1|                   5.50|
 
 
 ## ANOVA
