@@ -186,60 +186,63 @@ $(document).ready(function () {
 <p>This will tabulate statistics per locus for presentation in a table.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShcInBvcHByXCIpXG5sb2FkKGZpbGUucGF0aChQUk9KSE9NRSwgXCJkYXRhXCIsIFwic2NsZXJvdGluaWFfMTZfbG9jaS5yZGFcIikpXG5gYGAifQ== -->
-<pre class="r"><code>library(&quot;poppr&quot;)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShcInRpZHl2ZXJzZVwiKVxubGlicmFyeShcInBvcHByXCIpXG5sb2FkKGZpbGUucGF0aChQUk9KSE9NRSwgXCJkYXRhXCIsIFwic2NsZXJvdGluaWFfMTZfbG9jaS5yZGFcIikpXG5gYGAifQ== -->
+<pre class="r"><code>library(&quot;tidyverse&quot;)
+library(&quot;poppr&quot;)
 load(file.path(PROJHOME, &quot;data&quot;, &quot;sclerotinia_16_loci.rda&quot;))</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubG9jdXNfdGFibGUoZGF0MTEsIGluZm9ybWF0aW9uID0gRkFMU0UpICU+JSBcbiAgYXMuZGF0YS5mcmFtZSgpICU+JVxuICByb3duYW1lc190b19jb2x1bW4oXCJMb2N1c1wiKSAlPiVcbiAgbXV0YXRlKExvY3VzID0gZ3N1YihcIlxcXFwoW0ZIXVxcXFwpXCIsIFwiXCIsIExvY3VzKSkgJT4lXG4gIGFkZF9jb2x1bW4oUmFuZ2UgPSByYW5nZXMpICU+JVxuICBzZWxlY3QoTG9jdXMsIFJhbmdlLCBhbGxlbGUsIEhleHAsIEV2ZW5uZXNzKSAlPiVcbiAgbXV0YXRlKGFsbGVsZSA9IHJvdW5kKGFsbGVsZSwgMikpICU+JVxuICByZW5hbWUoYCRIX3tleHB9JGAgPSBIZXhwLCBgTm8uIGFsbGVsZXNgID0gYWxsZWxlKSAlPiVcbiAgaHV4dGFibGU6OmFzX2h1eHRhYmxlKGFkZF9jb2xuYW1lcyA9IFRSVUUpICU+JVxuICBodXh0YWJsZTo6c2V0X251bWJlcl9mb3JtYXQoMToxMiwgMywgMCkgJT4lXG4gIGh1eHRhYmxlOjpzZXRfbnVtYmVyX2Zvcm1hdChldmVyeXdoZXJlLCA0OjUsIDIpICU+JVxuICBodXh0YWJsZTo6c2V0X2FsaWduKGV2ZXJ5d2hlcmUsIDM6NSwgXCJyaWdodFwiKSAlPiVcbiAgaHV4dGFibGU6OnNldF9jb2xfd2lkdGgoYygwLjA2LCAwLjA3LCAwLjEyMywgMC4wOSwgMC4wOCkpICU+JVxuICBodXh0YWJsZTo6cHJpbnRfbWQobWF4X3dpZHRoID0gNDcpXG5cbmBgYCJ9 -->
-<pre class="r"><code>locus_table(dat11, information = FALSE) %&gt;% 
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWFrZXJhbmdlIDwtIC4gJT4lIGFzLmludGVnZXIoKSAlPiUgcmFuZ2UoKSAlPiUgcGFzdGUoY29sbGFwc2UgPSBcIi1cIilcbnJhbmdlcyA8LSBtYXBfY2hyKGFsbGVsZXMoZGF0MTEpLCBtYWtlcmFuZ2UpXG5yYW5nZXMgPC0gYyhyYW5nZXMsIGFsbGVsZXMoZGF0MTEpICU+JSB1bmxpc3QodXNlLm5hbWVzID0gRkFMU0UpICU+JSBtYWtlcmFuZ2UpXG5sb2N1c190YWJsZShkYXQxMSwgaW5mb3JtYXRpb24gPSBGQUxTRSkgJT4lIFxuICBhcy5kYXRhLmZyYW1lKCkgJT4lXG4gIHJvd25hbWVzX3RvX2NvbHVtbihcIkxvY3VzXCIpICU+JVxuICBtdXRhdGUoTG9jdXMgPSBnc3ViKFwiXFxcXChbRkhdXFxcXClcIiwgXCJcIiwgTG9jdXMpKSAlPiVcbiAgYWRkX2NvbHVtbihSYW5nZSA9IHJhbmdlcykgJT4lXG4gIHNlbGVjdChMb2N1cywgUmFuZ2UsIGFsbGVsZSwgSGV4cCwgRXZlbm5lc3MpICU+JVxuICBtdXRhdGUoYWxsZWxlID0gcm91bmQoYWxsZWxlLCAyKSkgJT4lXG4gIHJlbmFtZShgKmgqYCA9IEhleHAsIGBOby4gYWxsZWxlc2AgPSBhbGxlbGUpICU+JVxuICBodXh0YWJsZTo6YXNfaHV4dGFibGUoYWRkX2NvbG5hbWVzID0gVFJVRSkgJT4lXG4gIGh1eHRhYmxlOjpzZXRfbnVtYmVyX2Zvcm1hdCgxOjEyLCAzLCAwKSAlPiVcbiAgaHV4dGFibGU6OnNldF9udW1iZXJfZm9ybWF0KGh1eHRhYmxlOjpldmVyeXdoZXJlLCA0OjUsIDIpICU+JVxuICBodXh0YWJsZTo6c2V0X2FsaWduKGh1eHRhYmxlOjpldmVyeXdoZXJlLCAzOjUsIFwicmlnaHRcIikgJT4lXG4gIGh1eHRhYmxlOjpzZXRfY29sX3dpZHRoKGMoMC4wNiwgMC4wNywgMC4xMiwgMC4wNiwgMC4wOSkpICU+JVxuICBodXh0YWJsZTo6cHJpbnRfbWQobWF4X3dpZHRoID0gNDcpXG5gYGAifQ== -->
+<pre class="r"><code>makerange &lt;- . %&gt;% as.integer() %&gt;% range() %&gt;% paste(collapse = &quot;-&quot;)
+ranges &lt;- map_chr(alleles(dat11), makerange)
+ranges &lt;- c(ranges, alleles(dat11) %&gt;% unlist(use.names = FALSE) %&gt;% makerange)
+locus_table(dat11, information = FALSE) %&gt;% 
   as.data.frame() %&gt;%
   rownames_to_column(&quot;Locus&quot;) %&gt;%
   mutate(Locus = gsub(&quot;\\([FH]\\)&quot;, &quot;&quot;, Locus)) %&gt;%
   add_column(Range = ranges) %&gt;%
   select(Locus, Range, allele, Hexp, Evenness) %&gt;%
   mutate(allele = round(allele, 2)) %&gt;%
-  rename(`$H_{exp}$` = Hexp, `No. alleles` = allele) %&gt;%
+  rename(`*h*` = Hexp, `No. alleles` = allele) %&gt;%
   huxtable::as_huxtable(add_colnames = TRUE) %&gt;%
   huxtable::set_number_format(1:12, 3, 0) %&gt;%
-  huxtable::set_number_format(everywhere, 4:5, 2) %&gt;%
-  huxtable::set_align(everywhere, 3:5, &quot;right&quot;) %&gt;%
-  huxtable::set_col_width(c(0.06, 0.07, 0.123, 0.09, 0.08)) %&gt;%
-  huxtable::print_md(max_width = 47)
-</code></pre>
+  huxtable::set_number_format(huxtable::everywhere, 4:5, 2) %&gt;%
+  huxtable::set_align(huxtable::everywhere, 3:5, &quot;right&quot;) %&gt;%
+  huxtable::set_col_width(c(0.06, 0.07, 0.12, 0.06, 0.09)) %&gt;%
+  huxtable::print_md(max_width = 47)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLVxuTG9jdXMgIFJhbmdlICAgIE5vLiBhbGxlbGVzICRIX3tleHB9JCBFdmVubmVzcyBcbi0tLS0tLSAtLS0tLS0tIC0tLS0tLS0tLS0tLSAtLS0tLS0tLS0gLS0tLS0tLS1cbjUtMiAgICAzMTgtMzI0ICAgICAgICAgICAgNCAgICAgIDAuNDUgICAgIDAuNjIgXG5cbjYtMiAgICA0ODMtNDk1ICAgICAgICAgICAgMyAgICAgIDAuNjQgICAgIDAuOTUgXG5cbjctMiAgICAxNTgtMTc0ICAgICAgICAgICAgNyAgICAgIDAuNzMgICAgIDAuNzYgXG5cbjgtMyAgICAyNDQtMjcwICAgICAgICAgICAgNyAgICAgIDAuNzQgICAgIDAuNzkgXG5cbjktMiAgICAzNjAtMzgyICAgICAgICAgICAgOSAgICAgIDAuMzUgICAgIDAuNDEgXG5cbjEyLTIgICAyMTQtMjIyICAgICAgICAgICAgNSAgICAgIDAuNTggICAgIDAuNzggXG5cbjE3LTMgICAzNDItMzYzICAgICAgICAgICAgNyAgICAgIDAuNTUgICAgIDAuNTMgXG5cbjIwLTMgICAyODAtMjgyICAgICAgICAgICAgMiAgICAgIDAuMDUgICAgIDAuNDIgXG5cbjU1LTQgICAxNTMtMjE2ICAgICAgICAgICAxMCAgICAgIDAuNzIgICAgIDAuNjYgXG5cbjExMC00ICAzNzAtMzg2ICAgICAgICAgICAgNSAgICAgIDAuNzYgICAgIDAuOTEgXG5cbjExNC00ICAzMzktNDE2ICAgICAgICAgICAxMCAgICAgIDAuODMgICAgIDAuODAgXG5cbm1lYW4gICAxNTMtNDk1ICAgICAgICAgNi4yNyAgICAgIDAuNTggICAgIDAuNjkgXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbiJ9 -->
-<pre><code>----------------------------------------------
-Locus  Range    No. alleles $H_{exp}$ Evenness 
------- ------- ------------ --------- --------
-5-2    318-324            4      0.45     0.62 
+<!-- rnb-output-begin eyJkYXRhIjoiLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS1cbkxvY3VzICBSYW5nZSAgICBOby4gYWxsZWxlcyAgICAqaCogIEV2ZW5uZXNzIFxuLS0tLS0tIC0tLS0tLS0gLS0tLS0tLS0tLS0tIC0tLS0tLSAtLS0tLS0tLS1cbjUtMiAgICAzMTgtMzI0ICAgICAgICAgICAgNCAgIDAuNDUgICAgICAwLjYyIFxuXG42LTIgICAgNDgzLTQ5NSAgICAgICAgICAgIDMgICAwLjY0ICAgICAgMC45NSBcblxuNy0yICAgIDE1OC0xNzQgICAgICAgICAgICA3ICAgMC43MyAgICAgIDAuNzYgXG5cbjgtMyAgICAyNDQtMjcwICAgICAgICAgICAgNyAgIDAuNzQgICAgICAwLjc5IFxuXG45LTIgICAgMzYwLTM4MiAgICAgICAgICAgIDkgICAwLjM1ICAgICAgMC40MSBcblxuMTItMiAgIDIxNC0yMjIgICAgICAgICAgICA1ICAgMC41OCAgICAgIDAuNzggXG5cbjE3LTMgICAzNDItMzYzICAgICAgICAgICAgNyAgIDAuNTUgICAgICAwLjUzIFxuXG4yMC0zICAgMjgwLTI4MiAgICAgICAgICAgIDIgICAwLjA1ICAgICAgMC40MiBcblxuNTUtNCAgIDE1My0yMTYgICAgICAgICAgIDEwICAgMC43MiAgICAgIDAuNjYgXG5cbjExMC00ICAzNzAtMzg2ICAgICAgICAgICAgNSAgIDAuNzYgICAgICAwLjkxIFxuXG4xMTQtNCAgMzM5LTQxNiAgICAgICAgICAgMTAgICAwLjgzICAgICAgMC44MCBcblxubWVhbiAgIDE1My00OTUgICAgICAgICA2LjI3ICAgMC41OCAgICAgIDAuNjkgXG5cbi0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG4ifQ== -->
+<pre><code>--------------------------------------------
+Locus  Range    No. alleles    *h*  Evenness 
+------ ------- ------------ ------ ---------
+5-2    318-324            4   0.45      0.62 
 
-6-2    483-495            3      0.64     0.95 
+6-2    483-495            3   0.64      0.95 
 
-7-2    158-174            7      0.73     0.76 
+7-2    158-174            7   0.73      0.76 
 
-8-3    244-270            7      0.74     0.79 
+8-3    244-270            7   0.74      0.79 
 
-9-2    360-382            9      0.35     0.41 
+9-2    360-382            9   0.35      0.41 
 
-12-2   214-222            5      0.58     0.78 
+12-2   214-222            5   0.58      0.78 
 
-17-3   342-363            7      0.55     0.53 
+17-3   342-363            7   0.55      0.53 
 
-20-3   280-282            2      0.05     0.42 
+20-3   280-282            2   0.05      0.42 
 
-55-4   153-216           10      0.72     0.66 
+55-4   153-216           10   0.72      0.66 
 
-110-4  370-386            5      0.76     0.91 
+110-4  370-386            5   0.76      0.91 
 
-114-4  339-416           10      0.83     0.80 
+114-4  339-416           10   0.83      0.80 
 
-mean   153-495         6.27      0.58     0.69 
+mean   153-495         6.27   0.58      0.69 
 
-----------------------------------------------</code></pre>
+--------------------------------------------</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -251,11 +254,153 @@ mean   153-495         6.27      0.58     0.69
 <pre class="r"><code>options(width = 100)
 devtools::session_info()</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiU2Vzc2lvbiBpbmZvIC0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG4ifQ== -->
+<pre><code>Session info --------------------------------------------------------------------------------------</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIHNldHRpbmcgIHZhbHVlICAgICAgICAgICAgICAgICAgICAgICBcbiB2ZXJzaW9uICBSIHZlcnNpb24gMy40LjAgKDIwMTctMDQtMjEpXG4gc3lzdGVtICAgeDg2XzY0LCBkYXJ3aW4xNS42LjAgICAgICAgIFxuIHVpICAgICAgIFJTdHVkaW8gKDEuMS4yOTApICAgICAgICAgICBcbiBsYW5ndWFnZSAoRU4pICAgICAgICAgICAgICAgICAgICAgICAgXG4gY29sbGF0ZSAgZW5fVVMuVVRGLTggICAgICAgICAgICAgICAgIFxuIHR6ICAgICAgIEFtZXJpY2EvQ2hpY2FnbyAgICAgICAgICAgICBcbiBkYXRlICAgICAyMDE3LTA2LTMwICAgICAgICAgICAgICAgICAgXG4ifQ== -->
+<pre><code> setting  value                       
+ version  R version 3.4.0 (2017-04-21)
+ system   x86_64, darwin15.6.0        
+ ui       RStudio (1.1.290)           
+ language (EN)                        
+ collate  en_US.UTF-8                 
+ tz       America/Chicago             
+ date     2017-06-30                  </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUGFja2FnZXMgLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG4ifQ== -->
+<pre><code>Packages ------------------------------------------------------------------------------------------</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiIHBhY2thZ2UgICAgICogdmVyc2lvbiAgZGF0ZSAgICAgICBzb3VyY2UgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gYWRlNCAgICAgICAgKiAxLjctNiAgICAyMDE3LTAzLTIzIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBhZGVnZW5ldCAgICAqIDIuMS4wICAgIDIwMTctMDUtMDYgR2l0aHViICh0aGliYXV0am9tYmFydC9hZGVnZW5ldEBlMDdjMTM5KVxuIGFwZSAgICAgICAgICAgNC4xICAgICAgMjAxNy0wMi0xNCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gYXNzZXJ0ciAgICAgICAyLjAuMi4yICAyMDE3LTA2LTA2IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBhc3NlcnR0aGF0ICAgIDAuMi4wICAgIDIwMTctMDQtMTEgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGJhY2twb3J0cyAgICAgMS4xLjAgICAgMjAxNy0wNS0yMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gYmFzZSAgICAgICAgKiAzLjQuMCAgICAyMDE3LTA0LTIxIGxvY2FsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBiYXNlNjRlbmMgICAgIDAuMS0zICAgIDIwMTUtMDctMjggQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGJpYnRleCAgICAgICAgMC40LjAgICAgMjAxNC0xMi0zMSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gYmluZHIgICAgICAgICAwLjEgICAgICAyMDE2LTExLTEzIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBiaW5kcmNwcCAgICAqIDAuMiAgICAgIDIwMTctMDYtMTcgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGJpdG9wcyAgICAgICAgMS4wLTYgICAgMjAxMy0wOC0xNyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gYm9vdCAgICAgICAgICAxLjMtMTkgICAyMDE3LTA0LTIxIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBicm9vbSAgICAgICAgIDAuNC4yICAgIDIwMTctMDItMTMgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGNlbGxyYW5nZXIgICAgMS4xLjAgICAgMjAxNi0wNy0yNyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gY2l0ciAgICAgICAgICAwLjIuMCAgICAyMDE2LTA5LTIwIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBjbHVzdGVyICAgICAgIDIuMC42ICAgIDIwMTctMDMtMTYgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGNvZGEgICAgICAgICAgMC4xOS0xICAgMjAxNi0xMi0wOCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gY29sb3JzcGFjZSAgICAxLjMtMiAgICAyMDE2LTEyLTE0IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBjb21waWxlciAgICAgIDMuNC4wICAgIDIwMTctMDQtMjEgbG9jYWwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGN1cmwgICAgICAgICAgMi42ICAgICAgMjAxNy0wNC0yNyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZGF0YXNldHMgICAgKiAzLjQuMCAgICAyMDE3LTA0LTIxIGxvY2FsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBEQkkgICAgICAgICAgIDAuNyAgICAgIDIwMTctMDYtMTggQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGRlbGRpciAgICAgICAgMC4xLTE0ICAgMjAxNy0wNC0yMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZGV2dG9vbHMgICAgICAxLjEzLjIgICAyMDE3LTA2LTAyIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBkaWdlc3QgICAgICAgIDAuNi4xMiAgIDIwMTctMDEtMjcgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGRwbHlyICAgICAgICogMC43LjEgICAgMjAxNy0wNi0yMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZXZhbHVhdGUgICAgICAwLjEwICAgICAyMDE2LTEwLTExIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBleHBtICAgICAgICAgIDAuOTk5LTIgIDIwMTctMDMtMjkgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGZhc3RtYXRjaCAgICAgMS4xLTAgICAgMjAxNy0wMS0yOCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZm9yY2F0cyAgICAgICAwLjIuMCAgICAyMDE3LTAxLTIzIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBmb3JlaWduICAgICAgIDAuOC02OSAgIDIwMTctMDYtMjEgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGdkYXRhICAgICAgICAgMi4xOC4wICAgMjAxNy0wNi0wNiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZ2dmb3JjZSAgICAgICAwLjEuMSAgICAyMDE2LTExLTI4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBnZ3Bsb3QyICAgICAqIDIuMi4xICAgIDIwMTYtMTItMzAgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGdncmFwaCAgICAgICogMS4wLjAgICAgMjAxNy0wMi0yNCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZ2dyZXBlbCAgICAgICAwLjYuMTAgICAyMDE3LTA2LTIzIEdpdGh1YiAoc2xvd2tvdy9nZ3JlcGVsQDEwMmNhMzkpICAgICAgICBcbiBnbHVlICAgICAgICAgIDEuMS4xICAgIDIwMTctMDYtMjEgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGdtb2RlbHMgICAgICAgMi4xNi4yICAgMjAxNS0wNy0yMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZ3JhcGhpY3MgICAgKiAzLjQuMCAgICAyMDE3LTA0LTIxIGxvY2FsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBnckRldmljZXMgICAqIDMuNC4wICAgIDIwMTctMDQtMjEgbG9jYWwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGdyaWQgICAgICAgICAgMy40LjAgICAgMjAxNy0wNC0yMSBsb2NhbCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gZ3JpZEV4dHJhICAgICAyLjIuMSAgICAyMDE2LTAyLTI5IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBndGFibGUgICAgICAgIDAuMi4wICAgIDIwMTYtMDItMjYgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGd0b29scyAgICAgICAgMy41LjAgICAgMjAxNS0wNS0yOSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gaGF2ZW4gICAgICAgICAxLjAuMCAgICAyMDE2LTA5LTIzIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBoaWdociAgICAgICAgIDAuNiAgICAgIDIwMTYtMDUtMDkgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGhtcyAgICAgICAgICAgMC4zICAgICAgMjAxNi0xMS0yMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gaHRtbHRvb2xzICAgICAwLjMuNiAgICAyMDE3LTA0LTI4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBodG1sd2lkZ2V0cyAgIDAuOCAgICAgIDIwMTYtMTEtMDkgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGh0dHB1diAgICAgICAgMS4zLjMgICAgMjAxNS0wOC0wNCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gaHR0ciAgICAgICAgICAxLjIuMSAgICAyMDE2LTA3LTAzIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBodXh0YWJsZSAgICAgIDAuMy4wICAgIDIwMTctMDUtMTggQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGlncmFwaCAgICAgICogMS4wLjEgICAgMjAxNS0wNi0yNiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4ganNvbmxpdGUgICAgICAxLjUgICAgICAyMDE3LTA2LTAxIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBrbml0ciAgICAgICAqIDEuMTYgICAgIDIwMTctMDUtMTggQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIGxhYmVsaW5nICAgICAgMC4zICAgICAgMjAxNC0wOC0yMyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gbGF0dGljZSAgICAgICAwLjIwLTM1ICAyMDE3LTAzLTI1IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBsYXp5ZXZhbCAgICAgIDAuMi4wICAgIDIwMTYtMDYtMTIgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIExlYXJuQmF5ZXMgICAgMi4xNSAgICAgMjAxNC0wNS0yOSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gbHVicmlkYXRlICAgICAxLjYuMCAgICAyMDE2LTA5LTEzIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBtYWdyaXR0ciAgICAgIDEuNSAgICAgIDIwMTQtMTEtMjIgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIE1BU1MgICAgICAgICAgNy4zLTQ3ICAgMjAxNy0wNC0yMSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gTWF0cml4ICAgICAgICAxLjItMTAgICAyMDE3LTA0LTI4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBtZW1vaXNlICAgICAgIDEuMS4wICAgIDIwMTctMDQtMjEgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIG1ldGhvZHMgICAgICogMy40LjAgICAgMjAxNy0wNC0yMSBsb2NhbCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gbWdjdiAgICAgICAgICAxLjgtMTcgICAyMDE3LTAyLTA4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBtaW1lICAgICAgICAgIDAuNSAgICAgIDIwMTYtMDctMDcgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIG1pbmlVSSAgICAgICAgMC4xLjEgICAgMjAxNi0wMS0xNSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gbW5vcm10ICAgICAgICAxLjUtNSAgICAyMDE2LTEwLTE1IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBtb2RlbHIgICAgICAgIDAuMS4wICAgIDIwMTYtMDgtMzEgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIG11bnNlbGwgICAgICAgMC40LjMgICAgMjAxNi0wMi0xMyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gbmxtZSAgICAgICAgICAzLjEtMTMxICAyMDE3LTAyLTA2IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBwYXJhbGxlbCAgICAgIDMuNC4wICAgIDIwMTctMDQtMjEgbG9jYWwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHBlZ2FzICAgICAgICAgMC4xMCAgICAgMjAxNy0wNS0wMyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gcGVybXV0ZSAgICAgICAwLjktNCAgICAyMDE2LTA5LTA5IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBwaGFuZ29ybiAgICAgIDIuMi4wICAgIDIwMTctMDQtMDMgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHBrZ2NvbmZpZyAgICAgMi4wLjEgICAgMjAxNy0wMy0yMSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gcGx5ciAgICAgICAgICAxLjguNCAgICAyMDE2LTA2LTA4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBwb3BwciAgICAgICAqIDIuNC4xICAgIDIwMTctMDQtMTQgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHBzeWNoICAgICAgICAgMS43LjUgICAgMjAxNy0wNS0wMyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gcHVycnIgICAgICAgKiAwLjIuMi4yICAyMDE3LTA1LTExIGNyYW4gKEAwLjIuMi4yKSAgICAgICAgICAgICAgICAgICAgICAgICBcbiBxdWFkcHJvZyAgICAgIDEuNS01ICAgIDIwMTMtMDQtMTcgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIFI2ICAgICAgICAgICAgMi4yLjIgICAgMjAxNy0wNi0xNyBjcmFuIChAMi4yLjIpICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gUmNwcCAgICAgICAgICAwLjEyLjExICAyMDE3LTA1LTIyIGNyYW4gKEAwLjEyLjExKSAgICAgICAgICAgICAgICAgICAgICAgICBcbiBSQ3VybCAgICAgICAgIDEuOTUtNC44IDIwMTYtMDMtMDEgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHJlYWRyICAgICAgICogMS4xLjEgICAgMjAxNy0wNS0xNiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gcmVhZHhsICAgICAgICAxLjAuMCAgICAyMDE3LTA0LTE4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBSZWZNYW5hZ2VSICAgIDAuMTMuMSAgIDIwMTYtMTEtMTMgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHJlc2hhcGUyICAgICAgMS40LjIgICAgMjAxNi0xMC0yMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gUkpTT05JTyAgICAgICAxLjMtMCAgICAyMDE0LTA3LTI4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBybGFuZyAgICAgICAgIDAuMS4xICAgIDIwMTctMDUtMTggQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHJtYXJrZG93biAgICAgMS42ICAgICAgMjAxNy0wNi0xNSBjcmFuIChAMS42KSAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gcnByb2pyb290ICAgICAxLjIgICAgICAyMDE3LTAxLTE2IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiByc2Nvbm5lY3QgICAgIDAuOCAgICAgIDIwMTctMDUtMDggQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHJzdHVkaW9hcGkgICAgMC42ICAgICAgMjAxNi0wNi0yNyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gcnZlc3QgICAgICAgICAwLjMuMiAgICAyMDE2LTA2LTE3IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBzY2FsZXMgICAgICAgIDAuNC4xICAgIDIwMTYtMTEtMDkgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHNlcWluciAgICAgICAgMy4zLTYgICAgMjAxNy0wNC0wNiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gc2hpbnkgICAgICAgKiAxLjAuMyAgICAyMDE3LTA0LTI2IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBzcCAgICAgICAgICAgIDEuMi00ICAgIDIwMTYtMTItMjIgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHNwZGVwICAgICAgICAgMC42LTEzICAgMjAxNy0wNC0yNSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gc3BsaW5lcyAgICAgICAzLjQuMCAgICAyMDE3LTA0LTIxIGxvY2FsICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBcbiBzdGF0cyAgICAgICAqIDMuNC4wICAgIDIwMTctMDQtMjEgbG9jYWwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHN0cmluZ2kgICAgICAgMS4xLjUgICAgMjAxNy0wNC0wNyBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gc3RyaW5nciAgICAgICAxLjIuMCAgICAyMDE3LTAyLTE4IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiB0aWJibGUgICAgICAqIDEuMy4zICAgIDIwMTctMDUtMjggQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHRpZHlyICAgICAgICogMC42LjMgICAgMjAxNy0wNS0xNSBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gdGlkeXZlcnNlICAgKiAxLjEuMSAgICAyMDE3LTAxLTI3IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiB0b29scyAgICAgICAgIDMuNC4wICAgIDIwMTctMDQtMjEgbG9jYWwgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHR3ZWVuciAgICAgICAgMC4xLjUgICAgMjAxNi0xMC0xMCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gdWR1bml0czIgICAgICAwLjEzICAgICAyMDE2LTExLTE3IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiB1bml0cyAgICAgICAgIDAuNC01ICAgIDIwMTctMDYtMTUgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHV0aWxzICAgICAgICogMy40LjAgICAgMjAxNy0wNC0yMSBsb2NhbCAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gdmVnYW4gICAgICAgICAyLjQtMyAgICAyMDE3LTA0LTA3IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiB2aXJpZGlzICAgICAqIDAuNC4wICAgIDIwMTctMDMtMjcgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHZpcmlkaXNMaXRlICogMC4yLjAgICAgMjAxNy0wMy0yNCBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4gdmlzTmV0d29yayAgKiAxLjAuMyAgICAyMDE2LTEyLTIyIENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiB3aXRociAgICAgICAgIDEuMC4yICAgIDIwMTYtMDYtMjAgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIFhNTCAgICAgICAgICAgMy45OC0xLjkgMjAxNy0wNi0xOSBDUkFOIChSIDMuNC4xKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4geG1sMiAgICAgICAgICAxLjEuMSAgICAyMDE3LTAxLTI0IENSQU4gKFIgMy40LjApICAgICAgICAgICAgICAgICAgICAgICAgICBcbiB4dGFibGUgICAgICAgIDEuOC0yICAgIDIwMTYtMDItMDUgQ1JBTiAoUiAzLjQuMCkgICAgICAgICAgICAgICAgICAgICAgICAgIFxuIHlhbWwgICAgICAgICAgMi4xLjE0ICAgMjAxNi0xMS0xMiBDUkFOIChSIDMuNC4wKSAgICAgICAgICAgICAgICAgICAgICAgICAgXG4ifQ== -->
+<pre><code> package     * version  date       source                                  
+ ade4        * 1.7-6    2017-03-23 CRAN (R 3.4.0)                          
+ adegenet    * 2.1.0    2017-05-06 Github (thibautjombart/adegenet@e07c139)
+ ape           4.1      2017-02-14 CRAN (R 3.4.0)                          
+ assertr       2.0.2.2  2017-06-06 CRAN (R 3.4.0)                          
+ assertthat    0.2.0    2017-04-11 CRAN (R 3.4.0)                          
+ backports     1.1.0    2017-05-22 CRAN (R 3.4.0)                          
+ base        * 3.4.0    2017-04-21 local                                   
+ base64enc     0.1-3    2015-07-28 CRAN (R 3.4.0)                          
+ bibtex        0.4.0    2014-12-31 CRAN (R 3.4.0)                          
+ bindr         0.1      2016-11-13 CRAN (R 3.4.0)                          
+ bindrcpp    * 0.2      2017-06-17 CRAN (R 3.4.0)                          
+ bitops        1.0-6    2013-08-17 CRAN (R 3.4.0)                          
+ boot          1.3-19   2017-04-21 CRAN (R 3.4.0)                          
+ broom         0.4.2    2017-02-13 CRAN (R 3.4.0)                          
+ cellranger    1.1.0    2016-07-27 CRAN (R 3.4.0)                          
+ citr          0.2.0    2016-09-20 CRAN (R 3.4.0)                          
+ cluster       2.0.6    2017-03-16 CRAN (R 3.4.0)                          
+ coda          0.19-1   2016-12-08 CRAN (R 3.4.0)                          
+ colorspace    1.3-2    2016-12-14 CRAN (R 3.4.0)                          
+ compiler      3.4.0    2017-04-21 local                                   
+ curl          2.6      2017-04-27 CRAN (R 3.4.0)                          
+ datasets    * 3.4.0    2017-04-21 local                                   
+ DBI           0.7      2017-06-18 CRAN (R 3.4.0)                          
+ deldir        0.1-14   2017-04-22 CRAN (R 3.4.0)                          
+ devtools      1.13.2   2017-06-02 CRAN (R 3.4.0)                          
+ digest        0.6.12   2017-01-27 CRAN (R 3.4.0)                          
+ dplyr       * 0.7.1    2017-06-22 CRAN (R 3.4.0)                          
+ evaluate      0.10     2016-10-11 CRAN (R 3.4.0)                          
+ expm          0.999-2  2017-03-29 CRAN (R 3.4.0)                          
+ fastmatch     1.1-0    2017-01-28 CRAN (R 3.4.0)                          
+ forcats       0.2.0    2017-01-23 CRAN (R 3.4.0)                          
+ foreign       0.8-69   2017-06-21 CRAN (R 3.4.0)                          
+ gdata         2.18.0   2017-06-06 CRAN (R 3.4.0)                          
+ ggforce       0.1.1    2016-11-28 CRAN (R 3.4.0)                          
+ ggplot2     * 2.2.1    2016-12-30 CRAN (R 3.4.0)                          
+ ggraph      * 1.0.0    2017-02-24 CRAN (R 3.4.0)                          
+ ggrepel       0.6.10   2017-06-23 Github (slowkow/ggrepel@102ca39)        
+ glue          1.1.1    2017-06-21 CRAN (R 3.4.0)                          
+ gmodels       2.16.2   2015-07-22 CRAN (R 3.4.0)                          
+ graphics    * 3.4.0    2017-04-21 local                                   
+ grDevices   * 3.4.0    2017-04-21 local                                   
+ grid          3.4.0    2017-04-21 local                                   
+ gridExtra     2.2.1    2016-02-29 CRAN (R 3.4.0)                          
+ gtable        0.2.0    2016-02-26 CRAN (R 3.4.0)                          
+ gtools        3.5.0    2015-05-29 CRAN (R 3.4.0)                          
+ haven         1.0.0    2016-09-23 CRAN (R 3.4.0)                          
+ highr         0.6      2016-05-09 CRAN (R 3.4.0)                          
+ hms           0.3      2016-11-22 CRAN (R 3.4.0)                          
+ htmltools     0.3.6    2017-04-28 CRAN (R 3.4.0)                          
+ htmlwidgets   0.8      2016-11-09 CRAN (R 3.4.0)                          
+ httpuv        1.3.3    2015-08-04 CRAN (R 3.4.0)                          
+ httr          1.2.1    2016-07-03 CRAN (R 3.4.0)                          
+ huxtable      0.3.0    2017-05-18 CRAN (R 3.4.0)                          
+ igraph      * 1.0.1    2015-06-26 CRAN (R 3.4.0)                          
+ jsonlite      1.5      2017-06-01 CRAN (R 3.4.0)                          
+ knitr       * 1.16     2017-05-18 CRAN (R 3.4.0)                          
+ labeling      0.3      2014-08-23 CRAN (R 3.4.0)                          
+ lattice       0.20-35  2017-03-25 CRAN (R 3.4.0)                          
+ lazyeval      0.2.0    2016-06-12 CRAN (R 3.4.0)                          
+ LearnBayes    2.15     2014-05-29 CRAN (R 3.4.0)                          
+ lubridate     1.6.0    2016-09-13 CRAN (R 3.4.0)                          
+ magrittr      1.5      2014-11-22 CRAN (R 3.4.0)                          
+ MASS          7.3-47   2017-04-21 CRAN (R 3.4.0)                          
+ Matrix        1.2-10   2017-04-28 CRAN (R 3.4.0)                          
+ memoise       1.1.0    2017-04-21 CRAN (R 3.4.0)                          
+ methods     * 3.4.0    2017-04-21 local                                   
+ mgcv          1.8-17   2017-02-08 CRAN (R 3.4.0)                          
+ mime          0.5      2016-07-07 CRAN (R 3.4.0)                          
+ miniUI        0.1.1    2016-01-15 CRAN (R 3.4.0)                          
+ mnormt        1.5-5    2016-10-15 CRAN (R 3.4.0)                          
+ modelr        0.1.0    2016-08-31 CRAN (R 3.4.0)                          
+ munsell       0.4.3    2016-02-13 CRAN (R 3.4.0)                          
+ nlme          3.1-131  2017-02-06 CRAN (R 3.4.0)                          
+ parallel      3.4.0    2017-04-21 local                                   
+ pegas         0.10     2017-05-03 CRAN (R 3.4.0)                          
+ permute       0.9-4    2016-09-09 CRAN (R 3.4.0)                          
+ phangorn      2.2.0    2017-04-03 CRAN (R 3.4.0)                          
+ pkgconfig     2.0.1    2017-03-21 CRAN (R 3.4.0)                          
+ plyr          1.8.4    2016-06-08 CRAN (R 3.4.0)                          
+ poppr       * 2.4.1    2017-04-14 CRAN (R 3.4.0)                          
+ psych         1.7.5    2017-05-03 CRAN (R 3.4.0)                          
+ purrr       * 0.2.2.2  2017-05-11 cran (@0.2.2.2)                         
+ quadprog      1.5-5    2013-04-17 CRAN (R 3.4.0)                          
+ R6            2.2.2    2017-06-17 cran (@2.2.2)                           
+ Rcpp          0.12.11  2017-05-22 cran (@0.12.11)                         
+ RCurl         1.95-4.8 2016-03-01 CRAN (R 3.4.0)                          
+ readr       * 1.1.1    2017-05-16 CRAN (R 3.4.0)                          
+ readxl        1.0.0    2017-04-18 CRAN (R 3.4.0)                          
+ RefManageR    0.13.1   2016-11-13 CRAN (R 3.4.0)                          
+ reshape2      1.4.2    2016-10-22 CRAN (R 3.4.0)                          
+ RJSONIO       1.3-0    2014-07-28 CRAN (R 3.4.0)                          
+ rlang         0.1.1    2017-05-18 CRAN (R 3.4.0)                          
+ rmarkdown     1.6      2017-06-15 cran (@1.6)                             
+ rprojroot     1.2      2017-01-16 CRAN (R 3.4.0)                          
+ rsconnect     0.8      2017-05-08 CRAN (R 3.4.0)                          
+ rstudioapi    0.6      2016-06-27 CRAN (R 3.4.0)                          
+ rvest         0.3.2    2016-06-17 CRAN (R 3.4.0)                          
+ scales        0.4.1    2016-11-09 CRAN (R 3.4.0)                          
+ seqinr        3.3-6    2017-04-06 CRAN (R 3.4.0)                          
+ shiny       * 1.0.3    2017-04-26 CRAN (R 3.4.0)                          
+ sp            1.2-4    2016-12-22 CRAN (R 3.4.0)                          
+ spdep         0.6-13   2017-04-25 CRAN (R 3.4.0)                          
+ splines       3.4.0    2017-04-21 local                                   
+ stats       * 3.4.0    2017-04-21 local                                   
+ stringi       1.1.5    2017-04-07 CRAN (R 3.4.0)                          
+ stringr       1.2.0    2017-02-18 CRAN (R 3.4.0)                          
+ tibble      * 1.3.3    2017-05-28 CRAN (R 3.4.0)                          
+ tidyr       * 0.6.3    2017-05-15 CRAN (R 3.4.0)                          
+ tidyverse   * 1.1.1    2017-01-27 CRAN (R 3.4.0)                          
+ tools         3.4.0    2017-04-21 local                                   
+ tweenr        0.1.5    2016-10-10 CRAN (R 3.4.0)                          
+ udunits2      0.13     2016-11-17 CRAN (R 3.4.0)                          
+ units         0.4-5    2017-06-15 CRAN (R 3.4.0)                          
+ utils       * 3.4.0    2017-04-21 local                                   
+ vegan         2.4-3    2017-04-07 CRAN (R 3.4.0)                          
+ viridis     * 0.4.0    2017-03-27 CRAN (R 3.4.0)                          
+ viridisLite * 0.2.0    2017-03-24 CRAN (R 3.4.0)                          
+ visNetwork  * 1.0.3    2016-12-22 CRAN (R 3.4.0)                          
+ withr         1.0.2    2016-06-20 CRAN (R 3.4.0)                          
+ XML           3.98-1.9 2017-06-19 CRAN (R 3.4.1)                          
+ xml2          1.1.1    2017-01-24 CRAN (R 3.4.0)                          
+ xtable        1.8-2    2016-02-05 CRAN (R 3.4.0)                          
+ yaml          2.1.14   2016-11-12 CRAN (R 3.4.0)                          </code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 </div>
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiTG9jdXMgU3RhdGlzdGljcyIKb3V0cHV0OiAKICBodG1sX25vdGVib29rOgogICAgdG9jOiB0cnVlCmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogaW5saW5lCi0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2tuaXQkc2V0KHJvb3QuZGlyID0gUFJPSkhPTUUpCmBgYAoKIyBQdXJwb3NlCgpUaGlzIHdpbGwgdGFidWxhdGUgc3RhdGlzdGljcyBwZXIgbG9jdXMgZm9yIHByZXNlbnRhdGlvbiBpbiBhIHRhYmxlLgoKYGBge3J9CmxpYnJhcnkoInBvcHByIikKbG9hZChmaWxlLnBhdGgoUFJPSkhPTUUsICJkYXRhIiwgInNjbGVyb3RpbmlhXzE2X2xvY2kucmRhIikpCmBgYAoKYGBge3IgbG9jdXNfdGFibGUsIGNvbW1lbnQgPSBOQX0KbWFrZXJhbmdlIDwtIC4gJT4lIGFzLmludGVnZXIoKSAlPiUgcmFuZ2UoKSAlPiUgcGFzdGUoY29sbGFwc2UgPSAiLSIpCgpyYW5nZXMgPC0gbWFwX2NocihhbGxlbGVzKGRhdDExKSwgbWFrZXJhbmdlKQpyYW5nZXMgPC0gYyhyYW5nZXMsIGFsbGVsZXMoZGF0MTEpICU+JSB1bmxpc3QodXNlLm5hbWVzID0gRkFMU0UpICU+JSBtYWtlcmFuZ2UpCmxvY3VzX3RhYmxlKGRhdDExLCBpbmZvcm1hdGlvbiA9IEZBTFNFKSAlPiUgCiAgYXMuZGF0YS5mcmFtZSgpICU+JQogIHJvd25hbWVzX3RvX2NvbHVtbigiTG9jdXMiKSAlPiUKICBtdXRhdGUoTG9jdXMgPSBnc3ViKCJcXChbRkhdXFwpIiwgIiIsIExvY3VzKSkgJT4lCiAgYWRkX2NvbHVtbihSYW5nZSA9IHJhbmdlcykgJT4lCiAgc2VsZWN0KExvY3VzLCBSYW5nZSwgYWxsZWxlLCBIZXhwLCBFdmVubmVzcykgJT4lCiAgbXV0YXRlKGFsbGVsZSA9IHJvdW5kKGFsbGVsZSwgMikpICU+JQogIHJlbmFtZShgJEhfe2V4cH0kYCA9IEhleHAsIGBOby4gYWxsZWxlc2AgPSBhbGxlbGUpICU+JQogIGh1eHRhYmxlOjphc19odXh0YWJsZShhZGRfY29sbmFtZXMgPSBUUlVFKSAlPiUKICBodXh0YWJsZTo6c2V0X251bWJlcl9mb3JtYXQoMToxMiwgMywgMCkgJT4lCiAgaHV4dGFibGU6OnNldF9udW1iZXJfZm9ybWF0KGV2ZXJ5d2hlcmUsIDQ6NSwgMikgJT4lCiAgaHV4dGFibGU6OnNldF9hbGlnbihldmVyeXdoZXJlLCAzOjUsICJyaWdodCIpICU+JQogIGh1eHRhYmxlOjpzZXRfY29sX3dpZHRoKGMoMC4wNiwgMC4wNywgMC4xMjMsIDAuMDksIDAuMDgpKSAlPiUKICBodXh0YWJsZTo6cHJpbnRfbWQobWF4X3dpZHRoID0gNDcpCmBgYAoKCiMjIFNlc3Npb24gSW5mb3JtYXRpb24KCmBgYHtyIHNlc3Npb25faW5mb30Kb3B0aW9ucyh3aWR0aCA9IDEwMCkKZGV2dG9vbHM6OnNlc3Npb25faW5mbygpCmBgYAo=</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiTG9jdXMgU3RhdGlzdGljcyIKb3V0cHV0OiAKICBodG1sX25vdGVib29rOgogICAgdG9jOiB0cnVlCmVkaXRvcl9vcHRpb25zOiAKICBjaHVua19vdXRwdXRfdHlwZTogaW5saW5lCi0tLQoKYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9CmtuaXRyOjpvcHRzX2tuaXQkc2V0KHJvb3QuZGlyID0gUFJPSkhPTUUpCmBgYAoKIyBQdXJwb3NlCgpUaGlzIHdpbGwgdGFidWxhdGUgc3RhdGlzdGljcyBwZXIgbG9jdXMgZm9yIHByZXNlbnRhdGlvbiBpbiBhIHRhYmxlLgoKYGBge3J9CmxpYnJhcnkoInRpZHl2ZXJzZSIpCmxpYnJhcnkoInBvcHByIikKbG9hZChmaWxlLnBhdGgoUFJPSkhPTUUsICJkYXRhIiwgInNjbGVyb3RpbmlhXzE2X2xvY2kucmRhIikpCmBgYAoKYGBge3IgbG9jdXNfdGFibGUsIGNvbW1lbnQgPSBOQX0KbWFrZXJhbmdlIDwtIC4gJT4lIGFzLmludGVnZXIoKSAlPiUgcmFuZ2UoKSAlPiUgcGFzdGUoY29sbGFwc2UgPSAiLSIpCgpyYW5nZXMgPC0gbWFwX2NocihhbGxlbGVzKGRhdDExKSwgbWFrZXJhbmdlKQpyYW5nZXMgPC0gYyhyYW5nZXMsIGFsbGVsZXMoZGF0MTEpICU+JSB1bmxpc3QodXNlLm5hbWVzID0gRkFMU0UpICU+JSBtYWtlcmFuZ2UpCmxvY3VzX3RhYmxlKGRhdDExLCBpbmZvcm1hdGlvbiA9IEZBTFNFKSAlPiUgCiAgYXMuZGF0YS5mcmFtZSgpICU+JQogIHJvd25hbWVzX3RvX2NvbHVtbigiTG9jdXMiKSAlPiUKICBtdXRhdGUoTG9jdXMgPSBnc3ViKCJcXChbRkhdXFwpIiwgIiIsIExvY3VzKSkgJT4lCiAgYWRkX2NvbHVtbihSYW5nZSA9IHJhbmdlcykgJT4lCiAgc2VsZWN0KExvY3VzLCBSYW5nZSwgYWxsZWxlLCBIZXhwLCBFdmVubmVzcykgJT4lCiAgbXV0YXRlKGFsbGVsZSA9IHJvdW5kKGFsbGVsZSwgMikpICU+JQogIHJlbmFtZShgKmgqYCA9IEhleHAsIGBOby4gYWxsZWxlc2AgPSBhbGxlbGUpICU+JQogIGh1eHRhYmxlOjphc19odXh0YWJsZShhZGRfY29sbmFtZXMgPSBUUlVFKSAlPiUKICBodXh0YWJsZTo6c2V0X251bWJlcl9mb3JtYXQoMToxMiwgMywgMCkgJT4lCiAgaHV4dGFibGU6OnNldF9udW1iZXJfZm9ybWF0KGh1eHRhYmxlOjpldmVyeXdoZXJlLCA0OjUsIDIpICU+JQogIGh1eHRhYmxlOjpzZXRfYWxpZ24oaHV4dGFibGU6OmV2ZXJ5d2hlcmUsIDM6NSwgInJpZ2h0IikgJT4lCiAgaHV4dGFibGU6OnNldF9jb2xfd2lkdGgoYygwLjA2LCAwLjA3LCAwLjEyLCAwLjA2LCAwLjA5KSkgJT4lCiAgaHV4dGFibGU6OnByaW50X21kKG1heF93aWR0aCA9IDQ3KQpgYGAKCgojIyBTZXNzaW9uIEluZm9ybWF0aW9uCgpgYGB7ciBzZXNzaW9uX2luZm99Cm9wdGlvbnMod2lkdGggPSAxMDApCmRldnRvb2xzOjpzZXNzaW9uX2luZm8oKQpgYGAK</div>
 
 
 

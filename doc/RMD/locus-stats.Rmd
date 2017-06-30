@@ -16,6 +16,7 @@ knitr::opts_knit$set(root.dir = PROJHOME)
 This will tabulate statistics per locus for presentation in a table.
 
 ```{r}
+library("tidyverse")
 library("poppr")
 load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
 ```
@@ -32,12 +33,12 @@ locus_table(dat11, information = FALSE) %>%
   add_column(Range = ranges) %>%
   select(Locus, Range, allele, Hexp, Evenness) %>%
   mutate(allele = round(allele, 2)) %>%
-  rename(`$H_{exp}$` = Hexp, `No. alleles` = allele) %>%
+  rename(`*h*` = Hexp, `No. alleles` = allele) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>%
   huxtable::set_number_format(1:12, 3, 0) %>%
-  huxtable::set_number_format(everywhere, 4:5, 2) %>%
-  huxtable::set_align(everywhere, 3:5, "right") %>%
-  huxtable::set_col_width(c(0.06, 0.07, 0.123, 0.09, 0.08)) %>%
+  huxtable::set_number_format(huxtable::everywhere, 4:5, 2) %>%
+  huxtable::set_align(huxtable::everywhere, 3:5, "right") %>%
+  huxtable::set_col_width(c(0.06, 0.07, 0.12, 0.06, 0.09)) %>%
   huxtable::print_md(max_width = 47)
 ```
 
