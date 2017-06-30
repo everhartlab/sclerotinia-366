@@ -510,6 +510,7 @@ type (MCG/Count) to color and the opacity (alpha) to Evenness.
 
 ```r
 mcg_graph <- mcgs %>% 
+  filter(MLGs > 1) %>%
   gather(type, count, MLGs, Samples, -Evenness) %>%
   arrange(desc(type), count) %>%
   rename(Type = type) %>%
@@ -523,11 +524,13 @@ mcg_graph <- mcgs %>%
   theme_minimal(base_size = 16, base_family = "Helvetica") +
   coord_flip() +
   theme(panel.grid.major.y = element_blank()) +
-  theme(legend.position = c(.745, .85)) +
+  theme(legend.box.just = "left") +
+  theme(legend.box.margin = unit(c(0, 0.55, 11, 0), "lines")) +
+  theme(legend.box.background = element_rect(fill = NA, color = "black")) +
   # theme(legend.box = "horizontal") +
-  theme(aspect.ratio = 3) +
+  theme(aspect.ratio = 2) +
   labs(list(
-    alpha = "MLG Evenness"
+    alpha = "MLG\nEvenness"
   ))
 ```
 
@@ -536,39 +539,26 @@ mcg_graph <- mcgs %>%
 ```
 
 ```r
-uneven <- mcgs %>% 
-  filter(MCG == 5) %>% 
-  unnest() %>% 
-  ggplot(aes(x = forcats::fct_inorder(MLG), y = Freq)) + 
-  geom_col(color = "grey62", fill = "grey72", width = 0.5) + 
-  theme_void() +
-  ggtitle("Evenness = 0.48") +
-  theme(aspect.ratio = 1) +
-  theme(title = element_text(hjust = 0.5, 
-                             size = rel(1.25),
-                             family = "Helvetica",
-                             color = "grey30"))
-
 even <- mcgs %>% 
-  filter(MCG == 53) %>% 
+  filter(MCG %in% c(53, 9)) %>% 
+  mutate(MCG = ifelse(MCG == 53, "Evenness = 1.00", "Evenness = 0.55")) %>%
   unnest() %>% 
-  ggplot(aes(x = forcats::fct_inorder(MLG), y = Freq)) + 
-  geom_col(color = "grey20", fill = "grey20", width = 0.75) + 
+  ggplot(aes(x = forcats::fct_inorder(MLG), y = Freq, alpha = Evenness)) + 
+  geom_col(color = "grey30", width = 0.75) + 
   theme_void() +
-  ggtitle("Evenness = 1") +
-  theme(aspect.ratio = 1) +
-  theme(title = element_text(hjust = 0.5, 
-                             size = rel(1.25),
-                             family = "Helvetica",
-                             color = "grey30"))
+  theme(strip.text = element_text(family = "Helvetica", color = "grey30", face = "bold")) +
+  theme(aspect.ratio = 0.66) +
+  theme(panel.spacing = unit(0, "line")) +
+  theme(legend.position = "none") +
+  # theme(plot.background = element_rect(fill = NA, colour = "black")) +
+  facet_wrap(~MCG, ncol = 1, scale = "free")
 
-vp1 <- grid::viewport(width = 0.2, height = 0.2, x = 0.78, y = 0.67, just = "right")
-vp2 <- grid::viewport(width = 0.2, height = 0.2, x = 0.78, y = 0.555, just = "right")
+vp1 <- grid::viewport(width = 0.25, height = 0.4, x = 0.795, y = 0.64, just = c("center", "top"))
+mcg_graph <- mcg_graph + theme(legend.position = c(.789, .585))
 
-pdf(file.path(PROJHOME, "results/figures/publication/Figure1Z.pdf"), width = 5, height = 12)
+pdf(file.path(PROJHOME, "results/figures/publication/Figure1Z.pdf"), width = 5, height = 10)
 print(mcg_graph)
-print(uneven, vp = vp1)
-print(even, vp = vp2)
+print(even, vp = vp1)
 dev.off()
 ```
 
@@ -579,8 +569,7 @@ dev.off()
 
 ```r
 print(mcg_graph)
-print(uneven, vp = vp1)
-print(even, vp = vp2)
+print(even, vp = vp1)
 ```
 
 ![plot of chunk barplots](./figures/mlg-mcg///barplots-1.png)
@@ -957,7 +946,7 @@ on average 7 steps.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-29
+##  date     2017-06-30
 ```
 
 ```

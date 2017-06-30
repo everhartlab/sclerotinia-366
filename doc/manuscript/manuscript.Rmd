@@ -81,7 +81,7 @@ In those studies, different dry bean cultivars had been rarely used as  hosts to
 No white mold resistant dry bean cultivars exist.
 Canopy architecture and growth pattern of some cultivars enable improved disease avoidance [@kolkman2002agronomic].
 Field trials in some regions of the US have shown G122 is white mold resistant and Beryl is susceptible (pers. comm. with J. Steadman).
-Understanding genetic relationships and reproduction behavior of *S. sclerotiorum* populations from locations worldwide is beneficial for plant breeders seeking to develop white mold resistance cultivars for deployment worldwide.
+Understanding genetic relationships and reproduction behavior of *S. sclerotiorum* populations from locations worldwide is beneficial for plant breeders seeking to develop white mold resistance cultivars for deployment worldwide. 
 This information is also helpful in making disease management decisions and developing disease resistance screening methods.
 
 Microsatellite markers (simple sequence repeats or SSR) are codominant, polymorphic and also able to detect multiple alleles per locus [@atallah2004high; @sirjusingh2001characterisation].
@@ -285,6 +285,7 @@ Higher observed $\bar{r}_d$ or $I_A$ values would indicate clonally reproducing 
 
 ![
 Barplot showing abundance of each Mycelial Compatibility Group (MCG) in descending order.
+Singletons (46) have been removed for clarity.
 White bars represent sample counts and grey bars represent counts of unique multilocus genotypes (MLG).
 The transparency associated with the grey bars represent the evenness of the distribution of the MLGs within a given MCG as shown in the inset histograms.
 ](../../results/figures/publication/Figure1Z.pdf){#barplot width=50%}

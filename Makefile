@@ -45,5 +45,5 @@ results/%.md : doc/RMD/%.Rmd
 	              keep_html = FALSE \
 	              )"
 
-doc/manuscript/%.pdf : doc/manuscript/%.Rmd $(COMPONENTS)
+doc/manuscript/%.pdf : doc/manuscript/%.Rmd $(COMPONENTS) $(ANALYSES)
 	R --slave -e "rmarkdown::render('$<')"
