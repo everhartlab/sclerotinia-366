@@ -15,7 +15,7 @@ knitr::opts_knit$set(root.dir = PROJHOME)
 
 This will tabulate statistics per locus for presentation in a table.
 
-```{r}
+```{r load_packages, message = FALSE, warning = FALSE}
 library("tidyverse")
 library("poppr")
 load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
@@ -42,10 +42,12 @@ locus_table(dat11, information = FALSE) %>%
   huxtable::print_md(max_width = 47)
 ```
 
+<details>
+<summary>Session Information</summary>
 
-## Session Information
-
-```{r session_info}
+```{r, echo = FALSE}
 options(width = 100)
 devtools::session_info()
 ```
+
+</details>

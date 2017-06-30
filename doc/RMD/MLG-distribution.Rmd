@@ -12,7 +12,7 @@ knitr::opts_knit$set(root.dir = PROJHOME)
 In this document, I will create a graph that shows the distribution of MLGs
 across populations
 
-```{r}
+```{r load_packages, message = FALSE, warning = FALSE}
 library('tidyverse')
 library('poppr')
 library('igraph')
@@ -272,11 +272,13 @@ save(graph16loc, graph11loc, alt_layout, file = "data/mlg-crosspop-graph.rda")
 ```
 
 
+<details>
+<summary>Session Information</summary>
 
-## Session Information
-
-```{r}
+```{r, echo = FALSE}
 options(width = 100)
 devtools::session_info()
 ```
+
+</details>
 

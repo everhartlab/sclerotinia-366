@@ -9,7 +9,7 @@ output:
 knitr::opts_knit$set(root.dir = PROJHOME)
 ```
 
-```{r}
+```{r load_packages, message = FALSE, warning = FALSE}
 library("tidyverse")
 ```
 
@@ -94,9 +94,12 @@ agricolae::HSD.test(ANOVA, "MCG")$groups
 There appears to be a significant effect at p = `r formatC(broom::tidy(ANOVA)$p.value[1])`.
 
 
-## Session Information
+<details>
+<summary>Session Information</summary>
 
-```{r session_info}
+```{r, echo = FALSE}
 options(width = 100)
 devtools::session_info()
 ```
+
+</details>
