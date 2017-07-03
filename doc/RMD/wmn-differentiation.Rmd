@@ -39,6 +39,34 @@ don't accidentally include non-independent samples.
 dat11
 dat11cc <- clonecorrect(dat11, ~Region/Source/Host/Year)
 dat11cc
+
+make_amova_table <- function(am, amt, samples = "Region"){
+  tot <- nrow(am$results)
+  res <- data.frame(list(am$results[-tot, c("Df", "Sum Sq")], 
+                         Percent = am$componentsofcovariance[-tot, 2],
+                         Pval    = rev(amt$pvalue), 
+                         Phi     = am$statphi$Phi[-tot]))
+  res <- as.matrix(res)
+  colnames(res) <- c("d.f.", "Sum of Squares", "Percent variation", "P", 
+                     "Phi statistic")
+  names(dimnames(res)) <- c("levels", "statistic")
+  rownames(res) <- gsub("samples", samples, rownames(res))
+  return(res)
+}
+
+make_amova_printable <- function(amtab, amtabcc){
+  am_array <- array(dim      = c(dim(amtab), 2),
+                    dimnames = c(dimnames(amtab), 
+                                 list(c("full", "clone-corrected"))))
+  am_array[, , 1] <- amtab
+  am_array[, , 2] <- amtabcc
+  tabfun <- function(x){
+    x <- paste0(paste0(signif(x, 3), collapse = " ("), ")")
+    return(x)
+  }
+  res <- apply(am_array, c(1, 2), tabfun)
+  return(res)
+}
 ```
 
 Now that we've done that, we should make a new variable in the strata that 
@@ -73,10 +101,10 @@ we specifically want to test the effect of region on the differentiation between
 white mold nurseries within different regions.
 
 ```{r AMOVA-Region, cache = TRUE}
-(ssc_amova_region <- poppr.amova(dat11cc, ~SourceType/Region, dist = bd, quiet = TRUE))
+ssc_amova_region <- poppr.amova(dat11cc, ~SourceType/Region, dist = bd, quiet = TRUE)
 ssc_amova_region_test <- randtest(ssc_amova_region, nrepet = 999)
 plot(ssc_amova_region_test)
-ssc_amova_region_test
+(ssc_amova_table <- make_amova_table(ssc_amova_region, ssc_amova_region_test))
 ```
 
 Okay! This shows that when we account for Region after accounting for Source
@@ -86,15 +114,96 @@ happens when we remove Mexico?
 ```{r AMOVA-nomex, cache = TRUE}
 datnomex <- setPop(dat11cc, ~Region) %>% popsub(blacklist = "Mexico")
 bdnm     <- bruvo.dist(datnomex, replen = other(datnomex)$REPLEN)
-(ssc_amova_nm <- poppr.amova(datnomex, ~SourceType/Region, dist = bdnm, quiet = TRUE))
+ssc_amova_nm <- poppr.amova(datnomex, ~SourceType/Region, dist = bdnm, quiet = TRUE)
 ssc_amova_nm_test <- randtest(ssc_amova_nm, nrepet = 999)
 plot(ssc_amova_nm_test)
-ssc_amova_nm_test
+(ssc_amova_nm_table <- make_amova_table(ssc_amova_nm, ssc_amova_nm_test))
 ```
+
+```{r AMOVA_table, comment = NA}
+make_amova_printable(ssc_amova_table, ssc_amova_nm_table) %>%  
+  as_tibble() %>%
+  add_column(Hierarchy = c("Between Source", "Between Region within Source", "Within Region"), .before = 1) %>%
+  rename(ps = `Phi statistic`) %>%
+  mutate(ps = gsub("0\\.00(\\d{1})(\\d{2})", "\\1.\\2e^-3^", ps)) %>%
+  rename(`$\\Phi statistic$` = ps) %>%
+  rename(`% variation` = `Percent variation`) %>%
+  rename(S.S. = `Sum of Squares`) %>%
+  select(-P) %>%
+  huxtable::as_huxtable(add_colnames = TRUE) %>% 
+  huxtable::set_col_width(c(1.3, 0.7, 0.9, 1, 1.3)) %>% 
+  huxtable::set_align(huxtable::everywhere, 2:5, "center") %>% 
+  huxtable::print_md(max_width = 95)
+```
+
 
 When we remove the Mexican isolates (which only contained white mold nurseries
 and shared no genotypes), we see that indeed, the degree of differentiation
 went down. 
+
+## Visualizing the partitions
+
+We can visualize the partitions if we create distributions showing the genetic
+distance.
+
+```{r distrib, fig.width = 6, fig.height = 3}
+wmn_inds <- (setPop(dat11cc, ~SourceType) %>% pop()) == "wmn"
+
+# Function to set the upper triangle to NA to avoid over-representation.
+set_upper_tri_NA <- function(d){d[upper.tri(d)] <- NA; diag(d) <- NA; d}
+
+# dist data converted to matrix fed into here. Removes NAs from previous function
+tidy_dist <- . %>%
+  as.data.frame() %>% 
+  rownames_to_column("from") %>% 
+  gather(to, distance, -from) %>% 
+  filter(!is.na(distance))
+wmn_distance   <- as.matrix(bd)[wmn_inds, wmn_inds] %>% set_upper_tri_NA() %>% tidy_dist
+nwmn_distance  <- as.matrix(bd)[!wmn_inds, !wmn_inds] %>% set_upper_tri_NA() %>% tidy_dist
+inter_distance <- as.matrix(bd)[wmn_inds, !wmn_inds] %>% tidy_dist
+
+dists <- bind_rows(`White Mold Nurseries` = wmn_distance, 
+                   `Between` = inter_distance,
+                   `Other Sources` = nwmn_distance, 
+                   .id = "Comparison") %>%
+  mutate(Comparison = forcats::fct_inorder(Comparison))
+dists
+ggplot(dists, aes(y = distance, x = Comparison, fill = Comparison)) +
+  geom_violin() +
+  geom_boxplot(width = 0.25) +
+  scale_fill_manual(values =  c(`Other Sources` = "grey35", `White Mold Nurseries` = "grey95", Between = "grey65")) +
+  scale_color_manual(values = c(`Other Sources` = "grey35", `White Mold Nurseries` = "grey95", Between = "grey65")) +
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  theme(aspect.ratio = 1/2) +
+  theme(legend.position = "none") +
+  theme(axis.title.x = element_blank()) +
+  theme(axis.text = element_text(color = "black")) +
+  theme(panel.grid.major = element_line(colour = "grey20")) +
+  theme(panel.grid.minor = element_line(colour = "grey50")) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.border = element_blank()) +
+  ylab("Bruvo's Distance")
+```
+
+```{r dist_comparison, results = "asis"}
+summary_dists <- dists %>% 
+  group_by(Comparison) %>% 
+  summarize(`Average Distance` = mean(distance),
+            `Standard Deviation` = sd(distance)) 
+knitr::kable(summary_dists, digits = 3)
+```
+
+On first look, it appears that there's not much difference. Looking at the
+table, we can see that the average distance within White Mold Nurseries is 
+`r round(summary_dists[["Average Distance"]][1], 3)`, whereas the average distance within Other
+Sources is `r round(summary_dists[["Average Distance"]][3], 3)`. This is well within the standard
+deviation for both distributions, but we also recognize that a single step of
+Bruvo's distance for 11 loci in a haploid organism is `r round(0.5/11, 3)`.
+
+# Summary
+
+
+
 
 <details>
 <summary>Session Information</summary>
