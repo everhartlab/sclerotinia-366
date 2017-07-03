@@ -55,6 +55,101 @@ dat11.bruvo   <- bruvo.dist(dat11, replen = other(dat11)$REPLEN)
 dat11cc.bruvo <- bruvo.dist(dat11cc, replen = other(dat11)$REPLEN)
 ```
 
+# Genotypic Diversity
+
+
+```r
+ptab <- dat11cc %>% setPop(~Region) %>% poppr(sample = 999, total = FALSE)
+```
+
+```
+Warning: values for NY, WI, ID could not be plotted.
+```
+
+![plot of chunk geno-div](./figures/pop-diff///geno-div-1.png)
+
+
+```r
+ptab %>%
+  arrange(desc(N), desc(MLG)) %>%
+  mutate(Ia = case_when(
+    !is.finite(.$p.Ia) ~ "-",
+    .$p.Ia == 0.001 ~ paste0(round(.$Ia, 2), "*"),
+    .$p.Ia <= 0.01 ~  paste0(round(.$Ia, 2), "-"),
+    .$p.Ia <= 0.05 ~  paste0(round(.$Ia, 2), "~"),
+    TRUE ~ as.character(round(.$Ia, 2))
+  )) %>%
+  mutate(rbarD = case_when(
+    !is.finite(.$p.rD) ~ "-",
+    .$p.rD == 0.001 ~ paste0(round(.$rbarD, 2), "*"),
+    .$p.rD <= 0.01 ~  paste0(round(.$rbarD, 2), "-"),
+    .$p.rD <= 0.05 ~  paste0(round(.$rbarD, 2), "~"),
+    TRUE ~ as.character(round(.$rbarD, 2))
+  )) %>%
+  mutate_if(is.numeric, round, digits = 2) %>%
+  mutate(N = paste(N, MLG, sep = " (") %>% paste0(")") %>% formatC()) %>%
+  mutate(eMLG = paste(eMLG, SE, sep = " (") %>%  paste0(")") %>% formatC()) %>%
+  rename(`*h*` = Hexp) %>%
+  rename(`$E_5$` = E.5) %>%
+  rename(`$I_A$` = Ia) %>%
+  rename(`$\\lambda$` = lambda) %>%
+  rename(`$\\bar{r}_d$` = rbarD) %>%
+  select(-File, -MLG, -SE, -p.rD, -p.Ia) %>% 
+  huxtable::as_huxtable(add_colnames = TRUE) %>%
+  huxtable::set_number_format(huxtable::everywhere, 4:5, 1) %>%
+  huxtable::set_align(huxtable::everywhere, -1, "right") %>%
+  huxtable::set_col_width(c(1.1, 0.9, 1.3, 0.5, 0.5, 1.2, 0.7, 0.6, 0.6, 0.8)) %>%
+  huxtable::print_md(max_width = 80)
+```
+
+```
+----------------------------------------------------------------------------
+Pop             N        eMLG    H    G  $\lambda$  $E_5$   *h* $I_A$ $\bar{ 
+                                                                       r}_d$ 
+--------- ------- ----------- ---- ---- ---------- ------ ----- ----- ------
+WA        58 (56) 9.95 (0.23)  4.0 54.3       0.98   0.98  0.60 0.65*  0.07* 
+
+MI        58 (43)  9.3 (0.79)  3.6 29.0       0.97   0.78  0.54 1.25*  0.14* 
+
+ND        41 (35) 9.44 (0.73)  3.5 25.9       0.96   0.82  0.54    1*   0.1* 
+
+NE        37 (28) 8.93 (0.94)  3.2 17.8       0.94   0.75  0.55 2.22*  0.25* 
+
+CO        34 (28) 9.46 (0.67)  3.3 24.1       0.96   0.92  0.56 2.33*  0.27* 
+
+France    21 (14)  8.5 (0.85)  2.6 12.6       0.92   0.95  0.48 0.94*  0.11* 
+
+CA        18 (15) 9.12 (0.72)  2.7 13.5       0.93   0.94  0.51  0.28   0.03 
+
+OR        17 (13) 8.52 (0.85)  2.5 10.7       0.91   0.89  0.47 0.92*   0.1* 
+
+Mexico     15 (9)  7.1 (0.85)  2.1  7.3       0.86   0.89  0.28 2.57*  0.37* 
+
+MN          9 (7)       7 (0)  1.9  6.2       0.84   0.93  0.47 1.34*  0.19* 
+
+Australia   6 (6)       6 (0)  1.8  6.0       0.83   1.00  0.48  0.7~  0.12~ 
+
+WI          2 (2)       2 (0)  0.7  2.0       0.50   1.00  0.27     -      - 
+
+NY          1 (1)       1 (0)  0.0  1.0       0.00    NaN   NaN     -      - 
+
+ID          1 (1)       1 (0)  0.0  1.0       0.00    NaN   NaN     -      - 
+
+----------------------------------------------------------------------------
+```
+
+```r
+ptab %>% 
+  arrange(desc(N), desc(MLG)) %>% 
+  write_csv(file.path(PROJHOME, "results/tables/genotype_diversity_table_region.csv"), col_names = TRUE)
+
+mtab <- mlg.table(dat11, ~Region, background = TRUE)
+```
+
+![plot of chunk geno-div2](./figures/pop-diff///geno-div2-1.png)
+
+
+
 # AMOVA
 
 First, we can conduct an AMOVA analysis across all populations, with respect to
@@ -126,7 +221,11 @@ This can tell us how well our regions separate
 
 ```r
 region.dapc <- dapc(dat11, strata(dat11)$Region, n.pca = 25, n.da = 14)
-scatter(region.dapc)
+scatter(region.dapc, scree.pca = TRUE,
+        bg = "grey80",
+        col = funky(nlevels(strata(dat11)$Region)), 
+        posi.pca = "topright"
+        )
 ```
 
 ![plot of chunk dapc-region](./figures/pop-diff///dapc-region-1.png)
@@ -284,7 +383,7 @@ scatter(dat11.nc.dapc)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-30
+##  date     2017-07-03
 ```
 
 ```
@@ -338,6 +437,7 @@ scatter(dat11.nc.dapc)
 ##  htmltools      0.3.6   2017-04-28 CRAN (R 3.4.0)                          
 ##  httpuv         1.3.3   2015-08-04 CRAN (R 3.4.0)                          
 ##  httr           1.2.1   2016-07-03 CRAN (R 3.4.0)                          
+##  huxtable       0.3.0   2017-05-18 CRAN (R 3.4.0)                          
 ##  igraph         1.0.1   2015-06-26 CRAN (R 3.4.0)                          
 ##  jsonlite       1.5     2017-06-01 CRAN (R 3.4.0)                          
 ##  knitr        * 1.16    2017-05-18 CRAN (R 3.4.0)                          

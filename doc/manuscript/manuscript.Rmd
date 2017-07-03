@@ -651,4 +651,46 @@ Will not work with HTML outputs, though. -->
 \setcounter{figure}{0}
 \renewcommand{\thefigure}{S\arabic{figure}}
 
+----------------------------------------------------------------------------
+Pop             N        eMLG    H    G  $\lambda$  $E_5$   *h* $I_A$ $\bar{ 
+                                                                       r}_d$ 
+--------- ------- ----------- ---- ---- ---------- ------ ----- ----- ------
+WA        58 (56) 9.95 (0.23)  4.0 54.3       0.98   0.98  0.60 0.65*  0.07* 
 
+MI        58 (43)  9.3 (0.79)  3.6 29.0       0.97   0.78  0.54 1.25*  0.14* 
+
+ND        41 (35) 9.44 (0.73)  3.5 25.9       0.96   0.82  0.54    1*   0.1* 
+
+NE        37 (28) 8.93 (0.94)  3.2 17.8       0.94   0.75  0.55 2.22*  0.25* 
+
+CO        34 (28) 9.46 (0.67)  3.3 24.1       0.96   0.92  0.56 2.33*  0.27* 
+
+France    21 (14)  8.5 (0.85)  2.6 12.6       0.92   0.95  0.48 0.94*  0.11* 
+
+CA        18 (15) 9.12 (0.72)  2.7 13.5       0.93   0.94  0.51 0.28~  0.03~ 
+
+OR        17 (13) 8.52 (0.85)  2.5 10.7       0.91   0.89  0.47 0.92*   0.1* 
+
+Mexico     15 (9)  7.1 (0.85)  2.1  7.3       0.86   0.89  0.28 2.57*  0.37* 
+
+MN          9 (7)       7 (0)  1.9  6.2       0.84   0.93  0.47 1.34*  0.19* 
+
+Australia   6 (6)       6 (0)  1.8  6.0       0.83   1.00  0.48  0.7~  0.12~ 
+
+WI          2 (2)       2 (0)  0.7  2.0       0.50   1.00  0.27     -      - 
+
+NY          1 (1)       1 (0)  0.0  1.0       0.00    NaN   NaN     -      - 
+
+ID          1 (1)       1 (0)  0.0  1.0       0.00    NaN   NaN     -      - 
+
+----------------------------------------------------------------------------
+
+Table: (\#tab:iatab) Genotypic diversity and Linkage Disequilibrium summary for geographic populations arranged by abundance after clone-correction by a hierarchy of Region/Source/Host/Year. 
+Pop = Population, N = number of individuals (number of MLG in parentheses), 
+eMLG = expected number of MLGs based on rarefaction at 10 individuals (standard error in parentheses), 
+H = Shannon-Weiner Index, G = Stoddardt and Taylor's Index, 
+$\lambda$ = Simpson's Index, 
+*h* = Nei's 1978 gene diversity, 
+$I_A$ = the index of association, 
+$\bar{r}_d$ = standardized index of association. 
+P-value symbols: \* = 0.001, ~ = $\leq 0.05$.

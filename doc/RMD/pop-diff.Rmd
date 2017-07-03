@@ -36,6 +36,53 @@ dat11.bruvo   <- bruvo.dist(dat11, replen = other(dat11)$REPLEN)
 dat11cc.bruvo <- bruvo.dist(dat11cc, replen = other(dat11)$REPLEN)
 ```
 
+# Genotypic Diversity
+
+```{r geno-div, cache = TRUE, fig.width = 10, fig.height = 10, comment = NA}
+ptab <- dat11cc %>% setPop(~Region) %>% poppr(sample = 999, total = FALSE)
+```
+
+```{r geno-div2, fig.width = 10, fig.height = 10, comment = NA}
+ptab %>%
+  arrange(desc(N), desc(MLG)) %>%
+  mutate(Ia = case_when(
+    !is.finite(.$p.Ia) ~ "-",
+    .$p.Ia == 0.001 ~ paste0(round(.$Ia, 2), "*"),
+    .$p.Ia <= 0.01 ~  paste0(round(.$Ia, 2), "-"),
+    .$p.Ia <= 0.05 ~  paste0(round(.$Ia, 2), "~"),
+    TRUE ~ as.character(round(.$Ia, 2))
+  )) %>%
+  mutate(rbarD = case_when(
+    !is.finite(.$p.rD) ~ "-",
+    .$p.rD == 0.001 ~ paste0(round(.$rbarD, 2), "*"),
+    .$p.rD <= 0.01 ~  paste0(round(.$rbarD, 2), "-"),
+    .$p.rD <= 0.05 ~  paste0(round(.$rbarD, 2), "~"),
+    TRUE ~ as.character(round(.$rbarD, 2))
+  )) %>%
+  mutate_if(is.numeric, round, digits = 2) %>%
+  mutate(N = paste(N, MLG, sep = " (") %>% paste0(")") %>% formatC()) %>%
+  mutate(eMLG = paste(eMLG, SE, sep = " (") %>%  paste0(")") %>% formatC()) %>%
+  rename(`*h*` = Hexp) %>%
+  rename(`$E_5$` = E.5) %>%
+  rename(`$I_A$` = Ia) %>%
+  rename(`$\\lambda$` = lambda) %>%
+  rename(`$\\bar{r}_d$` = rbarD) %>%
+  select(-File, -MLG, -SE, -p.rD, -p.Ia) %>% 
+  huxtable::as_huxtable(add_colnames = TRUE) %>%
+  huxtable::set_number_format(huxtable::everywhere, 4:5, 1) %>%
+  huxtable::set_align(huxtable::everywhere, -1, "right") %>%
+  huxtable::set_col_width(c(1.1, 0.9, 1.3, 0.5, 0.5, 1.2, 0.7, 0.6, 0.6, 0.8)) %>%
+  huxtable::print_md(max_width = 80)
+
+ptab %>% 
+  arrange(desc(N), desc(MLG)) %>% 
+  write_csv(file.path(PROJHOME, "results/tables/genotype_diversity_table_region.csv"), col_names = TRUE)
+
+mtab <- mlg.table(dat11, ~Region, background = TRUE)
+```
+
+
+
 # AMOVA
 
 First, we can conduct an AMOVA analysis across all populations, with respect to
@@ -53,7 +100,11 @@ This can tell us how well our regions separate
 
 ```{r dapc-region, fig.width = 7, fig.height = 7}
 region.dapc <- dapc(dat11, strata(dat11)$Region, n.pca = 25, n.da = 14)
-scatter(region.dapc)
+scatter(region.dapc, scree.pca = TRUE,
+        bg = "grey80",
+        col = funky(nlevels(strata(dat11)$Region)), 
+        posi.pca = "topright"
+        )
 ggcompoplot(region.dapc, setPop(dat11, ~Region), pal = funky, cols = 2)
 ```
 
