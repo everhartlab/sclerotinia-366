@@ -461,6 +461,22 @@ None of the above sampling variables (i.e. region, year, host) seemed to influen
 However, assignment of isolates by DAPC analysis of regions did show some promising results for MX and CA isolates (Fig. 8A).
 The original group size of each region and DAPC defined group sizes for different regions are given in Table 6.
 
+
+-------------------------------------------------------------------------------
+Hierarchy               d.f.        S.S.       % variation    $\Phi statistic$  
+-------------------- ---------- ------------- -------------- ------------------
+Between Source         1 (1)    0.897 (0.753) -0.158 (0.116)   0.136 (0.0965)   
+
+Between Region        20 (19)     12 (8.91)    13.8 (9.53)     **0.138 (0.0955)**   
+within Source                                                                        
+
+Within Region        296 (282)   56.7 (55.1)   86.4 (90.3)   **-1.58e^-3^ (1.16e^-3^)** 
+
+-------------------------------------------------------------------------------
+
+Table: (\#tab:amova) Analysis of Molecular Variance showing little differentiation between White Mold Nurseries and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a white mold nursery or not. Bold $\Phi$ values indicate significant values. Numbers in parentheses represent AMOVA run without Mexican isolates included. S.S. = Sum of Squares, d.f. = degrees of freedom.
+
+
 Since `find.clusters()` function of *adegenet* did not result in a clear-cut number of clusters for 318 isolates, we arrived at six (6) as the best number of populations (Fig. 9) for our data after examining results of DAPC for different number of clusters.
 Three clusters, namely clusters one, three, and six were formed separately from the rest.
 The cluster 3 of the DAPC plot consisted entirely of MX isolates (N =13/15).
