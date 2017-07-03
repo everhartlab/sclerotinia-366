@@ -202,7 +202,7 @@ ssc_amova_test
 ## Alternative hypothesis: greater 
 ## 
 ##      Std.Obs  Expectation     Variance 
-## 7.578927e+00 9.616164e-06 3.342823e-07
+## 8.143075e+00 1.280784e-06 2.906716e-07
 ```
 
 
@@ -277,29 +277,29 @@ make_amova_printable(ssc_amova_table, ssc_amova_nm_table) %>%
   as_tibble() %>%
   add_column(Hierarchy = c("Between Source", "Between Region within Source", "Within Region"), .before = 1) %>%
   rename(ps = `Phi statistic`) %>%
-  mutate(ps = gsub("0\\.00(\\d{3})", "\\1^-3^", ps)) %>%
+  mutate(ps = gsub("0\\.00(\\d{1})(\\d{2})", "\\1.\\2e^-3^", ps)) %>%
   rename(`$\\Phi statistic$` = ps) %>%
   rename(`% variation` = `Percent variation`) %>%
   rename(S.S. = `Sum of Squares`) %>%
   select(-P) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>% 
-  huxtable::set_col_width(c(1.4, 0.7, 0.9, 1, 1.25)) %>% 
+  huxtable::set_col_width(c(1.3, 0.7, 0.9, 1, 1.3)) %>% 
   huxtable::set_align(huxtable::everywhere, 2:5, "center") %>% 
-  huxtable::print_md(max_width = 80)
+  huxtable::print_md(max_width = 95)
 ```
 
 ```
--------------------------------------------------------------------------------
-Hierarchy               d.f.        S.S.       % variation    $\Phi statistic$  
--------------------- ---------- ------------- -------------- ------------------
-Between Source         1 (1)    0.897 (0.753) -0.158 (0.116)   0.136 (0.0965)   
+--------------------------------------------------------------------------------------------
+Hierarchy                  d.f.          S.S.          % variation       $\Phi statistic$    
+---------------------- ------------ --------------- ----------------- ----------------------
+Between Source            1 (1)      0.897 (0.753)   -0.158 (0.116)       0.136 (0.0965)     
 
-Between Region withi  20 (19)     12 (8.91)    13.8 (9.53)     0.138 (0.0955)   
-n Source                                                                        
+Between Region within    20 (19)       12 (8.91)       13.8 (9.53)        0.138 (0.0955)     
+Source                                                                                       
 
-Within Region        296 (282)   56.7 (55.1)   86.4 (90.3)   -158^-3^ (116^-3^) 
+Within Region           296 (282)     56.7 (55.1)      86.4 (90.3)    -1.58e^-3^ (1.16e^-3^) 
 
--------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
 ```
 
 
@@ -25385,9 +25385,105 @@ Sources is 0.41. This is well within the standard
 deviation for both distributions, but we also recognize that a single step of
 Bruvo's distance for 11 loci in a haploid organism is 0.045.
 
-# Summary
+# Host differentiation
+
+There are three main hosts shared within the white mold nurseries: 
+
+| Cultivar | Susceptibility |
+| ----- | ---- |
+| Beryl | Susceptible |
+| Bunsi | ? |
+| G122  | Some Resistance |
+
+These hosts are grown in the nurseries at different times and it is of interest
+if cultivar can have an effect on population structure. Given the results of
+Aldrich-Wolfe 2015, I would suspect that cultivar has no effect, but it's
+important to verify this. We are going to use AMOVA and DAPC for this.
 
 
+```r
+bebug <- dat11cc %>% 
+  setPop(~Source) %>% 
+  popsub("wmn") %>% 
+  setPop(~Host) %>% 
+  popsub(c("Beryl", "Bunsi", "G122"))
+bebugd <- bruvo.dist(bebug, replen = other(bebug)$REPLEN)
+(ssc_host_amova <- poppr.amova(bebug, ~Host, dist = bebugd, quiet = TRUE))
+```
+
+```
+## $call
+## ade4::amova(samples = xtab, distances = xdist, structures = xstruct)
+## 
+## $results
+##                  Df     Sum Sq   Mean Sq
+## Between samples   2  0.2965933 0.1482967
+## Within samples  154 35.1688676 0.2283693
+## Total           156 35.4654609 0.2273427
+## 
+## $componentsofcovariance
+##                                   Sigma           %
+## Variations  Between samples -0.00153422  -0.6763594
+## Variations  Within samples   0.22836927 100.6763594
+## Total variations             0.22683505 100.0000000
+## 
+## $statphi
+##                            Phi
+## Phi-samples-total -0.006763594
+```
+
+```r
+(ssc_host_amova <- poppr.amova(bebug, ~Host/Region, dist = bebugd, quiet = TRUE))
+```
+
+```
+## $call
+## ade4::amova(samples = xtab, distances = xdist, structures = xstruct)
+## 
+## $results
+##                              Df     Sum Sq   Mean Sq
+## Between Host                  2  0.2965933 0.1482967
+## Between samples Within Host  27 11.2172536 0.4154538
+## Within samples              127 23.9516140 0.1885954
+## Total                       156 35.4654609 0.2273427
+## 
+## $componentsofcovariance
+##                                               Sigma          %
+## Variations  Between Host                -0.00648971  -2.861074
+## Variations  Between samples Within Host  0.04472212  19.716331
+## Variations  Within samples               0.18859539  83.144743
+## Total variations                         0.22682779 100.000000
+## 
+## $statphi
+##                           Phi
+## Phi-samples-total  0.16855257
+## Phi-samples-Host   0.19167923
+## Phi-Host-total    -0.02861074
+```
+
+The AMOVA makes it clear that there's no differentiation between hosts. Let's
+see what DAPC shows us.
+
+
+```r
+bebug_dapc <- dapc(bebug, n.pca = 20, n.da = 2)
+scatter(bebug_dapc, clabel = 0,
+        legend = TRUE,
+        scree.pca = TRUE, 
+        scree.da = FALSE,
+        col = viridis::plasma(3), 
+        bg.inset = "grey90",
+        bg = "grey90")
+```
+
+![plot of chunk dapc](./figures/wmn-differentiation///dapc-1.png)
+
+```r
+ggcompoplot::ggcompoplot(bebug_dapc, bebug, pal = viridis::plasma(3)) +
+  theme(legend.position = "top")
+```
+
+![plot of chunk dapc](./figures/wmn-differentiation///dapc-2.png)
 
 
 <details>
@@ -25443,12 +25539,14 @@ Bruvo's distance for 11 loci in a haploid organism is 0.045.
 ##  forcats       0.2.0   2017-01-23 CRAN (R 3.4.0)                          
 ##  foreign       0.8-69  2017-06-21 CRAN (R 3.4.0)                          
 ##  gdata         2.18.0  2017-06-06 CRAN (R 3.4.0)                          
+##  ggcompoplot   0.1.0   2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)    
 ##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.0)                          
 ##  glue          1.1.1   2017-06-21 CRAN (R 3.4.0)                          
 ##  gmodels       2.16.2  2015-07-22 CRAN (R 3.4.0)                          
 ##  graphics    * 3.4.0   2017-04-21 local                                   
 ##  grDevices   * 3.4.0   2017-04-21 local                                   
 ##  grid          3.4.0   2017-04-21 local                                   
+##  gridExtra     2.2.1   2016-02-29 CRAN (R 3.4.0)                          
 ##  gtable        0.2.0   2016-02-26 CRAN (R 3.4.0)                          
 ##  gtools        3.5.0   2015-05-29 CRAN (R 3.4.0)                          
 ##  haven         1.0.0   2016-09-23 CRAN (R 3.4.0)                          
@@ -25512,6 +25610,8 @@ Bruvo's distance for 11 loci in a haploid organism is 0.045.
 ##  tools         3.4.0   2017-04-21 local                                   
 ##  utils       * 3.4.0   2017-04-21 local                                   
 ##  vegan         2.4-3   2017-04-07 CRAN (R 3.4.0)                          
+##  viridis       0.4.0   2017-03-27 CRAN (R 3.4.0)                          
+##  viridisLite   0.2.0   2017-03-24 CRAN (R 3.4.0)                          
 ##  withr         1.0.2   2016-06-20 CRAN (R 3.4.0)                          
 ##  xml2          1.1.1   2017-01-24 CRAN (R 3.4.0)                          
 ##  xtable        1.8-2   2016-02-05 CRAN (R 3.4.0)
