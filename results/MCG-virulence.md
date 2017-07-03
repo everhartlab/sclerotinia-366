@@ -121,8 +121,16 @@ set.seed(2017-06-29)
 ggplot(top_mcg, aes(x = MCG, y = Severity)) +
   geom_boxplot() +
   geom_point(position = position_jitter(width = 0.25), alpha = 0.5) +
+  scale_y_continuous(limits = c(0, NA)) +
+  # scale_x_discrete(position = "top") +
   theme_bw(base_size = 16, base_family = "Helvetica") +
   theme(aspect.ratio = 1/2) +
+  theme(axis.text = element_text(color = "black")) +
+  # theme(axis.ticks.x = element_blank()) +
+  theme(panel.grid.major = element_line(colour = "grey20")) +
+  theme(panel.grid.minor = element_line(colour = "grey50")) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.border = element_blank()) +
   labs(list(
     # title = "Aggressiveness for the top 10 MCGs",
     y = "Aggressiveness",
@@ -244,7 +252,7 @@ There appears to be a significant effect at p = 6.189e-06.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-30
+##  date     2017-07-03
 ```
 
 ```
