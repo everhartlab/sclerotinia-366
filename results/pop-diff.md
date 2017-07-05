@@ -220,10 +220,33 @@ This can tell us how well our regions separate
 
 
 ```r
-region.dapc <- dapc(dat11cc, strata(dat11cc)$Region, n.pca = 25, n.da = 14)
-scatter(region.dapc, scree.pca = TRUE,
-        bg = "grey80",
-        col = funky(nlevels(strata(dat11cc)$Region)), 
+set.seed(2017-07-05)
+region.xval <- xvalDapc(tab(dat11cc), strata(dat11cc)$Region, n.pca = 15:25, 
+                        n.rep = 100, parallel = "multicore", ncpus = 4)
+```
+
+```
+## Warning in xvalDapc(tab(dat11cc), strata(dat11cc)$Region, n.pca = 15:25, :
+## 2 groups have only 1 member: these groups cannot be represented in both
+## training and validation sets.
+```
+
+<img src="./figures/pop-diff///dapc-region-calc-1.png" title="plot of chunk dapc-region-calc" alt="plot of chunk dapc-region-calc" style="display: block; margin: auto;" />
+
+```r
+region.dapc <- region.xval$DAPC
+```
+
+
+```r
+scatter(region.dapc, 
+        scree.pca = TRUE,
+        bg = "grey95",
+        col = "black",
+        # col = rev(funky(nlevels(strata(dat11cc)$Region))), 
+        pch = seq(nlevels(strata(dat11cc)$Region)),
+        legend = "true",
+        posi.leg = "topleft",
         posi.pca = "topright"
         )
 ```
@@ -231,7 +254,7 @@ scatter(region.dapc, scree.pca = TRUE,
 <img src="./figures/pop-diff///dapc-region-1.png" title="plot of chunk dapc-region" alt="plot of chunk dapc-region" style="display: block; margin: auto;" />
 
 ```r
-ggcompoplot(region.dapc, setPop(dat11cc, ~Region), pal = funky, cols = 2)
+ggcompoplot(region.dapc, setPop(dat11cc, ~Region), pal = rev(funky(nlevels(strata(dat11cc)$Region))), cols = 2)
 ```
 
 <img src="./figures/pop-diff///dapc-region-2.png" title="plot of chunk dapc-region" alt="plot of chunk dapc-region" style="display: block; margin: auto;" />
@@ -497,6 +520,7 @@ scatter(dat11.nc.dapc)
 ##  huxtable       0.3.0   2017-05-18 CRAN (R 3.4.0)                          
 ##  igraph       * 1.0.1   2015-06-26 CRAN (R 3.4.0)                          
 ##  jsonlite       1.5     2017-06-01 CRAN (R 3.4.0)                          
+##  KernSmooth     2.23-15 2015-06-29 CRAN (R 3.4.0)                          
 ##  knitr        * 1.16    2017-05-18 CRAN (R 3.4.0)                          
 ##  labeling       0.3     2014-08-23 CRAN (R 3.4.0)                          
 ##  lattice      * 0.20-35 2017-03-25 CRAN (R 3.4.0)                          

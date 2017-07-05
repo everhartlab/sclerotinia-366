@@ -99,14 +99,25 @@ set.seed(999)
 
 This can tell us how well our regions separate
 
-```{r dapc-region, fig.width = 7, fig.height = 7}
-region.dapc <- dapc(dat11cc, strata(dat11cc)$Region, n.pca = 25, n.da = 14)
-scatter(region.dapc, scree.pca = TRUE,
-        bg = "grey80",
-        col = funky(nlevels(strata(dat11cc)$Region)), 
+```{r dapc-region-calc, fig.width = 8, fig.height = 7, cache = TRUE}
+set.seed(2017-07-05)
+region.xval <- xvalDapc(tab(dat11cc), strata(dat11cc)$Region, n.pca = 15:25, 
+                        n.rep = 100, parallel = "multicore", ncpus = 4)
+region.dapc <- region.xval$DAPC
+```
+
+```{r dapc-region, fig.width = 9, fig.height = 8, cache = TRUE}
+scatter(region.dapc, 
+        scree.pca = TRUE,
+        bg = "grey95",
+        col = "black",
+        # col = rev(funky(nlevels(strata(dat11cc)$Region))), 
+        pch = seq(nlevels(strata(dat11cc)$Region)),
+        legend = "true",
+        posi.leg = "topleft",
         posi.pca = "topright"
         )
-ggcompoplot(region.dapc, setPop(dat11cc, ~Region), pal = funky, cols = 2)
+ggcompoplot(region.dapc, setPop(dat11cc, ~Region), pal = rev(funky(nlevels(strata(dat11cc)$Region))), cols = 2)
 ```
 
 
