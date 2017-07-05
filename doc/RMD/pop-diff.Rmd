@@ -11,6 +11,7 @@ editor_options:
 
 ```{r setup, include = FALSE}
 knitr::opts_knit$set(root.dir = PROJHOME)
+knitr::opts_chunk$set(fig.align = "center")
 ```
 
 
@@ -99,13 +100,63 @@ set.seed(999)
 This can tell us how well our regions separate
 
 ```{r dapc-region, fig.width = 7, fig.height = 7}
-region.dapc <- dapc(dat11, strata(dat11)$Region, n.pca = 25, n.da = 14)
+region.dapc <- dapc(dat11cc, strata(dat11cc)$Region, n.pca = 25, n.da = 14)
 scatter(region.dapc, scree.pca = TRUE,
         bg = "grey80",
-        col = funky(nlevels(strata(dat11)$Region)), 
+        col = funky(nlevels(strata(dat11cc)$Region)), 
         posi.pca = "topright"
         )
-ggcompoplot(region.dapc, setPop(dat11, ~Region), pal = funky, cols = 2)
+ggcompoplot(region.dapc, setPop(dat11cc, ~Region), pal = funky, cols = 2)
+```
+
+
+Another way to visualize this is to look at the probability of assignment by
+source pouplation.
+
+```{r dapc-region-prob, fig.width = 5.5, fig.height = 9}
+region.dapc$posterior %>% 
+  as.data.frame() %>% 
+  as_tibble() %>% 
+  add_column(Individual = indNames(dat11cc)) %>% 
+  add_column(`Original Population` = as.character(strata(dat11cc)$Region)) %>% 
+  group_by(`Original Population`) %>%
+  mutate(n = n()) %>%
+  gather(Population, Posterior, -Individual, -`Original Population`, -n) %>% 
+  group_by(Population, `Original Population`, n) %>% 
+  summarize(`Mean Assignment` = mean(Posterior)) %>% 
+  arrange(`Mean Assignment`) %>% 
+  mutate(Source = case_when(
+    Population == `Original Population` ~ "Original Population",
+    TRUE ~ "Other"
+    )) %>%
+  ungroup() %>%
+  arrange(desc(n)) %>%
+  mutate(`Original Population` = forcats::fct_inorder(`Original Population`)) %>%
+  mutate(Population = factor(Population, levels(`Original Population`))) %>%
+  mutate(`Original Population` = paste0(`Original Population`, " (", n, ")")) %>%
+  mutate(`Original Population` = forcats::fct_inorder(`Original Population`)) %>%
+  filter(n >= 10) %>%
+  ggplot(aes(x = Population, y = `Mean Assignment`)) +
+  geom_segment(aes(xend = Population, yend = 0)) +
+  geom_point(aes(fill = Source), pch = 21) + 
+  facet_wrap(~`Original Population`, ncol = 2) +
+  scale_fill_grey() +
+  scale_y_continuous(limits = c(0, 1)) +
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  theme(legend.position = "top") +
+  theme(aspect.ratio = 1/2) +
+  theme(axis.text = element_text(color = "black")) +
+  theme(axis.ticks.y = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  theme(panel.grid.major.x = element_line(linetype = 0, color = "grey50")) +
+  theme(panel.grid.major = element_line(colour = "grey20")) +
+  theme(panel.grid.minor = element_line(linetype = 3, colour = "grey50")) +
+  theme(panel.spacing.y = unit(0, "line")) +
+  theme(strip.background = element_rect(color = NA, fill = "grey90")) +
+  theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
+  theme(panel.border = element_blank()) +
+  xlab("Population Assignment") +
+  ylab("Mean Probability")
 ```
 
 

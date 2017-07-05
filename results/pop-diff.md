@@ -66,7 +66,7 @@ ptab <- dat11cc %>% setPop(~Region) %>% poppr(sample = 999, total = FALSE)
 Warning: values for NY, WI, ID could not be plotted.
 ```
 
-![plot of chunk geno-div](./figures/pop-diff///geno-div-1.png)
+<img src="./figures/pop-diff///geno-div-1.png" title="plot of chunk geno-div" alt="plot of chunk geno-div" style="display: block; margin: auto;" />
 
 
 ```r
@@ -119,7 +119,7 @@ CO        34 (28) 9.46 (0.67)  3.3 24.1       0.96   0.92  0.56 2.33*  0.27*
 
 France    21 (14)  8.5 (0.85)  2.6 12.6       0.92   0.95  0.48 0.94*  0.11* 
 
-CA        18 (15) 9.12 (0.72)  2.7 13.5       0.93   0.94  0.51  0.28   0.03 
+CA        18 (15) 9.12 (0.72)  2.7 13.5       0.93   0.94  0.51 0.28~  0.03~ 
 
 OR        17 (13) 8.52 (0.85)  2.5 10.7       0.91   0.89  0.47 0.92*   0.1* 
 
@@ -146,7 +146,7 @@ ptab %>%
 mtab <- mlg.table(dat11, ~Region, background = TRUE)
 ```
 
-![plot of chunk geno-div2](./figures/pop-diff///geno-div2-1.png)
+<img src="./figures/pop-diff///geno-div2-1.png" title="plot of chunk geno-div2" alt="plot of chunk geno-div2" style="display: block; margin: auto;" />
 
 
 
@@ -220,21 +220,74 @@ This can tell us how well our regions separate
 
 
 ```r
-region.dapc <- dapc(dat11, strata(dat11)$Region, n.pca = 25, n.da = 14)
+region.dapc <- dapc(dat11cc, strata(dat11cc)$Region, n.pca = 25, n.da = 14)
 scatter(region.dapc, scree.pca = TRUE,
         bg = "grey80",
-        col = funky(nlevels(strata(dat11)$Region)), 
+        col = funky(nlevels(strata(dat11cc)$Region)), 
         posi.pca = "topright"
         )
 ```
 
-![plot of chunk dapc-region](./figures/pop-diff///dapc-region-1.png)
+<img src="./figures/pop-diff///dapc-region-1.png" title="plot of chunk dapc-region" alt="plot of chunk dapc-region" style="display: block; margin: auto;" />
 
 ```r
-ggcompoplot(region.dapc, setPop(dat11, ~Region), pal = funky, cols = 2)
+ggcompoplot(region.dapc, setPop(dat11cc, ~Region), pal = funky, cols = 2)
 ```
 
-![plot of chunk dapc-region](./figures/pop-diff///dapc-region-2.png)
+<img src="./figures/pop-diff///dapc-region-2.png" title="plot of chunk dapc-region" alt="plot of chunk dapc-region" style="display: block; margin: auto;" />
+
+
+Another way to visualize this is to look at the probability of assignment by
+source pouplation.
+
+
+```r
+region.dapc$posterior %>% 
+  as.data.frame() %>% 
+  as_tibble() %>% 
+  add_column(Individual = indNames(dat11cc)) %>% 
+  add_column(`Original Population` = as.character(strata(dat11cc)$Region)) %>% 
+  group_by(`Original Population`) %>%
+  mutate(n = n()) %>%
+  gather(Population, Posterior, -Individual, -`Original Population`, -n) %>% 
+  group_by(Population, `Original Population`, n) %>% 
+  summarize(`Mean Assignment` = mean(Posterior)) %>% 
+  arrange(`Mean Assignment`) %>% 
+  mutate(Source = case_when(
+    Population == `Original Population` ~ "Original Population",
+    TRUE ~ "Other"
+    )) %>%
+  ungroup() %>%
+  arrange(desc(n)) %>%
+  mutate(`Original Population` = forcats::fct_inorder(`Original Population`)) %>%
+  mutate(Population = factor(Population, levels(`Original Population`))) %>%
+  mutate(`Original Population` = paste0(`Original Population`, " (", n, ")")) %>%
+  mutate(`Original Population` = forcats::fct_inorder(`Original Population`)) %>%
+  filter(n >= 10) %>%
+  ggplot(aes(x = Population, y = `Mean Assignment`)) +
+  geom_segment(aes(xend = Population, yend = 0)) +
+  geom_point(aes(fill = Source), pch = 21) + 
+  facet_wrap(~`Original Population`, ncol = 2) +
+  scale_fill_grey() +
+  scale_y_continuous(limits = c(0, 1)) +
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  theme(legend.position = "top") +
+  theme(aspect.ratio = 1/2) +
+  theme(axis.text = element_text(color = "black")) +
+  theme(axis.ticks.y = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  theme(panel.grid.major.x = element_line(linetype = 0, color = "grey50")) +
+  theme(panel.grid.major = element_line(colour = "grey20")) +
+  theme(panel.grid.minor = element_line(linetype = 3, colour = "grey50")) +
+  theme(panel.spacing.y = unit(0, "line")) +
+  theme(strip.background = element_rect(color = NA, fill = "grey90")) +
+  theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
+  theme(panel.border = element_blank()) +
+  xlab("Population Assignment") +
+  ylab("Mean Probability")
+```
+
+<img src="./figures/pop-diff///dapc-region-prob-1.png" title="plot of chunk dapc-region-prob" alt="plot of chunk dapc-region-prob" style="display: block; margin: auto;" />
 
 
 ## DAPC predictions
@@ -279,7 +332,7 @@ dat11.nc.dapc <- dapc(dat11.nocross, strata(dat11.nocross)$Region, n.pca = 11, n
 scatter(dat11.nc.dapc)
 ```
 
-![plot of chunk dapc-mlg](./figures/pop-diff///dapc-mlg-1.png)
+<img src="./figures/pop-diff///dapc-mlg-1.png" title="plot of chunk dapc-mlg" alt="plot of chunk dapc-mlg" style="display: block; margin: auto;" />
 
 ```r
 dat11.cross <- clonecorrect(dat11[mll(dat11) %in% minds], NA)
@@ -287,7 +340,7 @@ pred <- predict.dapc(dat11.nc.dapc, dat11.cross)
 ggcompoplot(pred, setPop(dat11.cross, ~Region), cols = 2, pal = funky)
 ```
 
-![plot of chunk dapc-mlg](./figures/pop-diff///dapc-mlg-2.png)
+<img src="./figures/pop-diff///dapc-mlg-2.png" title="plot of chunk dapc-mlg" alt="plot of chunk dapc-mlg" style="display: block; margin: auto;" />
 
 ```r
 posterior <- as.data.frame(pred$posterior) %>% 
@@ -310,7 +363,7 @@ ggplot(posterior, aes(x = population, y = posterior, color = entropy, group = Sa
 ## Warning: Removed 912 rows containing missing values (geom_label_repel).
 ```
 
-![plot of chunk dapc-mlg](./figures/pop-diff///dapc-mlg-3.png)
+<img src="./figures/pop-diff///dapc-mlg-3.png" title="plot of chunk dapc-mlg" alt="plot of chunk dapc-mlg" style="display: block; margin: auto;" />
 
 
 
@@ -358,13 +411,13 @@ posterior %>%
   ))
 ```
 
-![plot of chunk unnamed-chunk-1](./figures/pop-diff///unnamed-chunk-1-1.png)
+<img src="./figures/pop-diff///unnamed-chunk-1-1.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
 
 ```r
 scatter(dat11.nc.dapc)
 ```
 
-![plot of chunk unnamed-chunk-1](./figures/pop-diff///unnamed-chunk-1-2.png)
+<img src="./figures/pop-diff///unnamed-chunk-1-2.png" title="plot of chunk unnamed-chunk-1" alt="plot of chunk unnamed-chunk-1" style="display: block; margin: auto;" />
 
 
 <details>
@@ -383,7 +436,7 @@ scatter(dat11.nc.dapc)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-07-03
+##  date     2017-07-05
 ```
 
 ```
@@ -405,6 +458,7 @@ scatter(dat11.nc.dapc)
 ##  cellranger     1.1.0   2016-07-27 CRAN (R 3.4.0)                          
 ##  cluster        2.0.6   2017-03-16 CRAN (R 3.4.0)                          
 ##  coda           0.19-1  2016-12-08 CRAN (R 3.4.0)                          
+##  codetools      0.2-15  2016-10-05 CRAN (R 3.4.0)                          
 ##  colorspace     1.3-2   2016-12-14 CRAN (R 3.4.0)                          
 ##  compiler       3.4.0   2017-04-21 local                                   
 ##  datasets     * 3.4.0   2017-04-21 local                                   
@@ -420,9 +474,12 @@ scatter(dat11.nc.dapc)
 ##  forcats        0.2.0   2017-01-23 CRAN (R 3.4.0)                          
 ##  foreign        0.8-69  2017-06-21 CRAN (R 3.4.0)                          
 ##  gdata          2.18.0  2017-06-06 CRAN (R 3.4.0)                          
+##  gdtools      * 0.1.4   2017-03-17 CRAN (R 3.4.0)                          
 ##  ggcompoplot  * 0.1.0   2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)    
+##  ggforce        0.1.1   2016-11-28 CRAN (R 3.4.0)                          
 ##  ggplot2      * 2.2.1   2016-12-30 CRAN (R 3.4.0)                          
-##  ggrepel        0.6.10  2017-06-23 Github (slowkow/ggrepel@102ca39)        
+##  ggraph       * 1.0.0   2017-02-24 CRAN (R 3.4.0)                          
+##  ggrepel      * 0.6.10  2017-06-23 Github (slowkow/ggrepel@102ca39)        
 ##  glue           1.1.1   2017-06-21 CRAN (R 3.4.0)                          
 ##  gmodels        2.16.2  2015-07-22 CRAN (R 3.4.0)                          
 ##  graphics     * 3.4.0   2017-04-21 local                                   
@@ -438,11 +495,11 @@ scatter(dat11.nc.dapc)
 ##  httpuv         1.3.3   2015-08-04 CRAN (R 3.4.0)                          
 ##  httr           1.2.1   2016-07-03 CRAN (R 3.4.0)                          
 ##  huxtable       0.3.0   2017-05-18 CRAN (R 3.4.0)                          
-##  igraph         1.0.1   2015-06-26 CRAN (R 3.4.0)                          
+##  igraph       * 1.0.1   2015-06-26 CRAN (R 3.4.0)                          
 ##  jsonlite       1.5     2017-06-01 CRAN (R 3.4.0)                          
 ##  knitr        * 1.16    2017-05-18 CRAN (R 3.4.0)                          
 ##  labeling       0.3     2014-08-23 CRAN (R 3.4.0)                          
-##  lattice        0.20-35 2017-03-25 CRAN (R 3.4.0)                          
+##  lattice      * 0.20-35 2017-03-25 CRAN (R 3.4.0)                          
 ##  lazyeval       0.2.0   2016-06-12 CRAN (R 3.4.0)                          
 ##  LearnBayes     2.15    2014-05-29 CRAN (R 3.4.0)                          
 ##  lubridate      1.6.0   2016-09-13 CRAN (R 3.4.0)                          
@@ -459,7 +516,7 @@ scatter(dat11.nc.dapc)
 ##  nlme           3.1-131 2017-02-06 CRAN (R 3.4.0)                          
 ##  parallel       3.4.0   2017-04-21 local                                   
 ##  pegas          0.10    2017-05-03 CRAN (R 3.4.0)                          
-##  permute        0.9-4   2016-09-09 CRAN (R 3.4.0)                          
+##  permute      * 0.9-4   2016-09-09 CRAN (R 3.4.0)                          
 ##  phangorn       2.2.0   2017-04-03 CRAN (R 3.4.0)                          
 ##  pkgconfig      2.0.1   2017-03-21 CRAN (R 3.4.0)                          
 ##  plyr           1.8.4   2016-06-08 CRAN (R 3.4.0)                          
@@ -491,10 +548,13 @@ scatter(dat11.nc.dapc)
 ##  tidyr        * 0.6.3   2017-05-15 CRAN (R 3.4.0)                          
 ##  tidyverse    * 1.1.1   2017-01-27 CRAN (R 3.4.0)                          
 ##  tools          3.4.0   2017-04-21 local                                   
+##  tweenr         0.1.5   2016-10-10 CRAN (R 3.4.0)                          
+##  udunits2       0.13    2016-11-17 CRAN (R 3.4.0)                          
+##  units          0.4-5   2017-06-15 CRAN (R 3.4.0)                          
 ##  utils        * 3.4.0   2017-04-21 local                                   
-##  vegan          2.4-3   2017-04-07 CRAN (R 3.4.0)                          
-##  viridis        0.4.0   2017-03-27 CRAN (R 3.4.0)                          
-##  viridisLite    0.2.0   2017-03-24 CRAN (R 3.4.0)                          
+##  vegan        * 2.4-3   2017-04-07 CRAN (R 3.4.0)                          
+##  viridis      * 0.4.0   2017-03-27 CRAN (R 3.4.0)                          
+##  viridisLite  * 0.2.0   2017-03-24 CRAN (R 3.4.0)                          
 ##  withr          1.0.2   2016-06-20 CRAN (R 3.4.0)                          
 ##  xml2           1.1.1   2017-01-24 CRAN (R 3.4.0)                          
 ##  xtable         1.8-2   2016-02-05 CRAN (R 3.4.0)
