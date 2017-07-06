@@ -89,7 +89,7 @@ mtab <- mlg.table(dat11, ~Region, background = TRUE)
 First, we can conduct an AMOVA analysis across all populations, with respect to
 year.
 
-```{r amova-no-cc}
+```{r amova-no-cc, cache = TRUE}
 (res   <- poppr.amova(dat11cc, ~Region/Host/Year, dist = dat11cc.bruvo))
 set.seed(999)
 (res.p <- randtest(res, nrepet = 999))
@@ -120,12 +120,43 @@ scatter(region.dapc,
 ggcompoplot(region.dapc, setPop(dat11cc, ~Region), pal = rev(funky(nlevels(strata(dat11cc)$Region))), cols = 2)
 ```
 
+```{r fig.width = 10, fig.height = 6}
+LDS <- bind_cols(Population = region.dapc$grp, as.data.frame(region.dapc$ind.coord)) %>%
+  as_tibble()
+LDS_pop <- LDS %>% 
+  group_by(Population) %>% 
+  summarize_all(mean) %>%
+  rename_all(function(x) gsub("LD", "mean", x))
+LDS <- full_join(LDS, LDS_pop)
+LDS_PLOT <- ggplot(LDS, aes(x = LD1, y = LD2, color = Population)) + 
+  geom_point(aes(fill = Population), alpha = 0.5, pch = 21, color = "black") +
+  geom_segment(aes(x = mean1, y = mean2, xend = LD1, yend = LD2), alpha = 0.5) +
+  stat_ellipse(type = "norm", level = 0.66, alpha = 0.75) + 
+  ggrepel::geom_label_repel(aes(x = mean1, y = mean2, label = Population), 
+                            data = LDS_pop, show.legend = FALSE, color = "black") +
+  theme_bw() +  
+  theme(aspect.ratio = 1/1.618) +
+  theme(legend.position = "bottom") +
+  theme(axis.text = element_blank()) + 
+  theme(axis.title = element_blank()) + 
+  theme(axis.ticks = element_blank()) + 
+  viridis::scale_color_viridis(discrete = TRUE) +
+  viridis::scale_fill_viridis(discrete = TRUE) +
+  scale_y_continuous(breaks = 0) + 
+  scale_x_continuous(breaks = 0) + 
+  theme(panel.background = element_rect(fill = "grey95")) +
+  theme(panel.grid.major = element_line(color = "black"))
+LDS_PLOT
+LDS_PLOT + facet_wrap(~Population)
+```
+
+
 
 Another way to visualize this is to look at the probability of assignment by
 source pouplation.
 
-```{r dapc-region-prob, fig.width = 5.5, fig.height = 9}
-region.dapc$posterior %>% 
+```{r dapc-region-prob, fig.width = 7, fig.height = 6}
+region_summary <- region.dapc$posterior %>% 
   as.data.frame() %>% 
   as_tibble() %>% 
   add_column(Individual = indNames(dat11cc)) %>% 
@@ -145,29 +176,44 @@ region.dapc$posterior %>%
   mutate(`Original Population` = forcats::fct_inorder(`Original Population`)) %>%
   mutate(Population = factor(Population, levels(`Original Population`))) %>%
   mutate(`Original Population` = paste0(`Original Population`, " (", n, ")")) %>%
-  mutate(`Original Population` = forcats::fct_inorder(`Original Population`)) %>%
+  mutate(`Original Population` = forcats::fct_inorder(`Original Population`))
+REGION_PLOT <- region_summary %>%
   filter(n >= 10) %>%
   ggplot(aes(x = Population, y = `Mean Assignment`)) +
   geom_segment(aes(xend = Population, yend = 0)) +
   geom_point(aes(fill = Source), pch = 21) + 
-  facet_wrap(~`Original Population`, ncol = 2) +
+  facet_wrap(~`Original Population`, ncol = 3, strip.position = "top") +
   scale_fill_grey() +
-  scale_y_continuous(limits = c(0, 1)) +
+  # scale_x_discrete(position = "top") +
+  scale_y_continuous(limits = c(0, 1), minor_breaks = c(seq(0, 1, by = 0.125)), breaks = c(0, 0.5, 1)) +
   theme_bw(base_size = 16, base_family = "Helvetica") +
   theme(legend.position = "top") +
   theme(aspect.ratio = 1/2) +
   theme(axis.text = element_text(color = "black")) +
   theme(axis.ticks.y = element_blank()) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  # theme(axis.text.x.top = element_text(angle = 90, vjust = 0.5, hjust = 0)) +
   theme(panel.grid.major.x = element_line(linetype = 0, color = "grey50")) +
   theme(panel.grid.major = element_line(colour = "grey20")) +
   theme(panel.grid.minor = element_line(linetype = 3, colour = "grey50")) +
-  theme(panel.spacing.y = unit(0, "line")) +
+  # theme(panel.spacing.y = unit(0, "line")) +
   theme(strip.background = element_rect(color = NA, fill = "grey90")) +
   theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
   theme(panel.border = element_blank()) +
   xlab("Population Assignment") +
   ylab("Mean Probability")
+REGION_PLOT
+
+```
+
+
+```{r dapc-region-dualplot, fig.width = 13, fig.height = 6}
+cowplot::plot_grid(REGION_PLOT, LDS_PLOT, 
+                   nrow = 1, 
+                   rel_widths = c(1, 0.85),
+                   label_size = 16,
+                   labels = "auto")
+ggsave(filename = "results/figures/publication/DAPC.pdf")
 ```
 
 
