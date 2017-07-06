@@ -140,8 +140,8 @@ LDS_PLOT <- ggplot(LDS, aes(x = LD1, y = LD2, color = Population)) +
   theme(axis.text = element_blank()) + 
   theme(axis.title = element_blank()) + 
   theme(axis.ticks = element_blank()) + 
-  viridis::scale_color_viridis(discrete = TRUE) +
-  viridis::scale_fill_viridis(discrete = TRUE) +
+  viridis::scale_color_viridis(discrete = TRUE, direction = -1) +
+  viridis::scale_fill_viridis(discrete = TRUE, direction = -1) +
   scale_y_continuous(breaks = 0) + 
   scale_x_continuous(breaks = 0) + 
   theme(panel.background = element_rect(fill = "grey95")) +

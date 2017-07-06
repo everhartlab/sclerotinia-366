@@ -439,6 +439,7 @@ Points represent the 318 clone-corrected samples in ordination space.
 ![
 Discriminant Analysis on regions showing that Mexico is differentiated from other populations. 
 **(a)** Mean population assignment (horizontal axis) probability (vertical axis) for all populations with N > 10 (facets).
+Numbers next to source populations indicate population size.
 All values sum to one.
 **(b)** Scatter plot of first two components from DAPC.
 Points represent observed individuals connected to the population centroids with ellipses representing a 66% confidence interval for a normal distribution. 
@@ -695,7 +696,7 @@ ID          1 (1)       1 (0)  0.0  1.0       0.00    NaN   NaN     -      -
 
 Table: (\#tab:iatab) Genotypic diversity and Linkage Disequilibrium summary for geographic populations arranged by abundance after clone-correction by a hierarchy of Region/Source/Host/Year. 
 Pop = Population, N = number of individuals (number of MLG in parentheses), 
-eMLG = expected number of MLGs based on rarefaction at 10 individuals (standard error in parentheses), 
+eMLG = expected number of MLGs based on rarefaction at min(10, N) individuals (standard error in parentheses), 
 H = Shannon-Weiner Index, G = Stoddardt and Taylor's Index, 
 $\lambda$ = Simpson's Index, 
 *h* = Nei's 1978 gene diversity, 

@@ -287,8 +287,8 @@ LDS_PLOT <- ggplot(LDS, aes(x = LD1, y = LD2, color = Population)) +
   theme(axis.text = element_blank()) + 
   theme(axis.title = element_blank()) + 
   theme(axis.ticks = element_blank()) + 
-  viridis::scale_color_viridis(discrete = TRUE) +
-  viridis::scale_fill_viridis(discrete = TRUE) +
+  viridis::scale_color_viridis(discrete = TRUE, direction = -1) +
+  viridis::scale_fill_viridis(discrete = TRUE, direction = -1) +
   scale_y_continuous(breaks = 0) + 
   scale_x_continuous(breaks = 0) + 
   theme(panel.background = element_rect(fill = "grey95")) +
@@ -581,7 +581,6 @@ scatter(dat11.nc.dapc)
 ##  cellranger     1.1.0      2016-07-27 CRAN (R 3.4.0)                          
 ##  cluster        2.0.6      2017-03-16 CRAN (R 3.4.0)                          
 ##  coda           0.19-1     2016-12-08 CRAN (R 3.4.0)                          
-##  codetools      0.2-15     2016-10-05 CRAN (R 3.4.0)                          
 ##  colorspace     1.3-2      2016-12-14 CRAN (R 3.4.0)                          
 ##  compiler       3.4.0      2017-04-21 local                                   
 ##  cowplot        0.7.0      2016-10-28 CRAN (R 3.4.0)                          
@@ -598,12 +597,9 @@ scatter(dat11.nc.dapc)
 ##  forcats        0.2.0      2017-01-23 CRAN (R 3.4.0)                          
 ##  foreign        0.8-69     2017-06-21 CRAN (R 3.4.0)                          
 ##  gdata          2.18.0     2017-06-06 CRAN (R 3.4.0)                          
-##  gdtools      * 0.1.4      2017-03-17 CRAN (R 3.4.0)                          
 ##  ggcompoplot  * 0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)    
-##  ggforce        0.1.1      2016-11-28 CRAN (R 3.4.0)                          
 ##  ggplot2      * 2.2.1      2016-12-30 CRAN (R 3.4.0)                          
-##  ggraph       * 1.0.0      2017-02-24 CRAN (R 3.4.0)                          
-##  ggrepel      * 0.6.10     2017-06-23 Github (slowkow/ggrepel@102ca39)        
+##  ggrepel        0.6.10     2017-06-23 Github (slowkow/ggrepel@102ca39)        
 ##  glue           1.1.1      2017-06-21 CRAN (R 3.4.0)                          
 ##  gmodels        2.16.2     2015-07-22 CRAN (R 3.4.0)                          
 ##  graphics     * 3.4.0      2017-04-21 local                                   
@@ -619,11 +615,11 @@ scatter(dat11.nc.dapc)
 ##  httpuv         1.3.3      2015-08-04 CRAN (R 3.4.0)                          
 ##  httr           1.2.1      2016-07-03 CRAN (R 3.4.0)                          
 ##  huxtable       0.3.0      2017-05-18 CRAN (R 3.4.0)                          
-##  igraph       * 1.0.1      2015-06-26 CRAN (R 3.4.0)                          
+##  igraph         1.0.1      2015-06-26 CRAN (R 3.4.0)                          
 ##  jsonlite       1.5        2017-06-01 CRAN (R 3.4.0)                          
 ##  knitr        * 1.16       2017-05-18 CRAN (R 3.4.0)                          
 ##  labeling       0.3        2014-08-23 CRAN (R 3.4.0)                          
-##  lattice      * 0.20-35    2017-03-25 CRAN (R 3.4.0)                          
+##  lattice        0.20-35    2017-03-25 CRAN (R 3.4.0)                          
 ##  lazyeval       0.2.0      2016-06-12 CRAN (R 3.4.0)                          
 ##  LearnBayes     2.15       2014-05-29 CRAN (R 3.4.0)                          
 ##  lubridate      1.6.0      2016-09-13 CRAN (R 3.4.0)                          
@@ -640,7 +636,7 @@ scatter(dat11.nc.dapc)
 ##  nlme           3.1-131    2017-02-06 CRAN (R 3.4.0)                          
 ##  parallel       3.4.0      2017-04-21 local                                   
 ##  pegas          0.10       2017-05-03 CRAN (R 3.4.0)                          
-##  permute      * 0.9-4      2016-09-09 CRAN (R 3.4.0)                          
+##  permute        0.9-4      2016-09-09 CRAN (R 3.4.0)                          
 ##  phangorn       2.2.0      2017-04-03 CRAN (R 3.4.0)                          
 ##  pkgconfig      2.0.1      2017-03-21 CRAN (R 3.4.0)                          
 ##  plyr           1.8.4      2016-06-08 CRAN (R 3.4.0)                          
@@ -672,13 +668,10 @@ scatter(dat11.nc.dapc)
 ##  tidyr        * 0.6.3      2017-05-15 CRAN (R 3.4.0)                          
 ##  tidyverse    * 1.1.1      2017-01-27 CRAN (R 3.4.0)                          
 ##  tools          3.4.0      2017-04-21 local                                   
-##  tweenr         0.1.5      2016-10-10 CRAN (R 3.4.0)                          
-##  udunits2       0.13       2016-11-17 CRAN (R 3.4.0)                          
-##  units          0.4-5      2017-06-15 CRAN (R 3.4.0)                          
 ##  utils        * 3.4.0      2017-04-21 local                                   
-##  vegan        * 2.4-3      2017-04-07 CRAN (R 3.4.0)                          
-##  viridis      * 0.4.0      2017-03-27 CRAN (R 3.4.0)                          
-##  viridisLite  * 0.2.0      2017-03-24 CRAN (R 3.4.0)                          
+##  vegan          2.4-3      2017-04-07 CRAN (R 3.4.0)                          
+##  viridis        0.4.0      2017-03-27 CRAN (R 3.4.0)                          
+##  viridisLite    0.2.0      2017-03-24 CRAN (R 3.4.0)                          
 ##  withr          1.0.2      2016-06-20 CRAN (R 3.4.0)                          
 ##  xml2           1.1.1      2017-01-24 CRAN (R 3.4.0)                          
 ##  xtable         1.8-2      2016-02-05 CRAN (R 3.4.0)
