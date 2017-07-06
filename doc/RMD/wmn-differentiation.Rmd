@@ -166,7 +166,8 @@ dists <- bind_rows(`White Mold Nurseries` = wmn_distance,
                    `Between` = inter_distance,
                    `Other Sources` = nwmn_distance, 
                    .id = "Comparison") %>%
-  mutate(Comparison = forcats::fct_inorder(Comparison))
+  mutate(Comparison = forcats::fct_inorder(Comparison)) %>%
+  as_tibble()
 dists
 ggplot(dists, aes(y = distance, x = Comparison, fill = Comparison)) +
   geom_violin() +
