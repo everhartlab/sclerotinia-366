@@ -434,7 +434,15 @@ Points represent the 318 clone-corrected samples in ordination space.
 ](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=50%}
 
 
-## DAPC analysis {-}
+## DAPC {-}
+
+![
+Discriminant Analysis on regions showing that Mexico is differentiated from other populations. 
+**(a)** Mean population assignment (horizontal axis) probability (vertical axis) for all populations with N > 10 (facets).
+All values sum to one.
+**(b)** Scatter plot of first two components from DAPC.
+Points represent observed individuals connected to the population centroids with ellipses representing a 66% confidence interval for a normal distribution. 
+](../../results/figures/publication/DAPC.pdf){#DAPC width=100%}
 
 DAPC analysis for different regions and hosts are depicted in Fig. 8.
 These isolates were clone-corrected at location/host/region/year level prior to the analysis (N =318).
