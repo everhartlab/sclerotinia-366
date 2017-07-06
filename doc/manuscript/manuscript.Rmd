@@ -54,9 +54,9 @@ Outline:
  -->
 
 *Sclerotinia sclerotiorum* (Lib.) de Bary is an ascomycete plant pathogen found worldwide.
-This is a necrotrophic pathogen that is primarily homothallic (self-fertilization) [@bolton2006sclerotinia; @sexton2006population].
-It has a host range of more than 400 species of plants belonging to 75 families [@boland1994index].
-Economically important crops affected by this pathogen include sunflower, soybean, oilseed rape, dry bean, chickpea, peanut, dry pea, lentils and vegetables [@bolton2006sclerotinia]. *Sclerotinia sclerotiorum* causes white mold disease on dry bean (*Phaseolus vulgaris* L.), which can be a yield-limiting in temperate climates [@steadman1983white].
+This is a necrotrophic pathogen that is primarily homothallic (self-fertilization) [@bolton2006sclerotinia; @sexton2006population] that causes disease on more than 400 plant species belonging to 75 families [@boland1994index].
+These include crops of major economic importance such as sunflower (*Helianthus spp.*), soybean (*Glycine max* L.), canola (*Brassica napa* L., *Brassica campestris* L.), and dry bean (*Phaseolus vulgaris* L.) [@bolton2006sclerotinia]. 
+On dry bean, *S. sclerotiorum* is the causal agent of White Mold, a devastating disease that can be a yield-limiting in temperate climates [@steadman1983white].
 
 <!-- ZNK: TMI -->
 <!-- Sclerotia are capable of surviving more than five years in soil [@steadman1983white] and germinate carpogenically or myceliogenically to infect the plant when environmental conditions are favorable.
