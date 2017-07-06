@@ -299,12 +299,16 @@ Higher observed $\bar{r}_d$ or $I_A$ values would indicate clonally reproducing 
 
 ## Genotypic Structure {-}
 
+<!-- MCG abundance figure -->
+
 ![
 Barplot showing abundance of each Mycelial Compatibility Group (MCG) in descending order.
 Singletons (46) have been removed for clarity.
 White bars represent sample counts and grey bars represent counts of unique multilocus genotypes (MLG).
 The transparency associated with the grey bars represent the evenness of the distribution of the MLGs within a given MCG as shown in the inset histograms.
 ](../../results/figures/publication/Figure1Z.pdf){#barplot width=50%}
+
+<!-- end figure -->
 
 <!--  ZNK: I think figures 1-4 are a bit redundant with the tables in the text. It might be better to simply remove them. -->
 A total of 366 isolates were collected from 2003 to 2012 from diseased dry bean plants in 11 states in the US, Australia (2 mainland; 4 Tasmania), Mexico, and France **(Fig. 1)**.
@@ -345,12 +349,16 @@ The highest number of clones was recorded from ND, NE, and MI, which included 20
 
 The associations between MCGs and MLGs are complicated (Fig. \@ref(biggraph))
 
+<!-- MCG graph figure -->
+
 ![
 Graph showing complex associations between Mycelial Compatibility Groups (dotted nodes) and Multilocus Genotypes (full nodes). 
 Node size reflect the number of samples represented by each node (circle).
 Edges (arrows) point from Mycelial Compatibility Group to Multilocus Genotype where the weight (thickness) of the edge represents the number of samples shared.
 Node color represents the community assignment based on the walktrap algorithm with a maximum of four steps [@pons2006computing].
 ](../../results/figures/publication/FigureS2.pdf){#biggraph width=100%}
+
+<!-- end fig -->
 
 <!-- community graph figure -->
 
@@ -427,14 +435,19 @@ The marginal effects of state, host, and year were also significant (P = 0.001),
 Much of the variation appears to be driven by isolates from Mexico (Fig. \@ref(rda-biplot)) and 2005, but it's worth noting that all Mexican isolates were collected in 2005.
 Variance partitioning of the independent variables indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
 
+<!-- RDA figure -->
+
 ![
 Biplot showing 10 most influential explanatory variables (arrows) overlayed on the first two eigenvectors of distance based redundancy analysis of *S. sclerotiorum* isolates. 
 The length of the arrows are directly proportional to the strength of the correlation between explanatory and molecular variables. 
 Points represent the 318 clone-corrected samples in ordination space. 
 ](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=50%}
 
+<!-- end figure -->
 
 ## DAPC {-}
+
+<!-- DAPC figure -->
 
 ![
 Discriminant Analysis on regions showing that Mexico is differentiated from other populations. 
@@ -443,7 +456,10 @@ Numbers next to source populations indicate population size.
 All values sum to one.
 **(b)** Scatter plot of first two components from DAPC.
 Points represent observed individuals connected to the population centroids with ellipses representing a 66% confidence interval for a normal distribution. 
+The center of each component is represented as grid lines.
 ](../../results/figures/publication/DAPC.pdf){#DAPC width=100%}
+
+<!-- end figure -->
 
 DAPC analysis for different regions and hosts are depicted in Fig. 8.
 These isolates were clone-corrected at location/host/region/year level prior to the analysis (N =318).
