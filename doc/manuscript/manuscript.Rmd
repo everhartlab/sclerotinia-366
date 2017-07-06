@@ -115,13 +115,13 @@ The overall goal of this work was to identify representative isolates for use in
 
 ## Isolate collection and DNA extraction {-}
 
-Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or dry bean nurseries in Mexico, France, Australia, and 11 states of the United States of America (Table \@ref(tab:isolate-table)).
+Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or dry bean nurseries in 11 states of the United States of America, Mexico, France, and Australia (Table \@ref(tab:isolate-table)).
 The dry bean nurseries in different regions are indicated by wmn (white mold nursery) or mtc (Mitchell) and all other isolates came from commercial fields (Table \@ref(tab:isolate-table)).
-The bean nurseries were 5m x 10 m in size and maintained without applying fungicides to observe natural incidence of white mold disease.
-The nursery plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of 0:3:2 during the season.
-Although the nursery locations were the same over sampling years, sampling fields within a location varied for sampling years.
-Sampling was carried out on a 'W' or 'V' shape transect, or randomly.
-Sampling year and number of isolates collected were necessarily influenced by incidence and severity of white mold disease. 
+The dry bean nurseries were 5m x 10m in size and maintained without applying fungicides to observe natural incidence of white mold.
+The nursery plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of 0:3:2 during the growing season.
+Although the nursery locations were the same over sampling years, sampling plots within a location varied for sampling years.
+Sampling of diseased tissue was carried out on a 'W' or 'V' shape transect, or randomly.
+Because sampling depended on disease incidence, the number of samples isolated varied from year to year.
 
 -----------------------------------------------------------------------------
 Country   State  Field Code              Year Host                          N 
