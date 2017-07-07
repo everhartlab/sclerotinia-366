@@ -240,6 +240,7 @@ Capillary electrophoresis (fragment analysis) of PCR products added with size st
 
 Of the 16 microsatellite loci, five included compound repeats, which made allele scoring difficult. 
 These loci were removed for the reported statistics, but were processed and included in data analyses to ensure the integrity of the results with 11 loci as compared to 16.
+We assessed the power of our 11 markers by generating a genotype accumulation curve in the R package *poppr* version 2.4.1, looking for evidence of saturation, which would indicate that enough loci have been sampled to sufficiently characterize the full set of genotypes [@arnaud2007standardizing, @kamvar2015novel].
 To control for non-independent samples (i.e. those sampled from the same location, region, year, and plant), data were clone-corrected for subsequent analyses.
 The clone-corrected data set included 318 isolates.
 All analyses were performed on this data set unless otherwise mentioned.
