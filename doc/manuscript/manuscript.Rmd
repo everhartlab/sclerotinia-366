@@ -105,7 +105,7 @@ Reproducibility of microsatellites is higher compared other fingerprinting techn
 High mutagenic rate and multiallelic nature of microsatellites render suitability for inferring population structure of organisms and their potential for outcrossing.
 In the case of plant pathogens like *S. sclerotiorum* that is predominantly clonal and occasionally outcrossing, microsatellites have been used successfully to ascertain their ability to reproduce by sexual outcrossing [@atallah2004high; @sexton2004microsatellite] and also to detect differences among clonally propagated individuals.  -->
 
-In this study, we analyze and characterize the genetic diversity of 366 *S. sclerotiorum* isolates collected between 2003 and 2012 from dry bean cultivars among different geographic locations in the United States, France, Mexico, and Australia. 
+In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected between 2003 and 2012 from dry bean cultivars among different geographic locations in the United States, France, Mexico, and Australia. 
 Because the white mold nurseries serve as testing grounds for new varieties of dry bean, we wanted to know if the *S. sclerotiorum* populations from white mold nurseries were representative of the fields within the same region. 
 As these nurseries are not treated with any chemical or cultural control of white mold, we hypothesized that these nurseries would represent the natural population of *S. sclerotiorum*.
 Furthermore, as three cultivars (Beryl, Bunsi, and G122) were grown among all white mold nurseries, we wanted to investigate the potential effect of cultivar on genetic diversity.
@@ -247,7 +247,7 @@ All data processing and analyses were performed in R version 3.4.0 [@R] and are 
 ### Aggressiveness Assessment {-}
 
 We used analysis of variance (ANOVA) to assess if MCGs differed in severity.
-We chose the top 10 MCGs, representing 57% of the isolates collected. Between-group differences were assessed using Tukey's HSD test using the `HSD.test()` function in the package *agricolae* version 1.2.4 [@mendiburu2015agricolae].
+To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 57% of the isolates collected. Between-group differences were assessed using Tukey's HSD test using the `HSD.test()` function in the package *agricolae* version 1.2.4 [@mendiburu2015agricolae].
 
 ### Distance-based redundancy analysis  {-}
 
