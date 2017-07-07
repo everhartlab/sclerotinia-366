@@ -266,6 +266,15 @@ The `varpart()` function of vegan was used to determine variation partitioning o
 We used analysis of variance (ANOVA) to assess if MCGs differed in severity.
 To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 57% of the isolates collected. Between-group differences were assessed using Tukey's HSD test using the `HSD.test()` function in the package *agricolae* version 1.2.4 [@mendiburu2015agricolae].
 
+### Correlating Multilocus Genotypes with Mycelial Compatibility Groups {-}
+
+We wanted to assess if there was any correlation between multilocus genotypes (MLG) and mycelial compatibility groups (MCG). 
+This was done using a graph-based approach with community analysis.
+We first created a contingency table with MLGs and MCGs and converted it to a directed and weighted edgelist where each edge was a connection from an MCG to an MLG weighted by the number of samples shared in the connection. 
+The cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version 1.0.1 was used to define clusters of MLGs and MCGs [@csardi2006igraph, @pons2006computing].
+All communities that had fewer than 10 members were then consolidated into one.
+These community definitions was then used to assess the average genetic distance (as defined by Bruvo's distance) within members of the community [@bruvo2004simple].
+
 ## Genetic Diversity
 
 ### Shared Multilocus Genotype Community Analysis {-}
