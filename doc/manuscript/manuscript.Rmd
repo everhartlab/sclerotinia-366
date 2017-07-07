@@ -246,10 +246,8 @@ The clone-corrected data set included 318 isolates.
 All analyses were performed on this data set unless otherwise mentioned.
 All data processing and analyses were performed in R version 3.4.0 [@R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/
 
-### Aggressiveness Assessment {-}
 
-We used analysis of variance (ANOVA) to assess if MCGs differed in severity.
-To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 57% of the isolates collected. Between-group differences were assessed using Tukey's HSD test using the `HSD.test()` function in the package *agricolae* version 1.2.4 [@mendiburu2015agricolae].
+## Assessing importance of categorical and phenotypic variables  {-}
 
 ### Distance-based redundancy analysis {-}
 
@@ -262,7 +260,11 @@ The distance matrix we used as the response variable was generated using Bruvo's
 To identify explanatory variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function `ordistep()` to identify the set of variables that explained more variation than predicted with the global model containing all variables.
 An ANOVA was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
 The `varpart()` function of vegan was used to determine variation partitioning of explanatory variables.
- 
+
+### Aggressiveness assessment {-}
+
+We used analysis of variance (ANOVA) to assess if MCGs differed in severity.
+To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 57% of the isolates collected. Between-group differences were assessed using Tukey's HSD test using the `HSD.test()` function in the package *agricolae* version 1.2.4 [@mendiburu2015agricolae].
 
 ### Shared Multilocus Genotype Community Analysis {-}
 
