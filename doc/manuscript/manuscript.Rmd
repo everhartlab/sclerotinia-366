@@ -266,6 +266,8 @@ The `varpart()` function of vegan was used to determine variation partitioning o
 We used analysis of variance (ANOVA) to assess if MCGs differed in severity.
 To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 57% of the isolates collected. Between-group differences were assessed using Tukey's HSD test using the `HSD.test()` function in the package *agricolae* version 1.2.4 [@mendiburu2015agricolae].
 
+## Genetic Diversity
+
 ### Shared Multilocus Genotype Community Analysis {-}
 
 As many disparate geographic regions shared multilocus genotypes, we wanted to know if we could find any patterns in connectivity. 
