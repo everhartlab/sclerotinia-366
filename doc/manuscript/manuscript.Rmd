@@ -240,7 +240,7 @@ Capillary electrophoresis (fragment analysis) of PCR products added with size st
 
 Of the 16 microsatellite loci, five included compound repeats, which made allele scoring difficult. 
 These loci were removed for the reported statistics, but were processed and included in data analyses to ensure the integrity of the results with 11 loci as compared to 16.
-We assessed the power of our 11 markers by generating a genotype accumulation curve in the R package *poppr* version 2.4.1, looking for evidence of saturation, which would indicate that enough loci have been sampled to sufficiently characterize the full set of genotypes [@arnaud2007standardizing, @kamvar2015novel].
+We assessed the power of our 11 markers by generating a genotype accumulation curve in the R package *poppr* version 2.4.1, looking for evidence of saturation, which would indicate that enough loci have been sampled to sufficiently characterize the full set of genotypes [@arnaud2007standardizing; @kamvar2015novel].
 To control for non-independent samples (i.e. those sampled from the same location, region, year, and plant), data were clone-corrected for subsequent analyses.
 The clone-corrected data set included 318 isolates.
 All analyses were performed on this data set unless otherwise mentioned.
@@ -255,7 +255,7 @@ A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was perform
 This method uses constrained ordinations on a distance matrix representing the response variable to delineate relative contribution of any number of independent explanatory variables. 
 We used this method to delineate the phenotypic, geographic, and temporal components in influencing genetic composition of the populations.
 <!-- RDA is a multivariate linear regression analysis of independent (explanatory: eg. environmental and phenotypic) variables on dependent (non-explanatory or response) variables. -->
-The distance matrix we used as the response variable was generated using Bruvo's genetic distance as implemented in *poppr* version 2.4.1, which employs a stepwise mutation model for microsatellite data [@bruvo2004simple, @kamvar2014poppr]. 
+The distance matrix we used as the response variable was generated using Bruvo's genetic distance as implemented in *poppr* version 2.4.1, which employs a stepwise mutation model for microsatellite data [@bruvo2004simple; @kamvar2014poppr]. 
 <!-- In our case, a pairwise Bruvo's [@bruvo2004simple] distance matrix was generated from microsatellite data using *poppr* 2.4.1 [@kamvar2014poppr; @kamvar2015novel] and employed it as the dependent matrix for RDA analysis. -->
 To identify explanatory variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function `ordistep()` to identify the set of variables that explained more variation than predicted with the global model containing all variables.
 An ANOVA was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
@@ -271,11 +271,11 @@ To minimize complications due to small sample sizes, we chose the top 10 MCGs, r
 We wanted to assess if there was any correlation between multilocus genotypes (MLG) and mycelial compatibility groups (MCG). 
 This was done using a graph-based approach with community analysis.
 We first created a contingency table with MLGs and MCGs and converted it to a directed and weighted edgelist where each edge was a connection from an MCG to an MLG weighted by the number of samples shared in the connection. 
-The cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version 1.0.1 was used to define clusters of MLGs and MCGs [@csardi2006igraph, @pons2006computing].
+The cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version 1.0.1 was used to define clusters of MLGs and MCGs [@csardi2006igraph; @pons2006computing].
 All communities that had fewer than 10 members were then consolidated into one.
 These community definitions was then used to assess the average genetic distance (as defined by Bruvo's distance) within members of the community [@bruvo2004simple].
 
-## Genetic Diversity
+## Genetic Diversity {-}
 
 ### Shared Multilocus Genotype Community Analysis {-}
 
@@ -284,7 +284,7 @@ To assess the connectivity of shared genotypes across regions, we first tabulate
 From these data, we were able to construct a graph with populations as nodes and shared genotypes as edges (connections) between the nodes using the R packages *igraph* version 1.0.1 [@csardi2006igraph], *dplyr* version 0.7.1 [@dplyr], and *purrr* version 0.2.2.2 [@purrr].
 Each node was weighted by the fraction of shared MLGs.
 Each edge represents a single MLG, but because a single MLG could cross populations, that MLG may be represented by (n\*(n-1))/2 edges where n represents the number of populations it crosses.
-Edges were weighted by $1-P_{sex}$, where $P_{sex}$ is the probability of encountering the same genotype via two independent meiotic events [@arnaud2007standardizing, @parks1993study].
+Edges were weighted by $1-P_{sex}$, where $P_{sex}$ is the probability of encountering the same genotype via two independent meiotic events [@arnaud2007standardizing; @parks1993study].
 We then used the `cluster_optimal()` function from *igraph* to define communities [@csardi2006igraph].
 The graph was plotted using the R packages *ggplot2* version 2.2.1 [@ggplot2] and *ggraph* version 1.0.0 [@ggraph].
 To ensure that we were able to capture the same community signal, we additionally ran this analysis including the 5 polymorphic markers described above.
