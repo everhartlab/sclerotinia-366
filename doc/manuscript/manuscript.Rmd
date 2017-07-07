@@ -110,6 +110,7 @@ Because the white mold nurseries serve as testing grounds for new varieties of d
 As these nurseries are not treated with any chemical or cultural control of white mold, we hypothesized that these nurseries would represent the natural population of *S. sclerotiorum*.
 Furthermore, as three cultivars (Beryl, Bunsi, and G122) were grown among all white mold nurseries, we wanted to investigate the potential effect of cultivar on genetic diversity.
 We additionally wanted to assess what categorical or phenotypic variables best predict genetic structure and if there was correlation between multilocus genotype and mycelial compatibility group.
+By investigating these aims, we hope to effectively describe the population dynamics of *S. sclerotiorum* and make available our database of isolates for use in future dry bean breeding efforts. 
 
 
 # Materials and Methods {-}
