@@ -251,12 +251,15 @@ All data processing and analyses were performed in R version 3.4.0 [@R] and are 
 We used analysis of variance (ANOVA) to assess if MCGs differed in severity.
 To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 57% of the isolates collected. Between-group differences were assessed using Tukey's HSD test using the `HSD.test()` function in the package *agricolae* version 1.2.4 [@mendiburu2015agricolae].
 
-### Distance-based redundancy analysis  {-}
+### Distance-based redundancy analysis {-}
 
-A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was performed with the function `capscale()` in the *vegan* package version 2.4-3 [@vegan] to delineate relative contribution of phenotypic, spatial, and temporal components in influencing genetic composition of the populations. dbRDA is a method of conducting constrained ordinations on data matrices consisting of non-Euclidean distance measures.
-RDA is a multivariate linear regression analysis of independent (explanatory: eg. environmental and phenotypic) variables on dependent (non-explanatory or response) variables.
-In our case, a pairwise Bruvo's [@bruvo2004simple] distance matrix was generated from microsatellite data using *poppr* 2.4.1 [@kamvar2014poppr; @kamvar2015novel] and employed it as the dependent matrix for RDA analysis.
-To identify environmental variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function `ordistep()` to identify the set of variables that explained more variation than predicted with the global model containing all variables.
+A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was performed with the function `capscale()` in the *vegan* package version 2.4-3 [@vegan].
+This method uses constrained ordinations on a distance matrix representing the response variable to delineate relative contribution of any number of independent explanatory variables. 
+We used this method to delineate the phenotypic, geographic, and temporal components in influencing genetic composition of the populations.
+<!-- RDA is a multivariate linear regression analysis of independent (explanatory: eg. environmental and phenotypic) variables on dependent (non-explanatory or response) variables. -->
+The distance matrix we used as the response variable was generated using Bruvo's genetic distance as implemented in *poppr* version 2.4.1, which employs a stepwise mutation model for microsatellite data [@bruvo2004simple, @kamvar2014poppr]. 
+<!-- In our case, a pairwise Bruvo's [@bruvo2004simple] distance matrix was generated from microsatellite data using *poppr* 2.4.1 [@kamvar2014poppr; @kamvar2015novel] and employed it as the dependent matrix for RDA analysis. -->
+To identify explanatory variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function `ordistep()` to identify the set of variables that explained more variation than predicted with the global model containing all variables.
 An ANOVA was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
 The `varpart()` function of vegan was used to determine variation partitioning of explanatory variables.
  
