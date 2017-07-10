@@ -279,7 +279,7 @@ These community definitions was then used to assess the average genetic distance
 
 ### Population Differentiation {-}
 
-We used analysis of molecular variance (AMOVA) with Bruvo's genetic distance to quantify the differentiation conferred by source and region [@excoffier1992analysis; @bruvo2004simple].
+We used analysis of molecular variance (AMOVA) with Bruvo's genetic distance in *poppr* version 2.4.1 to assess differentiation associated with wmn by quantifying the differentiation conferred by source and region [@excoffier1992analysis; @bruvo2004simple; @kamvar2014poppr].
 Source in this case was defined as a population belonging to a wmn or not and region defined as state. 
 To identify specific regions that were more differentiated than others, we used discriminant analysis of principal components (DAPC) as implemented in *adegenet* version 2.1.0, assessing the per-sample posterior group assignment probability [@jombart2008adegenet]. 
 This method decomposes the genetic data into principal components, and then uses a subset of these as the inputs for discriminant analysis, which attempts to minimize within-group variation and maximize among-group variation [@jombart2010discriminant]. 
@@ -288,6 +288,10 @@ This function implements a cross-validation procedure to iterate over an increas
 We additionally assessed genotypic diversity by assessing Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], and evenness ($E_5$, *eMLG*) [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
 To assess the potential for random mating, we tested for linkage disequilibrium with the index of association, $I_A$ and its standardized version, $\bar{r}_d$ using 999 permutations [@agapow2001indices; @smith1993how; @brown1980multilocus].
 Both genotypic diversity and linkage disequilibrium were calculated in *poppr* version 2.4.1 [@kamvar2014poppr].
+
+### Cultivar Differentiation {-}
+
+To assess if cultivar had an influence on genetic diversity across wmn, we first subset the clone-corrected data to contain only samples from wmn and from the cultivars Beryl, Bunsi, and G122 and tested differentiation using AMOVA and DAPC as described above. 
 
 ### Shared Multilocus Genotype Community Analysis {-}
 
@@ -300,35 +304,6 @@ Edges were weighted by $1-P_{sex}$, where $P_{sex}$ is the probability of encoun
 We then used the `cluster_optimal()` function from *igraph* to define communities [@csardi2006igraph].
 The graph was plotted using the R packages *ggplot2* version 2.2.1 [@ggplot2] and *ggraph* version 1.0.0 [@ggraph].
 To ensure that we were able to capture the same community signal, we additionally ran this analysis including the 5 polymorphic markers described above.
-
-<!-- 
-### Discriminant analysis of principal components {-}
-
-DAPC is a multivariate method designed to identify and describe clusters of genetically related individuals.
-Discriminant analysis maximizes separation between groups while minimizing variation within groups [@jombart2010discriminant].
-The `find.clusters()` function in *adegenet* 2.0.1 [@jombart2008adegenet] uses a k-means clustering algorithm to identify the optimum number of clusters.
-It was not able to identify a single optimum and identified a range of optimal clusters between 5-15.
-Consequently, DAPC was performed several times with different optimal number of clusters to determine whether isolates (N = 318) fell into each cluster have any biological meaning such as belonging to a particular host or came from the same region etc.
-Since dbRDA identified region, host, and sampling year as the top three variables influencing microsatellite data, DAPC was also performed on data defined according to each of these variables, separately.
-Isolates (N = 318) were assigned to different levels of the three factors (region, host, year) and assessed predefined group size (original number of isolates at each level of the factor), post group size (number of isolates assigned by the DAPC algorithm) and the proportion of the original isolates assigned to the original group after analysis.
-This was performed to determine the suitability of explanatory variables (i.e. region, host, and year) in describing the clusters generated.
-Clone-corrected isolates sampled in different years from the white mold nurseries (wmn) were tested for population differentiation over time by DAPC analysis.
-Only WA, MI, and NE isolates were qualified since we filtered out the states that had at least $\geq$ 7 samples/year with at least two years of data for the analysis.
-Lastly, we pooled all isolates, clone corrected them (N = 165) and performed DAPC using the function find.clusters as described above to delineate how many clusters were formed by these unique genotypes.
-AMOVA was used to test the significance of clusters resulted by different DAPC analyses using GenAlEx version 6.41 [@peakall2012genalex].
-$\Phi_{PT}$ which is an analogue of Wright's $F_{st}$ was used to ascertain the significance of populations.
-An $F_{st}$ value of 0.05 or less is generally considered as reasonably low and may be interpreted to mean that structuring between populations is weak [@jost2008gst].
-**(Balloux and Ugon-Moulin, 2002; Wright, 1978)**.   
-
-
-### Molecular population statistics and linkage disequilibrium {-}
-
-Genotypic evenness [@grunwald2003analysis], which is a measure of distribution of genotype abundances and unbiased gene diversity (*h*) [@nei1978estimation] were calculated using *poppr* package in R [@kamvar2014poppr].
-Microsatellite data were also tested for evidence of linkage disequilibrium, where significant disequilibrium between pairs of loci in a population is attributed to linkage between loci and may be an indication of clonal reproduction if loci are physically unlinked, whereas linkage equilibrium can be an indication of outcrossing populations.
-The linkage disequilibrium of clone-corrected data was determined by calculating the index of association ($I_{A}$) and its standardized version ($\bar{r}_d$) and a permutation approach with 999 permutations was used to test whether observed values were significantly different from data randomized at each locus [@agapow2001indices; @brown1980multilocus].
-The value of $I_A$ tends to increase with the number of loci and therefore we made our inferences based on $\bar{r}_d$, which standardizes the number of loci tested and considered a more robust method [@agapow2001indices].
-Higher observed $\bar{r}_d$ or $I_A$ values would indicate clonally reproducing populations. 
--->
 
 # Results {-}
 
