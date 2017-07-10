@@ -230,20 +230,55 @@ bebugd <- bruvo.dist(bebug, replen = other(bebug)$REPLEN)
 The AMOVA makes it clear that there's no differentiation between hosts. Let's
 see what DAPC shows us.
 
-```{r dapc, fig.width = 5, fig.height = 5.5}
-setPop(bebug) <- ~Host/Region
+```{r dapc, fig.width = 5, fig.height = 4.5}
+setPop(bebug) <- ~Host
 bebug_dapc <- dapc(bebug, n.pca = 20, n.da = 2)
 scatter(bebug_dapc, #clabel = 0,
         legend = TRUE,
         scree.pca = TRUE, 
         scree.da = FALSE,
-        # col = viridis::plasma(3), 
+        col = viridis::plasma(3, end = 0.85),
         bg.inset = "grey90",
         bg = "grey90")
 
-ggcompoplot::ggcompoplot(bebug_dapc, bebug) + #, pal = viridis::plasma(3)) +
+ggcompoplot::ggcompoplot(bebug_dapc, setPop(bebug, ~Region), cols = 5, pal = viridis::plasma(3, end = 0.85)) +
   theme(legend.position = "top")
 ```
+
+```{r dapc_hr, fig.width = 5, fig.height = 5.5}
+setPop(bebug) <- ~Host/Region
+bebug_dapc <- dapc(bebug, n.pca = 20, n.da = 20)
+bebug_dapc
+```
+
+```{r ggdapc, fig.width = 8, fig.height = 4}
+LDS <- bind_cols(Population = bebug_dapc$grp, as.data.frame(bebug_dapc$ind.coord)) %>%
+  as_tibble()
+LDS_pop <- LDS %>% 
+  group_by(Population) %>% 
+  summarize_all(mean) %>%
+  rename_all(function(x) gsub("LD", "mean", x))
+LDS <- full_join(LDS, LDS_pop, by = "Population") %>% separate(Population, c("Cultivar", "Population"))
+LDS_PLOT <- ggplot(LDS, aes(x = LD1, y = LD2, color = Cultivar)) + 
+  geom_point(aes(fill = Cultivar), alpha = 0.5, pch = 21, color = "black") +
+  geom_segment(aes(x = mean1, y = mean2, xend = LD1, yend = LD2), alpha = 0.5) +
+  stat_ellipse(type = "norm", level = 0.66, alpha = 0.75) + 
+  theme_bw(base_size = 16, base_family = "Helvetica") +  
+  theme(aspect.ratio = 1/1.618) +
+  theme(legend.position = "bottom") +
+  theme(axis.text = element_blank()) + 
+  theme(axis.title = element_blank()) + 
+  theme(axis.ticks = element_blank()) + 
+  viridis::scale_color_viridis(option = "B", discrete = TRUE, direction = -1, end = 0.85) +
+  viridis::scale_fill_viridis(option = "B", discrete = TRUE, direction = -1, end = 0.85) +
+  scale_y_continuous(breaks = 0) + 
+  scale_x_continuous(breaks = 0) + 
+  theme(panel.background = element_rect(fill = "grey95")) +
+  theme(panel.grid.major = element_line(color = "black")) +
+  facet_wrap(~Population, nrow = 2)
+LDS_PLOT
+```
+
 
 
 <details>
