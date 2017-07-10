@@ -318,7 +318,7 @@ Lastly, we pooled all isolates, clone corrected them (N = 165) and performed DAP
 AMOVA was used to test the significance of clusters resulted by different DAPC analyses using GenAlEx version 6.41 [@peakall2012genalex].
 $\Phi_{PT}$ which is an analogue of Wright's $F_{st}$ was used to ascertain the significance of populations.
 An $F_{st}$ value of 0.05 or less is generally considered as reasonably low and may be interpreted to mean that structuring between populations is weak [@jost2008gst].
-**(Balloux and Ugon-Moulin, 2002; Wright, 1978)**.   -->
+**(Balloux and Ugon-Moulin, 2002; Wright, 1978)**.   
 
 
 ### Molecular population statistics and linkage disequilibrium {-}
@@ -328,7 +328,7 @@ Microsatellite data were also tested for evidence of linkage disequilibrium, whe
 The linkage disequilibrium of clone-corrected data was determined by calculating the index of association ($I_{A}$) and its standardized version ($\bar{r}_d$) and a permutation approach with 999 permutations was used to test whether observed values were significantly different from data randomized at each locus [@agapow2001indices; @brown1980multilocus].
 The value of $I_A$ tends to increase with the number of loci and therefore we made our inferences based on $\bar{r}_d$, which standardizes the number of loci tested and considered a more robust method [@agapow2001indices].
 Higher observed $\bar{r}_d$ or $I_A$ values would indicate clonally reproducing populations. 
-
+-->
 
 # Results {-}
 
