@@ -73,18 +73,18 @@ Warning: values for NY, WI, ID could not be plotted.
 ptab %>%
   arrange(desc(N), desc(MLG)) %>%
   mutate(Ia = case_when(
-    !is.finite(.$p.Ia) ~ "-",
-    .$p.Ia == 0.001 ~ paste0(round(.$Ia, 2), "*"),
-    .$p.Ia <= 0.01 ~  paste0(round(.$Ia, 2), "-"),
-    .$p.Ia <= 0.05 ~  paste0(round(.$Ia, 2), "~"),
-    TRUE ~ as.character(round(.$Ia, 2))
+    !is.finite(p.Ia) ~ "-",
+    p.Ia == 0.001 ~ paste0(round(Ia, 2), "*"),
+    p.Ia <= 0.01  ~ paste0(round(Ia, 2), "-"),
+    p.Ia <= 0.05  ~ paste0(round(Ia, 2), "~"),
+    TRUE          ~ as.character(round(Ia, 2))
   )) %>%
   mutate(rbarD = case_when(
-    !is.finite(.$p.rD) ~ "-",
-    .$p.rD == 0.001 ~ paste0(round(.$rbarD, 2), "*"),
-    .$p.rD <= 0.01 ~  paste0(round(.$rbarD, 2), "-"),
-    .$p.rD <= 0.05 ~  paste0(round(.$rbarD, 2), "~"),
-    TRUE ~ as.character(round(.$rbarD, 2))
+    !is.finite(p.rD) ~ "-",
+    p.rD == 0.001 ~ paste0(round(rbarD, 2), "*"),
+    p.rD <= 0.01  ~ paste0(round(rbarD, 2), "-"),
+    p.rD <= 0.05  ~ paste0(round(rbarD, 2), "~"),
+    TRUE          ~ as.character(round(rbarD, 2))
   )) %>%
   mutate_if(is.numeric, round, digits = 2) %>%
   mutate(N = paste(N, MLG, sep = " (") %>% paste0(")") %>% formatC()) %>%
@@ -559,7 +559,7 @@ scatter(dat11.nc.dapc)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-07-06
+##  date     2017-07-10
 ```
 
 ```

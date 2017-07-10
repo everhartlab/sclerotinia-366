@@ -202,7 +202,7 @@ ssc_amova_test
 ## Alternative hypothesis: greater 
 ## 
 ##      Std.Obs  Expectation     Variance 
-## 7.618537e+00 1.179626e-05 3.304863e-07
+## 7.522707e+00 2.816991e-05 3.364302e-07
 ```
 
 
@@ -480,13 +480,13 @@ see what DAPC shows us.
 
 
 ```r
-setPop(bebug) <- ~Host/Region
+setPop(bebug) <- ~Host
 bebug_dapc <- dapc(bebug, n.pca = 20, n.da = 2)
 scatter(bebug_dapc, #clabel = 0,
         legend = TRUE,
         scree.pca = TRUE, 
         scree.da = FALSE,
-        # col = viridis::plasma(3), 
+        col = viridis::plasma(3, end = 0.85),
         bg.inset = "grey90",
         bg = "grey90")
 ```
@@ -494,11 +494,113 @@ scatter(bebug_dapc, #clabel = 0,
 ![plot of chunk dapc](./figures/wmn-differentiation///dapc-1.png)
 
 ```r
-ggcompoplot::ggcompoplot(bebug_dapc, bebug) + #, pal = viridis::plasma(3)) +
+ggcompoplot::ggcompoplot(bebug_dapc, setPop(bebug, ~Region), cols = 5, pal = viridis::plasma(3, end = 0.85)) +
   theme(legend.position = "top")
 ```
 
 ![plot of chunk dapc](./figures/wmn-differentiation///dapc-2.png)
+
+
+```r
+setPop(bebug) <- ~Host/Region
+bebug_dapc <- dapc(bebug, n.pca = 20, n.da = 20)
+bebug_dapc
+```
+
+```
+## 	#################################################
+## 	# Discriminant Analysis of Principal Components #
+## 	#################################################
+## class: dapc
+## $call: dapc.genind(x = bebug, n.pca = 20, n.da = 20)
+## 
+## $n.pca: 20 first PCs of PCA used
+## $n.da: 20 discriminant functions saved
+## $var (proportion of conserved variance): 0.887
+## 
+## $eig (eigenvalues): 31.72 7.385 5.33 4.425 4.026 ...
+## 
+##   vector    length content                   
+## 1 $eig      20     eigenvalues               
+## 2 $grp      157    prior group assignment    
+## 3 $prior    30     prior group probabilities 
+## 4 $assign   157    posterior group assignment
+## 5 $pca.cent 66     centring vector of PCA    
+## 6 $pca.norm 66     scaling vector of PCA     
+## 7 $pca.eig  54     eigenvalues of PCA        
+## 
+##   data.frame    nrow ncol
+## 1 $tab          157  20  
+## 2 $means        30   20  
+## 3 $loadings     20   20  
+## 4 $ind.coord    157  20  
+## 5 $grp.coord    30   20  
+## 6 $posterior    157  30  
+## 7 $pca.loadings 66   20  
+## 8 $var.contr    66   20  
+##   content                                          
+## 1 retained PCs of PCA                              
+## 2 group means                                      
+## 3 loadings of variables                            
+## 4 coordinates of individuals (principal components)
+## 5 coordinates of groups                            
+## 6 posterior membership probabilities               
+## 7 PCA loadings of original variables               
+## 8 contribution of original variables
+```
+
+
+```r
+LDS <- bind_cols(Population = bebug_dapc$grp, as.data.frame(bebug_dapc$ind.coord)) %>%
+  as_tibble()
+LDS_pop <- LDS %>% 
+  group_by(Population) %>% 
+  summarize_all(mean) %>%
+  rename_all(function(x) gsub("LD", "mean", x))
+LDS <- full_join(LDS, LDS_pop, by = "Population") %>% separate(Population, c("Cultivar", "Population"))
+LDS_PLOT <- ggplot(LDS, aes(x = LD1, y = LD2, color = Cultivar)) + 
+  geom_point(aes(fill = Cultivar), alpha = 0.5, pch = 21, color = "black") +
+  geom_segment(aes(x = mean1, y = mean2, xend = LD1, yend = LD2), alpha = 0.5) +
+  stat_ellipse(type = "norm", level = 0.66, alpha = 0.75) + 
+  theme_bw(base_size = 16, base_family = "Helvetica") +  
+  theme(aspect.ratio = 1/1.618) +
+  theme(legend.position = "bottom") +
+  theme(axis.text = element_blank()) + 
+  theme(axis.title = element_blank()) + 
+  theme(axis.ticks = element_blank()) + 
+  viridis::scale_color_viridis(option = "B", discrete = TRUE, direction = -1, end = 0.85) +
+  viridis::scale_fill_viridis(option = "B", discrete = TRUE, direction = -1, end = 0.85) +
+  scale_y_continuous(breaks = 0) + 
+  scale_x_continuous(breaks = 0) + 
+  theme(panel.background = element_rect(fill = "grey95")) +
+  theme(panel.grid.major = element_line(color = "black")) +
+  facet_wrap(~Population, nrow = 2)
+LDS_PLOT
+```
+
+```
+## Too few points to calculate an ellipse
+## Too few points to calculate an ellipse
+## Too few points to calculate an ellipse
+## Too few points to calculate an ellipse
+## Too few points to calculate an ellipse
+## Too few points to calculate an ellipse
+## Too few points to calculate an ellipse
+## Too few points to calculate an ellipse
+## Too few points to calculate an ellipse
+```
+
+```
+## Warning: Removed 3 rows containing missing values (geom_path).
+```
+
+```
+## geom_path: Each group consists of only one observation. Do you need to
+## adjust the group aesthetic?
+```
+
+![plot of chunk ggdapc](./figures/wmn-differentiation///ggdapc-1.png)
+
 
 
 <details>
@@ -517,7 +619,7 @@ ggcompoplot::ggcompoplot(bebug_dapc, bebug) + #, pal = viridis::plasma(3)) +
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-07-06
+##  date     2017-07-10
 ```
 
 ```
@@ -561,6 +663,7 @@ ggcompoplot::ggcompoplot(bebug_dapc, bebug) + #, pal = viridis::plasma(3)) +
 ##  graphics    * 3.4.0      2017-04-21 local                                   
 ##  grDevices   * 3.4.0      2017-04-21 local                                   
 ##  grid          3.4.0      2017-04-21 local                                   
+##  gridExtra     2.2.1      2016-02-29 CRAN (R 3.4.0)                          
 ##  gtable        0.2.0      2016-02-26 CRAN (R 3.4.0)                          
 ##  gtools        3.5.0      2015-05-29 CRAN (R 3.4.0)                          
 ##  haven         1.0.0      2016-09-23 CRAN (R 3.4.0)                          
@@ -624,6 +727,8 @@ ggcompoplot::ggcompoplot(bebug_dapc, bebug) + #, pal = viridis::plasma(3)) +
 ##  tools         3.4.0      2017-04-21 local                                   
 ##  utils       * 3.4.0      2017-04-21 local                                   
 ##  vegan         2.4-3      2017-04-07 CRAN (R 3.4.0)                          
+##  viridis       0.4.0      2017-03-27 CRAN (R 3.4.0)                          
+##  viridisLite   0.2.0      2017-03-24 CRAN (R 3.4.0)                          
 ##  withr         1.0.2      2016-06-20 CRAN (R 3.4.0)                          
 ##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                          
 ##  xtable        1.8-2      2016-02-05 CRAN (R 3.4.0)
