@@ -277,6 +277,18 @@ These community definitions was then used to assess the average genetic distance
 
 ## Genetic Diversity {-}
 
+### Population Differentiation {-}
+
+We used analysis of molecular variance (AMOVA) with Bruvo's genetic distance to quantify the differentiation conferred by source and region [@excoffier1992analysis; @bruvo2004simple].
+Source in this case was defined as a population belonging to a wmn or not and region defined as state. 
+To identify specific regions that were more differentiated than others, we used discriminant analysis of principal components (DAPC) as implemented in *adegenet* version 2.1.0, assessing the per-sample posterior group assignment probability [@jombart2008adegenet]. 
+This method decomposes the genetic data into principal components, and then uses a subset of these as the inputs for discriminant analysis, which attempts to minimize within-group variation and maximize among-group variation [@jombart2010discriminant]. 
+To avoid over-fitting the data, the optimal number of principal components was selected by using the *adegenet* function `xvalDapc()`. 
+This function implements a cross-validation procedure to iterate over an increasing number of principal components on a subset (90%) of the data, trying to find the minimum number of principal components that maximizes the rate of successful group reassignment. 
+We additionally assessed genotypic diversity by assessing Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], and evenness ($E_5$, *eMLG*) [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
+To assess the potential for random mating, we tested for linkage disequilibrium with the index of association, $I_A$ and its standardized version, $\bar{r}_d$ using 999 permutations [@agapow2001indices; @smith1993how; @brown1980multilocus].
+Both genotypic diversity and linkage disequilibrium were calculated in *poppr* version 2.4.1 [@kamvar2014poppr].
+
 ### Shared Multilocus Genotype Community Analysis {-}
 
 As many disparate geographic regions shared multilocus genotypes, we wanted to know if we could find any patterns in connectivity. 
@@ -289,6 +301,7 @@ We then used the `cluster_optimal()` function from *igraph* to define communitie
 The graph was plotted using the R packages *ggplot2* version 2.2.1 [@ggplot2] and *ggraph* version 1.0.0 [@ggraph].
 To ensure that we were able to capture the same community signal, we additionally ran this analysis including the 5 polymorphic markers described above.
 
+<!-- 
 ### Discriminant analysis of principal components {-}
 
 DAPC is a multivariate method designed to identify and describe clusters of genetically related individuals.
@@ -305,7 +318,7 @@ Lastly, we pooled all isolates, clone corrected them (N = 165) and performed DAP
 AMOVA was used to test the significance of clusters resulted by different DAPC analyses using GenAlEx version 6.41 [@peakall2012genalex].
 $\Phi_{PT}$ which is an analogue of Wright's $F_{st}$ was used to ascertain the significance of populations.
 An $F_{st}$ value of 0.05 or less is generally considered as reasonably low and may be interpreted to mean that structuring between populations is weak [@jost2008gst].
-<!-- **(Balloux and Ugon-Moulin, 2002; Wright, 1978)**.   -->
+**(Balloux and Ugon-Moulin, 2002; Wright, 1978)**.   -->
 
 
 ### Molecular population statistics and linkage disequilibrium {-}
@@ -521,7 +534,7 @@ Within Region        296 (282)   56.7 (55.1)   86.4 (90.3)   **-1.58e^-3^ (1.16e
 
 -------------------------------------------------------------------------------
 
-Table: (\#tab:amova) Analysis of Molecular Variance showing little differentiation between White Mold Nurseries and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a white mold nursery or not. Bold $\Phi$ values indicate significant values. Numbers in parentheses represent AMOVA run without Mexican isolates included. S.S. = Sum of Squares, d.f. = degrees of freedom.
+Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance showing little differentiation between White Mold Nurseries and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a white mold nursery or not. Bold $\Phi$ values indicate significant values. Numbers in parentheses represent AMOVA run without Mexican isolates included. S.S. = Sum of Squares, d.f. = degrees of freedom.
 
 
 Since `find.clusters()` function of *adegenet* did not result in a clear-cut number of clusters for 318 isolates, we arrived at six (6) as the best number of populations (Fig. 9) for our data after examining results of DAPC for different number of clusters.
@@ -738,6 +751,7 @@ eMLG = expected number of MLGs based on rarefaction at min(10, N) individuals (s
 H = Shannon-Weiner Index, G = Stoddardt and Taylor's Index, 
 $\lambda$ = Simpson's Index, 
 *h* = Nei's 1978 gene diversity, 
+$E_5$ = Evenness,
 $I_A$ = the index of association, 
 $\bar{r}_d$ = standardized index of association. 
 P-value symbols: \* = 0.001, ~ = $\leq 0.05$.
