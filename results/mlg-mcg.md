@@ -408,7 +408,7 @@ type (MCG/Count) to color and the opacity (alpha) to Evenness.
 mcg_graph <- mcgs %>% 
   filter(Samples > 1) %>%
   gather(type, count, MLGs, Samples, -Evenness) %>%
-  arrange(desc(type), count) %>%
+  arrange(desc(type), desc(count)) %>%
   rename(Type = type) %>%
   mutate(MCG = forcats::fct_inorder(MCG, ordered = TRUE)) %>%
   ggplot(aes(x = MCG, y = count, group = Type, fill = Type, alpha = Evenness)) +
@@ -418,13 +418,16 @@ mcg_graph <- mcgs %>%
   scale_fill_manual(values = c("black", "white")) +
   scale_y_continuous(expand = c(0, 2)) +
   theme_minimal(base_size = 16, base_family = "Helvetica") +
-  coord_flip() +
-  theme(panel.grid.major.y = element_blank()) +
-  theme(legend.box.just = "left") +
-  theme(legend.box.margin = unit(c(0, 0.55, 11, 0), "lines")) +
-  theme(legend.box.background = element_rect(fill = NA, color = "black")) +
-  # theme(legend.box = "horizontal") +
-  theme(aspect.ratio = 2) +
+  # coord_flip() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.grid.major.y = element_line(color = "grey50")) +
+  theme(panel.grid.minor.y = element_line(color = "grey70")) +
+  theme(legend.box.just = "top") +
+  theme(legend.box.margin = unit(c(0, 6.55, 0, 0), "lines")) +
+  theme(legend.box.background = element_rect(fill = "white", color = "black")) +
+  theme(legend.box = "horizontal") +
+  theme(aspect.ratio = 1/2) +
   labs(list(
     alpha = "MLG\nEvenness"
   ))
@@ -449,26 +452,29 @@ even <- mcgs %>%
   # theme(plot.background = element_rect(fill = NA, colour = "black")) +
   facet_wrap(~MCG, ncol = 1, scale = "free")
 
-vp1 <- grid::viewport(width = 0.25, height = 0.4, x = 0.795, y = 0.64, just = c("center", "top"))
-mcg_graph <- mcg_graph + theme(legend.position = c(.789, .585))
+vp1 <- grid::viewport(width = 0.25, height = 0.4, x = 1, y = 0.975, just = c("right", "top"))
+mcg_graph <- mcg_graph + theme(legend.position = c(.763, .75))
 
-pdf(file.path(PROJHOME, "results/figures/publication/Figure1Z.pdf"), width = 5, height = 10)
+
 print(mcg_graph)
 print(even, vp = vp1)
-dev.off()
+```
+
+![plot of chunk barplots](./figures/mlg-mcg///barplots-1.png)
+
+```r
+if (!interactive()){
+  pdf(file.path(PROJHOME, "results/figures/publication/Figure1Z.pdf"), width = 10, height = 5)
+  print(mcg_graph)
+  print(even, vp = vp1)
+  dev.off()
+}
 ```
 
 ```
 ## quartz_off_screen 
 ##                 2
 ```
-
-```r
-print(mcg_graph)
-print(even, vp = vp1)
-```
-
-![plot of chunk barplots](./figures/mlg-mcg///barplots-1.png)
 
 
 ```r
@@ -844,7 +850,7 @@ on average 7 steps.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-07-10
+##  date     2017-07-11
 ```
 
 ```
