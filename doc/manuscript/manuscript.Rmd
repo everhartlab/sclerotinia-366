@@ -321,6 +321,63 @@ To ensure that we captured the same community signal, we additionally performed 
 
 # Results {-}
 
+A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in 11 states in the US, Australia, Mexico, and France (Table \@ref(tab:isolate-table)).
+Over 50% of the isolates came from four states, MI (62), ND (60), WA (59), NE (47). 
+Four regions had fewer than 10 isolates, Australia (6), WI (2), NY (1), ID (1).
+After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with 318 isolates representing 165 MLGs \@ref(tab:iatab).
+Analysis of the genotype accumulation curve showed no clear plateau, indicating that we would likely obtain more multilocus genotypes if we were to collect more loci. The number of observed alleles per locus ranged from 2 to 10 with an average of 6.27 (Table \@ref(tab:locus-stats)).
+
+--------------------------------------------
+Locus  Range    No. alleles    *h*  Evenness 
+------ ------- ------------ ------ ---------
+5-2    318-324            4   0.45      0.62 
+
+6-2    483-495            3   0.64      0.95 
+
+7-2    158-174            7   0.73      0.76 
+
+8-3    244-270            7   0.74      0.79 
+
+9-2    360-382            9   0.35      0.41 
+
+12-2   214-222            5   0.58      0.78 
+
+17-3   342-363            7   0.55      0.53 
+
+20-3   280-282            2   0.05      0.42 
+
+55-4   153-216           10   0.72      0.66 
+
+110-4  370-386            5   0.76      0.91 
+
+114-4  339-416           10   0.83      0.80 
+
+mean   153-495         6.27   0.58      0.69 
+
+--------------------------------------------
+
+
+Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation].
+
+## Variable Importance {-}
+
+The dbRDA was performed on clone-corrected isolates (N = 318) after grouping them by location, host, region, and year.
+The forward-backward selection process revealed severity, year, region, and host to be the optimal variables for the reduced model, accounting for 17.6% of the total variation.
+ANOVA revealed that the reduced model was significant with an adjusted R^2^ of 0.033 (P = 0.001).
+Assessment of the marginal effects showed that state, host, and year significantly explained genetic variation (P = 0.001), but aggressiveness was only mildly significant (P = 0.045). 
+Much of the variation appears to be driven by isolates from Mexico (Fig. \@ref(rda-biplot)) and 2005; it's worth noting that all Mexican isolates were collected in 2005.
+Variance partitioning of the independent variables indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
+
+<!-- RDA figure -->
+
+![
+Biplot showing 10 most influential explanatory variables (arrows) overlayed on the first two eigenvectors of distance based redundancy analysis of *S. sclerotiorum* isolates. 
+The length of the arrows are directly proportional to the strength of the correlation between explanatory and molecular variables. 
+Points represent the 318 clone-corrected samples in ordination space. 
+](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=50%}
+
+<!-- end figure -->
+
 ## Genotypic Structure {-}
 
 <!-- MCG abundance figure -->
@@ -334,13 +391,6 @@ The transparency associated with the grey bars represent the evenness of the dis
 
 <!-- end figure -->
 
-<!--  ZNK: I think figures 1-4 are a bit redundant with the tables in the text. It might be better to simply remove them. -->
-A total of 366 isolates were collected from 2003 to 2012 from diseased dry bean plants in 11 states in the US, Australia (2 mainland; 4 Tasmania), Mexico, and France **(Fig. 1)**.
-Most isolates came from MI (62), ND (60), WA (59), NE (47), and CO (42).  Other regions in lesser representation were France (24), MX (18), OR (17), CA (16), MN (11), Australia (6), WI (2), ID (1), and NY (1).
-Four of the Australian isolates were collected from Tasmania while the other two came from Victoria state.
-There were no samples collected in 2006 and 2011.
-The highest number of samples were collected in 2005 (N = 63) and lowest in 2012 (N = 4).
-
 ```{r table3, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 suppressPackageStartupMessages(library("tidyverse"))
 read_csv("../../results/tables/mlg_table.csv", 
@@ -353,23 +403,16 @@ read_csv("../../results/tables/mlg_table.csv",
 Table: (\#tab:mlg-table) The 5 most abundant Multilocus Genotypes (MLG) with
 the probability of second encounter ($P_{sex}$), Mycelial Compatibility Groups (MCG), and Regions with sample sizes in parentheses.
 
-Pathogen isolates represented 26 commercial cultivars and breeding lines with some representing unknown dry bean hosts **(Fig. 2)**.
-We investigated the population association with host for cultivars where more than 10 isolates were obtained, which included G122, Beryl, Bunsi, Yellow, Pinto, and Merlot.
+
+There were a total of 165 multilocus genotypes in the isolate collection.
+The most abundant MLG represented 27 isolates (Table \@ref(tab:mlg-table)) across five regions (NE, MI, WA, CO, and ND).
+
 These six cultivars had a total of 238 *S. sclerotiorum* isolates (of 366 total isolates collected) belonging to 130 MLGs.
 Of these MLGs, 53 were singletons, while the rest were obtained from more than one host cultivar; only one private allele on locus 55-4 was identified, belonging to the *S. sclerotiorum* population from the cultivar 'Bunsi'.
 The five most abundant MLGs with associated MCGs are shown in Table \@ref(tab:mlg-table).
 The majority of MLGs reported were found on multiple host cultivars and only a few unique to a cultivar.
 For instance, there were only 15 unique MLGs within the population of 68 *S. sclerotiorum* isolates obtained from the 'Beryl' cultivar.
 
-
-There were a total of 165 multilocus genotypes in the isolate collection.
-The most abundant MLG represented 27 isolates (Fig. \@ref(barplot) and Table 4) across five regions (NE, MI, WA, CO, and ND).
-Twenty isolates of this MLG were identified from ND.
-The genotypes that had either highest geographical distribution or found in high frequency are given in Table 4.
-MLG 163 was identified in NE, MI, CO and ND, while MLG 165 was identified in MN and all states aforementioned, except for ND.
-Isolates with MLG 15 were identified from populations in MI, WA, CO, and ND.
-The MLGs 163, 165 and 15 had 15, 7, and 4 individuals across these populations, respectively.
-The highest number of clones was recorded from ND, NE, and MI, which included 20, 10 and 7 isolates, respectively **(Table 4)**.
 
 The associations between MCGs and MLGs are complicated (Fig. \@ref(biggraph))
 
@@ -409,65 +452,6 @@ There were six isolates that fell into upper outlier category (aggressiveness > 
 The mean aggressiveness of the 10 most abundant MCGs ranged from 4.6 (MCG 49) to 6.02 (MCG 44) (see Fig 4 for 10 most abundant MCGs).
 ANOVA of these 10 MCGs indicated significant difference for aggressiveness levels at P <0.0001.
 Mean separation of 10 most common MCGs showed MCG 44 is different from MCGs 9, 1, 45, 4, 53, and 49 while the aggressiveness levels of MCGs 2, 5, 3 failed to show any difference to MCG 44 or the other MCGs. 
-
-The number of observed alleles per locus ranged anywhere from 2 to 10 (Table \@ref(tab:locus-stats)).
-All loci were informative at cut off level of 2/N where N was the total number of individuals.
-The genetic diversity indices of *S. sclerotiorum* populations from different states of the USA, France, Mexico and Australia based on SSR analysis are given in Table 5.
-The 165 unique MLGs identified among all 366 isolates are given in Supplementary Table 1.
-Gene diversity (*h*) of populations from different regions ranged from 0.259 to 0.596 **(Table 5)**.
-Evenness of genotypes of all regions was high, with the exception of ND, where a single genotype was represented by 20 isolates.
-There was one private allele in the WA population (204 bp allele of 55-4 locus) and two private alleles in the ND population (two 366 bp alleles in 9-2 locus and two 220 bp alleles in 12-2 locus).
-
---------------------------------------------
-Locus  Range    No. alleles    *h*  Evenness 
------- ------- ------------ ------ ---------
-5-2    318-324            4   0.45      0.62 
-
-6-2    483-495            3   0.64      0.95 
-
-7-2    158-174            7   0.73      0.76 
-
-8-3    244-270            7   0.74      0.79 
-
-9-2    360-382            9   0.35      0.41 
-
-12-2   214-222            5   0.58      0.78 
-
-17-3   342-363            7   0.55      0.53 
-
-20-3   280-282            2   0.05      0.42 
-
-55-4   153-216           10   0.72      0.66 
-
-110-4  370-386            5   0.76      0.91 
-
-114-4  339-416           10   0.83      0.80 
-
-mean   153-495         6.27   0.58      0.69 
-
---------------------------------------------
-
-
-Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation].
-
-## Variable Importance {-}
-
-The dbRDA was performed on clone-corrected isolates (N = 318) after grouping them by location, host, region, and year.
-The forward-backward selection process revealed aggressiveness, year, region, and host to be the optimal variables for the reduced model, accounting for 17.6% of the variation.
-ANOVA revealed that the reduced model was significant with an adjusted R^2^ of 0.032 (P = 0.001).
-The marginal effects of state, host, and year were also significant (P = 0.001), but aggressiveness was not significant (P = 0.045).
-Much of the variation appears to be driven by isolates from Mexico (Fig. \@ref(rda-biplot)) and 2005, but it's worth noting that all Mexican isolates were collected in 2005.
-Variance partitioning of the independent variables indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
-
-<!-- RDA figure -->
-
-![
-Biplot showing 10 most influential explanatory variables (arrows) overlayed on the first two eigenvectors of distance based redundancy analysis of *S. sclerotiorum* isolates. 
-The length of the arrows are directly proportional to the strength of the correlation between explanatory and molecular variables. 
-Points represent the 318 clone-corrected samples in ordination space. 
-](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=50%}
-
-<!-- end figure -->
 
 ## DAPC {-}
 
