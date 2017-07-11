@@ -559,7 +559,7 @@ scatter(dat11.nc.dapc)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-07-10
+##  date     2017-07-11
 ```
 
 ```
@@ -599,7 +599,7 @@ scatter(dat11.nc.dapc)
 ##  gdata          2.18.0     2017-06-06 CRAN (R 3.4.0)                          
 ##  ggcompoplot  * 0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)    
 ##  ggplot2      * 2.2.1      2016-12-30 CRAN (R 3.4.0)                          
-##  ggrepel        0.6.10     2017-06-23 Github (slowkow/ggrepel@102ca39)        
+##  ggrepel        0.6.11     2017-07-11 Github (slowkow/ggrepel@8fbd0a0)        
 ##  glue           1.1.1      2017-06-21 CRAN (R 3.4.0)                          
 ##  gmodels        2.16.2     2015-07-22 CRAN (R 3.4.0)                          
 ##  graphics     * 3.4.0      2017-04-21 local                                   
