@@ -95,8 +95,8 @@ In those studies, different dry bean cultivars had been rarely used as  hosts to
 No white mold resistant dry bean cultivars exist.
 Canopy architecture and growth pattern of some cultivars enable improved disease avoidance [@kolkman2002agronomic]. -->
 To date, no commercial white mold-resistant dry bean cultivars exist. 
-Field trials in some regions of the US have shown the G122 cultivar is potentially resistant while the Beryl cultivar is susceptible (pers. comm. with J. Steadman).
-<!-- SEE: Evaluating cultivars, there should be some BIC reports that we can cite; personal communication is kind of eh. -->
+Field trials in some regions of the US have shown the G122 cultivar is partially resistant while the Beryl cultivar is susceptible [@otto-hanson2011variation].
+
 Understanding genetic relationships and reproduction behavior of *S. sclerotiorum* populations from locations worldwide is beneficial for plant breeders seeking to develop white mold resistance cultivars for deployment worldwide. 
 This information is also helpful in making disease management decisions and developing disease resistance screening methods.
 
