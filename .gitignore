@@ -5,3 +5,4 @@
 cache/*
 doc/manuscript/*pdf
 doc/manuscript/*tex
+results/bootstrap.txt
