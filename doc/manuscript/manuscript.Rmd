@@ -448,7 +448,7 @@ Node color represents the community assignment based on the walktrap algorithm w
 
 ## Population Differentiation {-}
 
-### Analysis of Molecular Variance
+### Analysis of Molecular Variance {-}
 
 The analysis of molecular variance (AMOVA) over the hierarchy of Source and Region showed no significant variation between white mold nurseries and non-white mold nurseries after accounting for variation between regions (Table \@ref(tab:amova)).
 Because Mexico shared no genotypes with any of the other populations and we suspected that it was contributing to some of the observed variance, we re-ran AMOVA without the Mexican isolates and found similar decreased, but still significant levels of differentiation between regions.
@@ -468,7 +468,7 @@ Within Region        296 (282)   56.7 (55.1)   86.4 (90.3)   **-1.58e^-3^ (1.16e
 
 Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance showing little differentiation between White Mold Nurseries and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a white mold nursery or not. Bold $\Phi$ values indicate significant values. Numbers in parentheses represent AMOVA run without Mexican isolates included. S.S. = Sum of Squares, d.f. = degrees of freedom.
 
-### Discriminant Analysis of Principal Components
+### Discriminant Analysis of Principal Components {-}
 
 Discriminant Analysis of Principal Components (DAPC) was performed with the first 21 principal components, representing 88% of the total variance. 
 The first discriminant axis (representing 64% of the discriminatory power) separated the centroid for the Mexico isolates from the rest of the data, indicating strong differentiation (Fig. \@ref(DAPC)b). 
@@ -491,7 +491,7 @@ The center of each component is represented as grid lines.
 
 ### Linkage Analysis {-}
 
-Nearly all populations showed evidence for linkage (\@ref(fig:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
+Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
 The only exceptions are CA and Australia. Both of these populations showed only moderate significance (P < 0.05) with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
 
 # Discussion {-}
