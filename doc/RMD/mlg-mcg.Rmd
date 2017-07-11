@@ -352,6 +352,27 @@ ggsave(plot = mcg_mlg_graph, filename = file.path(PROJHOME, "results/figures/pub
        width = 88*3, height = 88*3.5, units = "mm")
 ```
 
+
+Of interest is accounting for the communities that have a single MCG/MLG pair.
+We can detect these by filtering for communities that only have two members:
+
+```{r}
+singles <- the_communities %>% 
+  count(community) %>% 
+  arrange(desc(n)) %>% 
+  filter(n == 2) %>% 
+  inner_join(the_communities, by = "community") %>% 
+  mutate(type = case_when(grepl("MLG", vertex) ~ "MLG", TRUE ~ "MCG")) %>% 
+  spread(type, vertex) %>%
+  select(-n, -comm)
+# assessing that this truely contains the singletons
+nrow(inner_join(singles, the_communities, by = c("MCG" = "vertex")))
+nrow(inner_join(singles, the_communities, by = c("MLG" = "vertex")))
+
+knitr::kable(singles)
+```
+
+
 ### Interactive Visualizations
 
 The *visNetwork* package wraps a java library that has very good network
