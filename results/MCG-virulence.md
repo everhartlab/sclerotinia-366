@@ -210,27 +210,51 @@ summary(ANOVA)
 ```
 
 ```r
-plot(TukeyHSD(ANOVA), las = 2)
+plot(TukeyHSD(ANOVA, conf.level = 0.95), las = 2)
 ```
 
 ![plot of chunk anova](./figures/MCG-virulence///anova-1.png)
 
 ```r
-agricolae::HSD.test(ANOVA, "MCG")$groups
+grps <- agricolae::HSD.test(ANOVA, "MCG", alpha = 0.05)$groups
+readr::write_csv(grps, path = "results/tables/MCG-aggressiveness.csv", col_names = TRUE)
+
+grps %>% 
+  dplyr::rename(MCG = trt) %>%
+  dplyr::rename(Group = M) %>%
+  dplyr::rename(`Mean Aggressiveness` = means) %>%
+  huxtable::as_huxtable(add_colnames = TRUE) %>%
+  huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
+  huxtable::set_col_width(c(0.05, 0.3, 0.08)) %>%
+  huxtable::set_align(row = huxtable::everywhere, col = 2, "right") %>%
+  huxtable::print_md(max_width = 31)
 ```
 
 ```
-##    trt    means  M
-## 1   44 6.027778  a
-## 2   3  5.500000 ab
-## 3   5  5.397260  b
-## 4   2  5.250000  b
-## 5   9  5.106667  b
-## 6   1  4.953333  b
-## 7   45 4.875000  b
-## 8   4  4.871429  b
-## 9   53 4.688889  b
-## 10  49 4.600000  b
+## ------------------------------
+## MCG  Mean Aggressiveness Group 
+## --- -------------------- -----
+## 44                  6.03 a     
+## 
+## 3                   5.50 ab    
+## 
+## 5                   5.40 b     
+## 
+## 2                   5.25 b     
+## 
+## 9                   5.11 b     
+## 
+## 1                   4.95 b     
+## 
+## 45                  4.88 b     
+## 
+## 4                   4.87 b     
+## 
+## 53                  4.69 b     
+## 
+## 49                  4.60 b     
+## 
+## ------------------------------
 ```
 
 There appears to be a significant effect at p = 6.189e-06.
@@ -252,7 +276,7 @@ There appears to be a significant effect at p = 6.189e-06.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-07-03
+##  date     2017-07-11
 ```
 
 ```
@@ -260,90 +284,91 @@ There appears to be a significant effect at p = 6.189e-06.
 ```
 
 ```
-##  package     * version date       source         
-##  agricolae     1.2-4   2016-06-12 CRAN (R 3.4.0) 
-##  AlgDesign     1.1-7.3 2014-10-15 CRAN (R 3.4.0) 
-##  assertthat    0.2.0   2017-04-11 CRAN (R 3.4.0) 
-##  base        * 3.4.0   2017-04-21 local          
-##  bindr         0.1     2016-11-13 CRAN (R 3.4.0) 
-##  bindrcpp    * 0.2     2017-06-17 CRAN (R 3.4.0) 
-##  boot          1.3-19  2017-04-21 CRAN (R 3.4.0) 
-##  broom         0.4.2   2017-02-13 CRAN (R 3.4.0) 
-##  cellranger    1.1.0   2016-07-27 CRAN (R 3.4.0) 
-##  cluster       2.0.6   2017-03-16 CRAN (R 3.4.0) 
-##  coda          0.19-1  2016-12-08 CRAN (R 3.4.0) 
-##  colorspace    1.3-2   2016-12-14 CRAN (R 3.4.0) 
-##  combinat      0.0-8   2012-10-29 CRAN (R 3.4.0) 
-##  compiler      3.4.0   2017-04-21 local          
-##  datasets    * 3.4.0   2017-04-21 local          
-##  deldir        0.1-14  2017-04-22 CRAN (R 3.4.0) 
-##  devtools      1.13.2  2017-06-02 CRAN (R 3.4.0) 
-##  digest        0.6.12  2017-01-27 CRAN (R 3.4.0) 
-##  dplyr       * 0.7.1   2017-06-22 CRAN (R 3.4.0) 
-##  evaluate      0.10    2016-10-11 CRAN (R 3.4.0) 
-##  expm          0.999-2 2017-03-29 CRAN (R 3.4.0) 
-##  ezknitr       0.6     2016-09-16 CRAN (R 3.4.0) 
-##  forcats       0.2.0   2017-01-23 CRAN (R 3.4.0) 
-##  foreign       0.8-69  2017-06-21 CRAN (R 3.4.0) 
-##  gdata         2.18.0  2017-06-06 CRAN (R 3.4.0) 
-##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.0) 
-##  glue          1.1.1   2017-06-21 CRAN (R 3.4.0) 
-##  gmodels       2.16.2  2015-07-22 CRAN (R 3.4.0) 
-##  graphics    * 3.4.0   2017-04-21 local          
-##  grDevices   * 3.4.0   2017-04-21 local          
-##  grid          3.4.0   2017-04-21 local          
-##  gtable        0.2.0   2016-02-26 CRAN (R 3.4.0) 
-##  gtools        3.5.0   2015-05-29 CRAN (R 3.4.0) 
-##  haven         1.0.0   2016-09-23 CRAN (R 3.4.0) 
-##  highr         0.6     2016-05-09 CRAN (R 3.4.0) 
-##  hms           0.3     2016-11-22 CRAN (R 3.4.0) 
-##  httr          1.2.1   2016-07-03 CRAN (R 3.4.0) 
-##  jsonlite      1.5     2017-06-01 CRAN (R 3.4.0) 
-##  klaR          0.6-12  2014-08-06 CRAN (R 3.4.0) 
-##  knitr       * 1.16    2017-05-18 CRAN (R 3.4.0) 
-##  labeling      0.3     2014-08-23 CRAN (R 3.4.0) 
-##  lattice       0.20-35 2017-03-25 CRAN (R 3.4.0) 
-##  lazyeval      0.2.0   2016-06-12 CRAN (R 3.4.0) 
-##  LearnBayes    2.15    2014-05-29 CRAN (R 3.4.0) 
-##  lubridate     1.6.0   2016-09-13 CRAN (R 3.4.0) 
-##  magrittr      1.5     2014-11-22 CRAN (R 3.4.0) 
-##  MASS          7.3-47  2017-04-21 CRAN (R 3.4.0) 
-##  Matrix        1.2-10  2017-04-28 CRAN (R 3.4.0) 
-##  memoise       1.1.0   2017-04-21 CRAN (R 3.4.0) 
-##  methods     * 3.4.0   2017-04-21 local          
-##  mnormt        1.5-5   2016-10-15 CRAN (R 3.4.0) 
-##  modelr        0.1.0   2016-08-31 CRAN (R 3.4.0) 
-##  munsell       0.4.3   2016-02-13 CRAN (R 3.4.0) 
-##  nlme          3.1-131 2017-02-06 CRAN (R 3.4.0) 
-##  parallel      3.4.0   2017-04-21 local          
-##  pkgconfig     2.0.1   2017-03-21 CRAN (R 3.4.0) 
-##  plyr          1.8.4   2016-06-08 CRAN (R 3.4.0) 
-##  psych         1.7.5   2017-05-03 CRAN (R 3.4.0) 
-##  purrr       * 0.2.2.2 2017-05-11 cran (@0.2.2.2)
-##  R.methodsS3   1.7.1   2016-02-16 CRAN (R 3.4.0) 
-##  R.oo          1.21.0  2016-11-01 CRAN (R 3.4.0) 
-##  R.utils       2.5.0   2016-11-07 CRAN (R 3.4.0) 
-##  R6            2.2.2   2017-06-17 cran (@2.2.2)  
-##  Rcpp          0.12.11 2017-05-22 cran (@0.12.11)
-##  readr       * 1.1.1   2017-05-16 CRAN (R 3.4.0) 
-##  readxl        1.0.0   2017-04-18 CRAN (R 3.4.0) 
-##  reshape2      1.4.2   2016-10-22 CRAN (R 3.4.0) 
-##  rlang         0.1.1   2017-05-18 CRAN (R 3.4.0) 
-##  rvest         0.3.2   2016-06-17 CRAN (R 3.4.0) 
-##  scales        0.4.1   2016-11-09 CRAN (R 3.4.0) 
-##  sp            1.2-4   2016-12-22 CRAN (R 3.4.0) 
-##  spdep         0.6-13  2017-04-25 CRAN (R 3.4.0) 
-##  splines       3.4.0   2017-04-21 local          
-##  stats       * 3.4.0   2017-04-21 local          
-##  stringi       1.1.5   2017-04-07 CRAN (R 3.4.0) 
-##  stringr       1.2.0   2017-02-18 CRAN (R 3.4.0) 
-##  tibble      * 1.3.3   2017-05-28 CRAN (R 3.4.0) 
-##  tidyr       * 0.6.3   2017-05-15 CRAN (R 3.4.0) 
-##  tidyverse   * 1.1.1   2017-01-27 CRAN (R 3.4.0) 
-##  tools         3.4.0   2017-04-21 local          
-##  utils       * 3.4.0   2017-04-21 local          
-##  withr         1.0.2   2016-06-20 CRAN (R 3.4.0) 
-##  xml2          1.1.1   2017-01-24 CRAN (R 3.4.0)
+##  package     * version    date       source                        
+##  agricolae     1.2-4      2016-06-12 CRAN (R 3.4.0)                
+##  AlgDesign     1.1-7.3    2014-10-15 CRAN (R 3.4.0)                
+##  assertthat    0.2.0      2017-04-11 CRAN (R 3.4.0)                
+##  base        * 3.4.0      2017-04-21 local                         
+##  bindr         0.1        2016-11-13 CRAN (R 3.4.0)                
+##  bindrcpp    * 0.2        2017-06-17 CRAN (R 3.4.0)                
+##  boot          1.3-19     2017-04-21 CRAN (R 3.4.0)                
+##  broom         0.4.2      2017-02-13 CRAN (R 3.4.0)                
+##  cellranger    1.1.0      2016-07-27 CRAN (R 3.4.0)                
+##  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                
+##  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                
+##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                
+##  combinat      0.0-8      2012-10-29 CRAN (R 3.4.0)                
+##  compiler      3.4.0      2017-04-21 local                         
+##  datasets    * 3.4.0      2017-04-21 local                         
+##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                
+##  devtools      1.13.2     2017-06-02 CRAN (R 3.4.0)                
+##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                
+##  dplyr       * 0.7.1      2017-06-22 CRAN (R 3.4.0)                
+##  evaluate      0.10       2016-10-11 CRAN (R 3.4.0)                
+##  expm          0.999-2    2017-03-29 CRAN (R 3.4.0)                
+##  ezknitr       0.6        2016-09-16 CRAN (R 3.4.0)                
+##  forcats       0.2.0      2017-01-23 CRAN (R 3.4.0)                
+##  foreign       0.8-69     2017-06-21 CRAN (R 3.4.0)                
+##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                
+##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                
+##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                
+##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                
+##  graphics    * 3.4.0      2017-04-21 local                         
+##  grDevices   * 3.4.0      2017-04-21 local                         
+##  grid          3.4.0      2017-04-21 local                         
+##  gtable        0.2.0      2016-02-26 CRAN (R 3.4.0)                
+##  gtools        3.5.0      2015-05-29 CRAN (R 3.4.0)                
+##  haven         1.0.0      2016-09-23 CRAN (R 3.4.0)                
+##  highr         0.6        2016-05-09 CRAN (R 3.4.0)                
+##  hms           0.3        2016-11-22 CRAN (R 3.4.0)                
+##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                
+##  huxtable      0.3.0      2017-05-18 CRAN (R 3.4.0)                
+##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                
+##  klaR          0.6-12     2014-08-06 CRAN (R 3.4.0)                
+##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                
+##  labeling      0.3        2014-08-23 CRAN (R 3.4.0)                
+##  lattice       0.20-35    2017-03-25 CRAN (R 3.4.0)                
+##  lazyeval      0.2.0      2016-06-12 CRAN (R 3.4.0)                
+##  LearnBayes    2.15       2014-05-29 CRAN (R 3.4.0)                
+##  lubridate     1.6.0      2016-09-13 CRAN (R 3.4.0)                
+##  magrittr      1.5        2014-11-22 CRAN (R 3.4.0)                
+##  MASS          7.3-47     2017-04-21 CRAN (R 3.4.0)                
+##  Matrix        1.2-10     2017-04-28 CRAN (R 3.4.0)                
+##  memoise       1.1.0      2017-04-21 CRAN (R 3.4.0)                
+##  methods     * 3.4.0      2017-04-21 local                         
+##  mnormt        1.5-5      2016-10-15 CRAN (R 3.4.0)                
+##  modelr        0.1.0      2016-08-31 CRAN (R 3.4.0)                
+##  munsell       0.4.3      2016-02-13 CRAN (R 3.4.0)                
+##  nlme          3.1-131    2017-02-06 CRAN (R 3.4.0)                
+##  parallel      3.4.0      2017-04-21 local                         
+##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                
+##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                
+##  psych         1.7.5      2017-05-03 CRAN (R 3.4.0)                
+##  purrr       * 0.2.2.2    2017-05-11 cran (@0.2.2.2)               
+##  R.methodsS3   1.7.1      2016-02-16 CRAN (R 3.4.0)                
+##  R.oo          1.21.0     2016-11-01 CRAN (R 3.4.0)                
+##  R.utils       2.5.0      2016-11-07 CRAN (R 3.4.0)                
+##  R6            2.2.2      2017-06-17 cran (@2.2.2)                 
+##  Rcpp          0.12.11    2017-05-22 cran (@0.12.11)               
+##  readr       * 1.1.1      2017-05-16 CRAN (R 3.4.0)                
+##  readxl        1.0.0      2017-04-18 CRAN (R 3.4.0)                
+##  reshape2      1.4.2      2016-10-22 CRAN (R 3.4.0)                
+##  rlang         0.1.1      2017-05-18 CRAN (R 3.4.0)                
+##  rvest         0.3.2      2016-06-17 CRAN (R 3.4.0)                
+##  scales        0.4.1.9002 2017-07-06 Github (hadley/scales@6db7b6f)
+##  sp            1.2-4      2016-12-22 CRAN (R 3.4.0)                
+##  spdep         0.6-13     2017-04-25 CRAN (R 3.4.0)                
+##  splines       3.4.0      2017-04-21 local                         
+##  stats       * 3.4.0      2017-04-21 local                         
+##  stringi       1.1.5      2017-04-07 CRAN (R 3.4.0)                
+##  stringr       1.2.0      2017-02-18 CRAN (R 3.4.0)                
+##  tibble      * 1.3.3      2017-05-28 CRAN (R 3.4.0)                
+##  tidyr       * 0.6.3      2017-05-15 CRAN (R 3.4.0)                
+##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.4.0)                
+##  tools         3.4.0      2017-04-21 local                         
+##  utils       * 3.4.0      2017-04-21 local                         
+##  withr         1.0.2      2016-06-20 CRAN (R 3.4.0)                
+##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)
 ```
 
 </details>
