@@ -224,8 +224,10 @@ model itself.
 ```{r}
 cap11cc
 cap11cc$anova
+vegan::RsquareAdj(cap11cc)
 cap16cc
 cap16cc$anova
+vegan::RsquareAdj(cap16cc)
 ```
 
 
