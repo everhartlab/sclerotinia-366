@@ -500,26 +500,83 @@ genetic structure and MCG. There is the clear cluster of MLG 66 in Community C,
 but there are other isolates in distant parts of the tree. I'm wondering what
 happens if we average the distances between groups.
 
-```{r group_dist}
+```{r group_dist, fig.width = 10, fig.height = 10}
 datmat <- as.matrix(datdist)
 distmcg <- strat_mcg %>% 
   group_by(comm) %>%
-  summarize(dist = list(as.dist(datmat[Isolate, Isolate])), N = n())
+  summarize(dist = list(datmat[Isolate, Isolate]), N = n())
+
+isolist <- strat_mcg %>% 
+  group_by(comm) %>% 
+  filter(!duplicated(MLG)) %>%
+  summarize(Isolates = list(Isolate)) %>% 
+  inner_join(expand(., comm, comm)) %>%
+  rowwise() %>%
+  mutate(COMMS = paste(sort(c(comm, comm1)), collapse = " ")) %>% 
+  ungroup() %>% 
+  filter(!duplicated(COMMS))
+isolist <- isolist %>%
+  filter(comm == comm1) %>% 
+  select(-comm, -COMMS) %>% 
+  rename(Isolates2 = Isolates) %>% 
+  inner_join(isolist)
+
+distmcg <- isolist  %>% 
+  group_by(comm, comm1, COMMS) %>% 
+  summarize(dist = list(datmat[Isolates[[1]], Isolates2[[1]]]), 
+            N = length(Isolates[[1]])) %>% 
+  rowwise() %>% 
+  mutate(dist = case_when(isSymmetric(dist) ~ list(dist[lower.tri(dist)]), 
+                          TRUE ~ list(as.numeric(dist)))) 
+
 distmcg %>%
-  group_by(comm) %>%
-  mutate(meandist = mean(dist[[1]]),
-         mediandist = median(dist[[1]])) %>%
+  rowwise() %>%
+  mutate(mean   = mean(dist),#mean(ifelse(dist == 0, NA, dist), na.rm = TRUE),
+         median = median(dist)) %>%#median(ifelse(dist == 0, NA, dist), na.rm = TRUE)) %>%
   ungroup() %>%
-  select(comm, N, meandist, mediandist)
-distmcg %>% 
-  unnest() %>%
-  ggplot(aes(x = dist, fill = comm)) +
-  geom_density(alpha = 0.5) +
-  geom_rug(aes(color = comm), alpha = 0.12) +
-  scale_fill_viridis(direction = -1, discrete = TRUE) +
-  scale_color_viridis(direction = -1, discrete = TRUE) +
+  select(COMMS, mean, median, N) %>%
+  rename(Comparison = COMMS) %>%
+  knitr::kable()
+
+distplot <- distmcg %>% 
+  mutate(mean = mean(dist)) %>%
+  mutate(COMMS = ifelse(comm == comm1, paste0(comm, "\n"), paste0(comm, "/\n", comm1))) %>%
+  mutate(comm = gsub(" \\(", "\n(", comm)) %>%
+  mutate(comm1 = gsub(" \\(", "\n(", comm1)) %>%
+  mutate(comparison = ifelse(comm == comm1, "Within", "Among")) %>%
+  ungroup() %>%
+  unnest()
+
+distplot %>%
+  group_by(comparison) %>%
+  summarize(mean = mean(dist), median = median(dist))
+
+if (require("ggjoy")){
+  ggplot(distplot, aes(x = dist, y = COMMS, group = COMMS, height = ..density..)) + 
+    geom_joy(aes(lty = comparison, fill = mean)) + 
+    theme_joy() + 
+    theme(axis.text.y = element_text(hjust = 0)) + 
+    viridis::scale_fill_viridis(option = "A", limits = quantile(distplot$dist, c(0.25, 0.75)))
+}
+
+ggplot(distplot, aes(x = dist, group = COMMS)) +
+  geom_density(aes(fill = mean, lty = comparison)) +
   ggtitle("Bruvo's distance by MCG community") +
-  theme_bw(base_size = 14)
+  xlab("Bruvo's distance") +
+  facet_grid(comm1~comm) +
+  theme_minimal(base_size = 16, base_family = "Helvetica") +
+  theme(aspect.ratio = 1) +
+  theme(panel.grid.major.y = element_blank()) +
+  theme(panel.background = element_rect(fill = "grey95")) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  viridis::scale_fill_viridis(option = "A", limits = quantile(distplot$dist, c(0.25, 0.75))) 
+
+commamova <- dat11 %>% 
+  addStrata(data.frame(Community = strat_mcg$comm)) %>%
+  clonecorrect(~Community) %>%
+  poppr.amova(~Community, dist = as.dist(datmat[indNames(.), indNames(.)]), 
+              method = "pegas", nperm = 1000)
+commamova
 ```
 
 This is quite distant. For reference, a distance of `r round((0.5/11)*7, 2)` is

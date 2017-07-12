@@ -846,52 +846,165 @@ happens if we average the distances between groups.
 datmat <- as.matrix(datdist)
 distmcg <- strat_mcg %>% 
   group_by(comm) %>%
-  summarize(dist = list(as.dist(datmat[Isolate, Isolate])), N = n())
-distmcg %>%
-  group_by(comm) %>%
-  mutate(meandist = mean(dist[[1]]),
-         mediandist = median(dist[[1]])) %>%
-  ungroup() %>%
-  select(comm, N, meandist, mediandist)
+  summarize(dist = list(datmat[Isolate, Isolate]), N = n())
+
+isolist <- strat_mcg %>% 
+  group_by(comm) %>% 
+  filter(!duplicated(MLG)) %>%
+  summarize(Isolates = list(Isolate)) %>% 
+  inner_join(expand(., comm, comm)) %>%
+  rowwise() %>%
+  mutate(COMMS = paste(sort(c(comm, comm1)), collapse = " ")) %>% 
+  ungroup() %>% 
+  filter(!duplicated(COMMS))
 ```
 
 ```
-## # A tibble: 4 x 4
-##                         comm     N  meandist mediandist
-##                        <chr> <int>     <dbl>      <dbl>
-## 1                Community A   140 0.3464999  0.3920455
-## 2                Community B    62 0.3492688  0.4200994
-## 3                Community C    19 0.3775709  0.5309837
-## 4 Other Communities (n < 10)   145 0.4610922  0.4815341
+## Joining, by = "comm"
 ```
 
 ```r
-distmcg %>% 
-  unnest() %>%
-  ggplot(aes(x = dist, fill = comm)) +
-  geom_density(alpha = 0.5) +
-  geom_rug(aes(color = comm), alpha = 0.12) +
-  scale_fill_viridis(direction = -1, discrete = TRUE) +
-  scale_color_viridis(direction = -1, discrete = TRUE) +
-  ggtitle("Bruvo's distance by MCG community") +
-  theme_bw(base_size = 14)
+isolist <- isolist %>%
+  filter(comm == comm1) %>% 
+  select(-comm, -COMMS) %>% 
+  rename(Isolates2 = Isolates) %>% 
+  inner_join(isolist)
 ```
 
 ```
-## Warning in combine_all(args[[1]]): Vectorizing 'dist' elements may not
-## preserve their attributes
+## Joining, by = "comm1"
+```
 
-## Warning in combine_all(args[[1]]): Vectorizing 'dist' elements may not
-## preserve their attributes
+```r
+distmcg <- isolist  %>% 
+  group_by(comm, comm1, COMMS) %>% 
+  summarize(dist = list(datmat[Isolates[[1]], Isolates2[[1]]]), 
+            N = length(Isolates[[1]])) %>% 
+  rowwise() %>% 
+  mutate(dist = case_when(isSymmetric(dist) ~ list(dist[lower.tri(dist)]), 
+                          TRUE ~ list(as.numeric(dist)))) 
 
-## Warning in combine_all(args[[1]]): Vectorizing 'dist' elements may not
-## preserve their attributes
+distmcg %>%
+  rowwise() %>%
+  mutate(mean   = mean(dist),#mean(ifelse(dist == 0, NA, dist), na.rm = TRUE),
+         median = median(dist)) %>%#median(ifelse(dist == 0, NA, dist), na.rm = TRUE)) %>%
+  ungroup() %>%
+  select(COMMS, mean, median, N) %>%
+  rename(Comparison = COMMS) %>%
+  knitr::kable()
+```
 
-## Warning in combine_all(args[[1]]): Vectorizing 'dist' elements may not
-## preserve their attributes
+
+
+|Comparison                                            |      mean|    median|   N|
+|:-----------------------------------------------------|---------:|---------:|---:|
+|Community A Community A                               | 0.3938339| 0.4204102|  59|
+|Community A Community B                               | 0.4570305| 0.4770508|  59|
+|Community A Community C                               | 0.4640803| 0.4857511|  59|
+|Community A Other Communities (n < 10)                | 0.4359960| 0.4487083|  59|
+|Community B Community B                               | 0.3998535| 0.4279119|  29|
+|Community B Community C                               | 0.4211572| 0.4655540|  29|
+|Community B Other Communities (n < 10)                | 0.4662095| 0.4872159|  29|
+|Community C Community C                               | 0.4430856| 0.5492276|   9|
+|Community C Other Communities (n < 10)                | 0.4870535| 0.5195091|   9|
+|Other Communities (n < 10) Other Communities (n < 10) | 0.4536293| 0.4687472| 103|
+
+```r
+distplot <- distmcg %>% 
+  mutate(mean = mean(dist)) %>%
+  mutate(COMMS = ifelse(comm == comm1, paste0(comm, "\n"), paste0(comm, "/\n", comm1))) %>%
+  mutate(comm = gsub(" \\(", "\n(", comm)) %>%
+  mutate(comm1 = gsub(" \\(", "\n(", comm1)) %>%
+  mutate(comparison = ifelse(comm == comm1, "Within", "Among")) %>%
+  ungroup() %>%
+  unnest()
+
+distplot %>%
+  group_by(comparison) %>%
+  summarize(mean = mean(dist), median = median(dist))
+```
+
+```
+## # A tibble: 2 x 3
+##   comparison      mean    median
+##        <chr>     <dbl>     <dbl>
+## 1      Among 0.4507717 0.4708141
+## 2     Within 0.4368156 0.4545455
+```
+
+```r
+if (require("ggjoy")){
+  ggplot(distplot, aes(x = dist, y = COMMS, group = COMMS, height = ..density..)) + 
+    geom_joy(aes(lty = comparison, fill = mean)) + 
+    theme_joy() + 
+    theme(axis.text.y = element_text(hjust = 0)) + 
+    viridis::scale_fill_viridis(option = "A", limits = quantile(distplot$dist, c(0.25, 0.75)))
+}
+```
+
+```
+## Loading required package: ggjoy
 ```
 
 ![plot of chunk group_dist](./figures/mlg-mcg///group_dist-1.png)
+
+```r
+ggplot(distplot, aes(x = dist, group = COMMS)) +
+  geom_density(aes(fill = mean, lty = comparison)) +
+  ggtitle("Bruvo's distance by MCG community") +
+  xlab("Bruvo's distance") +
+  facet_grid(comm1~comm) +
+  theme_minimal(base_size = 16, base_family = "Helvetica") +
+  theme(aspect.ratio = 1) +
+  theme(panel.grid.major.y = element_blank()) +
+  theme(panel.background = element_rect(fill = "grey95")) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  viridis::scale_fill_viridis(option = "A", limits = quantile(distplot$dist, c(0.25, 0.75))) 
+```
+
+![plot of chunk group_dist](./figures/mlg-mcg///group_dist-2.png)
+
+```r
+commamova <- dat11 %>% 
+  addStrata(data.frame(Community = strat_mcg$comm)) %>%
+  clonecorrect(~Community) %>%
+  poppr.amova(~Community, dist = as.dist(datmat[indNames(.), indNames(.)]), 
+              method = "pegas", nperm = 1000)
+```
+
+```
+## 
+##  No missing values detected.
+```
+
+```
+## Warning in is.euclid(xdist): Zero distance(s)
+```
+
+```r
+commamova
+```
+
+```
+## 
+## 	Analysis of Molecular Variance
+## 
+## Call: pegas::amova(formula = hier, data = hierdf, nperm = nperm, is.squared = FALSE)
+## 
+##                  SSD       MSD df
+## Community  0.8600198 0.2866733  3
+## Error     18.6513231 0.2247147 83
+## Total     19.5113429 0.2268761 86
+## 
+## Variance components:
+##              sigma2 P.value
+## Community 0.0055116  0.0749
+## Error     0.2247147        
+## 
+## Variance coefficients:
+##        a 
+## 11.24138
+```
 
 This is quite distant. For reference, a distance of 0.32 is
 on average 7 steps. 
@@ -907,13 +1020,13 @@ on average 7 steps.
 
 ```
 ##  setting  value                       
-##  version  R version 3.4.0 (2017-04-21)
+##  version  R version 3.4.1 (2017-06-30)
 ##  system   x86_64, darwin15.6.0        
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-07-11
+##  date     2017-07-12
 ```
 
 ```
@@ -927,7 +1040,7 @@ on average 7 steps.
 ##  ape           4.1        2017-02-14 CRAN (R 3.4.0)                          
 ##  assertr       2.0.2.2    2017-06-06 CRAN (R 3.4.0)                          
 ##  assertthat    0.2.0      2017-04-11 CRAN (R 3.4.0)                          
-##  base        * 3.4.0      2017-04-21 local                                   
+##  base        * 3.4.1      2017-07-07 local                                   
 ##  bindr         0.1        2016-11-13 CRAN (R 3.4.0)                          
 ##  bindrcpp    * 0.2        2017-06-17 CRAN (R 3.4.0)                          
 ##  boot          1.3-19     2017-04-21 CRAN (R 3.4.0)                          
@@ -936,8 +1049,8 @@ on average 7 steps.
 ##  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                          
 ##  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                          
 ##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                          
-##  compiler      3.4.0      2017-04-21 local                                   
-##  datasets    * 3.4.0      2017-04-21 local                                   
+##  compiler      3.4.1      2017-07-07 local                                   
+##  datasets    * 3.4.1      2017-07-07 local                                   
 ##  DBI           0.7        2017-06-18 CRAN (R 3.4.0)                          
 ##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                          
 ##  devtools      1.13.2     2017-06-02 CRAN (R 3.4.0)                          
@@ -951,14 +1064,15 @@ on average 7 steps.
 ##  foreign       0.8-69     2017-06-21 CRAN (R 3.4.0)                          
 ##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                          
 ##  ggforce       0.1.1      2016-11-28 CRAN (R 3.4.0)                          
+##  ggjoy       * 0.1        2017-07-12 Github (clauswilke/ggjoy@3402761)       
 ##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                          
 ##  ggraph      * 1.0.0      2017-02-24 CRAN (R 3.4.0)                          
-##  ggrepel       0.6.10     2017-06-23 Github (slowkow/ggrepel@102ca39)        
+##  ggrepel       0.6.11     2017-07-11 Github (slowkow/ggrepel@8fbd0a0)        
 ##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                          
 ##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                          
-##  graphics    * 3.4.0      2017-04-21 local                                   
-##  grDevices   * 3.4.0      2017-04-21 local                                   
-##  grid          3.4.0      2017-04-21 local                                   
+##  graphics    * 3.4.1      2017-07-07 local                                   
+##  grDevices   * 3.4.1      2017-07-07 local                                   
+##  grid          3.4.1      2017-07-07 local                                   
 ##  gridExtra     2.2.1      2016-02-29 CRAN (R 3.4.0)                          
 ##  gtable        0.2.0      2016-02-26 CRAN (R 3.4.0)                          
 ##  gtools        3.5.0      2015-05-29 CRAN (R 3.4.0)                          
@@ -981,14 +1095,14 @@ on average 7 steps.
 ##  MASS          7.3-47     2017-04-21 CRAN (R 3.4.0)                          
 ##  Matrix        1.2-10     2017-04-28 CRAN (R 3.4.0)                          
 ##  memoise       1.1.0      2017-04-21 CRAN (R 3.4.0)                          
-##  methods     * 3.4.0      2017-04-21 local                                   
+##  methods     * 3.4.1      2017-07-07 local                                   
 ##  mgcv          1.8-17     2017-02-08 CRAN (R 3.4.0)                          
 ##  mime          0.5        2016-07-07 CRAN (R 3.4.0)                          
 ##  mnormt        1.5-5      2016-10-15 CRAN (R 3.4.0)                          
 ##  modelr        0.1.0      2016-08-31 CRAN (R 3.4.0)                          
 ##  munsell       0.4.3      2016-02-13 CRAN (R 3.4.0)                          
 ##  nlme          3.1-131    2017-02-06 CRAN (R 3.4.0)                          
-##  parallel      3.4.0      2017-04-21 local                                   
+##  parallel      3.4.1      2017-07-07 local                                   
 ##  pegas         0.10       2017-05-03 CRAN (R 3.4.0)                          
 ##  permute       0.9-4      2016-09-09 CRAN (R 3.4.0)                          
 ##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                          
@@ -1013,18 +1127,18 @@ on average 7 steps.
 ##  shiny         1.0.3      2017-04-26 CRAN (R 3.4.0)                          
 ##  sp            1.2-4      2016-12-22 CRAN (R 3.4.0)                          
 ##  spdep         0.6-13     2017-04-25 CRAN (R 3.4.0)                          
-##  splines       3.4.0      2017-04-21 local                                   
-##  stats       * 3.4.0      2017-04-21 local                                   
+##  splines       3.4.1      2017-07-07 local                                   
+##  stats       * 3.4.1      2017-07-07 local                                   
 ##  stringi       1.1.5      2017-04-07 CRAN (R 3.4.0)                          
 ##  stringr       1.2.0      2017-02-18 CRAN (R 3.4.0)                          
 ##  tibble      * 1.3.3      2017-05-28 CRAN (R 3.4.0)                          
 ##  tidyr       * 0.6.3      2017-05-15 CRAN (R 3.4.0)                          
 ##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.4.0)                          
-##  tools         3.4.0      2017-04-21 local                                   
+##  tools         3.4.1      2017-07-07 local                                   
 ##  tweenr        0.1.5      2016-10-10 CRAN (R 3.4.0)                          
 ##  udunits2      0.13       2016-11-17 CRAN (R 3.4.0)                          
 ##  units         0.4-5      2017-06-15 CRAN (R 3.4.0)                          
-##  utils       * 3.4.0      2017-04-21 local                                   
+##  utils       * 3.4.1      2017-07-07 local                                   
 ##  vegan         2.4-3      2017-04-07 CRAN (R 3.4.0)                          
 ##  viridis     * 0.4.0      2017-03-27 CRAN (R 3.4.0)                          
 ##  viridisLite * 0.2.0      2017-03-24 CRAN (R 3.4.0)                          
