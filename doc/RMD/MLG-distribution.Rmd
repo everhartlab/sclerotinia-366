@@ -271,6 +271,62 @@ ggsave(filename = "results/figures/publication/Figure3Z.pdf", width = 88, height
 save(graph16loc, graph11loc, alt_layout, file = "data/mlg-crosspop-graph.rda")
 ```
 
+### Region Cohesion
+
+Here I am using DAPC to assess how cohesive these artificial regions are.
+
+```{r, region_cohesion}
+g11o <- igraph::cluster_optimal(graph11loc$total)
+comm <- igraph::communities(g11o)
+names(comm) <- c("International", "Costal", "Midwest")
+comm
+strata(dat11) <- strata(dat11) %>%
+  mutate(MLGRegion = case_when(
+    .$Region %in% comm$International ~ "International",
+    .$Region %in% comm$Costal ~ "Costal",
+    .$Region %in% comm$Midwest ~ "Midwest",
+    TRUE ~ as.character(.$Region)
+  ))
+
+setPop(dat11) <- ~MLGRegion
+```
+
+
+```{r region_dapc}
+set.seed(2017-07-12)
+reg <- xvalDapc(tab(dat11), pop(dat11), n.rep = 100)
+reg$DAPC
+scatter(reg$DAPC, col = viridis::viridis(6), bg = "grey90")
+ggcompoplot::ggcompoplot(reg$DAPC, dat11, pal = viridis::viridis(6), cols = 2)
+reg$DAPC$posterior %>%
+  as_tibble() %>%
+  bind_cols(data.frame(Population = reg$DAPC$grp)) %>%
+  group_by(Population) %>%
+  summarize_all(mean) %>%
+  gather(assignment, probability, -Population) %>%
+  ggplot(aes(x = assignment, y = probability)) +
+  geom_segment(aes(xend = assignment, yend = 0)) +
+  geom_point(pch = 21, fill = "grey") +
+  facet_wrap(~Population) +
+  scale_y_continuous(limits = c(0, 1), 
+                     minor_breaks = c(seq(0, 1, by = 0.125)), 
+                     breaks = c(0, 0.5, 1)) +
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  theme(legend.position = "top") +
+  theme(aspect.ratio = 1/2) +
+  theme(axis.text = element_text(color = "black")) +
+  theme(axis.ticks.y = element_blank()) +
+  theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+  theme(panel.grid.major.x = element_line(linetype = 0, color = "grey50")) +
+  theme(panel.grid.major = element_line(colour = "grey20")) +
+  theme(panel.grid.minor = element_line(linetype = 3, colour = "grey50")) +
+  theme(strip.background = element_rect(color = NA, fill = "grey90")) +
+  theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
+  theme(panel.border = element_blank()) +
+  xlab("Population Assignment") +
+  ylab("Mean Probability")
+```
+
 
 <details>
 <summary>Session Information</summary>
