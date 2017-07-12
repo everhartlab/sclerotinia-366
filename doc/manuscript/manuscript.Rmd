@@ -496,6 +496,7 @@ The only exceptions are CA and Australia. Both of these populations showed only 
 
 # Discussion {-}
 
+<!-- 
 Our study was conducted to characterize *S. sclerotiorum* isolates from different geographic areas to determine important phenotypic variables influencing genotypes; to ascertain reproductive behavior of the pathogen; to test whether different sampling years or locations have any effect on genotype/sexuality; and to identify abundant and unique genotypes across isolates and geographies.
 The dbRDA revealed region, year, and host as the most influential phenotypic variables on genotypes.
 However, further molecular analysis of pathogen isolates from selected hosts did not show any significant genetic difference among populations.
@@ -528,7 +529,7 @@ Similarly, @atallah2004high did not find any strong correlation between microsat
 These 167 isolates belonged to 82 MCGs with 64 single-isolate MCGs.
 We came across 43 single-isolate MCGs among 366 isolates from dry bean cultivars. 
 
-Our study did not find any multilocus genotype/s common across all or majority of sampling geographies. <!-- ZNK: I think this statement is a bit misleading. Yes, we didn't find any individual MLGs, but 46% of these are present across at least two populations.  -->
+Our study did not find any multilocus genotype/s common across all or majority of sampling geographies. <!-~ ZNK: I think this statement is a bit misleading. Yes, we didn't find any individual MLGs, but 46% of these are present across at least two populations.  ~->
 The most widespread and common genotype (MLG 25, Supplemental Table 1) was found only in five states of the USA with majority of isolates confined to ND.
 However, we did find some MLGs of France and Australian isolates to be present in the USA samples.
 Some studies on *S. sclerotiorum* did not detect any shared MLGs between geographically distant populations.
@@ -550,11 +551,11 @@ When conditions are favorable for ascospore production, release, and survival, c
 This may eventually result in facilitating outcrossing and recombination.
 
 Interestingly, all Mexican genotypes were unique to that region.
-On the other hand CA genotypes were present in the West Coast states of OR and WA which may be due to movement of sclerotia with planting material. <!-- ZNK: Do we have some sort of evidence for this, or is this pure speculation? -->
-<!-- 
+On the other hand CA genotypes were present in the West Coast states of OR and WA which may be due to movement of sclerotia with planting material. <!-~ ZNK: Do we have some sort of evidence for this, or is this pure speculation? ~->
+<!-~ 
 I'm not sure what the point of this paragraph is.
 I believe I can put the discussion of the graph results here. 
--->
+~->
 Surprisingly, France and Australian genotypes were also isolated in the USA.
 MLG 4 (see supplemental Table 1) was recorded from France, Australia and MN while France and USA isolates had four common MLGs.
 Similarly, five MLGs were recorded common to both Australia and USA isolates.
@@ -570,10 +571,10 @@ When selecting *S. sclerotiorum* isolates for screening dry bean germplasm for d
 A study on genetic diversity of *S. sclerotiorum* from multiple host crops in the North central region of the USA revealed there was little evidence for genetic isolation of this pathogen by host crop or by distance [@aldrich-wolfe2015genetic].
 Though our isolates didn't come from different crops, we had isolates from many resistant and susceptible dry bean cultivars, which also didn't show genetic differentiation according to AMOVA.
 It seems Mexican pathogen isolates are different from the rest and warrants further investigation using a larger population.
-Some France genotypes were common in USA isolates but at the same time 43% (6/14) of the France genotypes were unique to that region indicating white mold resistant cultivars produced in the USA might not work in that region. <!-- ZNK: I'm not entirely sold on this conclusion. -->
-Geographic distance between different states of the USA seem not a barrier for gene transfer of *S. sclerotiorum* isolates though unique genotypes did prevail at a low frequency in each state. <!-- ZNK: I don't know that this adds anything. -->
+Some France genotypes were common in USA isolates but at the same time 43% (6/14) of the France genotypes were unique to that region indicating white mold resistant cultivars produced in the USA might not work in that region. <!-~ ZNK: I'm not entirely sold on this conclusion. ~->
+Geographic distance between different states of the USA seem not a barrier for gene transfer of *S. sclerotiorum* isolates though unique genotypes did prevail at a low frequency in each state. <!-~ ZNK: I don't know that this adds anything. ~->
 The genetic diversity of regions with >10 isolates had similar values (0.43 - 0.59) except for Mexican isolates.
-*h* of MX was 0.26 and indicated less exposure of sampling sites to outside inocula. <!-- ZNK: Does this mean that there's heavy inbreeding here? -->
+*h* of MX was 0.26 and indicated less exposure of sampling sites to outside inocula. <!-~ ZNK: Does this mean that there's heavy inbreeding here? ~->
 Test for linkage disequilibrium showed evidence of clonal reproduction for MX isolates (Ia = 2.61, P.Ia = 0.001, $\bar{r}_d$ = 0.37, P.$\bar{r}_d$  = 0.001).
 This may have been another reason for low gene diversity.
 
@@ -585,7 +586,7 @@ Other studies also reported host identity is no barrier for gene flow of this pa
 @atallah2004high revealed statistically significant impact of the collection date of *S. sclerotiorum* isolates from four potato fields in the Columbia Basin on molecular variance.
 But there was no impact of the year or location of collection.
 We also did not detect location as a significant predictor of molecular variance but year had a significant impact.
-Our samples were collected on a single day in each year from each field and therefore did not warrant for an analysis of date of sample collection. <!-- BSA: Is this true, coauthors? -->
+Our samples were collected on a single day in each year from each field and therefore did not warrant for an analysis of date of sample collection. <!-~ BSA: Is this true, coauthors? ~->
 
 We performed DAPC without assigning isolates to different populations based on sampling information to see the how isolates fall into clusters according to their genetic relatedness.
 We decided the most appropriate number as six since the DAPC results had 87% (N = 13/15) of Mexican isolates in a single cluster (Fig. 9 cluster 3).
@@ -624,7 +625,7 @@ The analysis of populations from same field over different years for linkage dis
 However, analysis of molecular variance did show populations were significantly different between some years (eg.
 MI 2003 and 2005 populations; WA 2008 compared to both 2003 and 2005).
 These results indicate some level of heterothallic recombination is taking place in these fields in addition to natural mutations.
-An understanding of sexual behavior and ability of form new genotypes by *S. sclerotiorum* in dry bean cropping systems is useful for formulating disease management strategies. 
+An understanding of sexual behavior and ability of form new genotypes by *S. sclerotiorum* in dry bean cropping systems is useful for formulating disease management strategies. --> 
 
 
 
