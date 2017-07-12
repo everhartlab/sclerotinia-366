@@ -83,7 +83,7 @@ dat11cc
 
 I can perform AMOVA on the newly defined variable using Bruvo's distance.
 
-```{r AMOVA}
+```{r AMOVA, cache = TRUE}
 other(dat11cc)$REPLEN
 bd <- bruvo.dist(dat11cc, replen = other(dat11cc)$REPLEN)
 (ssc_amova <- poppr.amova(dat11cc, ~SourceType, dist = bd, quiet = TRUE))
@@ -200,6 +200,69 @@ table, we can see that the average distance within White Mold Nurseries is
 Sources is `r round(summary_dists[["Average Distance"]][3], 3)`. This is well within the standard
 deviation for both distributions, but we also recognize that a single step of
 Bruvo's distance for 11 loci in a haploid organism is `r round(0.5/11, 3)`.
+
+
+## WMN DAPC
+
+DAPC is a nice way of visualizing these. First, I'm simply going to compare 
+between white mold nurseries and others:
+
+```{r wmndapc, cache = TRUE}
+filter <- strata(dat11cc) %>%
+  group_by(Region) %>%
+  mutate(filter = length(unique(SourceType)) > 1) %>%
+  pull(filter)
+wmn_compare <- dat11cc[filter]
+set.seed(2017-07-12)
+wmndapc <- xvalDapc(tab(wmn_compare), pop(wmn_compare), n.rep = 200, n.pca = 1:10)
+wmndapc
+scatter(wmndapc$DAPC)
+(wmntab <- table(wmndapc$DAPC$assign, wmndapc$DAPC$grp))
+chisq.test(wmntab, simulate.p.value = TRUE)
+```
+
+Okay, this shows that there's quite a bit of overlap between these two. What
+happens if I look at the DAPC when it includes the pouplation groupings. Mainly,
+I want to know if the white mold nurseries can be compared while considering the
+pouplations
+
+```{r wmndapcpop, fig.width = 8, fig.height = 10, cache = TRUE}
+set.seed(2017-07-12)
+wmndapc <- xvalDapc(tab(wmn_compare), strata(wmn_compare, ~SourceType/Region)[[2]], 
+                    n.pca = 5:20, n.rep = 100)$DAPC
+scatter(wmndapc)
+LDS <- bind_cols(Population = wmndapc$grp, as.data.frame(wmndapc$ind.coord)) %>%
+  as_tibble()
+LDS_pop <- LDS %>% 
+  group_by(Population) %>% 
+  summarize_all(mean) %>%
+  rename_all(function(x) gsub("LD", "mean", x))
+LDS <- full_join(LDS, LDS_pop) %>%
+  separate(Population, c("SourceType", "Pop"), remove = FALSE) 
+LDS_PLOT <- ggplot(LDS, aes(x = LD1, y = LD2, color = SourceType)) + 
+  geom_point(aes(fill = SourceType), alpha = 0.5, pch = 21, color = "black") +
+  geom_segment(aes(x = mean1, y = mean2, xend = LD1, yend = LD2), alpha = 0.5) +
+  stat_ellipse(type = "norm", level = 0.66, alpha = 0.75) + 
+  # ggrepel::geom_label_repel(aes(x = mean1, y = mean2, label = Population), 
+  #                           data = LDS_pop, show.legend = FALSE, color = "black") +
+  theme_bw() +  
+  theme(aspect.ratio = 1/1.618) +
+  theme(legend.position = "bottom") +
+  theme(axis.text = element_blank()) + 
+  theme(axis.title = element_blank()) + 
+  theme(axis.ticks = element_blank()) + 
+  viridis::scale_color_viridis(discrete = TRUE, direction = -1) +
+  viridis::scale_fill_viridis(discrete = TRUE, direction = -1) +
+  scale_y_continuous(breaks = 0) + 
+  scale_x_continuous(breaks = 0) + 
+  theme(panel.background = element_rect(fill = "grey95")) +
+  theme(panel.grid.major = element_line(color = "black"))
+
+LDS_PLOT + facet_wrap(~Pop, ncol = 3)
+
+```
+
+
 
 # Host differentiation
 
