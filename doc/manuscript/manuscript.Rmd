@@ -282,6 +282,7 @@ To minimize complications due to small sample sizes, we chose the top 10 MCGs, r
 We wanted to assess if there was correlation between multilocus genotypes (MLG) and mycelial compatibility groups (MCG). 
 This was done using a graph-based approach with community analysis.
 We first created a contingency table with MLGs and MCGs and converted it to a directed and weighted edgelist where each edge was a connection from an MCG to an MLG weighted by the number of samples shared in the connection. 
+This was then converted to a bipartite graph where top nodes represented MCGs and bottom nodes represented MLGs.
 The cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version 1.0.1 was used to define clusters of MLGs and MCGs [@csardi2006igraph; @pons2006computing].
 All communities that had fewer than 10 members were then consolidated into one.
 These community definitions were then used to assess the average genetic distance (as defined by Bruvo's distance) within members of the community [@bruvo2004simple].
@@ -430,7 +431,7 @@ Each edge represents a single MLG where its thickness represents the number of p
 
 
 Our network-based approach to correlating MLGs with MCGs revealed a large and complex network (Fig. \@ref(biggraph)). 
-Community analysis showed 51 communities, 23 of which consisted of a single MLG/MCG pair. 
+Community analysis showed 51 communities, 26 of which consisted of a single MLG indicating that 15.76% of the 165 MLGs are unable to cross with any other MLG in this data set.
 The three communities with the most members contained 8 of the ten most abundant MCGs. 
 Comparing these communities with Bruvo's genetic distance revealed and average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
 Overall, there was no clear pattern to the association between MLG and MCGs. 
