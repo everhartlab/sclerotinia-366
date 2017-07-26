@@ -398,7 +398,78 @@ p +
   labs(list(caption = "These MLGs cannot pair with any other MLG due to\nmycelial incompatibility"))
 ```
 
+The opposite question is, how connected is this huge hairy mess? The community
+analysis gave us an idea of where different centers lie, but it doesn't really
+do much for us in actually giving us an idea of what the possabilities for 
+connection are. One way we can look at this is by using the `ego()` function to
+assess the neighborhood of vertices for a given node order, which is to say the
+number of edges away from the node you must travel to visit all your neighbors. 
+Order 0 would give us the node itself, and order 1 would give us the degree plus 
+one. If we set this degree to a large number, we will find all the possible 
+connections. 
 
+Here I'm getting a simple measure by counting all the vertices, I'm subtracting
+two here because I want to remove the genotype and the MCG associated.
+
+```{r node_order}
+# getting the sizes for all genotypes.
+sizes <- ego_size(g, 200, nodes = which(grepl("Genotype", V(g)$type)), mode = "all") - 2
+table(sizes)
+```
+
+Here we can see there are 12 genotypes that are only associated with themselves
+and their respective MCGs. This corresponds with the results we found above. Up
+next are the genotypes that are associated with another partner, which could
+represent either two MCGs to one genotype (there are three of these), or two 
+genotypes to one MCG. By logical deduction, we can see that there are 5 of these
+left. The rest of the entries are not so easy to parse, but it's clear that 
+there are 130 genotypes that all have the ability to reach each other through
+mutual mycelial compatibility groups. 
+
+To focus on strictly the MLGs, we can see a more clear picture. Here, we are
+taking the results of `ego()` and counting how many MLGs are in the vertex list.
+From there, we can tabulate the results and divide the number of entries by the
+category, giving us the number of communities in each category.
+
+
+```{r community_counting2}
+ncommunities <- ego(g, 200, nodes = which(grepl("Genotype", V(g)$type)), mode = "all") %>%
+  map_int(. %>% names %>% grepl("MLG", .) %>% sum) %>%
+  table() %>%
+  {./as.integer(names(.))}
+ncommunities
+map_dbl(as.integer(names(ncommunities)), choose, 2)
+```
+
+From here, we can see that we have 15 MLGs that only interact with themselves,
+3 pairs of MLGs, 1 triplet, 1 hendeclet, and 1 community with 130 members, of
+which there are 8385 possible combinations. 
+
+Of course, the 8385 possible combinations doesn't give us an idea of what the
+number of immediately possible combinations exist. We can examine that by 
+setting the mode to 2. 
+
+```{r community_counting, fig.width = 5, fig.height = 3}
+in_reach <- ego(g, 2, nodes = which(grepl("Genotype", V(g)$type)), mode = "all") %>%
+  map(function(.x) .x[grepl("MLG", names(.x))])
+lengths(in_reach) %>%
+  enframe(name = "index", value = "N") %>%
+  ggplot(aes(x = N - 1)) +
+  geom_histogram(binwidth = 1, center = 0, color = "black", fill = "grey50") +
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  theme(aspect.ratio = 1/2) +
+  theme(axis.text = element_text(color = "black")) +
+  scale_y_continuous(expand = c(0, 0.1)) +
+  scale_x_continuous(expand = c(0, 0.1), breaks = c((0:6)*10), limits = c(-1, 60)) +
+  theme(panel.grid.major = element_line(colour = "grey20")) +
+  theme(panel.grid.minor = element_line(colour = "grey50", linetype = 3)) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.grid.minor.x = element_blank()) +
+  theme(panel.border = element_blank()) +
+  xlab("Number of MLG Neigbors")
+```  
+
+The maximum here is `r max(lengths(in_reach))`, which represents MLG 25. 
 
 ### Interactive Visualizations
 
