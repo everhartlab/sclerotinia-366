@@ -432,6 +432,7 @@ Each edge represents a single MLG where its thickness represents the number of p
 
 Our network-based approach to correlating MLGs with MCGs revealed a large and complex network (Fig. \@ref(biggraph)). 
 Community analysis showed 51 communities, 15 of which consisted of a single MLG unconnected with any other community indicating that just 9.09% of the 165 MLGs are unable to cross with any other MLG in this data set.
+Of all the MLGs, MLG 25 had 57 neighbors that shared the same mycelial compatibility group. 
 The three communities with the most members contained 8 of the ten most abundant MCGs. 
 Comparing these communities with Bruvo's genetic distance revealed and average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
 Overall, there was no clear pattern to the association between MLG and MCGs. 
@@ -524,8 +525,12 @@ To date, with 366 isolates, this is the largest population genetic study of *S. 
 These findings indicate that the white mold nurseries can be effective at screening for potential resistant lines within growing regions. 
 
 Of particular interest in this study was testing the association between mycelial compatibility groups (MCGs) and multilocus genotypes (MLGs).
-In the past MCGs have been used as an indicator for clonal lineages [@otto-hanson2011variation; @kohn1995clonal; @lehner2015analysis]. 
-As genetic markers became more widely available, studies began to find conflicting results regarding the association between MCG and MLG [@sirjusingh2001characterisation; @lehner2015analysis]. 
+In the past MCGs have been used as a proxy for clonal lineages [@otto-hanson2011variation; @kohn1995clonal; @carbone1999patterns; @lehner2015analysis]. 
+When using genetic markers with MCGs, there are three basic relationship patterns, 1) One MLG to one MCG, 2) Several MLGs belong to one MCG, and 3) Several MCGs belong to one MLG, noting that 2 and 3 are not mutually exclusive.
+Our results show all three (Fig. \@ref(biggraph)) where only 12 of the observed MLGs and MCGs fit into the first pattern.
+
+All three of these patterns have been observed together in separate studies [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic]. 
+
 
 <!-- 
 Our study was conducted to characterize *S. sclerotiorum* isolates from different geographic areas to determine important phenotypic variables influencing genotypes; to ascertain reproductive behavior of the pathogen; to test whether different sampling years or locations have any effect on genotype/sexuality; and to identify abundant and unique genotypes across isolates and geographies.
