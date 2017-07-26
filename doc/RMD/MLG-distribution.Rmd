@@ -128,6 +128,7 @@ plot_mlg_graph <- function(g, glayout = NULL, label = TRUE, seed = 2017-06-28){
   set.seed(seed)
   if (is.null(glayout)){
     glayout <- layout_nicely(g)
+    colnames(glayout) <- c("x", "y")
   } else {
     glayout <- glayout[V(g)$name, ]
   }
