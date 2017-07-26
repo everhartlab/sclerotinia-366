@@ -527,9 +527,8 @@ These findings indicate that the white mold nurseries can be effective at screen
 Of particular interest in this study was testing the association between mycelial compatibility groups (MCGs) and multilocus genotypes (MLGs).
 In the past MCGs have been used as a proxy for clonal lineages [@otto-hanson2011variation; @kohn1995clonal; @carbone1999patterns; @lehner2015analysis]. 
 When using genetic markers with MCGs, there are three basic relationship patterns, 1) One MLG to one MCG, 2) Several MLGs belong to one MCG, and 3) Several MCGs belong to one MLG, noting that 2 and 3 are not mutually exclusive.
-Our results show all three (Fig. \@ref(biggraph)) where only 12 of the observed MLGs and MCGs fit into the first pattern.
-
-All three of these patterns have been observed together in separate studies [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic]. 
+Similar to what has been observed in other studies, our results show all three patterns (Fig. \@ref(biggraph)) [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic]. 
+Because we took a bipartite network approach to assessing the relationship between MCG and MLG, we were able to assess just how concordant MCGs were with MLGs.
 
 
 <!-- 
