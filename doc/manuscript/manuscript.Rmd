@@ -431,7 +431,7 @@ Each edge represents a single MLG where its thickness represents the number of p
 
 
 Our network-based approach to correlating MLGs with MCGs revealed a large and complex network (Fig. \@ref(biggraph)). 
-Community analysis showed 51 communities, 26 of which consisted of a single MLG indicating that 15.76% of the 165 MLGs are unable to cross with any other MLG in this data set.
+Community analysis showed 51 communities, 15 of which consisted of a single MLG unconnected with any other community indicating that just 9.09% of the 165 MLGs are unable to cross with any other MLG in this data set.
 The three communities with the most members contained 8 of the ten most abundant MCGs. 
 Comparing these communities with Bruvo's genetic distance revealed and average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
 Overall, there was no clear pattern to the association between MLG and MCGs. 

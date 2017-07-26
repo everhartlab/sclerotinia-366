@@ -357,7 +357,10 @@ if (!interactive()){
 
 Of interest is accounting for the communities that have a single MLG within the
 community. This gives us a lower bound at how many MLGs are reproductively
-isolated. We detect these by filtering for communities that only have one MLG:
+isolated. We detect these by filtering for communities that only have one MLG.
+But, because we do have communities with one MLG that are peripheral to larger
+communities, we can also check the degree of the MCG and MLG nodes to ensure 
+that they correspond one-to-one. 
 
 ```{r}
 singles <- the_communities %>% 
@@ -369,12 +372,31 @@ singles <- the_communities %>%
   mutate(type = case_when(grepl("MLG", vertex) ~ "MLG", TRUE ~ "MCG")) %>% 
   group_by(community, type) %>% 
   summarize(vertex = paste(as.character(vertex), collapse = ", ")) %>%
-  spread(type, vertex) 
+  spread(type, vertex) %>%
+  mutate(MCG_degree = map_dbl(strsplit(MCG, ", "), . %>% degree(g, .) %>% sum())) %>%
+  mutate(MLG_degree = degree(g, MLG)) %>%
+  filter(MLG_degree - MCG_degree == 0)
 # assessing that this truely contains the singletons
 nrow(inner_join(singles, the_communities, by = c("MLG" = "vertex")))
+singles
+
 knitr::kable(singles)
 ```
 
+This result indicates that there are `r nrow(singles)` MLGs that are unable to
+pair with any other MLGs due to mycelial incompatibility. This represents 
+`r paste0(sprintf("%0.2f", nrow(singles)/nmll(dat11, "original")*100), "%")` 
+of the total MLGs.
+
+```{r}
+mll(dat11) <- "original"
+mlg.table(dat11, ~Region, color = TRUE, mlgsub = as.integer(gsub("MLG.", "", singles$MLG)))
+p <- last_plot()
+p + 
+  scale_fill_brewer(palette = "Set1") +
+  ggtitle("Incompatible Multilocus Genotypes") +
+  labs(list(caption = "These MLGs cannot pair with any other MLG due to\nmycelial incompatibility"))
+```
 
 
 
@@ -409,12 +431,12 @@ vg$nodes <- vg$nodes %>%
 vgn <- visNetwork(nodes = vg$nodes, edges = vg$edges,# height = "500px", 
                   main = "Relation of Multilocus Genotypes and MCGs")
 set.seed(2017-05-03)
-vgn
-# vgn %>%
-#   visIgraphLayout("layout_nicely") %>%
-#   visOptions(highlightNearest = list(enabled = TRUE, hover = TRUE), 
-#              nodesIdSelection = TRUE)
-#   
+
+vgn %>%
+  visIgraphLayout("layout_nicely") %>%
+  visOptions(highlightNearest = list(enabled = TRUE, hover = TRUE), 
+             nodesIdSelection = TRUE)
+  
 ```
 
 
