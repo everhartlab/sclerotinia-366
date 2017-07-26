@@ -323,7 +323,7 @@ To ensure that we captured the same community signal, we additionally performed 
 A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in 11 states in the US, Australia, Mexico, and France (Table \@ref(tab:isolate-table)).
 Over 50% of the isolates came from four states, MI (62), ND (60), WA (59), NE (47). 
 Four regions had fewer than 10 isolates, Australia (6), WI (2), NY (1), ID (1).
-After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with 318 isolates representing 165 MLGs \@ref(tab:iatab).
+After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with 318 isolates representing 165 MLGs (Table \@ref(tab:iatab)).
 Analysis of the genotype accumulation curve showed no clear plateau, indicating that we would likely obtain more multilocus genotypes if we were to collect more loci. The number of observed alleles per locus ranged from 2 to 10 with an average of 6.27 (Table \@ref(tab:locus-stats)).
 
 --------------------------------------------
@@ -371,7 +371,7 @@ Variance partitioning of the independent variables indicated aggressiveness to b
 
 ### Mycelial Compatibility Groups {-}
 
-We observed 87 mycelial compatibility groups (MCG), the most abundant of which represented 73 isolates over 37 multilocus genotypes (MLG) (Fig. \@ref(barplot)). 
+We observed 87 mycelial compatibility groups (MCG), the most abundant of which (MCG 5) represented 73 isolates over 37 multilocus genotypes (MLG) (Fig. \@ref(barplot)). 
 Our assessment of aggressiveness association with MCGs showed a significant effect (P < 0.001) indicating that MCG 44 is, on average, more aggressive than other MCGs (Table \@ref(tab:mcg-aggressiveness)). 
 
 <!-- RDA figure -->
@@ -518,9 +518,14 @@ The only exceptions are CA and Australia. Both of these populations showed only 
 
 
 In this study, we characterized the diversity of *Sclerotinia sclerotiorum* from dry bean fields across the United States.
-Our results suggest that, in general, populations from white mold nurseries reflect the populations of the surrounding regions. 
-We found significant population differentiation by geographic region, mainly differentiated into four broad groups, a Coastal Region, Midwestern Region, International Region, and Mexico. 
-We found no significant associations between genotype and phenotype. 
+Our results suggest that, broadly, populations from white mold nurseries reflect the populations of the surrounding regions, indicating that resistance screening may be successful at a regional level. 
+We found significant population differentiation by geographic region, mainly differentiated into three broad North American groups based on shared genotypes and posterior groupings, a Coastal Region, Midwestern Region, and Mexico. 
+To date, with 366 isolates, this is the largest population genetic study of *S. sclerotiorum* assessing population structure within managed and unmanaged agricultural environments. 
+These findings indicate that the white mold nurseries can be effective at screening for potential resistant lines within growing regions. 
+
+Of particular interest in this study was testing the association between mycelial compatibility groups (MCGs) and multilocus genotypes (MLGs).
+In the past MCGs have been used as an indicator for clonal lineages [@otto-hanson2011variation; @kohn1995clonal; @lehner2015analysis]. 
+As genetic markers became more widely available, studies began to find conflicting results regarding the association between MCG and MLG [@sirjusingh2001characterisation; @lehner2015analysis]. 
 
 <!-- 
 Our study was conducted to characterize *S. sclerotiorum* isolates from different geographic areas to determine important phenotypic variables influencing genotypes; to ascertain reproductive behavior of the pathogen; to test whether different sampling years or locations have any effect on genotype/sexuality; and to identify abundant and unique genotypes across isolates and geographies.
