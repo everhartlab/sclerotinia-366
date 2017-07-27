@@ -432,9 +432,10 @@ Each edge represents a single MLG where its thickness represents the number of p
 
 Our network-based approach to correlating MLGs with MCGs revealed a large and complex network (Fig. \@ref(biggraph)). 
 Community analysis showed 51 communities, 15 of which consisted of a single MLG unconnected with any other community indicating that just 9.09% of the 165 MLGs are unable to cross with any other MLG in this data set.
-Of all the MLGs, MLG 25 had 57 neighbors that shared the same mycelial compatibility group. 
 The three communities with the most members contained 8 of the ten most abundant MCGs. 
 Comparing these communities with Bruvo's genetic distance revealed and average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
+When we assessed the number of potential heterothallic parings between different MLGs in our data set (two different MLGs that are in the same mycelial compatibility group), we found an average of 16.5 potential heterothallic parings per MLG. 
+MLG 75, representing just four isolates, had 57 neighbors that shared the same mycelial compatibility group. 
 Overall, there was no clear pattern to the association between MLG and MCGs. 
 
 
@@ -525,10 +526,11 @@ To date, with 366 isolates, this is the largest population genetic study of *S. 
 These findings indicate that the white mold nurseries can be effective at screening for potential resistant lines within growing regions. 
 
 Of particular interest in this study was testing the association between mycelial compatibility groups (MCGs) and multilocus genotypes (MLGs).
-In the past MCGs have been used as a proxy for clonal lineages [@otto-hanson2011variation; @kohn1995clonal; @carbone1999patterns; @lehner2015analysis]. 
+In the past MCGs have been used as a proxy for clonal lineages [@leslie1993fungal; @otto-hanson2011variation; @kohn1995clonal; @carbone1999patterns; @lehner2015analysis]. 
 When using genetic markers with MCGs, there are three basic relationship patterns, 1) One MLG to one MCG, 2) Several MLGs belong to one MCG, and 3) Several MCGs belong to one MLG, noting that 2 and 3 are not mutually exclusive.
 Similar to what has been observed in other studies, our results show all three patterns (Fig. \@ref(biggraph)) [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic]. 
-Because we took a bipartite network approach to assessing the relationship between MCG and MLG, we were able to assess just how concordant MCGs were with MLGs.
+In contrast to other studies, we took a network approach to assessing the relationship between MCG and MLG and found no clear causality between MLGs and MCGs.
+
 
 
 <!-- 
