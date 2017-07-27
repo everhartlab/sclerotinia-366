@@ -59,7 +59,7 @@ strat <- bind_cols(strata(dat11),
 ```
 
 
-## MLG table
+# MLG table
 
 First, it would be nice to visualize the MLGs across populations
 
@@ -267,7 +267,7 @@ mlgs %>%
 
 
 
-## making a graph
+# Making a Graph
 
 I believe that making a graph to visualize this might help me understand what the h\*ck is going on. 
 
@@ -449,29 +449,48 @@ Of course, the 8385 possible combinations doesn't give us an idea of what the
 number of immediately possible combinations exist. We can examine that by 
 setting the mode to 2. 
 
-```{r community_counting, fig.width = 5, fig.height = 3}
+```{r community_counting, fig.width = 6, fig.height = 3.5}
 in_reach <- ego(g, 2, nodes = which(grepl("Genotype", V(g)$type)), mode = "all") %>%
-  map(function(.x) .x[grepl("MLG", names(.x))])
-lengths(in_reach) %>%
-  enframe(name = "index", value = "N") %>%
-  ggplot(aes(x = N - 1)) +
-  geom_histogram(binwidth = 1, center = 0, color = "black", fill = "grey50") +
+  map_df(function(.x) as_tibble(list(MLG = list(names(.x[grepl("MLG", names(.x))])), 
+                                     MCG = list(names(.x[!grepl("MLG", names(.x))])), 
+                                     WHO = names(.x[1])
+                                     )
+                                )) %>% 
+  mutate(N = lengths(MLG))
+
+in_reach_summary <- in_reach %>% 
+  group_by(N) %>%
+  summarize(E = diversity_stats(as.integer(table(unlist(MCG))))["E.5"], 
+            MCG = n_distinct(unlist(MCG)), 
+            MLG = n())
+knitr::kable(in_reach_summary)
+ggplot(in_reach_summary, aes(x = N - 1, y = MLG, fill = E)) +
+  geom_segment(aes(yend = 0, xend = N-1)) +
+  geom_point(aes(size = MCG), pch = 21) +
+  # ggrepel::geom_label_repel(aes(label = MCG)) +
+  viridis::scale_fill_viridis(option = "D") +
   theme_bw(base_size = 16, base_family = "Helvetica") +
-  theme(aspect.ratio = 1/2) +
+  theme(aspect.ratio = 1/1.75) +
   theme(axis.text = element_text(color = "black")) +
-  scale_y_continuous(expand = c(0, 0.1)) +
-  scale_x_continuous(expand = c(0, 0.1), breaks = c((0:6)*10), limits = c(-1, 60)) +
+  scale_y_continuous(expand = c(0, 0.1), limits = c(0, 25)) +
+  scale_x_continuous(expand = c(0, 0.1), breaks = c((0:6)*10), limits = c(-2, 60)) +
   theme(panel.grid.major = element_line(colour = "grey20")) +
   theme(panel.grid.minor = element_line(colour = "grey50", linetype = 3)) +
   theme(panel.grid.major.x = element_blank()) +
   theme(panel.grid.minor.x = element_blank()) +
   theme(panel.border = element_blank()) +
-  xlab("Number of MLG Neigbors")
+  labs(list(fill = expression(E[5]), 
+            size = "MCG"
+            # caption = "size and fill represent\nthe number and distribution\nof MCG"
+            )) +
+  xlab("Maximum Heterothallic Pairings") +
+  ylab("Multilocus Genotypes")
 ```  
 
-The maximum here is `r max(lengths(in_reach))`, which represents MLG 25. 
+The maximum here is `r in_reach %>% arrange(N) %>% tail(1) %>% pull(N)`, which 
+represents `r in_reach %>% arrange(N) %>% tail(1) %>% pull(WHO)`. 
 
-### Interactive Visualizations
+## Interactive Visualizations
 
 The *visNetwork* package wraps a java library that has very good network
 visualization routines. I can conver this graph to that.
@@ -526,7 +545,8 @@ top5lay <- create_layout(top5g, layout = "igraph", algorithm = "nicely")
 top5lay$community <- inner_join(data_frame(vertex = top5lay$name), the_communities)$comm
 t5g <- mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and associated MLGs")
 t5g
-ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.pdf"), width = 88, height = 88, scale = 3, units = "mm")
+if (!interactive())
+  ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.pdf"), width = 88, height = 88, scale = 3, units = "mm")
 ```
 
 Vey nice!
@@ -563,11 +583,148 @@ severity_plot <- ggplot(Severity, aes(x = MCG, y = Severity)) +
     subtitle = "Five most abundant multilocus genotypes shown"
   ))
 severity_plot
-ggsave(severity_plot, filename = "results/figures/publication/FigureS3.pdf", width = 183, unit = "mm")
+if (!interactive())
+  ggsave(severity_plot, filename = "results/figures/publication/FigureS3.pdf", width = 183, unit = "mm")
 ```
 
 
-## Assessing MCG/MLG community structure/cohesiveness
+# MCG accumulation permutations
+
+On 2017-07-27, Sydney came up with the idea to assess MCG accumulation with 
+increasing genetic distance similar to the genotype accumulation curve. First,
+let's see what the curve would look like if we had one MLG/MCG.
+
+First, we need to set up everything to calculate this quantity
+
+```{r mlg accumulation calculation}
+bd         <- bruvo.dist(dat11, replen = other(dat11)$REPLEN)
+thresholds <- filter_stats(dat11, distance = bd, plot = TRUE)
+thresh     <- c(0, unique(thresholds$farthest$THRESHOLDS) + .Machine$double.eps)
+collapsed  <- map(thresh, . %>% mlg.filter(dat11, threshold = ., distance = bd))
+
+
+# This function will count the number of original MLGs within each collapsed MLG
+# Note that "original" here can be any MLG source.
+compare_mlg <- function(collapsed, thresh, original){
+  as_tibble(list(MLG = collapsed, y = original, threshold = thresh)) %>%
+    group_by(MLG, threshold) %>%
+    summarize(N = n_distinct(y)) %>%
+    ungroup() %>%
+    mutate(NMLG = n())
+}
+
+# A custom function for stat summary that returns a single point when there is
+# only a single observation
+my_meanse <- function (x, mult = 1) {
+  x <- stats::na.omit(x)
+  se <- mult * sqrt(stats::var(x)/length(x))
+  mean <- mean(x)
+  if (length(x) == 1) return(data.frame(y = mean, ymin = mean, ymax = mean))
+  data.frame(y = mean, ymin = mean - se, ymax = mean + se)
+}
+```
+
+Now, as a demontration, we can see what the curve would look like if all MCGs
+were randmly distributed (e.g. not clumpy) among the MLGs
+
+```{r mlg accumulation noclump, fig.width = 5, fig.height = 3}
+map2_df(collapsed, thresh, compare_mlg, original = sample(87, 366, replace = TRUE)) %>%
+  ggplot(aes(x = threshold, y = N)) +
+  geom_point(alpha = 0.1) +
+  stat_smooth(se = FALSE, color = "black") +
+  stat_summary(pch = 21, fun.data = my_meanse, fill = "white")
+```
+
+
+Now we can see what it looks like when there is a 1:1 relationship of MCGs to
+MLGs:
+
+```{r mlg accumulation mlg, fig.width = 5, fig.height = 3}
+map2_df(collapsed, thresh, compare_mlg, original = mll(dat11, "original")) %>%
+  ggplot(aes(x = threshold, y = N)) +
+  geom_point(alpha = 0.1) +
+  stat_smooth(se = FALSE, color = "black") +
+  stat_summary(pch = 21, fun.data = my_meanse, fill = "white")
+```
+
+Yet another comparison would be if each sample were a unique MCG:
+
+```{r mlg accumulation uniq, fig.width = 5, fig.height = 3}
+map2_df(collapsed, thresh, compare_mlg, original = seq(366)) %>%
+  ggplot(aes(x = threshold, y = N)) +
+  geom_point(alpha = 0.1) +
+  stat_smooth(se = FALSE, color = "black") +
+  stat_summary(pch = 21, fun.data = my_meanse, fill = "white")
+```
+
+And it's worth examining what happens if there are only 10 MCGs:
+
+```{r mlg accumulation ten, fig.width = 5, fig.height = 3}
+map2_df(collapsed, thresh, compare_mlg, original = sample(10, 366, replace = TRUE)) %>%
+  ggplot(aes(x = threshold, y = N)) +
+  geom_point(alpha = 0.1) +
+  stat_smooth(se = FALSE, color = "black") +
+  stat_summary(pch = 21, fun.data = my_meanse, fill = "white")
+```
+
+
+
+And, of course, we should see what our observed data looks like:
+
+```{r mlg accumulation observed, fig.width = 5, fig.height = 3}
+observed <- map2_df(collapsed, thresh, compare_mlg, original = mll(dat11, "custom")) %>%
+  mutate(sample_number = "observed") %>%
+  mutate(source = "observed")
+
+# Revisiting random dist
+map2_df(collapsed, thresh, compare_mlg, original = sample(87, 366, replace = TRUE)) %>%
+  ggplot(aes(x = threshold, y = N)) +
+  geom_point(alpha = 0.1) +
+  stat_smooth(se = FALSE, color = "black") +
+  scale_y_continuous(breaks = c(25, 50, 75)) +
+  stat_summary(pch = 21, fun.data = my_meanse, fill = "white")
+
+observed %>%
+  ggplot(aes(x = threshold, y = N)) +
+  geom_point(alpha = 0.1) +
+  stat_smooth(se = FALSE, color = "black") +
+  scale_y_continuous(breaks = c(25, 50, 75)) +
+  stat_summary(pch = 21, fun.data = my_meanse, fill = "white")
+```
+
+```{r randomizations, cache = TRUE}
+set.seed(5000)
+random   <- map_df(1:20, function(x) map2_df(collapsed, thresh, compare_mlg, original = sample(mll(dat11, "custom"))), .id = "sample_number") %>%
+  mutate(sample_number = sprintf("%3d", as.integer(sample_number))) %>%
+  mutate(source = "random")
+```
+
+```{r visualization, fig.width = 5, fig.height = 3}
+
+
+ggplot(random, aes(x = threshold, y = N, group = sample_number, color = source, fill = source)) +
+  # geom_point(alpha = 0.01, color = "grey50") +
+  stat_summary(alpha = 0.125, fun.data = my_meanse) +
+  # geom_point(alpha = 0.5, pch = 21, data = observed, fill = "white") +
+  stat_smooth(se = FALSE, data = observed) +
+  stat_summary(pch = 21, fun.data = my_meanse, data = observed) +
+  scale_color_manual(values = c("black", "grey50")) +
+  scale_fill_manual(values = c("white", "grey50")) +
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  theme(aspect.ratio = 1/2) +
+  theme(axis.text = element_text(color = "black")) +
+  theme(panel.grid.major = element_line(colour = "grey20")) +
+  theme(panel.grid.minor = element_line(colour = "grey50", linetype = 3)) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.grid.minor.x = element_blank()) +
+  theme(panel.border = element_blank()) +
+  theme(legend.position = "top") +
+  ylab("Number of MCG/MLG") +
+  xlab("Bruvo's Distance")
+```
+
+
+# Assessing MCG/MLG community structure/cohesiveness
 
 The communities defined above are defined by the connections between different
 MCGs. There is still the question of how cohesive these communities are. I 
