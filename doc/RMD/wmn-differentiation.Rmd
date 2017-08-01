@@ -115,7 +115,7 @@ happens when we remove Mexico?
 datnomex <- setPop(dat11cc, ~Region) %>% popsub(blacklist = "Mexico")
 bdnm     <- bruvo.dist(datnomex, replen = other(datnomex)$REPLEN)
 ssc_amova_nm <- poppr.amova(datnomex, ~SourceType/Region, dist = bdnm, quiet = TRUE)
-ssc_amova_nm_test <- randtest(ssc_amova_nm, nrepet = 999)
+ssc_amova_nm_test <- randtest(ssc_amova_nm, nrepet = 9999)
 plot(ssc_amova_nm_test)
 (ssc_amova_nm_table <- make_amova_table(ssc_amova_nm, ssc_amova_nm_test))
 ```
@@ -124,16 +124,18 @@ plot(ssc_amova_nm_test)
 make_amova_printable(ssc_amova_table, ssc_amova_nm_table) %>%  
   as_tibble() %>%
   add_column(Hierarchy = c("Between Source", "Between Region within Source", "Within Region"), .before = 1) %>%
+  readr::write_csv(path = file.path("results", "tables", "AMOVA-region.csv"), col_names = TRUE) %>%
   rename(ps = `Phi statistic`) %>%
   mutate(ps = gsub("0\\.00(\\d{1})(\\d{2})", "\\1.\\2e^-3^", ps)) %>%
+  mutate(ps = case_when(Hierarchy == "Between Source" ~ ps, TRUE ~ paste0("**", ps, "**"))) %>%
   rename(`$\\Phi statistic$` = ps) %>%
   rename(`% variation` = `Percent variation`) %>%
   rename(S.S. = `Sum of Squares`) %>%
   select(-P) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>% 
-  huxtable::set_col_width(c(1.3, 0.7, 0.9, 1, 1.3)) %>% 
+  huxtable::set_col_width(c(1.1, 0.6, 0.9, 0.9, 1.4)) %>% 
   huxtable::set_align(huxtable::everywhere, 2:5, "center") %>% 
-  huxtable::print_md(max_width = 95)
+  huxtable::print_md(max_width = 100)
 ```
 
 
@@ -215,7 +217,7 @@ filter <- strata(dat11cc) %>%
 wmn_compare <- dat11cc[filter]
 set.seed(2017-07-12)
 wmndapc <- xvalDapc(tab(wmn_compare), pop(wmn_compare), n.rep = 200, n.pca = 1:10)
-wmndapc
+wmndapc$DAPC
 scatter(wmndapc$DAPC)
 (wmntab <- table(wmndapc$DAPC$assign, wmndapc$DAPC$grp))
 chisq.test(wmntab, simulate.p.value = TRUE)
@@ -306,6 +308,7 @@ scatter(bebug_dapc, #clabel = 0,
 
 ggcompoplot::ggcompoplot(bebug_dapc, setPop(bebug, ~Region), cols = 5, pal = viridis::plasma(3, end = 0.85)) +
   theme(legend.position = "top")
+apply(bebug_dapc$posterior, 2, mean)
 ```
 
 ```{r dapc_hr, fig.width = 5, fig.height = 5.5}
