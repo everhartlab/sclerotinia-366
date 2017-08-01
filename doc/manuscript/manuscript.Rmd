@@ -538,21 +538,20 @@ We found significant population differentiation by geographic region, mainly dif
 To date, with 366 isolates, this is the largest population genetic study of *S. sclerotiorum* assessing population structure within managed and unmanaged agricultural environments. 
 These findings indicate that the white mold nurseries can be effective at screening for potential resistant lines within growing regions. 
 
-## Phenotypic Variable Importance
+## Phenotypic Variable Importance {-}
 
 Borrowing a technique often used in the ecological literature, we used dbRDA to elucidate the effect of all variables (Aggressiveness, Region, Source,   Year, and Host) [@legendre1999distance].
 From the initial results, it appears that the most important factors for predicting genetic structure are region and year.
-While the results indicated that Mexico and the year 2005 were the two most important variables, it's worth noting that all Mexican isolates were collected in 2005.
+While the results indicated that Mexico and the year 2005 were the two most important variables, it's worth noting that all Mexican isolates were collected in 2005 (Fig. \@ref(rda-biplot)).
 The results also show that the Vista cultivar explains some of the variance, but this represents six isolates in MI. 
 Aggressiveness and specific source field had little to no effect on genetic diversity. 
 These results are in agreement with studies that examined differentiation based on host [@aldrich-wolfe2015genetic] and severity [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia] reporting little or no correlation of genetic diversity to these variables. 
 This indicates that a) breeders should keep in mind regional differences when assessing resistance and b) it is possible that we have not yet measured biologically relevant variables that can predict genetic differentiation, which could include variables such as soil community composition. 
 
-## Mycelial Compatibility Groups and Multillocus Genotypes
+## Mycelial Compatibility Groups and Multillocus Genotypes {-}
 
-Of interest in this study was testing the association between mycelial compatibility groups (MCGs) and multilocus genotypes (MLGs).
-In the past MCGs have been used as a proxy for clonal lineages [@leslie1993fungal; @otto-hanson2011variation; @kohn1990mycelial; @schafer2006optimized; @kohn1995clonal; @carbone1999patterns]. 
-Our results do not support this hypothesis (Fig. \@ref(biggraph)).
+Of interest in this study was testing the association between multilocus genotypes (MLGs) and mycelial compatibility groups (MCGs), as the latter have historically been used as a proxy for clonal lineages [@leslie1993fungal; @otto-hanson2011variation; @kohn1990mycelial; @schafer2006optimized; @kohn1995clonal; @carbone1999patterns]. 
+Our results do not support this assumption (Fig. \@ref(biggraph)).
 Over the past few years, researchers have noticed inconsistencies among the relationship between MCGs and MLGs [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic; @lehner2015genetic]. 
 Either several MCGs belong to one MLG, which could be explained by insufficient sampling of loci; several MLGs belong to one MCG, which could be explained by clonal expansion; or a mixture of both.
 Some studies have shown a correlation between MCG and MLG [@aldrich-wolfe2015genetic; @carbone1999patterns; @lehner2015genetic], whereas other studies have shown no apparent correlation, even on small spatial scales [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia].
@@ -562,9 +561,11 @@ While our results appear to contradict this assumption, our protocol for assessi
 However, it has been demonstrated in several Ascomycetes---including *Neurospora crassa* [@micali2003independence], *Sclerotinia homoecarpa* [@jo2008reassessment], *Verticillium dahliae* [@papaioannou2014barrage], and *S. sclerotiorum* [@ford1995heterokaryon]---that barrage reactions are independent from stable anastomosis.
 Thus, the inconsistencies in this study and other studies indicate that researchers studying *S. sclerotiorum* should not rely on MCG data derived from barrage reactions as an indicator for genetic diversity.  
  
-## Genotypic Structure
+## Genotypic Structure {-}
 
-## Population Differentiation
+## Population Differentiation {-}
+
+## Conclusions {-}
 
 
 <!-- 
