@@ -607,6 +607,32 @@ if (!interactive()){
   ggsave(plot = mcg_mlg_graph, filename = file.path(PROJHOME, "results/figures/publication/FigureS2.pdf"), 
        width = 88*3, height = 88*3.5, units = "mm")
 }
+
+cat("Community Structure:\n")
+```
+
+```
+## Community Structure:
+```
+
+```r
+cluster_walktrap(g)
+```
+
+```
+## IGRAPH clustering walktrap, groups: 51, mod: 0.71
+## + groups:
+##   $`1`
+##    [1] "MLG.124" "MLG.136" "MLG.144" "MLG.156" "MLG.55"  "MLG.58" 
+##    [7] "MLG.66"  "66"      "67"      "68"      "9"      
+##   
+##   $`2`
+##   [1] "MLG.31" "MLG.4"  "MLG.41" "10"     "39"     "83"    
+##   
+##   $`3`
+##   [1] "MLG.113" "MLG.85"  "32"      "40"      "80"     
+##   
+##   + ... omitted several groups/vertices
 ```
 
 
@@ -1443,7 +1469,7 @@ on average 7 steps.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-07-31
+##  date     2017-08-01
 ```
 
 ```
