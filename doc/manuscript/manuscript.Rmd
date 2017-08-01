@@ -551,7 +551,12 @@ This indicates that a) breeders should keep in mind regional differences when as
 ## Mycelial Compatibility Groups and Multillocus Genotypes {-}
 
 Of interest in this study was testing the association between multilocus genotypes (MLGs) and mycelial compatibility groups (MCGs), as the latter have historically been used as a proxy for clonal lineages [@leslie1993fungal; @otto-hanson2011variation; @kohn1990mycelial; @schafer2006optimized; @kohn1995clonal; @carbone1999patterns]. 
-Our results do not support this assumption (Fig. \@ref(biggraph)).
+Our results do not support this assumption.
+It can be seen in Fig. \@ref(barplot) that the most abundant MCG contains several MLGs, but the diversity of those MLGs are low as indicated by the evenness (transparency), which indicates that there is one dominant MLG (MLG 25).
+What is not shown in Fig. \@ref(barplot) is the MLGs that are shared between MCGs. 
+This is illustrated in both table \@ref(tab:mlg-table) and Fig. \@ref(biggraph). 
+It could be argued, however that MLG 25, with its high value of $P_{sex}$ represents different true MLGs across the five MCGs it occupies, but this doesn't account for the overall structure of Fig. \@ref(biggraph) where, for example, MLG 75 ($P_{sex} = 1.81e^-4$) is compatible with 58 other genotypes through three MCG when the population structure of *S. sclerotiorum* is known to be clonal.
+
 Over the past few years, researchers have noticed inconsistencies among the relationship between MCGs and MLGs [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic; @lehner2015genetic]. 
 Either several MCGs belong to one MLG, which could be explained by insufficient sampling of loci; several MLGs belong to one MCG, which could be explained by clonal expansion; or a mixture of both.
 Some studies have shown a correlation between MCG and MLG [@aldrich-wolfe2015genetic; @carbone1999patterns; @lehner2015genetic], whereas other studies have shown no apparent correlation, even on small spatial scales [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia].
@@ -562,6 +567,10 @@ However, it has been demonstrated in several Ascomycetes---including *Neurospora
 Thus, the inconsistencies in this study and other studies indicate that researchers studying *S. sclerotiorum* should not rely on MCG data derived from barrage reactions as an indicator for genetic diversity.  
  
 ## Genotypic Structure {-}
+
+The results show several genotypes shared across populations, except for Mexico and two states that had fewer than three samples each (Fig. \@ref(community-graph)).
+Our network-based approach by treating the genotypes as edges and weighting each edge with the inverse of $P_{sex}$ treated the edges as springs connecting the populations with the strength proportional to the probability of obtaining the same genotype as a clone. 
+
 
 ## Population Differentiation {-}
 
