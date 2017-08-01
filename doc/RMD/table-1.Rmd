@@ -43,7 +43,8 @@ blank_it <- function(x){
 
 dat <- readr::read_csv(file.path(PROJHOME, "data/clean_data.csv"), col_types = clmn) %>%
   mutate(Country = ifelse(nchar(Region) == 2, "USA", Region)) %>% # Defining country column
-  mutate(Region = ifelse(nchar(Region) == 2, Region, "-")) %>%     # Adding blanks for international "states"
+  mutate(Region = ifelse(nchar(Region) == 2, Region, "-")) %>%    # Adding blanks for international "states"
+  mutate(Source = ifelse(Source == "wmn", "wmn", "producer")) %>% # Changing fields to binary counts
   select(Country, Region, Source, Year, Host) %>%                 # Summarizing the number of isolates
   group_by_all() %>%                                              #
   summarize(N = n()) %>%                                          #

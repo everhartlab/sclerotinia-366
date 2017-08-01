@@ -43,7 +43,8 @@ blank_it <- function(x){
 
 dat <- readr::read_csv(file.path(PROJHOME, "data/clean_data.csv"), col_types = clmn) %>%
   mutate(Country = ifelse(nchar(Region) == 2, "USA", Region)) %>% # Defining country column
-  mutate(Region = ifelse(nchar(Region) == 2, Region, "-")) %>%     # Adding blanks for international "states"
+  mutate(Region = ifelse(nchar(Region) == 2, Region, "-")) %>%    # Adding blanks for international "states"
+  mutate(Source = ifelse(Source == "wmn", "wmn", "producer")) %>% # Changing fields to binary counts
   select(Country, Region, Source, Year, Host) %>%                 # Summarizing the number of isolates
   group_by_all() %>%                                              #
   summarize(N = n()) %>%                                          #
@@ -77,90 +78,55 @@ Country   State  Field Code              Year Host                          N
 --------- ------ ---------- ----------------- -------------------------- ----
 USA       CA     wmn               2004, 2005 Beryl, Bunsi, G122           18 
 
-USA       CO     gree              2007, 2010 Pinto, Yellow                14 
-
-                 luc               2007, 2010 Yellow                       14 
-
-                 eat               2007, 2010 Yellow                       13 
+USA       CO     producer          2007, 2010 Pinto, Yellow                41 
 
                  wmn                     2003 GH                            1 
 
-USA       ID     unk                     2003 GH                            1 
+USA       ID     producer                2003 GH                            1 
 
 USA       MI     wmn        2003, 2004, 2005, 11A, 37, 38, B07104, Beryl   43 
                                    2008, 2009 , Bunsi, cornell, G122, Or      
                                               ion, PO7863, WM31               
 
-                 tuc               2008, 2009 Black, Fuji, Vista            6 
-
-                 hur               2008, 2009 BL, Black, SR06233, Vista     5 
-
-                 sanc                    2008 Merlot                        3 
-
-                 unk               2003, 2009 GH, unk                       2 
-
-                 eln                     2009 unk                           1 
-
-                 mung                    2009 Zorro                         1 
-
-                 Sebewaing               2009 Black                         1 
+                 producer    2003, 2008, 2009 BL, Black, Fuji, GH, Merlo   19 
+                                              t, SR06233, unk, Vista, Zo      
+                                              rro                             
 
 USA       MN     wmn               2003, 2004 Beryl, Bunsi, G122           11 
 
-USA       ND     rrv                     2007 unk                          21 
-
-                 gfc               2007, 2010 unk                           9 
-
-                 tlc                     2010 unk                           9 
-
-                 pmc                     2010 unk                           7 
+USA       ND     producer          2007, 2010 unk                          53 
 
                  wmn                     2005 Beryl, Bunsi, G122            7 
-
-                 wlc                     2010 unk                           4 
-
-                 stc                     2010 unk                           2 
-
-                 nec                     2010 unk                           1 
 
 USA       NE     wmn        2004, 2005, 2008, Beryl, Bunsi, G122, PO7683   27 
                                          2010 , unk                           
 
-                 mtc               2007, 2010 Beryl, Emerson, Orion        12 
+                 producer   2003, 2007, 2009, Beryl, Emerson, GH, Orion,   20 
+                                         2010  Pinto, Weihing                 
 
-                 sbf               2007, 2009 Beryl, Pinto, Weihing         6 
-
-                 unk                     2003 GH                            2 
-
-USA       NY     unk                     2003 GH                            1 
+USA       NY     producer                2003 GH                            1 
 
 USA       OR     wmn               2003, 2004 Beryl, Bunsi, G122           15 
 
-                 corv                    2003 G122                          1 
-
-                 unk                     2003 GH                            1 
+                 producer                2003 G122, GH                      2 
 
 USA       WA     wmn        2003, 2004, 2005, 11A, 37, 38, Beryl, Bunsi,   36 
                                          2008  cornell, G122, Orion, PO7      
                                               104, PO7863, WM31               
 
-                 prsr                    2007 Merlot, Pinto, redkid        22 
+                 producer          2003, 2007 GH, Merlot, Pinto, redkid    23 
 
-                 unk                     2003 GH                            1 
-
-USA       WI     dfor                    2003 GH                            1 
-
-                 unk                     2003 GH                            1 
+USA       WI     producer                2003 GH                            2 
 
 Mexico    -      wmn                     2005 Beryl, Bunsi, G122           18 
 
 France    -      wmn               2004, 2005 Beryl, Bunsi, G122           18 
 
-                 flds                    2012 unk                           4 
+                 producer                2012 unk                           4 
 
 Australia -      wmn                     2004 Beryl, Bunsi, G122            4 
 
-                 vic                     2004 Beryl                         2 
+                 producer                2004 Beryl                         2 
 
 -----------------------------------------------------------------------------
 ```
@@ -177,13 +143,13 @@ Australia -      wmn                     2004 Beryl, Bunsi, G122            4
 
 ```
 ##  setting  value                       
-##  version  R version 3.4.0 (2017-04-21)
+##  version  R version 3.4.1 (2017-06-30)
 ##  system   x86_64, darwin15.6.0        
 ##  ui       X11                         
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-06-30
+##  date     2017-08-01
 ```
 
 ```
@@ -193,25 +159,25 @@ Australia -      wmn                     2004 Beryl, Bunsi, G122            4
 ```
 ##  package     * version date       source         
 ##  assertthat    0.2.0   2017-04-11 CRAN (R 3.4.0) 
-##  base        * 3.4.0   2017-04-21 local          
+##  base        * 3.4.1   2017-07-07 local          
 ##  bindr         0.1     2016-11-13 CRAN (R 3.4.0) 
 ##  bindrcpp    * 0.2     2017-06-17 CRAN (R 3.4.0) 
-##  compiler      3.4.0   2017-04-21 local          
-##  datasets    * 3.4.0   2017-04-21 local          
+##  compiler      3.4.1   2017-07-07 local          
+##  datasets    * 3.4.1   2017-07-07 local          
 ##  devtools      1.13.2  2017-06-02 CRAN (R 3.4.0) 
 ##  digest        0.6.12  2017-01-27 CRAN (R 3.4.0) 
 ##  dplyr       * 0.7.1   2017-06-22 CRAN (R 3.4.0) 
 ##  evaluate      0.10    2016-10-11 CRAN (R 3.4.0) 
 ##  ezknitr       0.6     2016-09-16 CRAN (R 3.4.0) 
 ##  glue          1.1.1   2017-06-21 CRAN (R 3.4.0) 
-##  graphics    * 3.4.0   2017-04-21 local          
-##  grDevices   * 3.4.0   2017-04-21 local          
+##  graphics    * 3.4.1   2017-07-07 local          
+##  grDevices   * 3.4.1   2017-07-07 local          
 ##  hms           0.3     2016-11-22 CRAN (R 3.4.0) 
 ##  huxtable    * 0.3.0   2017-05-18 CRAN (R 3.4.0) 
 ##  knitr       * 1.16    2017-05-18 CRAN (R 3.4.0) 
 ##  magrittr      1.5     2014-11-22 CRAN (R 3.4.0) 
 ##  memoise       1.1.0   2017-04-21 CRAN (R 3.4.0) 
-##  methods     * 3.4.0   2017-04-21 local          
+##  methods     * 3.4.1   2017-07-07 local          
 ##  pkgconfig     2.0.1   2017-03-21 CRAN (R 3.4.0) 
 ##  R.methodsS3   1.7.1   2016-02-16 CRAN (R 3.4.0) 
 ##  R.oo          1.21.0  2016-11-01 CRAN (R 3.4.0) 
@@ -220,12 +186,12 @@ Australia -      wmn                     2004 Beryl, Bunsi, G122            4
 ##  Rcpp          0.12.11 2017-05-22 cran (@0.12.11)
 ##  readr       * 1.1.1   2017-05-16 CRAN (R 3.4.0) 
 ##  rlang         0.1.1   2017-05-18 CRAN (R 3.4.0) 
-##  stats       * 3.4.0   2017-04-21 local          
+##  stats       * 3.4.1   2017-07-07 local          
 ##  stringi       1.1.5   2017-04-07 CRAN (R 3.4.0) 
 ##  stringr       1.2.0   2017-02-18 CRAN (R 3.4.0) 
 ##  tibble        1.3.3   2017-05-28 CRAN (R 3.4.0) 
-##  tools         3.4.0   2017-04-21 local          
-##  utils       * 3.4.0   2017-04-21 local          
+##  tools         3.4.1   2017-07-07 local          
+##  utils       * 3.4.1   2017-07-07 local          
 ##  withr         1.0.2   2016-06-20 CRAN (R 3.4.0)
 ```
 

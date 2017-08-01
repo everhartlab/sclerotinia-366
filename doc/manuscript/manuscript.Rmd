@@ -137,96 +137,61 @@ Country   State  Field Code              Year Host                          N
 --------- ------ ---------- ----------------- -------------------------- ----
 USA       CA     wmn               2004, 2005 Beryl, Bunsi, G122           18 
 
-USA       CO     gree              2007, 2010 Pinto, Yellow                14 
-
-                 luc               2007, 2010 Yellow                       14 
-
-                 eat               2007, 2010 Yellow                       13 
+USA       CO     producer          2007, 2010 Pinto, Yellow                41 
 
                  wmn                     2003 GH                            1 
 
-USA       ID     unk                     2003 GH                            1 
+USA       ID     producer                2003 GH                            1 
 
 USA       MI     wmn        2003, 2004, 2005, 11A, 37, 38, B07104,         43 
-                                   2008, 2009 Beryl, Bunsi, cornell,          
-                                              G122, ion, PO7863, WM31         
+                                   2008, 2009 Beryl, Bunsi, cornell,       
+                                              G122, Orion, PO7863, WM31      
 
-                 tuc               2008, 2009 Black, Fuji, Vista            6 
-
-                 hur               2008, 2009 BL, Black, SR06233, Vista     5 
-
-                 sanc                    2008 Merlot                        3 
-
-                 unk               2003, 2009 GH, unk                       2 
-
-                 eln                     2009 unk                           1 
-
-                 mung                    2009 Zorro                         1 
-
-                 Sebewaing               2009 Black                         1 
+                 producer    2003, 2008, 2009 BL, Black, Fuji, GH,         19 
+                                              Merlot, SR06233, unk,        
+                                              Vista, Zorro 
 
 USA       MN     wmn               2003, 2004 Beryl, Bunsi, G122           11 
 
-USA       ND     rrv                     2007 unk                          21 
-
-                 gfc               2007, 2010 unk                           9 
-
-                 tlc                     2010 unk                           9 
-
-                 pmc                     2010 unk                           7 
+USA       ND     producer          2007, 2010 unk                          53 
 
                  wmn                     2005 Beryl, Bunsi, G122            7 
 
-                 wlc                     2010 unk                           4 
-
-                 stc                     2010 unk                           2 
-
-                 nec                     2010 unk                           1 
-
 USA       NE     wmn        2004, 2005, 2008, Beryl, Bunsi, G122,          27 
-                                         2010 PO7683, unk                           
+                                         2010 PO7683, unk                    
 
-                 mtc               2007, 2010 Beryl, Emerson, Orion        12 
+                 producer   2003, 2007, 2009, Beryl, Emerson, GH, Orion,   20 
+                                         2010  Pinto, Weihing                 
 
-                 sbf               2007, 2009 Beryl, Pinto, Weihing         6 
-
-                 unk                     2003 GH                            2 
-
-USA       NY     unk                     2003 GH                            1 
+USA       NY     producer                2003 GH                            1 
 
 USA       OR     wmn               2003, 2004 Beryl, Bunsi, G122           15 
 
-                 corv                    2003 G122                          1 
-
-                 unk                     2003 GH                            1 
+                 producer                2003 G122, GH                      2 
 
 USA       WA     wmn        2003, 2004, 2005, 11A, 37, 38, Beryl, Bunsi,   36 
-                                         2008  cornell, G122, Orion,          
-                                              PO7104, PO7863, WM31            
+                                         2008  cornell, G122, Orion, PO7      
+                                              104, PO7863, WM31               
 
-                 prsr                    2007 Merlot, Pinto, redkid        22 
+                 producer          2003, 2007 GH, Merlot, Pinto, redkid    23 
 
-                 unk                     2003 GH                            1 
-
-USA       WI     dfor                    2003 GH                            1 
-
-                 unk                     2003 GH                            1 
+USA       WI     producer                2003 GH                            2 
 
 Mexico    -      wmn                     2005 Beryl, Bunsi, G122           18 
 
 France    -      wmn               2004, 2005 Beryl, Bunsi, G122           18 
 
-                 flds                    2012 unk                           4 
+                 producer                2012 unk                           4 
 
 Australia -      wmn                     2004 Beryl, Bunsi, G122            4 
 
-                 vic                     2004 Beryl                         2 
+                 producer                2004 Beryl                         2 
 
 -----------------------------------------------------------------------------
 
 Table: (\#tab:isolate-table) Description of *Sclerotinia sclerotiorum* isolates used in this study.
 N = Number of Isolates. 
-Key abbreviations: wmn = white mold screening nursery, unk = unknown.
+Key abbreviations: wmn = white mold screening nursery, producer = producer field, unk = unknown cultivar.
 
 ## Mycelial Compatibility {-}
 
