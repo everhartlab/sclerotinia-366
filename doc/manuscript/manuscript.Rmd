@@ -371,7 +371,7 @@ mean   153-495         6.27   0.58      0.69
 
 Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation].
 
-## Phenotypic variable assessment {-}
+## Phenotypic Variable Assessment {-}
 
 ### Variable Importance {-}
 
@@ -379,7 +379,7 @@ The dbRDA was performed on clone-corrected isolates (N = 318) after grouping the
 The forward-backward selection process revealed severity, year, region, and host to be the optimal variables for the reduced model, accounting for 17.6% of the total variation.
 ANOVA revealed that the reduced model was significant with an adjusted R^2^ of 0.033 (P = 0.001).
 Assessment of the marginal effects showed that state, host, and year significantly explained genetic variation (P = 0.001), but aggressiveness was only mildly significant (P = 0.045). 
-Much of the variation appears to be driven by isolates from Mexico and 2005 (Fig. \@ref(rda-biplot)); it's worth noting that all Mexican isolates were collected in 2005.
+Much of the variation appears to be driven by isolates from Mexico and 2005 (Fig. \@ref(rda-biplot)).
 Variance partitioning of the independent variables indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
 
 ### Mycelial Compatibility Groups {-}
@@ -538,19 +538,33 @@ We found significant population differentiation by geographic region, mainly dif
 To date, with 366 isolates, this is the largest population genetic study of *S. sclerotiorum* assessing population structure within managed and unmanaged agricultural environments. 
 These findings indicate that the white mold nurseries can be effective at screening for potential resistant lines within growing regions. 
 
+## Phenotypic Variable Importance
+
+Borrowing a technique often used in the ecological literature, we used dbRDA to elucidate the effect of all variables (Aggressiveness, Region, Source,   Year, and Host) [@legendre1999distance].
+From the initial results, it appears that the most important factors for predicting genetic structure are region and year.
+While the results indicated that Mexico and the year 2005 were the two most important variables, it's worth noting that all Mexican isolates were collected in 2005.
+The results also show that the Vista cultivar explains some of the variance, but this represents six isolates in MI. 
+Aggressiveness and specific source field had little to no effect on genetic diversity. 
+These results are in agreement with studies that examined differentiation based on host [@aldrich-wolfe2015genetic] and severity [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia] reporting little or no correlation of genetic diversity to these variables. 
+This indicates that a) breeders should keep in mind regional differences when assessing resistance and b) it is possible that we have not yet measured biologically relevant variables that can predict genetic differentiation, which could include variables such as soil community composition. 
+
+## Mycelial Compatibility Groups and Multillocus Genotypes
+
 Of interest in this study was testing the association between mycelial compatibility groups (MCGs) and multilocus genotypes (MLGs).
 In the past MCGs have been used as a proxy for clonal lineages [@leslie1993fungal; @otto-hanson2011variation; @kohn1990mycelial; @schafer2006optimized; @kohn1995clonal; @carbone1999patterns]. 
 Our results do not support this hypothesis (Fig. \@ref(biggraph)).
 Over the past few years, researchers have noticed inconsistencies among the relationship between MCGs and MLGs [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic; @lehner2015genetic]. 
 Either several MCGs belong to one MLG, which could be explained by insufficient sampling of loci; several MLGs belong to one MCG, which could be explained by clonal expansion; or a mixture of both.
-Some studies have shown a correlation between MCG and MLG [@aldrich-wolfe2015genetic; @carbone1999patterns; @lehner2015genetic], whereas other studies have shown no apparent correlation, even on small spatial scales [@attanayake2012genetic; @attanayake2013sclerotinia].
+Some studies have shown a correlation between MCG and MLG [@aldrich-wolfe2015genetic; @carbone1999patterns; @lehner2015genetic], whereas other studies have shown no apparent correlation, even on small spatial scales [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia].
 
 One long-held assumption was that MCGs (as determined via barrage reaction) represent vegetative compatibility groups (VCGs) [@schafer2006optimized; @kohn1990mycelial; @lehner2015genetic], which are known to have a genetic component [@saupe2000molecular; @hall2010evolution; @strom2016genomes].
 While our results appear to contradict this assumption, our protocol for assessing MCGs utilized a different substrate for these reactions and, thus may not accurately reflect the true MCG dynamics. 
 However, it has been demonstrated in several Ascomycetes---including *Neurospora crassa* [@micali2003independence], *Sclerotinia homoecarpa* [@jo2008reassessment], *Verticillium dahliae* [@papaioannou2014barrage], and *S. sclerotiorum* [@ford1995heterokaryon]---that barrage reactions are independent from stable anastomosis.
 Thus, the inconsistencies in this study and other studies indicate that researchers studying *S. sclerotiorum* should not rely on MCG data derived from barrage reactions as an indicator for genetic diversity.  
  
+## Genotypic Structure
 
+## Population Differentiation
 
 
 <!-- 
