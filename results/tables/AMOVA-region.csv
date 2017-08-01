@@ -1,4 +1,4 @@
 Hierarchy,d.f.,Sum of Squares,Percent variation,P,Phi statistic
-Between Source,1 (1),0.897 (0.753),-0.158 (0.116),0.3 (0.276),0.136 (0.0965)
-Between Region within Source,20 (19),12 (8.91),13.8 (9.53),0.001 (1e-04),0.138 (0.0955)
-Within Region,296 (282),56.7 (55.1),86.4 (90.3),0.001 (1e-04),-0.00158 (0.00116)
+Between Source,1 (1),0.897 (0.367),-0.158 (-1.83),0.281 (0.402),0.136 (0.0648)
+Between Region within Source,20 (4),12 (2.63),13.8 (8.31),1e-04 (1e-04),0.138 (0.0816)
+Within Region,296 (147),56.7 (30),86.4 (93.5),1e-04 (1e-04),-0.00158 (-0.0183)

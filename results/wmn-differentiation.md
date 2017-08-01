@@ -216,7 +216,7 @@ white mold nurseries within different regions.
 
 ```r
 ssc_amova_region <- poppr.amova(dat11cc, ~SourceType/Region, dist = bd, quiet = TRUE)
-ssc_amova_region_test <- randtest(ssc_amova_region, nrepet = 999)
+ssc_amova_region_test <- randtest(ssc_amova_region, nrepet = 9999)
 plot(ssc_amova_region_test)
 ```
 
@@ -233,10 +233,10 @@ plot(ssc_amova_region_test)
 ##   Between Region Within SourceType   20     12.0338468        13.7964379
 ##   Within Region                     296     56.6667061        86.3618966
 ##                                   statistic
-## levels                                 P Phi statistic
-##   Between SourceType               0.300   0.136381034
-##   Between Region Within SourceType 0.001   0.137746279
-##   Within Region                    0.001  -0.001583345
+## levels                                  P Phi statistic
+##   Between SourceType               0.2811   0.136381034
+##   Between Region Within SourceType 0.0001   0.137746279
+##   Within Region                    0.0001  -0.001583345
 ```
 
 Okay! This shows that when we account for Region after accounting for Source
@@ -271,9 +271,59 @@ plot(ssc_amova_nm_test)
 ##   Within Region                    0.0001    0.00115560
 ```
 
+When we remove the Mexican isolates (which only contained white mold nurseries
+and shared no genotypes), we see that indeed, the degree of differentiation
+went down.  Of course, if we look at the distribution of isolates between white
+mold nurseries and regions, we can see things are a bit lopsided:
+
 
 ```r
-make_amova_printable(ssc_amova_table, ssc_amova_nm_table) %>%  
+table(strata(dat11cc, ~SourceType/Region, combine = FALSE))
+```
+
+```
+##           Region
+## SourceType NE NY MN MI OR WA CO WI ID Australia CA France Mexico ND
+##      other 13  1  0 18  2 23 33  2  1         2  0      4      0 34
+##      wmn   24  0  9 40 15 35  1  0  0         4 18     17     15  7
+```
+
+The only regions that have at least ten samples in both white mold nurseries and
+production regions are NE, WA, and MI. We can see what happens when we subsample
+to these
+
+
+
+```r
+datnewami <- setPop(dat11cc, ~Region) %>% popsub(sublist = c("NE", "WA", "MI"))
+bdnewami     <- bruvo.dist(datnewami, replen = other(datnewami)$REPLEN)
+ssc_amova_newami <- poppr.amova(datnewami, ~SourceType/Region, dist = bdnewami, quiet = TRUE)
+ssc_amova_newami_test <- randtest(ssc_amova_newami, nrepet = 9999)
+plot(ssc_amova_newami_test)
+```
+
+![plot of chunk AMOVA-newami](./figures/wmn-differentiation///AMOVA-newami-1.png)
+
+```r
+(ssc_amova_newami_table <- make_amova_table(ssc_amova_newami, ssc_amova_newami_test))
+```
+
+```
+##                                   statistic
+## levels                             d.f. Sum of Squares Percent variation
+##   Between SourceType                  1      0.3672025         -1.831835
+##   Between Region Within SourceType    4      2.6285603          8.309128
+##   Within Region                     147     30.0470395         93.522707
+##                                   statistic
+## levels                                  P Phi statistic
+##   Between SourceType               0.4018    0.06477293
+##   Between Region Within SourceType 0.0001    0.08159657
+##   Within Region                    0.0001   -0.01831835
+```
+
+
+```r
+make_amova_printable(ssc_amova_table, ssc_amova_newami_table) %>%  
   as_tibble() %>%
   add_column(Hierarchy = c("Between Source", "Between Region within Source", "Within Region"), .before = 1) %>%
   readr::write_csv(path = file.path("results", "tables", "AMOVA-region.csv"), col_names = TRUE) %>%
@@ -294,20 +344,20 @@ make_amova_printable(ssc_amova_table, ssc_amova_nm_table) %>%
 -------------------------------------------------------------------------------------------------
 Hierarchy                d.f.           S.S.           % variation         $\Phi statistic$       
 --------------------- ----------- ----------------- ----------------- ---------------------------
-Between Source           1 (1)      0.897 (0.753)    -0.158 (0.116)         0.136 (0.0965)        
+Between Source           1 (1)      0.897 (0.367)    -0.158 (-1.83)         0.136 (0.0648)        
 
-Between Region within   20 (19)       12 (8.91)        13.8 (9.53)        **0.138 (0.0955)**      
+Between Region within   20 (4)        12 (2.63)        13.8 (8.31)        **0.138 (0.0816)**      
  Source                                                                                           
 
-Within Region          296 (282)     56.7 (55.1)       86.4 (90.3)    **-1.58e^-3^ (1.16e^-3^)**  
+Within Region          296 (147)      56.7 (30)        86.4 (93.5)     **-1.58e^-3^ (-0.0183)**   
 
 -------------------------------------------------------------------------------------------------
 ```
 
 
-When we remove the Mexican isolates (which only contained white mold nurseries
-and shared no genotypes), we see that indeed, the degree of differentiation
-went down. 
+
+
+
 
 ## Visualizing the partitions
 
@@ -827,6 +877,7 @@ LDS_PLOT
 ##  cellranger    1.1.0      2016-07-27 CRAN (R 3.4.0)                      
 ##  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                      
 ##  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                      
+##  codetools     0.2-15     2016-10-05 CRAN (R 3.4.0)                      
 ##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                      
 ##  compiler      3.4.1      2017-07-07 local                               
 ##  datasets    * 3.4.1      2017-07-07 local                               
@@ -841,8 +892,12 @@ LDS_PLOT
 ##  forcats       0.2.0      2017-01-23 CRAN (R 3.4.0)                      
 ##  foreign       0.8-69     2017-06-21 CRAN (R 3.4.0)                      
 ##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                      
-##  ggcompoplot   0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)
+##  gdtools     * 0.1.4      2017-03-17 CRAN (R 3.4.0)                      
+##  ggcompoplot * 0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)
+##  ggforce       0.1.1      2016-11-28 CRAN (R 3.4.0)                      
 ##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                      
+##  ggraph      * 1.0.0      2017-02-24 CRAN (R 3.4.0)                      
+##  ggrepel     * 0.6.11     2017-07-11 Github (slowkow/ggrepel@8fbd0a0)    
 ##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                      
 ##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                      
 ##  graphics    * 3.4.1      2017-07-07 local                               
@@ -855,14 +910,15 @@ LDS_PLOT
 ##  highr         0.6        2016-05-09 CRAN (R 3.4.0)                      
 ##  hms           0.3        2016-11-22 CRAN (R 3.4.0)                      
 ##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                      
+##  htmlwidgets   0.8        2016-11-09 CRAN (R 3.4.0)                      
 ##  httpuv        1.3.3      2015-08-04 CRAN (R 3.4.0)                      
 ##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                      
 ##  huxtable      0.3.0      2017-05-18 CRAN (R 3.4.0)                      
-##  igraph        1.0.1      2015-06-26 CRAN (R 3.4.0)                      
+##  igraph      * 1.0.1      2015-06-26 CRAN (R 3.4.0)                      
 ##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                      
 ##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                      
 ##  labeling      0.3        2014-08-23 CRAN (R 3.4.0)                      
-##  lattice       0.20-35    2017-03-25 CRAN (R 3.4.0)                      
+##  lattice     * 0.20-35    2017-03-25 CRAN (R 3.4.0)                      
 ##  lazyeval      0.2.0      2016-06-12 CRAN (R 3.4.0)                      
 ##  LearnBayes    2.15       2014-05-29 CRAN (R 3.4.0)                      
 ##  lubridate     1.6.0      2016-09-13 CRAN (R 3.4.0)                      
@@ -879,7 +935,7 @@ LDS_PLOT
 ##  nlme          3.1-131    2017-02-06 CRAN (R 3.4.0)                      
 ##  parallel      3.4.1      2017-07-07 local                               
 ##  pegas         0.10       2017-05-03 CRAN (R 3.4.0)                      
-##  permute       0.9-4      2016-09-09 CRAN (R 3.4.0)                      
+##  permute     * 0.9-4      2016-09-09 CRAN (R 3.4.0)                      
 ##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                      
 ##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                      
 ##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                      
@@ -910,10 +966,14 @@ LDS_PLOT
 ##  tidyr       * 0.6.3      2017-05-15 CRAN (R 3.4.0)                      
 ##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.4.0)                      
 ##  tools         3.4.1      2017-07-07 local                               
+##  tweenr        0.1.5      2016-10-10 CRAN (R 3.4.0)                      
+##  udunits2      0.13       2016-11-17 CRAN (R 3.4.0)                      
+##  units         0.4-5      2017-06-15 CRAN (R 3.4.0)                      
 ##  utils       * 3.4.1      2017-07-07 local                               
-##  vegan         2.4-3      2017-04-07 CRAN (R 3.4.0)                      
-##  viridis       0.4.0      2017-03-27 CRAN (R 3.4.0)                      
-##  viridisLite   0.2.0      2017-03-24 CRAN (R 3.4.0)                      
+##  vegan       * 2.4-3      2017-04-07 CRAN (R 3.4.0)                      
+##  viridis     * 0.4.0      2017-03-27 CRAN (R 3.4.0)                      
+##  viridisLite * 0.2.0      2017-03-24 CRAN (R 3.4.0)                      
+##  visNetwork  * 2.0.0      2017-06-26 cran (@2.0.0)                       
 ##  withr         1.0.2      2016-06-20 CRAN (R 3.4.0)                      
 ##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                      
 ##  xtable        1.8-2      2016-02-05 CRAN (R 3.4.0)
