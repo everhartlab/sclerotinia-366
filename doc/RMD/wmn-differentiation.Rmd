@@ -102,7 +102,7 @@ white mold nurseries within different regions.
 
 ```{r AMOVA-Region, cache = TRUE}
 ssc_amova_region <- poppr.amova(dat11cc, ~SourceType/Region, dist = bd, quiet = TRUE)
-ssc_amova_region_test <- randtest(ssc_amova_region, nrepet = 999)
+ssc_amova_region_test <- randtest(ssc_amova_region, nrepet = 9999)
 plot(ssc_amova_region_test)
 (ssc_amova_table <- make_amova_table(ssc_amova_region, ssc_amova_region_test))
 ```
@@ -120,8 +120,31 @@ plot(ssc_amova_nm_test)
 (ssc_amova_nm_table <- make_amova_table(ssc_amova_nm, ssc_amova_nm_test))
 ```
 
+When we remove the Mexican isolates (which only contained white mold nurseries
+and shared no genotypes), we see that indeed, the degree of differentiation
+went down.  Of course, if we look at the distribution of isolates between white
+mold nurseries and regions, we can see things are a bit lopsided:
+
+```{r wmntable}
+table(strata(dat11cc, ~SourceType/Region, combine = FALSE))
+```
+
+The only regions that have at least ten samples in both white mold nurseries and
+production regions are NE, WA, and MI. We can see what happens when we subsample
+to these
+
+
+```{r AMOVA-newami, cache = TRUE}
+datnewami <- setPop(dat11cc, ~Region) %>% popsub(sublist = c("NE", "WA", "MI"))
+bdnewami     <- bruvo.dist(datnewami, replen = other(datnewami)$REPLEN)
+ssc_amova_newami <- poppr.amova(datnewami, ~SourceType/Region, dist = bdnewami, quiet = TRUE)
+ssc_amova_newami_test <- randtest(ssc_amova_newami, nrepet = 9999)
+plot(ssc_amova_newami_test)
+(ssc_amova_newami_table <- make_amova_table(ssc_amova_newami, ssc_amova_newami_test))
+```
+
 ```{r AMOVA_table, comment = NA}
-make_amova_printable(ssc_amova_table, ssc_amova_nm_table) %>%  
+make_amova_printable(ssc_amova_table, ssc_amova_newami_table) %>%  
   as_tibble() %>%
   add_column(Hierarchy = c("Between Source", "Between Region within Source", "Within Region"), .before = 1) %>%
   readr::write_csv(path = file.path("results", "tables", "AMOVA-region.csv"), col_names = TRUE) %>%
@@ -139,9 +162,9 @@ make_amova_printable(ssc_amova_table, ssc_amova_nm_table) %>%
 ```
 
 
-When we remove the Mexican isolates (which only contained white mold nurseries
-and shared no genotypes), we see that indeed, the degree of differentiation
-went down. 
+
+
+
 
 ## Visualizing the partitions
 
