@@ -570,6 +570,10 @@ Thus, the inconsistencies in this study and other studies indicate that research
 
 The results show several genotypes shared across populations, except for Mexico and two states that had fewer than three samples each (Fig. \@ref(community-graph)).
 Our network-based approach by treating the genotypes as edges and weighting each edge with the inverse of $P_{sex}$ treated the edges as springs connecting the populations with the strength proportional to the probability of obtaining the same genotype as a clone. 
+This allowed us to use a graph walking algorithm to see how close the populations were simply based off of the proportion of clones they shared.
+The most abundant genotype was shared across four populations, but its high value of $P_{sex}$ meant that it did not contribute significantly to the overall structure. 
+The graph walking algorithm was able to divide the network into three groups, but had a modularity of 0.17, which indicates that the groups are weakly differentiated.
+This indicates that multilocus genotypes are widespread across the United States, giving more evidence for a clonal population structure.
 
 
 ## Population Differentiation {-}

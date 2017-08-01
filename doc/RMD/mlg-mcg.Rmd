@@ -352,6 +352,9 @@ if (!interactive()){
   ggsave(plot = mcg_mlg_graph, filename = file.path(PROJHOME, "results/figures/publication/FigureS2.pdf"), 
        width = 88*3, height = 88*3.5, units = "mm")
 }
+
+cat("Community Structure:\n")
+cluster_walktrap(g)
 ```
 
 
