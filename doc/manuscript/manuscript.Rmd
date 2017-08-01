@@ -436,7 +436,7 @@ Each edge represents a single MLG where its thickness represents the number of p
 ### Analysis of Molecular Variance {-}
 
 The analysis of molecular variance (AMOVA) over the hierarchy of Source and Region showed no significant variation between white mold nurseries and non-white mold nurseries after accounting for variation between regions (Table \@ref(tab:amova)).
-Because Mexico shared no genotypes with any of the other populations and we suspected that it was contributing to some of the observed variance, we re-ran AMOVA without the Mexican isolates and found similar decreased, but still significant levels of differentiation between regions.
+Because we observed that the sample sizes of wmn isolates and producer isolates were lopsided in several populations (Table \@ref(tab:table-1)), we ran the analysis again with regions that had at least ten isolates from both wmn and producer fields, showing similar results (Table \@ref(tab:amova)). 
 In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Data).  
 
 
@@ -458,7 +458,7 @@ read_csv("../../results/tables/AMOVA-region.csv",
   huxtable::print_md(max_width = 100)
 ```
 
-Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance showing little differentiation between White Mold Nurseries and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a white mold nursery or not. Bold $\Phi$ values indicate significant values (P < 1.00e^-4^). Numbers in parentheses represent AMOVA run without Mexican isolates included. S.S. = Sum of Squares, d.f. = degrees of freedom.
+Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance showing little differentiation between White Mold Nurseries and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a white mold nursery or not. Bold $\Phi$ values indicate significant values (P < 1.00e^-4^). Numbers in parentheses represent AMOVA run with the regions NE, WA, and MI. S.S. = Sum of Squares, d.f. = degrees of freedom.
 
 ### Discriminant Analysis of Principal Components {-}
 
@@ -556,7 +556,8 @@ This indicates that multilocus genotypes are widespread across the United States
 ## Regional Differentiation {-}
 
 The primary interest of this study was to assess if isolates sampled from white mold screening nurseries represent isolates from producer fields within the region [@steadman2003identification; @otto-hanson2011variation].
-According to our AMOVA results, we have evidence for differentiation at the region level, but little to no differentiation within region (Table \@ref(tab:amova)). 
+According to our AMOVA results, we have evidence for differentiation at the region level, but little to no differentiation between white mold nursery isolates and production field isolates within region (Table \@ref(tab:amova)).
+This 
  
 
 ## Conclusions {-}
