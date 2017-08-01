@@ -271,9 +271,9 @@ We assessed the power of our 11 markers by generating a genotype accumulation cu
 To avoid including samples that were potentially collected from the same plant (which increases the probability of collecting the same sample more than once), data were clone-corrected on the region/source/host/year hierarchy for subsequent analyses. The clone-corrected data set included 318 isolates.
 
 
-## Assessing importance of categorical and phenotypic variables  {-}
+## Assessing Importance of Variables  {-}
 
-### Distance-based redundancy analysis {-}
+### Distance-based Redundancy Analysis {-}
 
 A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was performed with the function `capscale()` in the *vegan* package version 2.4-3 [@vegan].
 This method uses constrained ordinations on a distance matrix representing the response variable to delineate relative contribution of any number of independent explanatory variables. 
@@ -285,10 +285,11 @@ To identify explanatory variable(s) correlated with genetic variation, a forward
 An ANOVA was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
 The `varpart()` function of vegan was used to determine variation partitioning of explanatory variables.
 
-### Aggressiveness assessment {-}
+### Aggressiveness Assessment {-}
 
-We used analysis of variance (ANOVA) to assess if MCGs differed in aggressiveness.
-To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 57% of the isolates collected. Between-MCG differences were assessed using Tukey's HSD test with an alpha of 0.05 using the `HSD.test()` function in the package *agricolae* version 1.2.4 [@mendiburu2015agricolae].
+We used analysis of variance (ANOVA) to assess if aggressiveness could be explained by Region, mycelial compatibility group, or multilocus genotype. 
+To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 56.5% of the isolates collected, the top 10 MLGs representing 26.7% of the isolates, and populations with more than five isolates.
+Between-group differences were assessed using Tukey's HSD test with an alpha of 0.05 using the `HSD.test()` function in the package *agricolae* version 1.2.4 [@mendiburu2015agricolae].
 
 ### Correlating Multilocus Genotypes with Mycelial Compatibility Groups {-}
 
@@ -336,6 +337,7 @@ To ensure that we captured the same community signal, we additionally performed 
 A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in 11 states in the US, Australia, Mexico, and France (Table \@ref(tab:isolate-table)).
 Over 50% of the isolates came from four states, MI (62), ND (60), WA (59), NE (47). 
 Four regions had fewer than 10 isolates, Australia (6), WI (2), NY (1), ID (1).
+We observed 87 mycelial compatibility groups (MCG), the most abundant of which (MCG 5) represented 73 isolates over 37 multilocus genotypes (MLG) (Fig \@ref(barplot)).
 After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with 318 isolates representing 165 MLGs (Table \@ref(tab:iatab)).
 Analysis of the genotype accumulation curve showed no clear plateau, indicating that we would likely obtain more multilocus genotypes if we were to collect more loci. The number of observed alleles per locus ranged from 2 to 10 with an average of 6.27 (Table \@ref(tab:locus-stats)).
 
@@ -371,7 +373,7 @@ mean   153-495         6.27   0.58      0.69
 
 Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation].
 
-## Phenotypic Variable Assessment {-}
+## Variable Assessment {-}
 
 ### Variable Importance {-}
 
@@ -382,32 +384,52 @@ Assessment of the marginal effects showed that state, host, and year significant
 Much of the variation appears to be driven by isolates from Mexico and 2005 (Fig. \@ref(rda-biplot)).
 Variance partitioning of the independent variables indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
 
-### Mycelial Compatibility Groups {-}
-
-We observed 87 mycelial compatibility groups (MCG), the most abundant of which (MCG 5) represented 73 isolates over 37 multilocus genotypes (MLG) (Fig. \@ref(barplot)). 
-Our assessment of aggressiveness association with MCGs showed a significant effect (P < 0.001) indicating that MCG 44 is, on average, more aggressive than other MCGs (Table \@ref(tab:mcg-aggressiveness)). 
-
 <!-- RDA figure -->
 
 ![
 Biplot showing five most influential explanatory variables (arrows) overlayed on the first two eigenvectors of distance based redundancy analysis of *S. sclerotiorum* isolates. 
 The length of the arrows are directly proportional to the strength of the correlation between explanatory and molecular variables. 
 Points represent the 318 clone-corrected samples in ordination space. 
-](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=50%}
+](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=45%}
 
 <!-- end figure -->
 
+### Aggressiveness {-}
 
-<!-- MCG abundance figure -->
+<!-- aggressiveness figure -->
 
 ![
-Barplot showing abundance of each Mycelial Compatibility Group (MCG) in descending order.
-Singletons (46) have been removed for clarity, leaving 41 MCGs.
-White bars represent sample counts and grey bars represent counts of unique multilocus genotypes (MLG).
-The transparency associated with the grey bars represent the evenness of the distribution of the MLGs within a given MCG as shown in the inset histograms.
-](../../results/figures/publication/Figure1Z.pdf){#barplot width=100%}
+Boxplot representing aggressiveness (vertical axis) by population (horizontal axis) arranged in descending order of mean aggressiveness for all populations with N > 5. Box boundaries represent 25% and 75% percentiles and whiskers extend to at most 1.5 $\times$ the interquartile range. Horizontal line represents median value. Points represent individual observations whose colors indicate if they came from white mold screening nurseries (wmn) or not (other).
+](../../results/figures/publication/aggressiveness.pdf){#aggressiveness-boxplot width=45%}
 
 <!-- end figure -->
+
+Our assessment of aggressiveness in association with Region showed a significant effect (P < 1.00e^-4^), with means that ranged from 5.8 (MN) to 4.0 (CA) (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
+MCGs also showed a significant effect (P < 1.00e^-4^), with means that ranged from 6.0 (MCG 44) to 4.6 (MCG 49).
+We additionally found a significant effect for MLGs (P = 7.44e^-4^) for MLGs, with means that ranged from 6.0 (MLG 78) to 4.3 (MLG 140).
+
+### Correlation of Mulitlocus Genotypes and Mycelial Compatibility Groups {-}
+
+Our network-based approach to correlating MLGs with MCGs revealed a large and complex network (Fig. \@ref(biggraph)). 
+Community analysis showed 51 communities, 15 of which consisted of a single MLG unconnected with any other community indicating that just 9.09% of the 165 MLGs are unable to cross with any other MLG in this data set.
+The three communities with the most members contained 8 of the ten most abundant MCGs. 
+Comparing these communities with Bruvo's genetic distance revealed and average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
+When we assessed the number of potential heterothallic parings between different MLGs in our data set (two different MLGs that are in the same mycelial compatibility group), we found an average of 16.5 potential heterothallic parings per MLG. 
+MLG 75, representing just four isolates, had 57 neighbors that shared the same mycelial compatibility group. 
+Overall, there was no clear pattern to the association between MLG and MCGs. 
+
+
+<!-- MCG graph figure -->
+
+![
+Graph showing complex associations between Mycelial Compatibility Groups (dotted nodes) and Multilocus Genotypes (full nodes). 
+Node size reflect the number of samples represented by each node (circle).
+Edges (arrows) point from Mycelial Compatibility Group to Multilocus Genotype where the weight (thickness) of the edge represents the number of samples shared.
+Node color represents the community assignment based on the walktrap algorithm with a maximum of four steps [@pons2006computing].
+](../../results/figures/publication/FigureS2.pdf){#biggraph width=100%}
+
+<!-- end fig -->
+
 
 ## Genotypic Structure {-}
 
@@ -417,7 +439,7 @@ The genotypes were relatively evenly distributed within regions with moderate to
 Of the 165 MLGs, 76 (46%) were found across all geographic regions except WI (2), ID (1), and Mexico (18) (Fig. \@ref(community-graph)).
 Community analysis of the MLGs shared between populations revealed 4 communities with a modularity of 0.17 (Fig. \@ref(community-graph)): A coastal community (CA, OR, WA, and NY), a mid-west community (CO, NE, ND, MI), and an international community (MN, France, Australia).
 Analysis with 16 loci resulted in the removal of the NY node because it no longer shared a genotype with OR, but the same overall community structure was present with a modularity of 0.2 (Fig. \@ref(community-graph16)).
-The international community appears to be driven by MLG 4, which is shared between all three populations and has a $P_{sex}$ value of 2.87 x 10^-5^, in contrast to the abundant MLG 25, which has a $P_{sex}$ value of 0.0168.
+The international community appears to be driven by MLG 4, which is shared between all three populations and has a $P_{sex}$ value of 2.87e^-5^, in contrast to the abundant MLG 25, which has a $P_{sex}$ value of 0.0168.
 
 ```{r table3, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 suppressPackageStartupMessages(library("tidyverse"))
@@ -442,26 +464,7 @@ Each edge represents a single MLG where its thickness represents the number of p
 
 <!-- end fig -->
 
-
-Our network-based approach to correlating MLGs with MCGs revealed a large and complex network (Fig. \@ref(biggraph)). 
-Community analysis showed 51 communities, 15 of which consisted of a single MLG unconnected with any other community indicating that just 9.09% of the 165 MLGs are unable to cross with any other MLG in this data set.
-The three communities with the most members contained 8 of the ten most abundant MCGs. 
-Comparing these communities with Bruvo's genetic distance revealed and average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
-When we assessed the number of potential heterothallic parings between different MLGs in our data set (two different MLGs that are in the same mycelial compatibility group), we found an average of 16.5 potential heterothallic parings per MLG. 
-MLG 75, representing just four isolates, had 57 neighbors that shared the same mycelial compatibility group. 
-Overall, there was no clear pattern to the association between MLG and MCGs. 
-
-
-<!-- MCG graph figure -->
-
-![
-Graph showing complex associations between Mycelial Compatibility Groups (dotted nodes) and Multilocus Genotypes (full nodes). 
-Node size reflect the number of samples represented by each node (circle).
-Edges (arrows) point from Mycelial Compatibility Group to Multilocus Genotype where the weight (thickness) of the edge represents the number of samples shared.
-Node color represents the community assignment based on the walktrap algorithm with a maximum of four steps [@pons2006computing].
-](../../results/figures/publication/FigureS2.pdf){#biggraph width=100%}
-
-<!-- end fig -->
+\newpage 
 
 ## Population Differentiation {-}
 
@@ -469,28 +472,38 @@ Node color represents the community assignment based on the walktrap algorithm w
 
 The analysis of molecular variance (AMOVA) over the hierarchy of Source and Region showed no significant variation between white mold nurseries and non-white mold nurseries after accounting for variation between regions (Table \@ref(tab:amova)).
 Because Mexico shared no genotypes with any of the other populations and we suspected that it was contributing to some of the observed variance, we re-ran AMOVA without the Mexican isolates and found similar decreased, but still significant levels of differentiation between regions.
-In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no evidence of population differentiation (Supplementary Data).  
+In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Data).  
 
--------------------------------------------------------------------------------
-Hierarchy               d.f.        S.S.       % variation    $\Phi$ statistic  
--------------------- ---------- ------------- -------------- ------------------
-Between Source         1 (1)    0.897 (0.753) -0.158 (0.116)   0.136 (0.0965)   
 
-Between Region        20 (19)     12 (8.91)    13.8 (9.53)     **0.138 (0.0955)**   
-within Source                                                                        
+```{r table4, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
+suppressPackageStartupMessages(library("tidyverse"))
+read_csv("../../results/tables/AMOVA-region.csv", 
+         na = "NA", # spaces read in as spaces
+         col_types = cols(.default = col_character()))  %>%
+  rename(ps = `Phi statistic`) %>%
+  mutate(ps = gsub("0\\.00(\\d{1})(\\d{2})", "\\1.\\2e^-3^", ps)) %>%
+  mutate(ps = case_when(Hierarchy == "Between Source" ~ ps, TRUE ~ paste0("**", ps, "**"))) %>%
+  rename(`$\\Phi statistic$` = ps) %>%
+  rename(`% variation` = `Percent variation`) %>%
+  rename(S.S. = `Sum of Squares`) %>%
+  select(-P) %>%
+  huxtable::as_huxtable(add_colnames = TRUE) %>% 
+  huxtable::set_col_width(c(1.1, 0.6, 0.9, 0.9, 1.4)) %>% 
+  huxtable::set_align(huxtable::everywhere, 2:5, "center") %>% 
+  huxtable::print_md(max_width = 100)
+```
 
-Within Region        296 (282)   56.7 (55.1)   86.4 (90.3)   **-1.58e^-3^ (1.16e^-3^)** 
-
--------------------------------------------------------------------------------
-
-Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance showing little differentiation between White Mold Nurseries and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a white mold nursery or not. Bold $\Phi$ values indicate significant values. Numbers in parentheses represent AMOVA run without Mexican isolates included. S.S. = Sum of Squares, d.f. = degrees of freedom.
+Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance showing little differentiation between White Mold Nurseries and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a white mold nursery or not. Bold $\Phi$ values indicate significant values (P < 1.00e^-4^). Numbers in parentheses represent AMOVA run without Mexican isolates included. S.S. = Sum of Squares, d.f. = degrees of freedom.
 
 ### Discriminant Analysis of Principal Components {-}
 
-Discriminant Analysis of Principal Components (DAPC) was performed with the first 21 principal components, representing 88% of the total variance. 
+Discriminant Analysis of Principal Components (DAPC) was performed grouping by Region with the first 21 principal components, representing 88% of the total variance. 
 The first discriminant axis (representing 64% of the discriminatory power) separated the centroid for the Mexico isolates from the rest of the data, indicating strong differentiation (Fig. \@ref(DAPC)b). 
 The second discriminant axis separated the centroid for the Californian isolates.
 The mean population assignment probabilities for all populations with n > 10 showed that only isolates from Mexico, CA, and France had > 50% probabilities of being reassigned to their source populations (Fig. \@ref(DAPC)a). 
+DAPC grouping by cultivar used the first 20 principal components, representing 89% of the total variance.
+The first two discriminant axes failed to separate any of the cultivars where the mean posterior assignment probabilities were 33.97% (G122), 35.95% (Beryl), and 30.08% (Bunsi).
+
 
 <!-- DAPC figure -->
 
@@ -538,7 +551,7 @@ We found significant population differentiation by geographic region, mainly dif
 To date, with 366 isolates, this is the largest population genetic study of *S. sclerotiorum* assessing population structure within managed and unmanaged agricultural environments. 
 These findings indicate that the white mold nurseries can be effective at screening for potential resistant lines within growing regions. 
 
-## Phenotypic Variable Importance {-}
+## Variable Importance {-}
 
 Borrowing a technique often used in the ecological literature, we used dbRDA to elucidate the effect of all variables (Aggressiveness, Region, Source,   Year, and Host) [@legendre1999distance].
 From the initial results, it appears that the most important factors for predicting genetic structure are region and year.
@@ -555,7 +568,7 @@ Our results do not support this assumption.
 It can be seen in Fig. \@ref(barplot) that the most abundant MCG contains several MLGs, but the diversity of those MLGs are low as indicated by the evenness (transparency), which indicates that there is one dominant MLG (MLG 25).
 What is not shown in Fig. \@ref(barplot) is the MLGs that are shared between MCGs. 
 This is illustrated in both table \@ref(tab:mlg-table) and Fig. \@ref(biggraph). 
-It could be argued, however that MLG 25, with its high value of $P_{sex}$ represents different true MLGs across the five MCGs it occupies, but this doesn't account for the overall structure of Fig. \@ref(biggraph) where, for example, MLG 75 ($P_{sex} = 1.81e^-4$) is compatible with 58 other genotypes through three MCG when the population structure of *S. sclerotiorum* is known to be clonal.
+It could be argued, however that MLG 25, with its high value of $P_{sex}$ represents different true MLGs across the five MCGs it occupies, but this doesn't account for the overall structure of Fig. \@ref(biggraph) where, for example, MLG 75 ($P_{sex}$ = 1.81e^-4^) is compatible with 58 other genotypes through three MCG when the population structure of *S. sclerotiorum* is known to be clonal.
 
 Over the past few years, researchers have noticed inconsistencies among the relationship between MCGs and MLGs [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic; @lehner2015genetic]. 
 Either several MCGs belong to one MLG, which could be explained by insufficient sampling of loci; several MLGs belong to one MCG, which could be explained by clonal expansion; or a mixture of both.
@@ -575,8 +588,11 @@ The most abundant genotype was shared across four populations, but its high valu
 The graph walking algorithm was able to divide the network into three groups, but had a modularity of 0.17, which indicates that the groups are weakly differentiated.
 This indicates that multilocus genotypes are widespread across the United States, giving more evidence for a clonal population structure.
 
+## Regional Differentiation {-}
 
-## Population Differentiation {-}
+The primary interest of this study was to assess if isolates sampled from white mold screening nurseries represent isolates from producer fields within the region [@steadman2003identification; @otto-hanson2011variation].
+According to our AMOVA results, we have evidence for differentiation at the region level, but little to no differentiation within region (Table \@ref(tab:amova)). 
+ 
 
 ## Conclusions {-}
 
@@ -727,22 +743,18 @@ Will not work with HTML outputs, though. -->
 
 ```{r table2, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 suppressPackageStartupMessages(library("tidyverse"))
-read_csv("../../results/tables/MCG-aggressiveness.csv", 
+read_csv("../../results/tables/Region-aggressiveness.csv", 
          na = "NA", # spaces read in as spaces
          col_types = cols(.default = col_character())) %>%
-  dplyr::rename(MCG = trt) %>%
-  dplyr::rename(Group = M) %>%
-  dplyr::rename(`Mean Aggressiveness` = means) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>%
   huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
-  huxtable::set_col_width(c(0.05, 0.3, 0.08)) %>%
+  huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
   huxtable::set_align(row = huxtable::everywhere, col = 2, "right") %>%
-  huxtable::print_md(max_width = 31)
+  huxtable::print_md(max_width = 40)
 ```
 
-Table: (\#tab:mcg-aggressiveness) Mean aggressiveness ratings for the ten most abundant mycelial compatibility groups (MCG) with groupings according to 95% family-wise confidence interval.
+Table: (\#tab:region-aggressiveness) Mean aggressiveness ratings for the Regions with greater than 5 samples; groupings according to 95% family-wise confidence interval.
 
-\newpage
 
 ----------------------------------------------------------------------------
 Pop             N        eMLG    H    G  $\lambda$  $E_5$   *h* $I_A$ $\bar{ 
@@ -791,6 +803,18 @@ P-value symbols: \* = 0.001, ~ = $\leq 0.05$.
 
 
 
+<!-- MCG abundance figure -->
+
+![
+Barplot showing abundance of each Mycelial Compatibility Group (MCG) in descending order.
+Singletons (46) have been removed for clarity, leaving 41 MCGs.
+White bars represent sample counts and grey bars represent counts of unique multilocus genotypes (MLG).
+The transparency associated with the grey bars represent the evenness of the distribution of the MLGs within a given MCG as shown in the inset histograms.
+](../../results/figures/publication/Figure1Z.pdf){#barplot width=100%}
+
+<!-- end figure -->
+
+\newpage
 
 <!-- community graph figure -->
 
