@@ -21,15 +21,15 @@ can get this from the cleaned data set that we saved in the
 "Aggressiveness" as that is the preferred term.
 
 ```{r load_data}
-cols(
+datcols <- cols(
   .default = col_integer(),
   Severity = col_double(),
   Region = col_character(),
   Source = col_character(),
   Host = col_character()
 )
-dat <- read_csv(file.path(PROJHOME, "data", "clean_data.csv")) %>%
-  select(MCG, Severity)
+dat <- read_csv(file.path(PROJHOME, "data", "clean_data.csv"), col_types = datcols) %>%
+  select(Severity, MCG, Region, Source)
 dat
 ```
 
@@ -42,7 +42,7 @@ top_mcg <- dat %>%
   arrange(desc(N)) %>%
   slice(1:10) %>% 
   inner_join(dat, by = "MCG") %>%
-  select(-N) %>%
+  select(MCG, Severity) %>%
   mutate(MCG = forcats::fct_inorder(as.character(MCG)))
 top_mcg
 ```
@@ -54,7 +54,7 @@ set.seed(2017-06-29)
 ggplot(top_mcg, aes(x = MCG, y = Severity)) +
   geom_boxplot() +
   geom_point(position = position_jitter(width = 0.25), alpha = 0.5) +
-  scale_y_continuous(limits = c(0, NA)) +
+  scale_y_continuous(limits = c(1, 9), breaks = c(1, 3, 5, 7, 9), expand = c(0, 0.1)) +
   # scale_x_discrete(position = "top") +
   theme_bw(base_size = 16, base_family = "Helvetica") +
   theme(aspect.ratio = 1/2) +
@@ -114,6 +114,142 @@ grps %>%
 
 There appears to be a significant effect at p = `r formatC(broom::tidy(ANOVA)$p.value[1])`.
 
+# Assessing Virulence by Region
+
+Since this was done in Otto-Hanson *et al.*, it would be a good idea for us to 
+assess this as well.
+
+
+```{r fig.width = 5, fig.height = 3.75}
+set.seed(2017-06-29)
+region_dat <- dat %>%
+  group_by(Region) %>%
+  filter(n() > 5) %>%
+  mutate(mean_sev = mean(Severity)) %>%
+  mutate(Source = ifelse(Source == "wmn", "wmn", "other")) %>%
+  arrange(desc(mean_sev)) %>%
+  ungroup() %>%
+  mutate(Region = forcats::fct_inorder(Region)) %>%
+  select(Region, Severity, Source)
+ggplot(region_dat, aes(x = Region, y = Severity)) +
+  geom_point(aes(fill = Source), 
+             pch = 21, 
+             position = position_jitter(width = 0.25), 
+             alpha = 0.35) +
+  geom_boxplot(alpha = 0.5) +
+  scale_y_continuous(limits = c(1, 9), breaks = c(1, 3, 5, 7, 9), expand = c(0, 0.1)) +
+  scale_fill_manual(values = rev(c("black", "white"))) +
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  theme(aspect.ratio = 1/2) +
+  theme(axis.text = element_text(color = "black")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5)) +
+  theme(panel.grid.major = element_line(colour = "grey20")) +
+  theme(panel.grid.minor = element_line(colour = "grey50")) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.border = element_blank()) +
+  theme(legend.position = "top") +
+  theme(plot.margin = unit(c(0, 0, 0, 0), "lines")) +
+  labs(list(
+    y = "Aggressiveness",
+    x = "Region"
+    ))
+if (!interactive()){
+  ggsave(file.path("results", "figures", "publication", "aggressiveness.pdf"),
+         width = 88, units = "mm")
+}
+```
+
+```{r anova2, fig.width = 4, fig.height = 8}
+region_dat %>%
+  group_by(Region) %>%
+  summarize(N = n(), 
+            `Min Aggressiveness` = min(Severity),
+            `Max Aggressiveness` = max(Severity),
+            `Average Aggressiveness` = mean(Severity),
+            `Median Aggressiveness` = median(Severity)
+            ) %>%
+  knitr::kable(digits = 2)
+ANOVA <- aov(Severity ~ Region, data = region_dat)
+ANOVA
+summary(ANOVA)
+plot(TukeyHSD(ANOVA, conf.level = 0.95), las = 2)
+grps <- agricolae::HSD.test(ANOVA, "Region", alpha = 0.05)$groups %>% 
+  dplyr::rename(Region = trt) %>%
+  dplyr::rename(Group = M) %>%
+  dplyr::rename(`Mean Aggressiveness` = means)
+
+readr::write_csv(grps, path = "results/tables/Region-aggressiveness.csv", col_names = TRUE)
+
+grps %>%
+  huxtable::as_huxtable(add_colnames = TRUE) %>%
+  huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
+  huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
+  huxtable::set_align(row = huxtable::everywhere, col = 2, "right") %>%
+  huxtable::print_md(max_width = 40)
+```
+
+```{r fig.width = 5, fig.height = 3.5}
+library("poppr")
+load(file.path("data", "sclerotinia_16_loci.rda"))
+strat <- strata(dat11) %>% 
+  add_column(MLG = mll(dat11)) %>%
+  add_column(Severity = other(dat11)$meta$Severity)
+top_mlg <- strat %>% 
+  group_by(MLG) %>%
+  summarize(N = n()) %>%
+  arrange(desc(N)) %>%
+  slice(1:10) %>% 
+  inner_join(strat, by = "MLG") %>%
+  select(MLG, Severity) %>%
+  mutate(MLG = forcats::fct_inorder(as.character(MLG)))
+set.seed(2017-06-29)
+ggplot(top_mlg, aes(x = MLG, y = Severity)) +
+  geom_boxplot() +
+  geom_point(position = position_jitter(width = 0.25), alpha = 0.5) +
+  scale_y_continuous(limits = c(1, 9), breaks = c(1, 3, 5, 7, 9), expand = c(0, 0.1)) +
+  # scale_x_discrete(position = "top") +
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  theme(aspect.ratio = 1/2) +
+  theme(axis.text = element_text(color = "black")) +
+  # theme(axis.ticks.x = element_blank()) +
+  theme(panel.grid.major = element_line(colour = "grey20")) +
+  theme(panel.grid.minor = element_line(colour = "grey50")) +
+  theme(panel.grid.major.x = element_blank()) +
+  theme(panel.border = element_blank()) +
+  labs(list(
+    # title = "Aggressiveness for the top 10 MCGs",
+    y = "Aggressiveness",
+    x = "Mulitlocus Genotype"
+    ))
+```
+
+```{r anova3, fig.width = 4, fig.height = 8}
+top_mlg %>%
+  group_by(MLG) %>%
+  summarize(N = n(), 
+            `Min Aggressiveness` = min(Severity),
+            `Max Aggressiveness` = max(Severity),
+            `Average Aggressiveness` = mean(Severity)
+            ) %>%
+  knitr::kable(digits = 2)
+ANOVA <- aov(Severity ~ MLG, data = top_mlg)
+ANOVA
+summary(ANOVA)
+plot(TukeyHSD(ANOVA, conf.level = 0.95), las = 2)
+grps <- agricolae::HSD.test(ANOVA, "MLG", alpha = 0.05)$groups %>% 
+  dplyr::rename(MLG = trt) %>%
+  dplyr::rename(Group = M) %>%
+  dplyr::rename(`Mean Aggressiveness` = means)
+
+readr::write_csv(grps, path = "results/tables/MLG-aggressiveness.csv", col_names = TRUE)
+
+grps %>%
+  huxtable::as_huxtable(add_colnames = TRUE) %>%
+  huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
+  huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
+  huxtable::set_align(row = huxtable::everywhere, col = 2, "right") %>%
+  huxtable::print_md(max_width = 40)
+```
 
 <details>
 <summary>Session Information</summary>
