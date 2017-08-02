@@ -313,7 +313,13 @@ I guess it's not so simple after all."
 
 V(g)$size <- sqrt(osize)/10
 set.seed(2017-05-03)
-lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
+# set.seed(2017-08-02)
+
+lay2 <- create_layout(g, layout = "igraph", 
+                      algorithm = "fr", 
+                      weights = rep(1, length(E(g)$weight))
+                      # weights = ifelse(E(g)$weight == 1, 1, 1 + E(g)$weight/100)
+                      )
 
 the_communities <- data_frame(vertex = lay2$name, community = lay2$community) %>%
   mutate(comm = case_when(
@@ -544,7 +550,7 @@ top5g <- make_mcgmlg_graph(top5)
 tosize <- V(top5g)$size
 V(top5g)$size <- sqrt(tosize)/10
 set.seed(2017-05-08)
-top5lay <- create_layout(top5g, layout = "igraph", algorithm = "nicely")
+top5lay <- create_layout(top5g, layout = "igraph", algorithm = "fr", weights = rep(1, length(E(top5g))))
 top5lay$community <- inner_join(data_frame(vertex = top5lay$name), the_communities)$comm
 t5g <- mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and associated MLGs")
 t5g
