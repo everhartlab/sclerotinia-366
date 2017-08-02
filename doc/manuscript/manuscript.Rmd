@@ -228,7 +228,7 @@ Alleles were scored using PeakScanner version 1.0 (Life Technologies Corporation
 ## Data processing and Analyses {-}
 
 All analyses were performed on this data set unless otherwise mentioned.
-All data processing and analyses were performed in R version 3.4.0 [@R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/.
+All data processing and analyses were performed in R version 3.4.1 [@R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/.
 Of the 16 microsatellite loci genotyped, five included compound repeats, which made it challenging to accurately/confidently bin alleles into fragment sizes expected for each locus based on the described repeat motif. 
 <!-- add something about repeat length consistency  -->
 Loci with compound repeats were removed for the reported statistics, but were processed and included in data analyses to ensure the integrity of the results with 11 loci as compared to 16.
@@ -262,7 +262,7 @@ We wanted to assess if there was correlation between multilocus genotypes (MLG) 
 This was done using a graph-based approach with community analysis.
 We first created a contingency table with MLGs and MCGs and converted it to a directed and weighted edgelist where each edge was a connection from an MCG to an MLG weighted by the number of samples shared in the connection. 
 This was then converted to a bipartite graph where top nodes represented MCGs and bottom nodes represented MLGs.
-The cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version 1.0.1 was used to define clusters of MLGs and MCGs [@csardi2006igraph; @pons2006computing].
+The cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version 1.1.2 was used to define clusters of MLGs and MCGs [@csardi2006igraph; @pons2006computing].
 All communities that had fewer than 10 members were then consolidated into one.
 These community definitions were then used to assess the average genetic distance (as defined by Bruvo's distance) within members of the community [@bruvo2004simple].
 
@@ -722,39 +722,56 @@ read_csv("../../results/tables/Region-aggressiveness.csv",
 Table: (\#tab:region-aggressiveness) Mean aggressiveness ratings for the Regions with greater than 5 samples; groupings according to 95% family-wise confidence interval.
 
 
-----------------------------------------------------------------------------
-Pop             N        eMLG    H    G  $\lambda$  $E_5$   *h* $I_A$ $\bar{ 
-                                                                       r}_d$ 
---------- ------- ----------- ---- ---- ---------- ------ ----- ----- ------
-WA        58 (56) 9.95 (0.23)  4.0 54.3       0.98   0.98  0.60 0.65*  0.07* 
-
-MI        58 (43)  9.3 (0.79)  3.6 29.0       0.97   0.78  0.54 1.25*  0.14* 
-
-ND        41 (35) 9.44 (0.73)  3.5 25.9       0.96   0.82  0.54    1*   0.1* 
-
-NE        37 (28) 8.93 (0.94)  3.2 17.8       0.94   0.75  0.55 2.22*  0.25* 
-
-CO        34 (28) 9.46 (0.67)  3.3 24.1       0.96   0.92  0.56 2.33*  0.27* 
-
-France    21 (14)  8.5 (0.85)  2.6 12.6       0.92   0.95  0.48 0.94*  0.11* 
-
-CA        18 (15) 9.12 (0.72)  2.7 13.5       0.93   0.94  0.51 0.28~  0.03~ 
-
-OR        17 (13) 8.52 (0.85)  2.5 10.7       0.91   0.89  0.47 0.92*   0.1* 
-
-Mexico     15 (9)  7.1 (0.85)  2.1  7.3       0.86   0.89  0.28 2.57*  0.37* 
-
-MN          9 (7)       7 (0)  1.9  6.2       0.84   0.93  0.47 1.34*  0.19* 
-
-Australia   6 (6)       6 (0)  1.8  6.0       0.83   1.00  0.48  0.7~  0.12~ 
-
-WI          2 (2)       2 (0)  0.7  2.0       0.50   1.00  0.27     -      - 
-
-NY          1 (1)       1 (0)  0.0  1.0       0.00    NaN   NaN     -      - 
-
-ID          1 (1)       1 (0)  0.0  1.0       0.00    NaN   NaN     -      - 
-
-----------------------------------------------------------------------------
+```{r table_ia, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
+suppressPackageStartupMessages(library("tidyverse"))
+read_csv("../../results/tables/genotype_diversity_table_region.csv", 
+         na = "NA", # spaces read in as spaces
+         col_types = cols(
+         Pop = col_character(),
+         N = col_integer(),
+         MLG = col_integer(),
+         eMLG = col_double(),
+         SE = col_double(),
+         H = col_double(),
+         G = col_double(),
+         lambda = col_double(),
+         E.5 = col_double(),
+         Hexp = col_double(),
+         Ia = col_double(),
+         p.Ia = col_double(),
+         rbarD = col_double(),
+         p.rD = col_double(),
+         File = col_character()
+      )) %>%
+  mutate(Ia = case_when(
+    !is.finite(p.Ia) ~ "-",
+    p.Ia == 0.001 ~ paste0(round(Ia, 2), "*"),
+    p.Ia <= 0.01  ~ paste0(round(Ia, 2), "-"),
+    p.Ia <= 0.05  ~ paste0(round(Ia, 2), "~"),
+    TRUE          ~ as.character(round(Ia, 2))
+  )) %>%
+  mutate(rbarD = case_when(
+    !is.finite(p.rD) ~ "-",
+    p.rD == 0.001 ~ paste0(round(rbarD, 2), "*"),
+    p.rD <= 0.01  ~ paste0(round(rbarD, 2), "-"),
+    p.rD <= 0.05  ~ paste0(round(rbarD, 2), "~"),
+    TRUE          ~ as.character(round(rbarD, 2))
+  )) %>%
+  mutate_if(is.numeric, round, digits = 2) %>%
+  mutate(N = paste(N, MLG, sep = " (") %>% paste0(")") %>% formatC()) %>%
+  mutate(eMLG = paste(eMLG, SE, sep = " (") %>%  paste0(")") %>% formatC()) %>%
+  rename(`*h*` = Hexp) %>%
+  rename(`$E_5$` = E.5) %>%
+  rename(`$I_A$` = Ia) %>%
+  rename(`$\\lambda$` = lambda) %>%
+  rename(`$\\bar{r}_d$` = rbarD) %>%
+  select(-File, -MLG, -SE, -p.rD, -p.Ia) %>% 
+  huxtable::as_huxtable(add_colnames = TRUE) %>%
+  huxtable::set_number_format(huxtable::everywhere, 4:5, 1) %>%
+  huxtable::set_align(huxtable::everywhere, -1, "right") %>%
+  huxtable::set_col_width(c(1.1, 0.9, 1.3, 0.5, 0.5, 1.2, 0.7, 0.6, 0.6, 0.8)) %>%
+  huxtable::print_md(max_width = 80)
+```
 
 Table: (\#tab:iatab) Genotypic diversity and Linkage Disequilibrium summary for geographic populations arranged by abundance after clone-correction by a hierarchy of Region/Source/Host/Year. 
 Pop = Population, N = number of individuals (number of MLG in parentheses), 
@@ -765,7 +782,7 @@ $\lambda$ = Simpson's Index,
 $E_5$ = Evenness,
 $I_A$ = the index of association, 
 $\bar{r}_d$ = standardized index of association. 
-P-value symbols: \* = 0.001, ~ = $\leq 0.05$.
+P-value symbols: \* = 0.001, - = $\leq 0.01$, ~ = $\leq 0.05$.
 
 
 
