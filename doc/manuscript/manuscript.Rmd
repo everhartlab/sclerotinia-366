@@ -441,7 +441,7 @@ Each edge represents a single MLG where its thickness represents the number of p
 ### Analysis of Molecular Variance {-}
 
 The analysis of molecular variance (AMOVA) over the hierarchy of Source and Region showed no significant variation between white mold nurseries and non-white mold nurseries after accounting for variation between regions (Table \@ref(tab:amova)).
-Because we observed that the sample sizes of wmn isolates and producer isolates were lopsided in several populations (Table \@ref(tab:table-1)), we ran the analysis again with regions that had at least ten isolates from both wmn and producer fields, showing similar results (Table \@ref(tab:amova)). 
+Because we observed that the sample sizes of wmn isolates and producer isolates were lopsided in several populations (Table \@ref(tab:isolate-table)), we ran the analysis again with regions that had at least ten isolates from both wmn and producer fields, showing similar results (Table \@ref(tab:amova)). 
 In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Data).  
 
 
@@ -560,12 +560,23 @@ The most abundant genotype was shared across four populations, but its high valu
 The graph walking algorithm was able to divide the network into three groups, but had a modularity of 0.17, which indicates that the groups are weakly differentiated.
 This indicates that multilocus genotypes are widespread across the United States, giving more evidence for a clonal population structure.
 
-## Regional Differentiation {-}
+## Population Differentiation {-}
 
 The primary interest of this study was to assess if isolates sampled from white mold screening nurseries represent isolates from producer fields within the region [@steadman2003identification; @otto-hanson2011variation].
 According to our AMOVA results, we have evidence for differentiation at the region level, but little to no differentiation between white mold nursery isolates and production field isolates within region (Table \@ref(tab:amova)).
-This 
- 
+This result indicates that breeders may consider regional differences when assessing resistance of new bean lines. 
+The fact that much variation was reduced when assessing populations with equally representative wmn and producer fields indirectly supports this claim. 
+
+## Limitations {-}
+
+One of the main limitations of this study is the focus on *P. vulgaris* as a host. 
+It has been shown that *S. sclerotiorum* in the midwestern United States does not have a particular preference for host [@aldrich-wolfe2015genetic]. 
+If the distribution of *S. sclerotiorum* is even across agricultural hosts in the US, then our sample may yet be representative of the genetic pool present in other crops and weedy species. 
+
+Another limitation was the microsatellite markers used for this particular study [@sirjusingh2001characterisation].
+The genotype accumulation curve showed no indication of a plateau, indicating that if we had sampled more loci, we would have resolved more multilocus genotypes. 
+While 16 loci showed us similar results and began to show a plateau for the genotype accumulation curve, we were unable to use these results due to our uncertainty in the allele calls for these five extra loci. 
+With the availability of an optically-mapped genome [citation-needed], future studies describing the genetic diversity of *S. sclerotiorum* should employ techniques such as Genotyping-By-Sequencing [citation-needed], Sequence Capture [citation-needed], or Whole Genome Sequencing [citation-needed].
 
 ## Conclusions {-}
 
