@@ -261,10 +261,6 @@ plot_dbrda(cap11cc, arrows = 5) +
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +
   theme(aspect.ratio = 1)
-# if (!interactive()){
-  FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.pdf")
-  ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
-# }
 plot_dbrda(cap16cc, arrows = 10) +
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +
@@ -272,11 +268,11 @@ plot_dbrda(cap16cc, arrows = 10) +
 ```
 
 This is all well and good, but what exactly does it actually mean to have only 
-1.93 variance explained (for 11 loci, that is)? I was a bit stumped as well. 
+3.33% variance explained (for 11 loci, that is) on the first axis? I was a bit stumped as well. 
 Luckily, Gavin Simpson has some answers: http://stackoverflow.com/a/22537820/2752888
 
-Basically, we have a situation where we have all of the variables only
-explaining a whopping 16 - 17% of the variance and the rest goes unexplained.
+Basically, we have a situation where we have all of the variables
+explaining 45% of the variance and the rest goes unexplained.
 
 ```{r, echo = FALSE, results = "asis"}
 cap11sum <- vegan:::summary.cca(cap11cc, axes = 0, scaling = "sites")
@@ -317,27 +313,76 @@ plot(vp11, digits = 2, Xnames = c("Year", "Region", "Host", "MCG"))
 plot(vp16, digits = 2, Xnames = c("Year", "Region", "Host", "MCG"))
 ```
 
-Out of both of the models, only Region explains the most variance, almost double
-that of Host or Year and Severity contributes almost nothing. 
+Out of both of the models, MCG explains the most variance, but we have an 
+interesting warning pop up indicating that there is multicollinearity within our
+variables. It appears that all of these are multicollinear with MCG. Since dbRDA
+assumes that all the variables are independent, it would be prudent to re-run 
+the analysis without the MCG variables as well
+
+## Removing Source of Multicollinearity
+
+```{r rda_calculation2, cache = TRUE}
+# 11 loci
+ENV112   <- select(ENV11, -MCG)
+cap11cc2 <- choose_dbrda(dat11cc.bruvo, ENV = ENV112, CHOOSER = "ordistep")
+```
 
 ```{r}
-wmn11 <- seppop(dat11, ~Source)$wmn %>% setPop(~Region)
-wmn11_sub <- popsub(wmn11, blacklist = character(0))
-min_span_net <- bruvo.msn(wmn11_sub, replen = other(wmn11)$REPLEN, add = TRUE, loss = TRUE, showplot = FALSE, include.ties = TRUE)
-set.seed(67)
-plot_poppr_msn(wmn11,
-               min_span_net,
-               inds = "none",
-               mlg = TRUE,
-               gadj = 6,
-               nodelab = 100,
-               nodebase = 1.15,
-               palette = funky,
-               cutoff = (0.5/11)*3,
-               quantiles = FALSE,
-               beforecut = TRUE,
-               layfun = igraph::layout_with_lgl)
+cap11cc2
+cap11cc2$anova
+vegan::RsquareAdj(cap11cc2)
 ```
+
+
+```{r total_anova2, cache = TRUE}
+anova(cap11cc2)
+```
+
+We can also see the marginal effects with `by = "margin"`
+
+```{r marginal_anova2, cache = TRUE}
+anova(cap11cc2, by = "margin")
+```
+
+```{r resultplot2, fig.width = 5, fig.height = 5}
+set.seed(999)
+plot_dbrda(cap11cc2, arrows = 5) + 
+  theme_classic(base_size = 16, base_family = "Helvetica") + 
+  theme(axis.text = element_text(color = "black")) +
+  theme(aspect.ratio = 1)
+if (!interactive()){
+  FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.pdf")
+  ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
+}
+```
+
+What we can see here is that the amount of explained variance went down a bit to
+1.92, and our model now only explains 16% of the variance. 
+
+```{r, echo = FALSE, results = "asis"}
+cap11sum2 <- vegan:::summary.cca(cap11cc2, axes = 0, scaling = "sites")
+knitr::kable(vartab(cap11sum2), digits = 3)
+```
+
+
+```{r}
+vp11     <- varpart(dat11cc.bruvo, ~Severity + Year + Region + Host, data = ENV11, comm = dat11raw, add = TRUE)
+plot(vp11, Xnames = c("Full Model", "No Model"))
+vp11 <- varpart(dat11cc.bruvo, ~Severity, ~Year, ~Region, ~Host, data = ENV11, add = TRUE)
+
+plot(vp11, digits = 2, Xnames = c("Year", "Region", "Host", "MCG"))
+```
+
+# Conclusions
+
+This analysis showed us two things: Severity is not an important predictor for 
+genetic diversity, but Region, Host, Year, and MCG are all predictors of genetic
+diversit. Explanations for this result could be due to a few reasons: MCG, a
+phenotypic variable associated with pre-zygotic barriers has SOME genetic 
+component to it; the MCGs that explained the most variation were also the MCGs
+that were strongly associated with one genotype (i.e. MCG 5 has 19 isolates of
+MLG 25).
+
 
 <details>
 <summary>Session Information</summary>
