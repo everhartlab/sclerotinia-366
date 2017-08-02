@@ -344,11 +344,15 @@ Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in th
 ### Variable Importance {-}
 
 The dbRDA was performed on clone-corrected isolates (N = 318) after grouping them by location, host, region, and year.
-The forward-backward selection process revealed aggressiveness, year, region, and host to be the optimal variables for the reduced model, accounting for 17.6% of the total variation.
-ANOVA revealed that the reduced model was significant with an adjusted R^2^ of 0.033 (P = 0.001).
-Assessment of the marginal effects showed that state, host, and year significantly explained genetic variation (P = 0.001), but aggressiveness was only mildly significant (P = 0.045). 
+The forward-backward selection process revealed year, region, host, and aggressiveness to be the optimal variables for the reduced model, accounting for 45% of the total variation.
+ANOVA revealed that the reduced model was significant with an adjusted R^2^ of 0.0674 (P = 0.001).
+Assessment of the marginal effects showed that region, host, year, and aggressiveness significantly explained genetic variation (P = 0.001, P = 0.009 for region).
+It was revealed that there was multicollinearity combining all variables with MCG, so we followed the same procedure, dropping MCG from the list of potential predictors. 
+From these results, we found that aggressiveness, year, region, and host were optimal, accounting for 17.6% of the total variation.
+ANOVA revealed significant effects with an adjusted R^2^ of 0.0325 (P = 0.001).
+While the marginal effect assessment showed that region, host, and year all significantly explained the variation at P = 0.001, and aggressiveness significantly explained the variation at P = 0.045.
 Much of the variation appears to be driven by isolates from Mexico and 2005 (Fig. \@ref(rda-biplot)).
-Variance partitioning of the independent variables indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
+Variance partitioning of the independent variables without MCG indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
 
 <!-- RDA figure -->
 
@@ -520,14 +524,16 @@ These findings indicate that the white mold nurseries can be effective at screen
 ## Variable Importance {-}
 
 Borrowing a technique often used in the ecological literature, we used dbRDA to elucidate the effect of all variables (Aggressiveness, Region, Source,   Year, and Host) [@legendre1999distance].
-From the initial results, it appears that the most important factors for predicting genetic structure are region and year.
+From the initial results, it appears that the most important factors for predicting genetic structure are MCG, region, and year.
+When we inspected the biplot of the initial results, we saw that the most important predictors were MCGs 44, 5, and 9. 
+We believe that this is driven by the fact that these particular MCGs have uneven MLG distributions, meaning that they are heavily associated with one particular MLG (Fig. \@ref(biggraph), \@ref(barplot)).
 While the results indicated that Mexico and the year 2005 were the two most important variables, it's worth noting that all Mexican isolates were collected in 2005 (Fig. \@ref(rda-biplot)).
 The results also show that the Vista cultivar explains some of the variance, but this represents six isolates in MI. 
 Aggressiveness and specific source field had little to no effect on genetic diversity. 
 These results are in agreement with studies that examined differentiation based on host [@aldrich-wolfe2015genetic] and aggressiveness [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia] reporting little or no correlation of genetic diversity to these variables. 
 This indicates that a) breeders should keep in mind regional differences when assessing resistance and b) it is possible that we have not yet measured biologically relevant variables that can predict genetic differentiation, which could include variables such as soil community composition. 
 
-## Mycelial Compatibility Groups and Multillocus Genotypes {-}
+## Mycelial Compatibility Groups and Multilocus Genotypes {-}
 
 Of interest in this study was testing the association between multilocus genotypes (MLGs) and mycelial compatibility groups (MCGs), as the latter have historically been used as a proxy for clonal lineages [@leslie1993fungal; @otto-hanson2011variation; @kohn1990mycelial; @schafer2006optimized; @kohn1995clonal; @carbone1999patterns]. 
 Our results do not support this assumption.
