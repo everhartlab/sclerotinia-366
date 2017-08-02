@@ -581,7 +581,7 @@ grps %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-01
+##  date     2017-08-02
 ```
 
 ```
@@ -592,7 +592,7 @@ grps %>%
 ##  package     * version    date       source                            
 ##  ade4        * 1.7-6      2017-03-23 CRAN (R 3.4.0)                    
 ##  adegenet    * 2.1.0      2017-07-17 local                             
-##  agricolae     1.2-4      2016-06-12 CRAN (R 3.4.0)                    
+##  agricolae     1.2-5      2017-07-26 cran (@1.2-5)                     
 ##  AlgDesign     1.1-7.3    2014-10-15 CRAN (R 3.4.0)                    
 ##  ape           4.1        2017-02-14 CRAN (R 3.4.0)                    
 ##  assertr       2.0.2.2    2017-06-06 CRAN (R 3.4.0)                    
@@ -612,7 +612,7 @@ grps %>%
 ##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                    
 ##  devtools      1.13.2     2017-06-02 CRAN (R 3.4.0)                    
 ##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                    
-##  dplyr       * 0.7.1      2017-06-22 CRAN (R 3.4.0)                    
+##  dplyr       * 0.7.2      2017-07-20 CRAN (R 3.4.1)                    
 ##  evaluate      0.10       2016-10-11 CRAN (R 3.4.0)                    
 ##  expm          0.999-2    2017-03-29 CRAN (R 3.4.0)                    
 ##  ezknitr       0.6        2016-09-16 CRAN (R 3.4.0)                    
@@ -635,7 +635,7 @@ grps %>%
 ##  httpuv        1.3.3      2015-08-04 CRAN (R 3.4.0)                    
 ##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                    
 ##  huxtable      0.3.0      2017-05-18 CRAN (R 3.4.0)                    
-##  igraph        1.0.1      2015-06-26 CRAN (R 3.4.0)                    
+##  igraph        1.1.2      2017-07-21 cran (@1.1.2)                     
 ##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                    
 ##  klaR          0.6-12     2014-08-06 CRAN (R 3.4.0)                    
 ##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                    
@@ -668,13 +668,13 @@ grps %>%
 ##  R.oo          1.21.0     2016-11-01 CRAN (R 3.4.0)                    
 ##  R.utils       2.5.0      2016-11-07 CRAN (R 3.4.0)                    
 ##  R6            2.2.2      2017-06-17 cran (@2.2.2)                     
-##  Rcpp          0.12.11    2017-05-22 cran (@0.12.11)                   
+##  Rcpp          0.12.12    2017-07-15 cran (@0.12.12)                   
 ##  readr       * 1.1.1      2017-05-16 CRAN (R 3.4.0)                    
 ##  readxl        1.0.0      2017-04-18 CRAN (R 3.4.0)                    
 ##  reshape2      1.4.2      2016-10-22 CRAN (R 3.4.0)                    
 ##  rlang         0.1.1      2017-05-18 CRAN (R 3.4.0)                    
 ##  rvest         0.3.2      2016-06-17 CRAN (R 3.4.0)                    
-##  scales        0.4.1.9002 2017-07-06 Github (hadley/scales@6db7b6f)    
+##  scales        0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)    
 ##  seqinr        3.3-6      2017-04-06 CRAN (R 3.4.0)                    
 ##  shiny         1.0.3      2017-04-26 CRAN (R 3.4.0)                    
 ##  sp            1.2-4      2016-12-22 CRAN (R 3.4.0)                    

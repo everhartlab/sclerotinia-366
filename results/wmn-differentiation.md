@@ -202,7 +202,7 @@ ssc_amova_test
 ## Alternative hypothesis: greater 
 ## 
 ##       Std.Obs   Expectation      Variance 
-##  8.309756e+00 -2.754234e-05  2.828049e-07
+##  8.248604e+00 -2.464083e-05  2.866368e-07
 ```
 
 
@@ -234,7 +234,7 @@ plot(ssc_amova_region_test)
 ##   Within Region                     296     56.6667061        86.3618966
 ##                                   statistic
 ## levels                                  P Phi statistic
-##   Between SourceType               0.2811   0.136381034
+##   Between SourceType               0.2847   0.136381034
 ##   Between Region Within SourceType 0.0001   0.137746279
 ##   Within Region                    0.0001  -0.001583345
 ```
@@ -266,7 +266,7 @@ plot(ssc_amova_nm_test)
 ##   Within Region                     282     55.0854125         90.349725
 ##                                   statistic
 ## levels                                  P Phi statistic
-##   Between SourceType               0.2761    0.09650275
+##   Between SourceType               0.2750    0.09650275
 ##   Between Region Within SourceType 0.0001    0.09545746
 ##   Within Region                    0.0001    0.00115560
 ```
@@ -315,10 +315,10 @@ plot(ssc_amova_newami_test)
 ##   Between Region Within SourceType    4      2.6285603          8.309128
 ##   Within Region                     147     30.0470395         93.522707
 ##                                   statistic
-## levels                                  P Phi statistic
-##   Between SourceType               0.4018    0.06477293
-##   Between Region Within SourceType 0.0001    0.08159657
-##   Within Region                    0.0001   -0.01831835
+## levels                                 P Phi statistic
+##   Between SourceType               4e-01    0.06477293
+##   Between Region Within SourceType 1e-04    0.08159657
+##   Within Region                    1e-04   -0.01831835
 ```
 
 
@@ -855,7 +855,7 @@ LDS_PLOT
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-01
+##  date     2017-08-02
 ```
 
 ```
@@ -884,7 +884,7 @@ LDS_PLOT
 ##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                      
 ##  devtools      1.13.2     2017-06-02 CRAN (R 3.4.0)                      
 ##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                      
-##  dplyr       * 0.7.1      2017-06-22 CRAN (R 3.4.0)                      
+##  dplyr       * 0.7.2      2017-07-20 CRAN (R 3.4.1)                      
 ##  evaluate      0.10       2016-10-11 CRAN (R 3.4.0)                      
 ##  expm          0.999-2    2017-03-29 CRAN (R 3.4.0)                      
 ##  ezknitr       0.6        2016-09-16 CRAN (R 3.4.0)                      
@@ -892,12 +892,11 @@ LDS_PLOT
 ##  forcats       0.2.0      2017-01-23 CRAN (R 3.4.0)                      
 ##  foreign       0.8-69     2017-06-21 CRAN (R 3.4.0)                      
 ##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                      
-##  gdtools     * 0.1.4      2017-03-17 CRAN (R 3.4.0)                      
 ##  ggcompoplot * 0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)
 ##  ggforce       0.1.1      2016-11-28 CRAN (R 3.4.0)                      
 ##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                      
 ##  ggraph      * 1.0.0      2017-02-24 CRAN (R 3.4.0)                      
-##  ggrepel     * 0.6.11     2017-07-11 Github (slowkow/ggrepel@8fbd0a0)    
+##  ggrepel     * 0.6.12     2017-08-02 Github (slowkow/ggrepel@fd15d0a)    
 ##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                      
 ##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                      
 ##  graphics    * 3.4.1      2017-07-07 local                               
@@ -910,12 +909,13 @@ LDS_PLOT
 ##  highr         0.6        2016-05-09 CRAN (R 3.4.0)                      
 ##  hms           0.3        2016-11-22 CRAN (R 3.4.0)                      
 ##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                      
-##  htmlwidgets   0.8        2016-11-09 CRAN (R 3.4.0)                      
+##  htmlwidgets   0.9        2017-07-10 cran (@0.9)                         
 ##  httpuv        1.3.3      2015-08-04 CRAN (R 3.4.0)                      
 ##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                      
 ##  huxtable      0.3.0      2017-05-18 CRAN (R 3.4.0)                      
-##  igraph      * 1.0.1      2015-06-26 CRAN (R 3.4.0)                      
+##  igraph      * 1.1.2      2017-07-21 cran (@1.1.2)                       
 ##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                      
+##  KernSmooth    2.23-15    2015-06-29 CRAN (R 3.4.0)                      
 ##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                      
 ##  labeling      0.3        2014-08-23 CRAN (R 3.4.0)                      
 ##  lattice     * 0.20-35    2017-03-25 CRAN (R 3.4.0)                      
@@ -947,13 +947,13 @@ LDS_PLOT
 ##  R.oo          1.21.0     2016-11-01 CRAN (R 3.4.0)                      
 ##  R.utils       2.5.0      2016-11-07 CRAN (R 3.4.0)                      
 ##  R6            2.2.2      2017-06-17 cran (@2.2.2)                       
-##  Rcpp          0.12.11    2017-05-22 cran (@0.12.11)                     
+##  Rcpp          0.12.12    2017-07-15 cran (@0.12.12)                     
 ##  readr       * 1.1.1      2017-05-16 CRAN (R 3.4.0)                      
 ##  readxl        1.0.0      2017-04-18 CRAN (R 3.4.0)                      
 ##  reshape2      1.4.2      2016-10-22 CRAN (R 3.4.0)                      
 ##  rlang         0.1.1      2017-05-18 CRAN (R 3.4.0)                      
 ##  rvest         0.3.2      2016-06-17 CRAN (R 3.4.0)                      
-##  scales        0.4.1.9002 2017-07-06 Github (hadley/scales@6db7b6f)      
+##  scales        0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)      
 ##  seqinr        3.3-6      2017-04-06 CRAN (R 3.4.0)                      
 ##  shiny         1.0.3      2017-04-26 CRAN (R 3.4.0)                      
 ##  sp            1.2-4      2016-12-22 CRAN (R 3.4.0)                      
@@ -973,7 +973,7 @@ LDS_PLOT
 ##  vegan       * 2.4-3      2017-04-07 CRAN (R 3.4.0)                      
 ##  viridis     * 0.4.0      2017-03-27 CRAN (R 3.4.0)                      
 ##  viridisLite * 0.2.0      2017-03-24 CRAN (R 3.4.0)                      
-##  visNetwork  * 2.0.0      2017-06-26 cran (@2.0.0)                       
+##  visNetwork  * 2.0.1      2017-07-30 cran (@2.0.1)                       
 ##  withr         1.0.2      2016-06-20 CRAN (R 3.4.0)                      
 ##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                      
 ##  xtable        1.8-2      2016-02-05 CRAN (R 3.4.0)

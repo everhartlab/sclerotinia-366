@@ -590,7 +590,7 @@ reg$DAPC$posterior %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-07-26
+##  date     2017-08-02
 ```
 
 ```
@@ -618,7 +618,7 @@ reg$DAPC$posterior %>%
 ##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                      
 ##  devtools      1.13.2     2017-06-02 CRAN (R 3.4.0)                      
 ##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                      
-##  dplyr       * 0.7.1      2017-06-22 CRAN (R 3.4.0)                      
+##  dplyr       * 0.7.2      2017-07-20 CRAN (R 3.4.1)                      
 ##  evaluate      0.10       2016-10-11 CRAN (R 3.4.0)                      
 ##  expm          0.999-2    2017-03-29 CRAN (R 3.4.0)                      
 ##  ezknitr       0.6        2016-09-16 CRAN (R 3.4.0)                      
@@ -630,7 +630,7 @@ reg$DAPC$posterior %>%
 ##  ggforce       0.1.1      2016-11-28 CRAN (R 3.4.0)                      
 ##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                      
 ##  ggraph      * 1.0.0      2017-02-24 CRAN (R 3.4.0)                      
-##  ggrepel       0.6.11     2017-07-11 Github (slowkow/ggrepel@8fbd0a0)    
+##  ggrepel       0.6.12     2017-08-02 Github (slowkow/ggrepel@fd15d0a)    
 ##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                      
 ##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                      
 ##  graphics    * 3.4.1      2017-07-07 local                               
@@ -645,7 +645,7 @@ reg$DAPC$posterior %>%
 ##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                      
 ##  httpuv        1.3.3      2015-08-04 CRAN (R 3.4.0)                      
 ##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                      
-##  igraph      * 1.0.1      2015-06-26 CRAN (R 3.4.0)                      
+##  igraph      * 1.1.2      2017-07-21 cran (@1.1.2)                       
 ##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                      
 ##  KernSmooth    2.23-15    2015-06-29 CRAN (R 3.4.0)                      
 ##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                      
@@ -679,13 +679,13 @@ reg$DAPC$posterior %>%
 ##  R.oo          1.21.0     2016-11-01 CRAN (R 3.4.0)                      
 ##  R.utils       2.5.0      2016-11-07 CRAN (R 3.4.0)                      
 ##  R6            2.2.2      2017-06-17 cran (@2.2.2)                       
-##  Rcpp          0.12.11    2017-05-22 cran (@0.12.11)                     
+##  Rcpp          0.12.12    2017-07-15 cran (@0.12.12)                     
 ##  readr       * 1.1.1      2017-05-16 CRAN (R 3.4.0)                      
 ##  readxl        1.0.0      2017-04-18 CRAN (R 3.4.0)                      
 ##  reshape2      1.4.2      2016-10-22 CRAN (R 3.4.0)                      
 ##  rlang         0.1.1      2017-05-18 CRAN (R 3.4.0)                      
 ##  rvest         0.3.2      2016-06-17 CRAN (R 3.4.0)                      
-##  scales        0.4.1.9002 2017-07-06 Github (hadley/scales@6db7b6f)      
+##  scales        0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)      
 ##  seqinr        3.3-6      2017-04-06 CRAN (R 3.4.0)                      
 ##  shiny         1.0.3      2017-04-26 CRAN (R 3.4.0)                      
 ##  sp            1.2-4      2016-12-22 CRAN (R 3.4.0)                      

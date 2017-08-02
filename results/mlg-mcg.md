@@ -563,7 +563,13 @@ I guess it's not so simple after all."
 ```r
 V(g)$size <- sqrt(osize)/10
 set.seed(2017-05-03)
-lay2 <- create_layout(g, layout = "igraph", algorithm = "nicely")
+# set.seed(2017-08-02)
+
+lay2 <- create_layout(g, layout = "igraph", 
+                      algorithm = "fr", 
+                      weights = rep(1, length(E(g)$weight))
+                      # weights = ifelse(E(g)$weight == 1, 1, 1 + E(g)$weight/100)
+                      )
 
 the_communities <- data_frame(vertex = lay2$name, community = lay2$community) %>%
   mutate(comm = case_when(
@@ -968,7 +974,7 @@ top5g <- make_mcgmlg_graph(top5)
 tosize <- V(top5g)$size
 V(top5g)$size <- sqrt(tosize)/10
 set.seed(2017-05-08)
-top5lay <- create_layout(top5g, layout = "igraph", algorithm = "nicely")
+top5lay <- create_layout(top5g, layout = "igraph", algorithm = "fr", weights = rep(1, length(E(top5g))))
 top5lay$community <- inner_join(data_frame(vertex = top5lay$name), the_communities)$comm
 ```
 
@@ -1247,8 +1253,8 @@ strat_mcg <- left_join(strat, the_communities, by = c("MCG" = "vertex"))
 ```
 
 ```
-## Warning in left_join_impl(x, y, by$x, by$y, suffix$x, suffix$y): joining
-## factors with different levels, coercing to character vector
+## Warning: Column `MCG`/`vertex` joining factors with different levels,
+## coercing to character vector
 ```
 
 ```r
@@ -1469,7 +1475,7 @@ on average 7 steps.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-01
+##  date     2017-08-02
 ```
 
 ```
@@ -1497,7 +1503,7 @@ on average 7 steps.
 ##  deldir         0.1-14     2017-04-22 CRAN (R 3.4.0)                    
 ##  devtools       1.13.2     2017-06-02 CRAN (R 3.4.0)                    
 ##  digest         0.6.12     2017-01-27 CRAN (R 3.4.0)                    
-##  dplyr        * 0.7.1      2017-06-22 CRAN (R 3.4.0)                    
+##  dplyr        * 0.7.2      2017-07-20 CRAN (R 3.4.1)                    
 ##  evaluate       0.10       2016-10-11 CRAN (R 3.4.0)                    
 ##  expm           0.999-2    2017-03-29 CRAN (R 3.4.0)                    
 ##  ezknitr        0.6        2016-09-16 CRAN (R 3.4.0)                    
@@ -1509,7 +1515,7 @@ on average 7 steps.
 ##  ggjoy        * 0.2.0      2017-07-24 CRAN (R 3.4.1)                    
 ##  ggplot2      * 2.2.1      2016-12-30 CRAN (R 3.4.0)                    
 ##  ggraph       * 1.0.0      2017-02-24 CRAN (R 3.4.0)                    
-##  ggrepel        0.6.11     2017-07-11 Github (slowkow/ggrepel@8fbd0a0)  
+##  ggrepel        0.6.12     2017-08-02 Github (slowkow/ggrepel@fd15d0a)  
 ##  glue           1.1.1      2017-06-21 CRAN (R 3.4.0)                    
 ##  gmodels        2.16.2     2015-07-22 CRAN (R 3.4.0)                    
 ##  graphics     * 3.4.1      2017-07-07 local                             
@@ -1522,10 +1528,10 @@ on average 7 steps.
 ##  highr          0.6        2016-05-09 CRAN (R 3.4.0)                    
 ##  hms            0.3        2016-11-22 CRAN (R 3.4.0)                    
 ##  htmltools      0.3.6      2017-04-28 CRAN (R 3.4.0)                    
-##  htmlwidgets    0.8        2016-11-09 CRAN (R 3.4.0)                    
+##  htmlwidgets    0.9        2017-07-10 cran (@0.9)                       
 ##  httpuv         1.3.3      2015-08-04 CRAN (R 3.4.0)                    
 ##  httr           1.2.1      2016-07-03 CRAN (R 3.4.0)                    
-##  igraph       * 1.0.1      2015-06-26 CRAN (R 3.4.0)                    
+##  igraph       * 1.1.2      2017-07-21 cran (@1.1.2)                     
 ##  jsonlite       1.5        2017-06-01 CRAN (R 3.4.0)                    
 ##  knitr        * 1.16       2017-05-18 CRAN (R 3.4.0)                    
 ##  labeling       0.3        2014-08-23 CRAN (R 3.4.0)                    
@@ -1559,13 +1565,13 @@ on average 7 steps.
 ##  R.utils        2.5.0      2016-11-07 CRAN (R 3.4.0)                    
 ##  R6             2.2.2      2017-06-17 cran (@2.2.2)                     
 ##  RColorBrewer   1.1-2      2014-12-07 CRAN (R 3.4.0)                    
-##  Rcpp           0.12.11    2017-05-22 cran (@0.12.11)                   
+##  Rcpp           0.12.12    2017-07-15 cran (@0.12.12)                   
 ##  readr        * 1.1.1      2017-05-16 CRAN (R 3.4.0)                    
 ##  readxl         1.0.0      2017-04-18 CRAN (R 3.4.0)                    
 ##  reshape2       1.4.2      2016-10-22 CRAN (R 3.4.0)                    
 ##  rlang          0.1.1      2017-05-18 CRAN (R 3.4.0)                    
 ##  rvest          0.3.2      2016-06-17 CRAN (R 3.4.0)                    
-##  scales         0.4.1.9002 2017-07-06 Github (hadley/scales@6db7b6f)    
+##  scales         0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)    
 ##  seqinr         3.3-6      2017-04-06 CRAN (R 3.4.0)                    
 ##  shiny          1.0.3      2017-04-26 CRAN (R 3.4.0)                    
 ##  sp             1.2-4      2016-12-22 CRAN (R 3.4.0)                    
@@ -1585,7 +1591,7 @@ on average 7 steps.
 ##  vegan          2.4-3      2017-04-07 CRAN (R 3.4.0)                    
 ##  viridis      * 0.4.0      2017-03-27 CRAN (R 3.4.0)                    
 ##  viridisLite  * 0.2.0      2017-03-24 CRAN (R 3.4.0)                    
-##  visNetwork   * 2.0.0      2017-06-26 cran (@2.0.0)                     
+##  visNetwork   * 2.0.1      2017-07-30 cran (@2.0.1)                     
 ##  withr          1.0.2      2016-06-20 CRAN (R 3.4.0)                    
 ##  xml2           1.1.1      2017-01-24 CRAN (R 3.4.0)                    
 ##  xtable         1.8-2      2016-02-05 CRAN (R 3.4.0)
