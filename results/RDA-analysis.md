@@ -771,10 +771,6 @@ plot_dbrda(cap11cc, arrows = 5) +
 ![plot of chunk resultplot](./figures/RDA-analysis///resultplot-1.png)
 
 ```r
-# if (!interactive()){
-  FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.pdf")
-  ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
-# }
 plot_dbrda(cap16cc, arrows = 10) +
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +
@@ -788,11 +784,11 @@ plot_dbrda(cap16cc, arrows = 10) +
 ![plot of chunk resultplot](./figures/RDA-analysis///resultplot-2.png)
 
 This is all well and good, but what exactly does it actually mean to have only 
-1.93 variance explained (for 11 loci, that is)? I was a bit stumped as well. 
+3.33% variance explained (for 11 loci, that is) on the first axis? I was a bit stumped as well. 
 Luckily, Gavin Simpson has some answers: http://stackoverflow.com/a/22537820/2752888
 
-Basically, we have a situation where we have all of the variables only
-explaining a whopping 16 - 17% of the variance and the rest goes unexplained.
+Basically, we have a situation where we have all of the variables
+explaining 45% of the variance and the rest goes unexplained.
 
 
 11 loci:
@@ -901,30 +897,254 @@ plot(vp16, digits = 2, Xnames = c("Year", "Region", "Host", "MCG"))
 
 ![plot of chunk unnamed-chunk-4](./figures/RDA-analysis///unnamed-chunk-4-2.png)
 
-Out of both of the models, only Region explains the most variance, almost double
-that of Host or Year and Severity contributes almost nothing. 
+Out of both of the models, MCG explains the most variance, but we have an 
+interesting warning pop up indicating that there is multicollinearity within our
+variables. It appears that all of these are multicollinear with MCG. Since dbRDA
+assumes that all the variables are independent, it would be prudent to re-run 
+the analysis without the MCG variables as well
+
+## Removing Source of Multicollinearity
 
 
 ```r
-wmn11 <- seppop(dat11, ~Source)$wmn %>% setPop(~Region)
-wmn11_sub <- popsub(wmn11, blacklist = character(0))
-min_span_net <- bruvo.msn(wmn11_sub, replen = other(wmn11)$REPLEN, add = TRUE, loss = TRUE, showplot = FALSE, include.ties = TRUE)
-set.seed(67)
-plot_poppr_msn(wmn11,
-               min_span_net,
-               inds = "none",
-               mlg = TRUE,
-               gadj = 6,
-               nodelab = 100,
-               nodebase = 1.15,
-               palette = funky,
-               cutoff = (0.5/11)*3,
-               quantiles = FALSE,
-               beforecut = TRUE,
-               layfun = igraph::layout_with_lgl)
+# 11 loci
+ENV112   <- select(ENV11, -MCG)
+cap11cc2 <- choose_dbrda(dat11cc.bruvo, ENV = ENV112, CHOOSER = "ordistep")
 ```
 
-![plot of chunk unnamed-chunk-5](./figures/RDA-analysis///unnamed-chunk-5-1.png)
+```
+## 
+## Start: bdist ~ 1 
+## 
+##            Df    AIC      F Pr(>F)   
+## + Year      7 1790.8 1.4330  0.005 **
+## + Region   13 1793.2 1.4902  0.005 **
+## + Source   24 1808.2 1.0700  0.005 **
+## + Host     26 1810.2 1.0581  0.005 **
+## + Severity  1 1787.5 1.3622  0.010 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Year 
+## 
+##        Df    AIC     F Pr(>F)   
+## - Year  7 1786.9 1.433  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##            Df    AIC      F Pr(>F)   
+## + Region   13 1798.0 1.3931  0.005 **
+## + Source   23 1810.9 1.0586  0.005 **
+## + Host     26 1813.4 1.0554  0.005 **
+## + Severity  1 1791.4 1.3112  0.010 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Year + Region 
+## 
+##          Df    AIC      F Pr(>F)   
+## - Region 13 1790.8 1.3931  0.005 **
+## - Year    7 1793.2 1.2596  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##            Df    AIC      F Pr(>F)   
+## + Host     26 1818.7 1.0761  0.005 **
+## + Source   23 1817.5 1.0333  0.020 * 
+## + Severity  1 1798.6 1.2191  0.025 * 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Year + Region + Host 
+## 
+##          Df    AIC      F Pr(>F)   
+## - Host   26 1798.0 1.0761  0.005 **
+## - Region 13 1813.4 1.4048  0.005 **
+## - Year    7 1815.5 1.3419  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##            Df    AIC      F Pr(>F)  
+## + Severity  1 1819.3 1.1541  0.030 *
+## + Source   21 1834.9 1.0051  0.435  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Step: bdist ~ Year + Region + Host + Severity 
+## 
+##            Df    AIC      F Pr(>F)   
+## - Severity  1 1818.7 1.1541  0.055 . 
+## - Host     26 1798.6 1.0739  0.005 **
+## - Region   13 1813.9 1.3888  0.005 **
+## - Year      7 1816.2 1.3362  0.005 **
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+##          Df    AIC      F Pr(>F)
+## + Source 21 1835.5 1.0018   0.51
+```
+
+
+```r
+cap11cc2
+```
+
+```
+## Call: capscale(formula = bdist ~ Year + Region + Host + Severity,
+## data = ENV, add = TRUE)
+## 
+##               Inertia Proportion Rank
+## Total         274.797      1.000     
+## Constrained    48.358      0.176   47
+## Unconstrained 226.439      0.824  270
+## Inertia is Lingoes adjusted squared Bruvo distance 
+## 
+## Eigenvalues for constrained axes:
+##  CAP1  CAP2  CAP3  CAP4  CAP5  CAP6  CAP7  CAP8  CAP9 CAP10 CAP11 CAP12 
+## 5.304 3.249 2.473 2.199 1.712 1.422 1.308 1.066 1.036 1.013 0.895 0.879 
+## CAP13 CAP14 CAP15 CAP16 CAP17 CAP18 CAP19 CAP20 CAP21 CAP22 CAP23 CAP24 
+## 0.863 0.833 0.807 0.793 0.787 0.780 0.771 0.769 0.764 0.761 0.759 0.759 
+## CAP25 CAP26 CAP27 CAP28 CAP29 CAP30 CAP31 CAP32 CAP33 CAP34 CAP35 CAP36 
+## 0.757 0.756 0.755 0.754 0.751 0.750 0.749 0.743 0.742 0.734 0.729 0.728 
+## CAP37 CAP38 CAP39 CAP40 CAP41 CAP42 CAP43 CAP44 CAP45 CAP46 CAP47 
+## 0.720 0.713 0.711 0.709 0.703 0.682 0.668 0.662 0.645 0.634 0.563 
+## 
+## Eigenvalues for unconstrained axes:
+##  MDS1  MDS2  MDS3  MDS4  MDS5  MDS6  MDS7  MDS8 
+## 8.202 4.462 3.542 3.175 2.832 2.324 2.142 2.097 
+## (Showed only 8 of all 270 unconstrained eigenvalues)
+## 
+## Constant added to distances: 0.7593611
+```
+
+```r
+cap11cc2$anova
+```
+
+```
+##            Df    AIC      F Pr(>F)   
+## + Year      7 1790.8 1.4330  0.005 **
+## + Region   13 1798.0 1.3931  0.005 **
+## + Host     26 1818.7 1.0761  0.005 **
+## + Severity  1 1819.3 1.1541  0.030 * 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+```r
+vegan::RsquareAdj(cap11cc2)
+```
+
+```
+## $r.squared
+## [1] 0.1759766
+## 
+## $adj.r.squared
+## [1] 0.03253551
+```
+
+
+
+```r
+anova(cap11cc2)
+```
+
+```
+## Permutation test for capscale under reduced model
+## Permutation: free
+## Number of permutations: 999
+## 
+## Model: capscale(formula = bdist ~ Year + Region + Host + Severity, data = ENV, add = TRUE)
+##           Df SumOfSqs      F Pr(>F)    
+## Model     47   48.358 1.2268  0.001 ***
+## Residual 270  226.439                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+We can also see the marginal effects with `by = "margin"`
+
+
+```r
+anova(cap11cc2, by = "margin")
+```
+
+```
+## Permutation test for capscale under reduced model
+## Marginal effects of terms
+## Permutation: free
+## Number of permutations: 999
+## 
+## Model: capscale(formula = bdist ~ Year + Region + Host + Severity, data = ENV, add = TRUE)
+##           Df SumOfSqs      F Pr(>F)    
+## Year       7    7.844 1.3362  0.001 ***
+## Region    13   15.141 1.3888  0.001 ***
+## Host      26   23.418 1.0739  0.001 ***
+## Severity   1    0.968 1.1541  0.044 *  
+## Residual 270  226.439                  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+
+```r
+set.seed(999)
+plot_dbrda(cap11cc2, arrows = 5) + 
+  theme_classic(base_size = 16, base_family = "Helvetica") + 
+  theme(axis.text = element_text(color = "black")) +
+  theme(aspect.ratio = 1)
+```
+
+```
+## Selecting by Length
+```
+
+![plot of chunk resultplot2](./figures/RDA-analysis///resultplot2-1.png)
+
+```r
+if (!interactive()){
+  FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.pdf")
+  ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
+}
+```
+
+What we can see here is that the amount of explained variance went down a bit to
+1.92, and our model now only explains 16% of the variance. 
+
+
+| Inertia| Proportion|
+|-------:|----------:|
+| 274.797|      1.000|
+|  48.358|      0.176|
+| 226.439|      0.824|
+
+
+
+```r
+vp11     <- varpart(dat11cc.bruvo, ~Severity + Year + Region + Host, data = ENV11, comm = dat11raw, add = TRUE)
+plot(vp11, Xnames = c("Full Model", "No Model"))
+```
+
+![plot of chunk unnamed-chunk-7](./figures/RDA-analysis///unnamed-chunk-7-1.png)
+
+```r
+vp11 <- varpart(dat11cc.bruvo, ~Severity, ~Year, ~Region, ~Host, data = ENV11, add = TRUE)
+
+plot(vp11, digits = 2, Xnames = c("Year", "Region", "Host", "MCG"))
+```
+
+![plot of chunk unnamed-chunk-7](./figures/RDA-analysis///unnamed-chunk-7-2.png)
+
+# Conclusions
+
+This analysis showed us two things: Severity is not an important predictor for 
+genetic diversity, but Region, Host, Year, and MCG are all predictors of genetic
+diversit. Explanations for this result could be due to a few reasons: MCG, a
+phenotypic variable associated with pre-zygotic barriers has SOME genetic 
+component to it; the MCGs that explained the most variation were also the MCGs
+that were strongly associated with one genotype (i.e. MCG 5 has 19 isolates of
+MLG 25).
+
 
 <details>
 <summary>Session Information</summary>
@@ -950,116 +1170,117 @@ plot_poppr_msn(wmn11,
 ```
 
 ```
-##  package     * version    date       source                            
-##  ade4        * 1.7-6      2017-03-23 CRAN (R 3.4.0)                    
-##  adegenet    * 2.1.0      2017-07-17 local                             
-##  ape           4.1        2017-02-14 CRAN (R 3.4.0)                    
-##  assertr       2.0.2.2    2017-06-06 CRAN (R 3.4.0)                    
-##  assertthat    0.2.0      2017-04-11 CRAN (R 3.4.0)                    
-##  base        * 3.4.1      2017-07-07 local                             
-##  bindr         0.1        2016-11-13 CRAN (R 3.4.0)                    
-##  bindrcpp    * 0.2        2017-06-17 CRAN (R 3.4.0)                    
-##  boot          1.3-19     2017-04-21 CRAN (R 3.4.0)                    
-##  broom         0.4.2      2017-02-13 CRAN (R 3.4.0)                    
-##  cellranger    1.1.0      2016-07-27 CRAN (R 3.4.0)                    
-##  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                    
-##  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                    
-##  codetools     0.2-15     2016-10-05 CRAN (R 3.4.0)                    
-##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                    
-##  compiler      3.4.1      2017-07-07 local                             
-##  datasets    * 3.4.1      2017-07-07 local                             
-##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                    
-##  devtools      1.13.2     2017-06-02 CRAN (R 3.4.0)                    
-##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                    
-##  dplyr       * 0.7.2      2017-07-20 CRAN (R 3.4.1)                    
-##  evaluate      0.10       2016-10-11 CRAN (R 3.4.0)                    
-##  expm          0.999-2    2017-03-29 CRAN (R 3.4.0)                    
-##  ezknitr       0.6        2016-09-16 CRAN (R 3.4.0)                    
-##  fastmatch     1.1-0      2017-01-28 CRAN (R 3.4.0)                    
-##  forcats       0.2.0      2017-01-23 CRAN (R 3.4.0)                    
-##  foreign       0.8-69     2017-06-21 CRAN (R 3.4.0)                    
-##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                    
-##  ggforce       0.1.1      2016-11-28 CRAN (R 3.4.0)                    
-##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                    
-##  ggraph      * 1.0.0      2017-02-24 CRAN (R 3.4.0)                    
-##  ggrepel     * 0.6.12     2017-08-02 Github (slowkow/ggrepel@fd15d0a)  
-##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                    
-##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                    
-##  graphics    * 3.4.1      2017-07-07 local                             
-##  grDevices   * 3.4.1      2017-07-07 local                             
-##  grid          3.4.1      2017-07-07 local                             
-##  gridExtra     2.2.1      2016-02-29 CRAN (R 3.4.0)                    
-##  gtable        0.2.0      2016-02-26 CRAN (R 3.4.0)                    
-##  gtools        3.5.0      2015-05-29 CRAN (R 3.4.0)                    
-##  haven         1.0.0      2016-09-23 CRAN (R 3.4.0)                    
-##  highr         0.6        2016-05-09 CRAN (R 3.4.0)                    
-##  hms           0.3        2016-11-22 CRAN (R 3.4.0)                    
-##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                    
-##  htmlwidgets   0.9        2017-07-10 cran (@0.9)                       
-##  httpuv        1.3.3      2015-08-04 CRAN (R 3.4.0)                    
-##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                    
-##  igraph      * 1.1.2      2017-07-21 cran (@1.1.2)                     
-##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                    
-##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                    
-##  labeling      0.3        2014-08-23 CRAN (R 3.4.0)                    
-##  lattice     * 0.20-35    2017-03-25 CRAN (R 3.4.0)                    
-##  lazyeval      0.2.0      2016-06-12 CRAN (R 3.4.0)                    
-##  LearnBayes    2.15       2014-05-29 CRAN (R 3.4.0)                    
-##  lubridate     1.6.0      2016-09-13 CRAN (R 3.4.0)                    
-##  magrittr      1.5        2014-11-22 CRAN (R 3.4.0)                    
-##  MASS          7.3-47     2017-04-21 CRAN (R 3.4.0)                    
-##  Matrix        1.2-10     2017-04-28 CRAN (R 3.4.0)                    
-##  memoise       1.1.0      2017-04-21 CRAN (R 3.4.0)                    
-##  methods     * 3.4.1      2017-07-07 local                             
-##  mgcv          1.8-17     2017-02-08 CRAN (R 3.4.0)                    
-##  mime          0.5        2016-07-07 CRAN (R 3.4.0)                    
-##  mnormt        1.5-5      2016-10-15 CRAN (R 3.4.0)                    
-##  modelr        0.1.0      2016-08-31 CRAN (R 3.4.0)                    
-##  munsell       0.4.3      2016-02-13 CRAN (R 3.4.0)                    
-##  nlme          3.1-131    2017-02-06 CRAN (R 3.4.0)                    
-##  parallel      3.4.1      2017-07-07 local                             
-##  pegas         0.10       2017-05-03 CRAN (R 3.4.0)                    
-##  permute     * 0.9-4      2016-09-09 CRAN (R 3.4.0)                    
-##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                    
-##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                    
-##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                    
-##  poppr       * 2.4.1.99-2 2017-07-16 Github (grunwaldlab/poppr@cd4cba2)
-##  psych         1.7.5      2017-05-03 CRAN (R 3.4.0)                    
-##  purrr       * 0.2.2.2    2017-05-11 cran (@0.2.2.2)                   
-##  quadprog      1.5-5      2013-04-17 CRAN (R 3.4.0)                    
-##  R.methodsS3   1.7.1      2016-02-16 CRAN (R 3.4.0)                    
-##  R.oo          1.21.0     2016-11-01 CRAN (R 3.4.0)                    
-##  R.utils       2.5.0      2016-11-07 CRAN (R 3.4.0)                    
-##  R6            2.2.2      2017-06-17 cran (@2.2.2)                     
-##  Rcpp          0.12.12    2017-07-15 cran (@0.12.12)                   
-##  readr       * 1.1.1      2017-05-16 CRAN (R 3.4.0)                    
-##  readxl        1.0.0      2017-04-18 CRAN (R 3.4.0)                    
-##  reshape2      1.4.2      2016-10-22 CRAN (R 3.4.0)                    
-##  rlang         0.1.1      2017-05-18 CRAN (R 3.4.0)                    
-##  rvest         0.3.2      2016-06-17 CRAN (R 3.4.0)                    
-##  scales        0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)    
-##  seqinr        3.3-6      2017-04-06 CRAN (R 3.4.0)                    
-##  shiny         1.0.3      2017-04-26 CRAN (R 3.4.0)                    
-##  sp            1.2-4      2016-12-22 CRAN (R 3.4.0)                    
-##  spdep         0.6-13     2017-04-25 CRAN (R 3.4.0)                    
-##  splines       3.4.1      2017-07-07 local                             
-##  stats       * 3.4.1      2017-07-07 local                             
-##  stringi       1.1.5      2017-04-07 CRAN (R 3.4.0)                    
-##  stringr       1.2.0      2017-02-18 CRAN (R 3.4.0)                    
-##  tibble      * 1.3.3      2017-05-28 CRAN (R 3.4.0)                    
-##  tidyr       * 0.6.3      2017-05-15 CRAN (R 3.4.0)                    
-##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.4.0)                    
-##  tools         3.4.1      2017-07-07 local                             
-##  tweenr        0.1.5      2016-10-10 CRAN (R 3.4.0)                    
-##  udunits2      0.13       2016-11-17 CRAN (R 3.4.0)                    
-##  units         0.4-5      2017-06-15 CRAN (R 3.4.0)                    
-##  utils       * 3.4.1      2017-07-07 local                             
-##  vegan       * 2.4-3      2017-04-07 CRAN (R 3.4.0)                    
-##  viridis     * 0.4.0      2017-03-27 CRAN (R 3.4.0)                    
-##  viridisLite * 0.2.0      2017-03-24 CRAN (R 3.4.0)                    
-##  visNetwork  * 2.0.1      2017-07-30 cran (@2.0.1)                     
-##  withr         1.0.2      2016-06-20 CRAN (R 3.4.0)                    
-##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                    
+##  package     * version    date       source                              
+##  ade4        * 1.7-6      2017-03-23 CRAN (R 3.4.0)                      
+##  adegenet    * 2.1.0      2017-07-17 local                               
+##  ape           4.1        2017-02-14 CRAN (R 3.4.0)                      
+##  assertr       2.0.2.2    2017-06-06 CRAN (R 3.4.0)                      
+##  assertthat    0.2.0      2017-04-11 CRAN (R 3.4.0)                      
+##  base        * 3.4.1      2017-07-07 local                               
+##  bindr         0.1        2016-11-13 CRAN (R 3.4.0)                      
+##  bindrcpp    * 0.2        2017-06-17 CRAN (R 3.4.0)                      
+##  boot          1.3-19     2017-04-21 CRAN (R 3.4.0)                      
+##  broom         0.4.2      2017-02-13 CRAN (R 3.4.0)                      
+##  cellranger    1.1.0      2016-07-27 CRAN (R 3.4.0)                      
+##  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                      
+##  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                      
+##  codetools     0.2-15     2016-10-05 CRAN (R 3.4.0)                      
+##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                      
+##  compiler      3.4.1      2017-07-07 local                               
+##  datasets    * 3.4.1      2017-07-07 local                               
+##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                      
+##  devtools      1.13.2     2017-06-02 CRAN (R 3.4.0)                      
+##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                      
+##  dplyr       * 0.7.2      2017-07-20 CRAN (R 3.4.1)                      
+##  evaluate      0.10       2016-10-11 CRAN (R 3.4.0)                      
+##  expm          0.999-2    2017-03-29 CRAN (R 3.4.0)                      
+##  ezknitr       0.6        2016-09-16 CRAN (R 3.4.0)                      
+##  fastmatch     1.1-0      2017-01-28 CRAN (R 3.4.0)                      
+##  forcats       0.2.0      2017-01-23 CRAN (R 3.4.0)                      
+##  foreign       0.8-69     2017-06-21 CRAN (R 3.4.0)                      
+##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                      
+##  ggcompoplot * 0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)
+##  ggforce       0.1.1      2016-11-28 CRAN (R 3.4.0)                      
+##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                      
+##  ggraph      * 1.0.0      2017-02-24 CRAN (R 3.4.0)                      
+##  ggrepel     * 0.6.12     2017-08-02 Github (slowkow/ggrepel@fd15d0a)    
+##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                      
+##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                      
+##  graphics    * 3.4.1      2017-07-07 local                               
+##  grDevices   * 3.4.1      2017-07-07 local                               
+##  grid          3.4.1      2017-07-07 local                               
+##  gridExtra     2.2.1      2016-02-29 CRAN (R 3.4.0)                      
+##  gtable        0.2.0      2016-02-26 CRAN (R 3.4.0)                      
+##  gtools        3.5.0      2015-05-29 CRAN (R 3.4.0)                      
+##  haven         1.0.0      2016-09-23 CRAN (R 3.4.0)                      
+##  highr         0.6        2016-05-09 CRAN (R 3.4.0)                      
+##  hms           0.3        2016-11-22 CRAN (R 3.4.0)                      
+##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                      
+##  htmlwidgets   0.9        2017-07-10 cran (@0.9)                         
+##  httpuv        1.3.3      2015-08-04 CRAN (R 3.4.0)                      
+##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                      
+##  igraph      * 1.1.2      2017-07-21 cran (@1.1.2)                       
+##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                      
+##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                      
+##  labeling      0.3        2014-08-23 CRAN (R 3.4.0)                      
+##  lattice     * 0.20-35    2017-03-25 CRAN (R 3.4.0)                      
+##  lazyeval      0.2.0      2016-06-12 CRAN (R 3.4.0)                      
+##  LearnBayes    2.15       2014-05-29 CRAN (R 3.4.0)                      
+##  lubridate     1.6.0      2016-09-13 CRAN (R 3.4.0)                      
+##  magrittr      1.5        2014-11-22 CRAN (R 3.4.0)                      
+##  MASS          7.3-47     2017-04-21 CRAN (R 3.4.0)                      
+##  Matrix        1.2-10     2017-04-28 CRAN (R 3.4.0)                      
+##  memoise       1.1.0      2017-04-21 CRAN (R 3.4.0)                      
+##  methods     * 3.4.1      2017-07-07 local                               
+##  mgcv          1.8-17     2017-02-08 CRAN (R 3.4.0)                      
+##  mime          0.5        2016-07-07 CRAN (R 3.4.0)                      
+##  mnormt        1.5-5      2016-10-15 CRAN (R 3.4.0)                      
+##  modelr        0.1.0      2016-08-31 CRAN (R 3.4.0)                      
+##  munsell       0.4.3      2016-02-13 CRAN (R 3.4.0)                      
+##  nlme          3.1-131    2017-02-06 CRAN (R 3.4.0)                      
+##  parallel      3.4.1      2017-07-07 local                               
+##  pegas         0.10       2017-05-03 CRAN (R 3.4.0)                      
+##  permute     * 0.9-4      2016-09-09 CRAN (R 3.4.0)                      
+##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                      
+##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                      
+##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                      
+##  poppr       * 2.4.1.99-2 2017-07-16 Github (grunwaldlab/poppr@cd4cba2)  
+##  psych         1.7.5      2017-05-03 CRAN (R 3.4.0)                      
+##  purrr       * 0.2.2.2    2017-05-11 cran (@0.2.2.2)                     
+##  quadprog      1.5-5      2013-04-17 CRAN (R 3.4.0)                      
+##  R.methodsS3   1.7.1      2016-02-16 CRAN (R 3.4.0)                      
+##  R.oo          1.21.0     2016-11-01 CRAN (R 3.4.0)                      
+##  R.utils       2.5.0      2016-11-07 CRAN (R 3.4.0)                      
+##  R6            2.2.2      2017-06-17 cran (@2.2.2)                       
+##  Rcpp          0.12.12    2017-07-15 cran (@0.12.12)                     
+##  readr       * 1.1.1      2017-05-16 CRAN (R 3.4.0)                      
+##  readxl        1.0.0      2017-04-18 CRAN (R 3.4.0)                      
+##  reshape2      1.4.2      2016-10-22 CRAN (R 3.4.0)                      
+##  rlang         0.1.1      2017-05-18 CRAN (R 3.4.0)                      
+##  rvest         0.3.2      2016-06-17 CRAN (R 3.4.0)                      
+##  scales        0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)      
+##  seqinr        3.3-6      2017-04-06 CRAN (R 3.4.0)                      
+##  shiny         1.0.3      2017-04-26 CRAN (R 3.4.0)                      
+##  sp            1.2-4      2016-12-22 CRAN (R 3.4.0)                      
+##  spdep         0.6-13     2017-04-25 CRAN (R 3.4.0)                      
+##  splines       3.4.1      2017-07-07 local                               
+##  stats       * 3.4.1      2017-07-07 local                               
+##  stringi       1.1.5      2017-04-07 CRAN (R 3.4.0)                      
+##  stringr       1.2.0      2017-02-18 CRAN (R 3.4.0)                      
+##  tibble      * 1.3.3      2017-05-28 CRAN (R 3.4.0)                      
+##  tidyr       * 0.6.3      2017-05-15 CRAN (R 3.4.0)                      
+##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.4.0)                      
+##  tools         3.4.1      2017-07-07 local                               
+##  tweenr        0.1.5      2016-10-10 CRAN (R 3.4.0)                      
+##  udunits2      0.13       2016-11-17 CRAN (R 3.4.0)                      
+##  units         0.4-5      2017-06-15 CRAN (R 3.4.0)                      
+##  utils       * 3.4.1      2017-07-07 local                               
+##  vegan       * 2.4-3      2017-04-07 CRAN (R 3.4.0)                      
+##  viridis     * 0.4.0      2017-03-27 CRAN (R 3.4.0)                      
+##  viridisLite * 0.2.0      2017-03-24 CRAN (R 3.4.0)                      
+##  visNetwork  * 2.0.1      2017-07-30 cran (@2.0.1)                       
+##  withr         1.0.2      2016-06-20 CRAN (R 3.4.0)                      
+##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                      
 ##  xtable        1.8-2      2016-02-05 CRAN (R 3.4.0)
 ```
 
