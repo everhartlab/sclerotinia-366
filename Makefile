@@ -48,3 +48,11 @@ results/%.md : doc/RMD/%.Rmd
 
 doc/manuscript/%.pdf : doc/manuscript/%.Rmd $(COMPONENTS) $(ANALYSES)
 	R --slave -e "rmarkdown::render('$<')"
+
+.PHONY : clean
+
+clean:
+	$(RM) cache/*
+	$(RM) $(PARSE_DATA)
+	$(RM) $(ANALYSES)
+	$(RM) $(MANUSCRIPT)
