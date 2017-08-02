@@ -62,7 +62,7 @@ stopifnot(identical(indNames(dat16cc), other(dat16cc)$meta$Isolate))
 makeENV <- function(DAT, CC, wmn = FALSE){
   # Creating the data frame with severity
   META   <- select(other(DAT)$meta, -Isolate)
-  STRATA <- select(strata(DAT), -MCG)
+  STRATA <- strata(DAT)
   STRATA <- if (wmn) mutate(STRATA, Source = ifelse(Source == "wmn", "wmn", "other")) else STRATA
   MLL    <- data.frame(MLG = mll(DAT))
   sev    <- bind_cols(META, STRATA, MLL) %>%
@@ -71,7 +71,7 @@ makeENV <- function(DAT, CC, wmn = FALSE){
     ungroup()
   # Ensuring the data is in the correct order
   META   <- select(other(CC)$meta, -Isolate)
-  STRATA <- select(strata(CC), -MCG)
+  STRATA <- strata(CC)
   MLL    <- data.frame(MLG = mll(CC))
   bind_cols(META, STRATA, MLL) %>% 
     left_join(sev)
@@ -155,7 +155,7 @@ arrowMul <- function(arrows, data, at = c(0, 0), fill = 0.75) {
 # 
 # @param db a capscale object
 # @return a ggplot2 object from the scores 
-plot_dbrda <- function(db, arrows = 10, seed = 2017-06-28){
+plot_dbrda <- function(db, arrows = 10, seed = 2017-06-28, lab = TRUE){
   set.seed(seed)
   dbsum     <- scores(db, display = c("cn", "bp", "sites"), scaling = "sites")
   Centroids <- as.data.frame(dbsum$centroids)
@@ -163,7 +163,14 @@ plot_dbrda <- function(db, arrows = 10, seed = 2017-06-28){
   Centroids <- mutate_(Centroids, .dots = list(Length = ~sqrt(CAP1^2 * CAP2^2)))
   # Centroids
   SampleCentroids <- rownames_to_column(data.frame(dbsum$sites), var = "isolate_names")
-  labs    <- summary(db, axes = 0)[["cont"]][["importance"]]["Proportion Explained", 1:2]
+  if (lab){
+    labs    <- vegan:::summary.cca(db, axes = 0)[["cont"]][["importance"]]["Proportion Explained", 1:2]
+    xl      <- paste0("Eig 1 (", round(labs[[1]]*100, 2), "% variance explained)")
+    yl      <- paste0("Eig 2 (", round(labs[[2]]*100, 2), "% variance explained)")
+  } else {
+    xl      <- "Eig 1"
+    yl      <- "Eig 2"
+  }
   terms   <- paste0("(", paste(attr(db$terms, "term.labels"), collapse = "|"), ")")
   mul     <- arrowMul(dbsum$biplot[, 1:2], dbsum$sites)
   Arrows  <- data.frame(dbsum$biplot * mul)
@@ -193,8 +200,8 @@ plot_dbrda <- function(db, arrows = 10, seed = 2017-06-28){
                      point.padding = unit(0.5, "lines"),
                      segment.color = "grey25",
                      data = Arrows) +
-    xlab(paste0("Eig 1 (", round(labs[[1]]*100, 2), "% variance explained)")) +
-    ylab(paste0("Eig 2 (", round(labs[[2]]*100, 2), "% variance explained)"))
+    xlab(xl) +
+    ylab(yl)
 }
 ```
 
@@ -254,8 +261,10 @@ plot_dbrda(cap11cc, arrows = 5) +
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +
   theme(aspect.ratio = 1)
-FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.pdf")
-ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
+# if (!interactive()){
+  FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.pdf")
+  ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
+# }
 plot_dbrda(cap16cc, arrows = 10) +
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +
@@ -270,8 +279,8 @@ Basically, we have a situation where we have all of the variables only
 explaining a whopping 16 - 17% of the variance and the rest goes unexplained.
 
 ```{r, echo = FALSE, results = "asis"}
-cap11sum <- summary(cap11cc, axes = 0, scaling = "sites")
-cap16sum <- summary(cap16cc, axes = 0, scaling = "sites")
+cap11sum <- vegan:::summary.cca(cap11cc, axes = 0, scaling = "sites")
+cap16sum <- vegan:::summary.cca(cap16cc, axes = 0, scaling = "sites")
 vartab <- function(x){
   tot <- x$tot.chi
   con <- x$constr.chi
@@ -294,18 +303,18 @@ the alleles as the representative of the entire data.
 ```{r}
 dat11raw <- genind2df(dat11cc, usepop = FALSE) %>% mutate_all(funs(as.integer(.)))
 dat16raw <- genind2df(dat16cc, usepop = FALSE) %>% mutate_all(funs(as.integer(.)))
-vp11     <- varpart(dat11cc.bruvo, ~Severity + Year + Region + Host, data = ENV11, comm = dat11raw, add = TRUE)
+vp11     <- varpart(dat11cc.bruvo, ~Year + Region + Host + MCG, data = ENV11, comm = dat11raw, add = TRUE)
 plot(vp11, Xnames = c("Full Model", "No Model"))
 try(vp16     <- varpart(dat16cc.bruvo, ~Year + Region + Host, data = ENV16, comm = dat16raw, add = TRUE))
 ```
 
 ```{r}
-vp11 <- varpart(dat11cc.bruvo, ~Severity, ~Year, ~Region, ~Host, data = ENV11, add = TRUE)
-vp16 <- varpart(dat16cc.bruvo, ~Year, ~Region, ~Host, data = ENV16, add = TRUE)
+vp11 <- varpart(dat11cc.bruvo, ~Year, ~Region, ~Host, ~MCG, data = ENV11, add = TRUE)
+vp16 <- varpart(dat16cc.bruvo, ~Year, ~Region, ~Host, ~MCG, data = ENV16, add = TRUE)
 
-plot(vp11, digits = 2, Xnames = c("Severity", "Year", "Region", "Host"))
+plot(vp11, digits = 2, Xnames = c("Year", "Region", "Host", "MCG"))
 
-plot(vp16, digits = 2, Xnames = c("Year", "Region", "Host"))
+plot(vp16, digits = 2, Xnames = c("Year", "Region", "Host", "MCG"))
 ```
 
 Out of both of the models, only Region explains the most variance, almost double
