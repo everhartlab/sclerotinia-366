@@ -370,7 +370,7 @@ vp11     <- varpart(dat11cc.bruvo, ~Severity + Year + Region + Host, data = ENV1
 plot(vp11, Xnames = c("Full Model", "No Model"))
 vp11 <- varpart(dat11cc.bruvo, ~Severity, ~Year, ~Region, ~Host, data = ENV11, add = TRUE)
 
-plot(vp11, digits = 2, Xnames = c("Year", "Region", "Host", "MCG"))
+plot(vp11, digits = 2, Xnames = c("Severity", "Year", "Region", "Host"))
 ```
 
 # Conclusions
