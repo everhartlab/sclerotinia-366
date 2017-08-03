@@ -360,7 +360,7 @@ Variance partitioning of the independent variables without MCG indicated aggress
 Biplot showing five most influential explanatory variables (arrows) overlayed on the first two eigenvectors of distance based redundancy analysis of *S. sclerotiorum* isolates. 
 The length of the arrows are directly proportional to the strength of the correlation between explanatory and molecular variables. 
 Points represent the 318 clone-corrected samples in ordination space. 
-](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=45%}
+](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=61%}
 
 <!-- end figure -->
 
@@ -370,7 +370,7 @@ Points represent the 318 clone-corrected samples in ordination space.
 
 ![
 Boxplot representing aggressiveness (vertical axis) by population (horizontal axis) arranged in descending order of mean aggressiveness for all populations with N > 5. Box boundaries represent 25% and 75% percentiles and whiskers extend to at most 1.5 $\times$ the interquartile range. Horizontal line represents median value. Points represent individual observations whose colors indicate if they came from white mold screening nurseries (wmn) or not (other).
-](../../results/figures/publication/aggressiveness.pdf){#aggressiveness-boxplot width=45%}
+](../../results/figures/publication/aggressiveness.pdf){#aggressiveness-boxplot}
 
 <!-- end figure -->
 
@@ -564,8 +564,13 @@ This indicates that multilocus genotypes are widespread across the United States
 
 The primary interest of this study was to assess if isolates sampled from white mold screening nurseries represent isolates from producer fields within the region [@steadman2003identification; @otto-hanson2011variation].
 According to our AMOVA results, we have evidence for differentiation at the region level, but little to no differentiation between white mold nursery isolates and production field isolates within region (Table \@ref(tab:amova)).
-This result indicates that breeders may consider regional differences when assessing resistance of new bean lines. 
-The fact that much variation was reduced when assessing populations with equally representative wmn and producer fields indirectly supports this claim. 
+Additionally, we observed significant differences in aggressiveness based on region (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
+These results show a similar pattern to what was found previously with the exception of North Dakota, which increased in mean aggressiveness from 5 to 5.77 [@otto-hanson2011variation].
+This increase was due in part to new data from producer field isolates collected after the previous study.
+Two caveats should come with interpreting these data, however.
+First, these straw tests were performed by a different person for these later isolates, which could suggest a more lenient or strict scoring system. 
+Moreover to this point, many of the ND isolates fell within the 6--7 range, which denotes a physical boundary (disease symptoms around the second node) between intermediate and susceptible [@otto-hanson2011variation]. 
+Second, these results are all within the intermediate range (4--6) of aggressiveness, so the differences between states may not be significant for a producer. 
 
 ## Limitations {-}
 
@@ -576,7 +581,7 @@ If the distribution of *S. sclerotiorum* is even across agricultural hosts in th
 Another limitation was the microsatellite markers used for this particular study [@sirjusingh2001characterisation].
 The genotype accumulation curve showed no indication of a plateau, indicating that if we had sampled more loci, we would have resolved more multilocus genotypes. 
 While 16 loci showed us similar results and began to show a plateau for the genotype accumulation curve, we were unable to use these results due to our uncertainty in the allele calls for these five extra loci. 
-With the availability of an optically-mapped genome [citation-needed], future studies describing the genetic diversity of *S. sclerotiorum* should employ techniques such as Genotyping-By-Sequencing [citation-needed], Sequence Capture [citation-needed], or Whole Genome Sequencing [citation-needed].
+With the availability of an optically-mapped genome [@derbyshire2017complete], future studies describing the genetic diversity of *S. sclerotiorum* should employ techniques such as Genotyping-By-Sequencing [@davey2011genome], Sequence Capture [@grover2012targeted], or Whole Genome Sequencing.
 
 ## Conclusions {-}
 
