@@ -579,7 +579,7 @@ Populations in sub-tropical regions of China have been found to be more variable
 The differentiation between the Mexican isolates and all other regions gives some evidence for this hypothesis as the only isolates in our study from sub-tropical regions are in the Mexican populations. 
 
 We were unable to find evidence for sexual reproduction in any region. 
-While the Australian population had a non-significant value of $\bar{r}_d$---which would suggest that we cannot reject the null hypothesis of random mating---the sample size was insufficient from which to draw conclusions [@agapow2001indices]
+While the Australian population had a non-significant value of $\bar{r}_d$---which would suggest that we cannot reject the null hypothesis of random mating---the sample size was insufficient from which to draw conclusions [@agapow2001indices; @milgroom1996recombination].
 
 
 ## Aggressiveness {-}
@@ -606,6 +606,7 @@ With the availability of an optically-mapped genome [@derbyshire2017complete], f
 
 ## Conclusions {-}
 
+eh.
 
 <!-- 
 Our study was conducted to characterize *S. sclerotiorum* isolates from different geographic areas to determine important phenotypic variables influencing genotypes; to ascertain reproductive behavior of the pathogen; to test whether different sampling years or locations have any effect on genotype/sexuality; and to identify abundant and unique genotypes across isolates and geographies.
@@ -741,7 +742,6 @@ An understanding of sexual behavior and ability of form new genotypes by *S. scl
 
 
 # Supplementary Information {-}
-\newpage
 
 <!-- This part is necessary for adding the "S" before supplementary figures.
 Will not work with HTML outputs, though. -->
@@ -765,6 +765,7 @@ read_csv("../../results/tables/Region-aggressiveness.csv",
 
 Table: (\#tab:region-aggressiveness) Mean aggressiveness ratings for the Regions with greater than 5 samples; groupings according to 95% family-wise confidence interval.
 
+\newpage
 
 ```{r table_ia, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 suppressPackageStartupMessages(library("tidyverse"))
@@ -841,7 +842,7 @@ The transparency associated with the grey bars represent the evenness of the dis
 
 <!-- end figure -->
 
-\newpage
+
 
 <!-- community graph figure -->
 
