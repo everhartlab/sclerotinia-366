@@ -1,0 +1,116 @@
+---
+title: "tree"
+---
+
+```{r setup, include = FALSE}
+knitr::opts_knit$set(root.dir = PROJHOME)
+knitr::opts_chunk$set(fig.align = "center")
+```
+
+
+
+
+## Packages and Data
+
+```{r load_packages, warning = FALSE, message = FALSE}
+library('tidyverse')
+library('poppr')
+library('ggtree')
+```
+
+```{r load_data}
+load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
+setPop(dat11) <- ~Host/Source/Region/Year
+dat11cc <- clonecorrect(dat11, ~Host/Source/Region/Year, keep = 1:4)
+dat11cc
+
+# Asserting that nothing messed up with the metadata.
+stopifnot(identical(indNames(dat11cc), other(dat11cc)$meta$Isolate))
+```
+
+
+The purpose of this document is simply to calculate a bootstrapped tree for 
+Bruvo's distance.
+
+```{r bdtree, cache = TRUE}
+set.seed(2017-08-03)
+bt <- bruvo.boot(clonecorrect(dat11, strata = NA), 
+                 replen = other(dat11)$REPLEN, 
+                 sample = 1000, 
+                 tree = "nj", 
+                 showtree = FALSE)
+```
+
+Let's take a look at the results of the bootstrap analysis. Note, that we would
+traditionally ignore results < 75.
+
+```{r bsresults}
+bt$node.labels
+summary(bt$node.labels)
+hist(bt$node.labels)
+```
+
+It's clear that our results show that NONE of the clades are well supported
+(except for the whole tree, which is default), so let's take a look at how the
+tree looks. One of the things we want to do is see where the popualtions fit.
+Since we created a clone-corrected tree here (for speed), we are going to create
+a matrix to tally up the samples from different populations per MLG.
+
+An important thing to keep track of is the fact that ggtree works from rownames
+for tip labels, so we have to add them in. 
+
+```{r}
+data <- bind_cols(strata(dat11), other(dat11)$meta) %>% 
+  add_column(MLG = mll(dat11))
+
+otherdf <- data %>% 
+  group_by(MLG, Region) %>%
+  summarize(N = n()) %>%
+  spread(Region, N)
+otherdf <- inner_join(data %>% 
+                        group_by(MLG) %>% 
+                        summarize(N = n(), id = Isolate[1]), 
+                      otherdf, 
+                      by = "MLG")
+df <- otherdf %>% 
+  select(-MLG, -N) %>% 
+  as.data.frame() %>% 
+  column_to_rownames("id")
+otherdf
+```
+
+Now we can create the tree with the matrix, coloring by number of isolates.
+
+```{r the_tree, fig.width = 7, fig.height = 12}
+gbt <- ggtree(bt) + geom_tippoint() + theme_tree2() + xlab("Bruvo's Distance (11 loci)")
+gheatmap(gbt, df, colnames = FALSE, width = 0.6) %>% 
+  scale_x_ggtree() + 
+  viridis::scale_fill_viridis(guide = "legend") +
+  scale_y_continuous(expand = c(0, 0)) +
+  theme(text = element_text(size = 16, family = "Helvetica")) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.5, color = "black")) +
+  theme(panel.grid.major.x = element_line(colour = "grey50", linetype = 3)) +
+  labs(list(fill = "N isolates"))
+```
+
+Of course, because of the low bootstrap support, we don't have very much faith
+in this tree. One of the promising aspects, however is the fact that all the
+isolates from Mexico group together, as was shown in the DAPC. Moreover, we can
+see that this is not driven by private alleles:
+
+```{r private allelels}
+private_alleles(dat11, locus ~ Region, count.alleles = FALSE)
+```
+
+
+
+
+<details>
+<summary>Session Information</summary>
+
+```{r, echo = FALSE}
+options(width = 100)
+devtools::session_info()
+```
+
+</details>

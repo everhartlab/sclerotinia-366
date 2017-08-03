@@ -21,6 +21,7 @@ The analyses are arranged in the following order according to the [Makefile]:
  1. [mlg-mcg.md]
  1. [RDA-analysis.md]
  1. [pop-diff.md]
+ 1. [tree.md]
  1. [wmn-differentiation.md]
 
 [Makefile]: Makefile
@@ -31,4 +32,5 @@ The analyses are arranged in the following order according to the [Makefile]:
 [mlg-mcg.md]: results/mlg-mcg.md
 [RDA-analysis.md]: results/RDA-analysis.md
 [pop-diff.md]: results/pop-diff.md
+[tree.md]: results/tree.md
 [wmn-differentiation.md]: results/wmn-differentiation.md

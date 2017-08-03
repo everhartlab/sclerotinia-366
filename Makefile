@@ -9,6 +9,7 @@ ANALYSES   := results/table-1.md \
               results/mlg-mcg.md \
               results/RDA-analysis.md \
               results/pop-diff.md \
+              results/tree.md \
               results/wmn-differentiation.md
 MANUSCRIPT := doc/manuscript/manuscript.pdf
 COMPONENTS := doc/manuscript/abstract.md \
