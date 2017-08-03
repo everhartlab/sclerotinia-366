@@ -527,6 +527,7 @@ Borrowing a technique often used in the ecological literature, we used dbRDA to 
 From the initial results, it appears that the most important factors for predicting genetic structure are MCG, region, and year.
 When we inspected the biplot of the initial results, we saw that the most important predictors were MCGs 44, 5, and 9. 
 We believe that this is driven by the fact that these particular MCGs have uneven MLG distributions, meaning that they are heavily associated with one particular MLG (Fig. \@ref(biggraph), \@ref(barplot)).
+We note these results with caution because of the apparent multicolinearity between MCG and Region, which is a violation of the analysis [@legendre1999distance].
 While the results indicated that Mexico and the year 2005 were the two most important variables, it's worth noting that all Mexican isolates were collected in 2005 (Fig. \@ref(rda-biplot)).
 The results also show that the Vista cultivar explains some of the variance, but this represents six isolates in MI. 
 Aggressiveness and specific source field had little to no effect on genetic diversity. 
@@ -576,6 +577,9 @@ It has been proposed within the *S. sclerotiorum* literature that isolates from 
 This has been attributed to the notion that the fungus has the chance to undergo more reproductive cycles in the warmer climate [@carbone2001multilocus; @attanayake2013sclerotinia]. 
 Populations in sub-tropical regions of China have been found to be more variable, sexually reproducing, and unrelated to populations in temperate regions of the United States [@attanayake2013sclerotinia].
 The differentiation between the Mexican isolates and all other regions gives some evidence for this hypothesis as the only isolates in our study from sub-tropical regions are in the Mexican populations. 
+
+We were unable to find evidence for sexual reproduction in any region. 
+While the Australian population had a non-significant value of $\bar{r}_d$---which would suggest that we cannot reject the null hypothesis of random mating---the sample size was insufficient from which to draw conclusions [@agapow2001indices]
 
 
 ## Aggressiveness {-}
