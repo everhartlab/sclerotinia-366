@@ -564,13 +564,30 @@ This indicates that multilocus genotypes are widespread across the United States
 
 The primary interest of this study was to assess if isolates sampled from white mold screening nurseries represent isolates from producer fields within the region [@steadman2003identification; @otto-hanson2011variation].
 According to our AMOVA results, we have evidence for differentiation at the region level, but little to no differentiation between white mold nursery isolates and production field isolates within region (Table \@ref(tab:amova)).
-Additionally, we observed significant differences in aggressiveness based on region (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
+When we assessed AMOVA using only populations with equally representative white mold screening nursery isolates and producer field isolates, we see the same pattern, except the $\Phi$ values decrease by nearly half (Table \@ref(tab:amova)). 
+When we analyze the AMOVA results in light of the DAPC results (Fig. \@ref(DAPC)), it becomes clear that the patterns of differentiation are largely driven by isolates from Mexico and California. 
+Isolates from these populations had a higher posterior probability (> 0.75) of being reassigned to their own populations than any other (Fig. \@ref(DAPC)a). 
+All other populations in comparison (except France) has reassignment probabilities of < 0.5, which is reflected in the failure of the first two discriminant functions to separate these populations (Fig. \@ref(DAPC)b).
+DAPC is based on the principal components of Euclidean distance between genotypes [@jombart2010discriminant]. 
+Unlike Bruvo's distance, Euclidean distance does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
+We found no evidence of private alleles in the Mexican and Californian isolates, suggesting that this pattern separating these populations from the others was not an artifact. 
+
+It has been proposed within the *S. sclerotiorum* literature that isolates from sub-tropical and tropical climates are differentiated or more variable than populations from temperate climates [@lehner2017sclerotinia;@carbone2001multilocus; @attanayake2013sclerotinia]. 
+This has been attributed to the notion that the fungus has the chance to undergo more reproductive cycles in the warmer climate [@carbone2001multilocus; @attanayake2013sclerotinia]. 
+Populations in sub-tropical regions of China have been found to be more variable, sexually reproducing, and unrelated to populations in temperate regions of the United States [@attanayake2013sclerotinia].
+The differentiation between the Mexican isolates and all other regions gives some evidence for this hypothesis as the only isolates in our study from sub-tropical regions are in the Mexican populations. 
+
+
+## Aggressiveness {-}
+
+We observed significant differences in aggressiveness based on region (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
 These results show a similar pattern to what was found previously with the exception of North Dakota, which increased in mean aggressiveness from 5 to 5.77 [@otto-hanson2011variation].
 This increase was due in part to new data from producer field isolates collected after the previous study.
 Two caveats should come with interpreting these data, however.
 First, these straw tests were performed by a different person for these later isolates, which could suggest a more lenient or strict scoring system. 
 Moreover to this point, many of the ND isolates fell within the 6--7 range, which denotes a physical boundary (disease symptoms around the second node) between intermediate and susceptible [@otto-hanson2011variation]. 
-Second, these results are all within the intermediate range (4--6) of aggressiveness, so the differences between states may not be significant for a producer. 
+Second, these results are all within the intermediate range (4--6) of aggressiveness, which may not represent a significant biological difference.
+
 
 ## Limitations {-}
 
