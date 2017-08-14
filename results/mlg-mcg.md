@@ -417,6 +417,7 @@ mcg_graph <- mcgs %>%
   #          label = sprintf("Mean Evenness: %.3f", mean(mcgs$Evenness, na.rm = TRUE))) +
   scale_fill_manual(values = c("black", "white")) +
   scale_y_continuous(expand = c(0, 2)) +
+  # scale_alpha(breaks = c(0.5, 0.75, 1)) +
   theme_minimal(base_size = 16, base_family = "Helvetica") +
   # coord_flip() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
@@ -452,28 +453,30 @@ even <- mcgs %>%
   # theme(plot.background = element_rect(fill = NA, colour = "black")) +
   facet_wrap(~MCG, ncol = 1, scale = "free")
 
-vp1 <- grid::viewport(width = 0.25, height = 0.4, x = 1, y = 0.975, just = c("right", "top"))
-mcg_graph <- mcg_graph + theme(legend.position = c(.763, .75))
+# vp1 <- grid::viewport(width = 0.25, height = 0.4, x = 1, y = 0.975, just = c("right", "top"))
+# mcg_graph <- mcg_graph + theme(legend.position = c(.763, .75))
+# print(mcg_graph)
+# print(even, vp = vp1)
 
-
-print(mcg_graph)
-print(even, vp = vp1)
+mcg_graph_inset <- cowplot::ggdraw() + 
+  cowplot::draw_plot(mcg_graph, 0, 0, 1, 1) + 
+  cowplot::draw_plot(even, 0.75, 0.5675, 0.25, 0.4)
+mcg_graph_inset
 ```
 
 ![plot of chunk barplots](./figures/mlg-mcg///barplots-1.png)
 
 ```r
 if (!interactive()){
-  pdf(file.path(PROJHOME, "results/figures/publication/Figure1Z.pdf"), width = 10, height = 5)
-  print(mcg_graph)
-  print(even, vp = vp1)
-  dev.off()
+  cowplot::ggsave(mcg_graph_inset, 
+                  filename = file.path(PROJHOME, "results/figures/publication/mcg-barplot.pdf"),
+                  width = 10,
+                  height = 5)
+  # pdf(file.path(PROJHOME, "results/figures/publication/Figure1Z.pdf"), width = 10, height = 5)
+  # print(mcg_graph)
+  # print(even, vp = vp1)
+  # dev.off()
 }
-```
-
-```
-## quartz_off_screen 
-##                 2
 ```
 
 
@@ -535,7 +538,7 @@ make_mcgmlg_graph <- function(x){
     rename(vertex = MCG)
   VAT <- bind_rows(MLGS, MCGS)
   g <- gdf %>% 
-    select(MCG, MLG, Freq) %>%
+    select(MLG, MCG, Freq) %>%
     rename(weight = Freq) %>%
     graph_from_data_frame(vertices = VAT)
   V(g)$type <- ifelse(grepl("MLG", V(g)$name), "Multilocus Genotype", "Mycelial Compatibility Group")
@@ -587,7 +590,7 @@ mcg_mlg_graph <- ggraph(lay2) +
   geom_edge_link(aes(start_cap = circle(node1.size, unit = "native"), 
                      end_cap = circle(node2.size, unit = "native"), 
                      width = weight),
-                 arrow = arrow(length = unit(0.01, "native"))) +
+                 arrow = arrow(length = unit(0.005, "native"))) +
   geom_node_text(aes(label = gsub("MLG.", "", name), 
                      color = community, 
                      size = size/10), 
@@ -610,7 +613,7 @@ mcg_mlg_graph
 
 ```r
 if (!interactive()){
-  ggsave(plot = mcg_mlg_graph, filename = file.path(PROJHOME, "results/figures/publication/FigureS2.pdf"), 
+  ggsave(plot = mcg_mlg_graph, filename = file.path(PROJHOME, "results/figures/publication/full-graph.pdf"), 
        width = 88*3, height = 88*3.5, units = "mm")
   tmp <- new.env()
   assign("mcg_mlg_igraph", g, envir = tmp)
@@ -620,7 +623,6 @@ if (!interactive()){
        envir = tmp, 
        file = file.path(PROJHOME, "data", "mcg-mlg-graph.rda"))
 }
-
 cat("Community Structure:\n")
 ```
 
@@ -647,6 +649,32 @@ cluster_walktrap(g)
 ##   
 ##   + ... omitted several groups/vertices
 ```
+
+
+Because showing this big, hairy graph can overload a reader, I'm creating an
+inset graph for later use.
+
+
+```r
+mcg_mlg_graph2 <- ggraph(lay2) +
+  geom_edge_arc(#aes(width = weight), 
+                start_cap = circle(1.1, "mm"), 
+                end_cap = circle(1.1, "mm"), 
+                curvature = 0.1
+                ) + #arrow = arrow(length = unit(2, "mm"))) +
+  geom_node_point(aes(fill = type), pch = 21, size = 0.75) +
+  coord_fixed() +
+  scale_edge_width(range = c(0.25, 1.5)) +
+  scale_fill_manual(values = c("black", "white")) +
+  theme_graph(base_size = 16, base_family = "Helvetica") +
+  theme(legend.position = "none", legend.direction = "vertical") +
+  # theme(legend.box.spacing = unit(-1, "lines")) +
+  theme(plot.margin = unit(c(0, 0, 0, 0), "lines")) +
+  theme(plot.background = element_rect(fill = "grey98", color = "black"))
+mcg_mlg_graph2
+```
+
+![plot of chunk mlgmcggraph2](./figures/mlg-mcg///mlgmcggraph2-1.png)
 
 
 Of interest is accounting for the communities that have a single MLG within the
@@ -988,15 +1016,16 @@ vgn %>%
 ## Subgraph
 
 So that's a big hairy graph. What happens when we look at a subgraph of the
-top 5 MCGs?
+top 8 MCGs? Note, that these are all MCGs that have > 10 isolates associated.
 
 
 ```r
-top5 <- filter(mcgmlg, as.character(MCG) %in% mcgs$MCG[1:5])
+top5 <- filter(mcgmlg, as.character(MCG) %in% (mcgs %>% arrange(desc(Samples)) %>% slice(1:8) %>% pull(MCG)))
 top5g <- make_mcgmlg_graph(top5)
 tosize <- V(top5g)$size
 V(top5g)$size <- sqrt(tosize)/10
-set.seed(2017-05-08)
+# set.seed(2017-05-08)
+set.seed(2017-08-1)
 top5lay <- create_layout(top5g, layout = "igraph", algorithm = "fr", weights = rep(1, length(E(top5g))))
 top5lay$community <- inner_join(data_frame(vertex = top5lay$name), the_communities)$comm
 ```
@@ -1011,7 +1040,31 @@ top5lay$community <- inner_join(data_frame(vertex = top5lay$name), the_communiti
 ```
 
 ```r
-t5g <- mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and associated MLGs")
+levels(top5lay$type) <- c("Multilocus Genotype", "Mycelial Compatibility\nGroup")
+t5g <- ggraph(top5lay) +
+  geom_node_circle(aes(r = size, fill = type)) +
+  geom_edge_link(aes(start_cap = circle(node1.size, unit = "native"), 
+                     end_cap = circle(node2.size, unit = "native"), 
+                     width = weight),
+                 arrow = arrow(length = unit(0.01, "native"))) +
+  geom_node_text(aes(label = gsub("MLG.", "", name), 
+                     color = type, 
+                     size = size/10),
+                 show.legend = FALSE) +
+  coord_fixed() +
+  scale_edge_width(range = c(0.25, 1.5)) +
+  scale_fill_manual(values = c("black", "white")) +
+  scale_color_manual(values = c("white", "black")) +
+  theme_graph(base_size = 16, base_family = "Helvetica") +
+  # theme(legend.position = c(0.85, 0.35), legend.direction = "vertical") +
+  theme(legend.position = c(0.5, 0), legend.direction = "horizontal", legend.box = "horizontal") +
+  theme(legend.box.spacing = unit(-1, "lines")) +
+  theme(legend.spacing.x = unit(0, "lines")) +
+  # theme(legend.box.background = element_rect(color = "black")) +
+  theme(legend.text = element_text(size = 10)) +
+  theme(plot.margin = unit(c(0, 0, 0, 0), "lines"))
+t5g$labels$edge_width <- "shared isolates"
+t5g$labels$fill <- ""
 t5g
 ```
 
@@ -1019,10 +1072,44 @@ t5g
 
 ```r
 if (!interactive())
-  ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.pdf"), width = 88, height = 88, scale = 3, units = "mm")
+  ggsave(t5g, file = file.path("results", "figures", "publication", "mcg-mlg-subgraph.pdf"), width = 88, height = 88, scale = 3, units = "mm")
 ```
 
 Vey nice!
+
+
+```r
+mcg_theme <- theme(legend.text = element_text(size = 10)) +
+  theme(legend.title = element_text(size = 10)) +
+  theme(axis.text.x = element_blank()) +
+  # theme(legend.background = element_blank()) +
+  # theme(legend.box.background = element_blank()) +
+  theme(legend.key.size = unit(0.5, "line")) +
+  theme(legend.position = c(0.9, 0.5)) +
+  theme(legend.box = "vertical") +
+  theme(legend.box.margin = unit(c(0, 0, 0, 0), "lines")) +
+  theme(legend.spacing = unit(0, "lines")) + 
+  theme(aspect.ratio = 0.45) +
+  theme(plot.background = element_rect(color = "black", fill = "grey98"))
+mcg_subgraph_with_context <- cowplot::ggdraw(xlim = c(0, 2), ylim = c(0, 2.25)) +
+  cowplot::draw_plot(t5g, 0, -0.125, 2, 2) +
+  cowplot::draw_plot(mcg_graph + scale_alpha(breaks = c(0.5, 0.75, 1)) + mcg_theme, 0, 1.45, 1.35, 1) +
+  cowplot::draw_plot(mcg_mlg_graph2, x = 1.355, y = 1.633, width = 0.6345, height = 0.6345) +
+  cowplot::draw_plot_label(c("A", "B", "C"), x = c(0, 1.35, 0), y = c(2.25, 2.25, 1.65), size = 25)
+mcg_subgraph_with_context
+```
+
+![plot of chunk subgraphs](./figures/mlg-mcg///subgraphs-1.png)
+
+```r
+if (!interactive()){
+  cowplot::ggsave(plot = mcg_subgraph_with_context,
+                  filename = file.path(PROJHOME, "results", "figures", "publication", "mcg-subgraph-with-context.pdf"),
+                  width = 8, 
+                  height = 10)
+}
+```
+
 
 There are a whole buttload of MLGs for those 5 MCGs. What are the severity 
 ratings for those? Again, we take take a look at these AND simultaneously query
@@ -1498,7 +1585,7 @@ on average 7 steps.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-02
+##  date     2017-08-14
 ```
 
 ```
@@ -1506,117 +1593,118 @@ on average 7 steps.
 ```
 
 ```
-##  package      * version    date       source                            
-##  ade4         * 1.7-6      2017-03-23 CRAN (R 3.4.0)                    
-##  adegenet     * 2.1.0      2017-07-17 local                             
-##  ape            4.1        2017-02-14 CRAN (R 3.4.0)                    
-##  assertr        2.0.2.2    2017-06-06 CRAN (R 3.4.0)                    
-##  assertthat     0.2.0      2017-04-11 CRAN (R 3.4.0)                    
-##  base         * 3.4.1      2017-07-07 local                             
-##  bindr          0.1        2016-11-13 CRAN (R 3.4.0)                    
-##  bindrcpp     * 0.2        2017-06-17 CRAN (R 3.4.0)                    
-##  boot           1.3-19     2017-04-21 CRAN (R 3.4.0)                    
-##  broom          0.4.2      2017-02-13 CRAN (R 3.4.0)                    
-##  cellranger     1.1.0      2016-07-27 CRAN (R 3.4.0)                    
-##  cluster        2.0.6      2017-03-16 CRAN (R 3.4.0)                    
-##  coda           0.19-1     2016-12-08 CRAN (R 3.4.0)                    
-##  colorspace     1.3-2      2016-12-14 CRAN (R 3.4.0)                    
-##  compiler       3.4.1      2017-07-07 local                             
-##  datasets     * 3.4.1      2017-07-07 local                             
-##  deldir         0.1-14     2017-04-22 CRAN (R 3.4.0)                    
-##  devtools       1.13.2     2017-06-02 CRAN (R 3.4.0)                    
-##  digest         0.6.12     2017-01-27 CRAN (R 3.4.0)                    
-##  dplyr        * 0.7.2      2017-07-20 CRAN (R 3.4.1)                    
-##  evaluate       0.10       2016-10-11 CRAN (R 3.4.0)                    
-##  expm           0.999-2    2017-03-29 CRAN (R 3.4.0)                    
-##  ezknitr        0.6        2016-09-16 CRAN (R 3.4.0)                    
-##  fastmatch      1.1-0      2017-01-28 CRAN (R 3.4.0)                    
-##  forcats        0.2.0      2017-01-23 CRAN (R 3.4.0)                    
-##  foreign        0.8-69     2017-06-21 CRAN (R 3.4.0)                    
-##  gdata          2.18.0     2017-06-06 CRAN (R 3.4.0)                    
-##  ggforce        0.1.1      2016-11-28 CRAN (R 3.4.0)                    
-##  ggjoy        * 0.2.0      2017-07-24 CRAN (R 3.4.1)                    
-##  ggplot2      * 2.2.1      2016-12-30 CRAN (R 3.4.0)                    
-##  ggraph       * 1.0.0      2017-02-24 CRAN (R 3.4.0)                    
-##  ggrepel        0.6.12     2017-08-02 Github (slowkow/ggrepel@fd15d0a)  
-##  glue           1.1.1      2017-06-21 CRAN (R 3.4.0)                    
-##  gmodels        2.16.2     2015-07-22 CRAN (R 3.4.0)                    
-##  graphics     * 3.4.1      2017-07-07 local                             
-##  grDevices    * 3.4.1      2017-07-07 local                             
-##  grid           3.4.1      2017-07-07 local                             
-##  gridExtra      2.2.1      2016-02-29 CRAN (R 3.4.0)                    
-##  gtable         0.2.0      2016-02-26 CRAN (R 3.4.0)                    
-##  gtools         3.5.0      2015-05-29 CRAN (R 3.4.0)                    
-##  haven          1.0.0      2016-09-23 CRAN (R 3.4.0)                    
-##  highr          0.6        2016-05-09 CRAN (R 3.4.0)                    
-##  hms            0.3        2016-11-22 CRAN (R 3.4.0)                    
-##  htmltools      0.3.6      2017-04-28 CRAN (R 3.4.0)                    
-##  htmlwidgets    0.9        2017-07-10 cran (@0.9)                       
-##  httpuv         1.3.3      2015-08-04 CRAN (R 3.4.0)                    
-##  httr           1.2.1      2016-07-03 CRAN (R 3.4.0)                    
-##  igraph       * 1.1.2      2017-07-21 cran (@1.1.2)                     
-##  jsonlite       1.5        2017-06-01 CRAN (R 3.4.0)                    
-##  knitr        * 1.16       2017-05-18 CRAN (R 3.4.0)                    
-##  labeling       0.3        2014-08-23 CRAN (R 3.4.0)                    
-##  lattice        0.20-35    2017-03-25 CRAN (R 3.4.0)                    
-##  lazyeval       0.2.0      2016-06-12 CRAN (R 3.4.0)                    
-##  LearnBayes     2.15       2014-05-29 CRAN (R 3.4.0)                    
-##  lubridate      1.6.0      2016-09-13 CRAN (R 3.4.0)                    
-##  magrittr       1.5        2014-11-22 CRAN (R 3.4.0)                    
-##  MASS           7.3-47     2017-04-21 CRAN (R 3.4.0)                    
-##  Matrix         1.2-10     2017-04-28 CRAN (R 3.4.0)                    
-##  memoise        1.1.0      2017-04-21 CRAN (R 3.4.0)                    
-##  methods      * 3.4.1      2017-07-07 local                             
-##  mgcv           1.8-17     2017-02-08 CRAN (R 3.4.0)                    
-##  mime           0.5        2016-07-07 CRAN (R 3.4.0)                    
-##  mnormt         1.5-5      2016-10-15 CRAN (R 3.4.0)                    
-##  modelr         0.1.0      2016-08-31 CRAN (R 3.4.0)                    
-##  munsell        0.4.3      2016-02-13 CRAN (R 3.4.0)                    
-##  nlme           3.1-131    2017-02-06 CRAN (R 3.4.0)                    
-##  parallel       3.4.1      2017-07-07 local                             
-##  pegas          0.10       2017-05-03 CRAN (R 3.4.0)                    
-##  permute        0.9-4      2016-09-09 CRAN (R 3.4.0)                    
-##  phangorn       2.2.0      2017-04-03 CRAN (R 3.4.0)                    
-##  pkgconfig      2.0.1      2017-03-21 CRAN (R 3.4.0)                    
-##  plyr           1.8.4      2016-06-08 CRAN (R 3.4.0)                    
-##  poppr        * 2.4.1.99-2 2017-07-16 Github (grunwaldlab/poppr@cd4cba2)
-##  psych          1.7.5      2017-05-03 CRAN (R 3.4.0)                    
-##  purrr        * 0.2.2.2    2017-05-11 cran (@0.2.2.2)                   
-##  quadprog       1.5-5      2013-04-17 CRAN (R 3.4.0)                    
-##  R.methodsS3    1.7.1      2016-02-16 CRAN (R 3.4.0)                    
-##  R.oo           1.21.0     2016-11-01 CRAN (R 3.4.0)                    
-##  R.utils        2.5.0      2016-11-07 CRAN (R 3.4.0)                    
-##  R6             2.2.2      2017-06-17 cran (@2.2.2)                     
-##  RColorBrewer   1.1-2      2014-12-07 CRAN (R 3.4.0)                    
-##  Rcpp           0.12.12    2017-07-15 cran (@0.12.12)                   
-##  readr        * 1.1.1      2017-05-16 CRAN (R 3.4.0)                    
-##  readxl         1.0.0      2017-04-18 CRAN (R 3.4.0)                    
-##  reshape2       1.4.2      2016-10-22 CRAN (R 3.4.0)                    
-##  rlang          0.1.1      2017-05-18 CRAN (R 3.4.0)                    
-##  rvest          0.3.2      2016-06-17 CRAN (R 3.4.0)                    
-##  scales         0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)    
-##  seqinr         3.3-6      2017-04-06 CRAN (R 3.4.0)                    
-##  shiny          1.0.3      2017-04-26 CRAN (R 3.4.0)                    
-##  sp             1.2-4      2016-12-22 CRAN (R 3.4.0)                    
-##  spdep          0.6-13     2017-04-25 CRAN (R 3.4.0)                    
-##  splines        3.4.1      2017-07-07 local                             
-##  stats        * 3.4.1      2017-07-07 local                             
-##  stringi        1.1.5      2017-04-07 CRAN (R 3.4.0)                    
-##  stringr        1.2.0      2017-02-18 CRAN (R 3.4.0)                    
-##  tibble       * 1.3.3      2017-05-28 CRAN (R 3.4.0)                    
-##  tidyr        * 0.6.3      2017-05-15 CRAN (R 3.4.0)                    
-##  tidyverse    * 1.1.1      2017-01-27 CRAN (R 3.4.0)                    
-##  tools          3.4.1      2017-07-07 local                             
-##  tweenr         0.1.5      2016-10-10 CRAN (R 3.4.0)                    
-##  udunits2       0.13       2016-11-17 CRAN (R 3.4.0)                    
-##  units          0.4-5      2017-06-15 CRAN (R 3.4.0)                    
-##  utils        * 3.4.1      2017-07-07 local                             
-##  vegan          2.4-3      2017-04-07 CRAN (R 3.4.0)                    
-##  viridis      * 0.4.0      2017-03-27 CRAN (R 3.4.0)                    
-##  viridisLite  * 0.2.0      2017-03-24 CRAN (R 3.4.0)                    
-##  visNetwork   * 2.0.1      2017-07-30 cran (@2.0.1)                     
-##  withr          1.0.2      2016-06-20 CRAN (R 3.4.0)                    
-##  xml2           1.1.1      2017-01-24 CRAN (R 3.4.0)                    
+##  package      * version    date       source                          
+##  ade4         * 1.7-6      2017-03-23 CRAN (R 3.4.0)                  
+##  adegenet     * 2.1.0      2017-07-17 local                           
+##  ape            4.1        2017-02-14 CRAN (R 3.4.0)                  
+##  assertr        2.0.2.2    2017-06-06 CRAN (R 3.4.0)                  
+##  assertthat     0.2.0      2017-04-11 CRAN (R 3.4.0)                  
+##  base         * 3.4.1      2017-07-07 local                           
+##  bindr          0.1        2016-11-13 CRAN (R 3.4.0)                  
+##  bindrcpp     * 0.2        2017-06-17 CRAN (R 3.4.0)                  
+##  boot           1.3-20     2017-07-30 CRAN (R 3.4.1)                  
+##  broom          0.4.2      2017-02-13 CRAN (R 3.4.0)                  
+##  cellranger     1.1.0      2016-07-27 CRAN (R 3.4.0)                  
+##  cluster        2.0.6      2017-03-16 CRAN (R 3.4.0)                  
+##  coda           0.19-1     2016-12-08 CRAN (R 3.4.0)                  
+##  colorspace     1.3-2      2016-12-14 CRAN (R 3.4.0)                  
+##  compiler       3.4.1      2017-07-07 local                           
+##  cowplot        0.8.0      2017-07-30 CRAN (R 3.4.1)                  
+##  datasets     * 3.4.1      2017-07-07 local                           
+##  deldir         0.1-14     2017-04-22 CRAN (R 3.4.0)                  
+##  devtools       1.13.3     2017-08-02 CRAN (R 3.4.1)                  
+##  digest         0.6.12     2017-01-27 CRAN (R 3.4.0)                  
+##  dplyr        * 0.7.2      2017-07-20 CRAN (R 3.4.1)                  
+##  evaluate       0.10.1     2017-06-24 CRAN (R 3.4.1)                  
+##  expm           0.999-2    2017-03-29 CRAN (R 3.4.0)                  
+##  ezknitr        0.6        2016-09-16 CRAN (R 3.4.0)                  
+##  fastmatch      1.1-0      2017-01-28 CRAN (R 3.4.0)                  
+##  forcats        0.2.0      2017-01-23 CRAN (R 3.4.0)                  
+##  foreign        0.8-69     2017-06-21 CRAN (R 3.4.0)                  
+##  gdata          2.18.0     2017-06-06 CRAN (R 3.4.0)                  
+##  ggforce        0.1.1      2016-11-28 CRAN (R 3.4.0)                  
+##  ggjoy        * 0.3.0      2017-07-30 CRAN (R 3.4.1)                  
+##  ggplot2      * 2.2.1      2016-12-30 CRAN (R 3.4.0)                  
+##  ggraph       * 1.0.0      2017-02-24 CRAN (R 3.4.0)                  
+##  ggrepel        0.6.12     2017-08-02 Github (slowkow/ggrepel@fd15d0a)
+##  glue           1.1.1      2017-06-21 CRAN (R 3.4.0)                  
+##  gmodels        2.16.2     2015-07-22 CRAN (R 3.4.0)                  
+##  graphics     * 3.4.1      2017-07-07 local                           
+##  grDevices    * 3.4.1      2017-07-07 local                           
+##  grid           3.4.1      2017-07-07 local                           
+##  gridExtra      2.2.1      2016-02-29 CRAN (R 3.4.0)                  
+##  gtable         0.2.0      2016-02-26 CRAN (R 3.4.0)                  
+##  gtools         3.5.0      2015-05-29 CRAN (R 3.4.0)                  
+##  haven          1.1.0      2017-07-09 CRAN (R 3.4.1)                  
+##  highr          0.6        2016-05-09 CRAN (R 3.4.0)                  
+##  hms            0.3        2016-11-22 CRAN (R 3.4.0)                  
+##  htmltools      0.3.6      2017-04-28 CRAN (R 3.4.0)                  
+##  htmlwidgets    0.9        2017-07-10 cran (@0.9)                     
+##  httpuv         1.3.5      2017-07-04 CRAN (R 3.4.1)                  
+##  httr           1.2.1      2016-07-03 CRAN (R 3.4.0)                  
+##  igraph       * 1.1.2      2017-07-21 cran (@1.1.2)                   
+##  jsonlite       1.5        2017-06-01 CRAN (R 3.4.0)                  
+##  knitr        * 1.16       2017-05-18 CRAN (R 3.4.0)                  
+##  labeling       0.3        2014-08-23 CRAN (R 3.4.0)                  
+##  lattice        0.20-35    2017-03-25 CRAN (R 3.4.0)                  
+##  lazyeval       0.2.0      2016-06-12 CRAN (R 3.4.0)                  
+##  LearnBayes     2.15       2014-05-29 CRAN (R 3.4.0)                  
+##  lubridate      1.6.0      2016-09-13 CRAN (R 3.4.0)                  
+##  magrittr       1.5        2014-11-22 CRAN (R 3.4.0)                  
+##  MASS           7.3-47     2017-04-21 CRAN (R 3.4.0)                  
+##  Matrix         1.2-10     2017-04-28 CRAN (R 3.4.0)                  
+##  memoise        1.1.0      2017-04-21 CRAN (R 3.4.0)                  
+##  methods      * 3.4.1      2017-07-07 local                           
+##  mgcv           1.8-18     2017-07-28 CRAN (R 3.4.1)                  
+##  mime           0.5        2016-07-07 CRAN (R 3.4.0)                  
+##  mnormt         1.5-5      2016-10-15 CRAN (R 3.4.0)                  
+##  modelr         0.1.1      2017-07-24 CRAN (R 3.4.1)                  
+##  munsell        0.4.3      2016-02-13 CRAN (R 3.4.0)                  
+##  nlme           3.1-131    2017-02-06 CRAN (R 3.4.0)                  
+##  parallel       3.4.1      2017-07-07 local                           
+##  pegas          0.10       2017-05-03 CRAN (R 3.4.0)                  
+##  permute        0.9-4      2016-09-09 CRAN (R 3.4.0)                  
+##  phangorn       2.2.0      2017-04-03 CRAN (R 3.4.0)                  
+##  pkgconfig      2.0.1      2017-03-21 CRAN (R 3.4.0)                  
+##  plyr           1.8.4      2016-06-08 CRAN (R 3.4.0)                  
+##  poppr        * 2.4.1.99-2 2017-08-13 local                           
+##  psych          1.7.5      2017-05-03 CRAN (R 3.4.0)                  
+##  purrr        * 0.2.3      2017-08-02 CRAN (R 3.4.1)                  
+##  quadprog       1.5-5      2013-04-17 CRAN (R 3.4.0)                  
+##  R.methodsS3    1.7.1      2016-02-16 CRAN (R 3.4.0)                  
+##  R.oo           1.21.0     2016-11-01 CRAN (R 3.4.0)                  
+##  R.utils        2.5.0      2016-11-07 CRAN (R 3.4.0)                  
+##  R6             2.2.2      2017-06-17 cran (@2.2.2)                   
+##  RColorBrewer   1.1-2      2014-12-07 CRAN (R 3.4.0)                  
+##  Rcpp           0.12.12    2017-07-15 cran (@0.12.12)                 
+##  readr        * 1.1.1      2017-05-16 CRAN (R 3.4.0)                  
+##  readxl         1.0.0      2017-04-18 CRAN (R 3.4.0)                  
+##  reshape2       1.4.2      2016-10-22 CRAN (R 3.4.0)                  
+##  rlang          0.1.1      2017-05-18 CRAN (R 3.4.0)                  
+##  rvest          0.3.2      2016-06-17 CRAN (R 3.4.0)                  
+##  scales         0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)  
+##  seqinr         3.4-5      2017-08-01 CRAN (R 3.4.1)                  
+##  shiny          1.0.3      2017-04-26 CRAN (R 3.4.0)                  
+##  sp             1.2-5      2017-06-29 CRAN (R 3.4.1)                  
+##  spdep          0.6-13     2017-04-25 CRAN (R 3.4.0)                  
+##  splines        3.4.1      2017-07-07 local                           
+##  stats        * 3.4.1      2017-07-07 local                           
+##  stringi        1.1.5      2017-04-07 CRAN (R 3.4.0)                  
+##  stringr        1.2.0      2017-02-18 CRAN (R 3.4.0)                  
+##  tibble       * 1.3.3      2017-05-28 CRAN (R 3.4.0)                  
+##  tidyr        * 0.6.3      2017-05-15 CRAN (R 3.4.0)                  
+##  tidyverse    * 1.1.1      2017-01-27 CRAN (R 3.4.0)                  
+##  tools          3.4.1      2017-07-07 local                           
+##  tweenr         0.1.5      2016-10-10 CRAN (R 3.4.0)                  
+##  udunits2       0.13       2016-11-17 CRAN (R 3.4.0)                  
+##  units          0.4-5      2017-06-15 CRAN (R 3.4.0)                  
+##  utils        * 3.4.1      2017-07-07 local                           
+##  vegan          2.4-3      2017-04-07 CRAN (R 3.4.0)                  
+##  viridis      * 0.4.0      2017-03-27 CRAN (R 3.4.0)                  
+##  viridisLite  * 0.2.0      2017-03-24 CRAN (R 3.4.0)                  
+##  visNetwork   * 2.0.1      2017-07-30 cran (@2.0.1)                   
+##  withr          2.0.0      2017-07-28 CRAN (R 3.4.1)                  
+##  xml2           1.1.1      2017-01-24 CRAN (R 3.4.0)                  
 ##  xtable         1.8-2      2016-02-05 CRAN (R 3.4.0)
 ```
 
