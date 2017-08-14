@@ -107,11 +107,11 @@ High mutagenic rate and multiallelic nature of microsatellites render suitabilit
 In the case of plant pathogens like *S. sclerotiorum* that is predominantly clonal and occasionally outcrossing, microsatellites have been used successfully to ascertain their ability to reproduce by sexual outcrossing [@atallah2004high; @sexton2004microsatellite] and also to detect differences among clonally propagated individuals.  -->
 
 In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected between 2003 and 2012 from dry bean cultivars among different geographic locations in the United States, France, Mexico, and Australia. 
-Because the white mold screening nurseries serve as testing grounds for new varieties of dry bean, we wanted to know if the *S. sclerotiorum* populations from white mold screening nurseries were representative of the fields within the same region. 
+We wanted to know if the *S. sclerotiorum* populations from white mold screening nurseries were representative of the fields within the same region. 
 As these nurseries are not treated with any chemical or cultural control of white mold, we hypothesized that these nurseries would represent the natural population of *S. sclerotiorum*.
-Furthermore, as three cultivars (Beryl, Bunsi, and G122) were grown and tested previously by @otto-hanson2011variation among all white mold screening nurseries, we wanted to investigate the potential effect of cultivar on genetic diversity.
-We additionally wanted to assess what categorical or phenotypic variables best predict genetic structure and if there was correlation between multilocus genotype and mycelial compatibility group.
-By investigating these aims, we hope to effectively describe the population dynamics of *S. sclerotiorum* and make available our database of isolates for use in future dry bean breeding efforts. 
+Furthermore, we wanted to investigate the potential effect of cultivar on genetic diversity by assessing three dry bean cultivars with different levels of resistance, Beryl (great northern bean, susceptible), Bunsi (navy bean, low susceptibility), and G122 (cranberry bean, partial resistance) [@otto-hanson2011variation].
+We additionally wanted to determine categorical or phenotypic variables that best predicted genetic structure and if there was correlation between multilocus genotype and mycelial compatibility group.
+By investigating these aims, we hope to effectively describe the population structure of *S. sclerotiorum* in the USA and make available our database of isolates for use in future dry bean breeding efforts. 
 
 
 # Materials and Methods {-}
