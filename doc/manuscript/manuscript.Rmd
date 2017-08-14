@@ -303,7 +303,7 @@ To ensure that we captured the same community signal, we additionally performed 
 A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in 11 states in the US, Australia, Mexico, and France (Table \@ref(tab:isolate-table)).
 Over 50% of the isolates came from four states, MI (62), ND (60), WA (59), NE (47). 
 Four regions had fewer than 10 isolates, Australia (6), WI (2), NY (1), ID (1).
-We observed 87 mycelial compatibility groups (MCG), the most abundant of which (MCG 5) represented 73 isolates over 37 multilocus genotypes (MLG) (Fig \@ref(barplot)).
+We observed 87 mycelial compatibility groups (MCG), the most abundant of which (MCG 5) represented 73 isolates over 37 multilocus genotypes (MLG) (Fig \@ref(biggraph)A).
 After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with 318 isolates representing 165 MLGs (Table \@ref(tab:iatab)).
 Analysis of the genotype accumulation curve showed no clear plateau, indicating that we would likely obtain more multilocus genotypes if we were to collect more loci. The number of observed alleles per locus ranged from 2 to 10 with an average of 6.27 (Table \@ref(tab:locus-stats)).
 
@@ -380,7 +380,7 @@ We additionally found a significant effect for MLGs (P = 7.44e^-4^) for MLGs, wi
 
 ### Correlation of Mulitlocus Genotypes and Mycelial Compatibility Groups {-}
 
-Our network-based approach to correlating MLGs with MCGs revealed a large and complex network (Fig. \@ref(biggraph)). 
+Our network-based approach to correlating MLGs with MCGs revealed a large and complex network (Fig. \@ref(biggraph), \@ref(fullgraph)). 
 Community analysis showed 51 communities, 15 of which consisted of a single MLG unconnected with any other community indicating that just 9.09% of the 165 MLGs are unable to cross with any other MLG in this data set.
 The three communities with the most members contained 8 of the ten most abundant MCGs. 
 Comparing these communities with Bruvo's genetic distance revealed and average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
@@ -392,11 +392,18 @@ Overall, there was no clear pattern to the association between MLG and MCGs.
 <!-- MCG graph figure -->
 
 ![
-Graph showing complex associations between Mycelial Compatibility Groups (dotted nodes) and Multilocus Genotypes (full nodes). 
+Data show complex associations between Mycelial Compatibility Groups and Multilocus Genotypes.
+**A)** Barplot showing abundance of each Mycelial Compatibility Group (MCG) in descending order.
+Singletons (46) have been removed for clarity, leaving 41 MCGs.
+White bars represent sample counts and grey bars represent counts of unique multilocus genotypes (MLG).
+The transparency associated with the grey bars represent the evenness of the distribution of the MLGs within a given MCG.
+**B)** Full graph-representation of the relationship between MCGs (open circles) and MLGs (filled circles). 
+Details in fig. \@ref(fullgraph). 
+**C)** A subset of **B** representing the 8 most common MCGs and their associated MLGs.
 Node size reflect the number of samples represented by each node (circle).
-Edges (arrows) point from Mycelial Compatibility Group to Multilocus Genotype where the weight (thickness) of the edge represents the number of samples shared.
-Node color represents the community assignment based on the walktrap algorithm with a maximum of four steps [@pons2006computing].
-](../../results/figures/publication/FigureS2.pdf){#biggraph width=100%}
+Edges (arrows) point from Multilocus Genotype to Mycelial Compatibility Group where the weight (thickness) of the edge represents the number of shared isolates.
+Edges extending from MLGs displayed to other MCGs are not shown.
+](../../results/figures/publication/mcg-subgraph-with-context.pdf){#biggraph width=100%}
 
 <!-- end fig -->
 
@@ -526,7 +533,7 @@ These findings indicate that the white mold screening nurseries can be effective
 Borrowing a technique often used in the ecological literature, we used dbRDA to elucidate the effect of all variables (Aggressiveness, Region, Source,   Year, and Host) [@legendre1999distance].
 From the initial results, it appears that the most important factors for predicting genetic structure are MCG, region, and year.
 When we inspected the biplot of the initial results, we saw that the most important predictors were MCGs 44, 5, and 9. 
-We believe that this is driven by the fact that these particular MCGs have uneven MLG distributions, meaning that they are heavily associated with one particular MLG (Fig. \@ref(biggraph), \@ref(barplot)).
+We believe that this is driven by the fact that these particular MCGs have uneven MLG distributions, meaning that they are heavily associated with one particular MLG (Fig. \@ref(biggraph)).
 We note these results with caution because of the apparent multicolinearity between MCG and Region, which is a violation of the analysis [@legendre1999distance].
 While the results indicated that Mexico and the year 2005 were the two most important variables, it's worth noting that all Mexican isolates were collected in 2005 (Fig. \@ref(rda-biplot)).
 The results also show that the Vista cultivar explains some of the variance, but this represents six isolates in MI. 
@@ -538,10 +545,10 @@ This indicates that a) breeders should keep in mind regional differences when as
 
 Of interest in this study was testing the association between multilocus genotypes (MLGs) and mycelial compatibility groups (MCGs), as the latter have historically been used as a proxy for clonal lineages [@leslie1993fungal; @otto-hanson2011variation; @kohn1990mycelial; @schafer2006optimized; @kohn1995clonal; @carbone1999patterns]. 
 Our results do not support this assumption.
-It can be seen in Fig. \@ref(barplot) that the most abundant MCG contains several MLGs, but the diversity of those MLGs are low as indicated by the evenness (transparency), which indicates that there is one dominant MLG (MLG 25).
-What is not shown in Fig. \@ref(barplot) is the MLGs that are shared between MCGs. 
-This is illustrated in both table \@ref(tab:mlg-table) and Fig. \@ref(biggraph). 
-It could be argued, however that MLG 25, with its high value of $P_{sex}$ represents different true MLGs across the five MCGs it occupies, but this doesn't account for the overall structure of Fig. \@ref(biggraph) where, for example, MLG 75 ($P_{sex}$ = 1.81e^-4^) is compatible with 58 other genotypes through three MCG when the population structure of *S. sclerotiorum* is known to be clonal.
+It can be seen in Fig. \@ref(biggraph)A that the most abundant MCG contains several MLGs, but the diversity of those MLGs are low as indicated by the evenness (transparency), which indicates that there is one dominant MLG (MLG 25).
+What is not shown in Fig. \@ref(biggraph)A is the MLGs that are shared between MCGs. 
+This is illustrated in both table \@ref(tab:mlg-table) and Fig. \@ref(biggraph)B,C. 
+It could be argued, however that MLG 25, with its high value of $P_{sex}$ represents different true MLGs across the five MCGs it occupies, but this doesn't account for the overall structure of Fig. \@ref(fullgraph) where, for example, MLG 75 ($P_{sex}$ = 1.81e^-4^) is compatible with 58 other genotypes through three MCG when the population structure of *S. sclerotiorum* is known to be clonal.
 
 Over the past few years, researchers have noticed inconsistencies among the relationship between MCGs and MLGs [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic; @lehner2015genetic]. 
 Either several MCGs belong to one MLG, which could be explained by insufficient sampling of loci; several MLGs belong to one MCG, which could be explained by clonal expansion; or a mixture of both.
@@ -830,18 +837,12 @@ $\bar{r}_d$ = standardized index of association.
 P-value symbols: \* = 0.001, - = $\leq 0.01$, ~ = $\leq 0.05$.
 
 
-
-<!-- MCG abundance figure -->
-
 ![
-Barplot showing abundance of each Mycelial Compatibility Group (MCG) in descending order.
-Singletons (46) have been removed for clarity, leaving 41 MCGs.
-White bars represent sample counts and grey bars represent counts of unique multilocus genotypes (MLG).
-The transparency associated with the grey bars represent the evenness of the distribution of the MLGs within a given MCG as shown in the inset histograms.
-](../../results/figures/publication/Figure1Z.pdf){#barplot width=100%}
-
-<!-- end figure -->
-
+Graph showing complex associations between Mycelial Compatibility Groups (dotted nodes) and Multilocus Genotypes (full nodes). 
+Node size reflect the number of samples represented by each node (circle). 
+Edges (arrows) point from Mycelial Compatibility Group to Multilocus Genotype where the weight (thickness) of the edge represents the number of samples shared. 
+Node color represents the community assignment based on the walktrap algorithm with a maximum of four steps [@pons2006computing]. 
+](../../results/figures/publication/full-graph.pdf){#fullgraph width=100%}
 
 
 <!-- community graph figure -->
