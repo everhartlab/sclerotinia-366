@@ -202,6 +202,7 @@ mcg_graph <- mcgs %>%
   #          label = sprintf("Mean Evenness: %.3f", mean(mcgs$Evenness, na.rm = TRUE))) +
   scale_fill_manual(values = c("black", "white")) +
   scale_y_continuous(expand = c(0, 2)) +
+  # scale_alpha(breaks = c(0.5, 0.75, 1)) +
   theme_minimal(base_size = 16, base_family = "Helvetica") +
   # coord_flip() +
   theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
@@ -232,18 +233,24 @@ even <- mcgs %>%
   # theme(plot.background = element_rect(fill = NA, colour = "black")) +
   facet_wrap(~MCG, ncol = 1, scale = "free")
 
-vp1 <- grid::viewport(width = 0.25, height = 0.4, x = 1, y = 0.975, just = c("right", "top"))
-mcg_graph <- mcg_graph + theme(legend.position = c(.763, .75))
+# vp1 <- grid::viewport(width = 0.25, height = 0.4, x = 1, y = 0.975, just = c("right", "top"))
+# mcg_graph <- mcg_graph + theme(legend.position = c(.763, .75))
+# print(mcg_graph)
+# print(even, vp = vp1)
 
-
-print(mcg_graph)
-print(even, vp = vp1)
-
+mcg_graph_inset <- cowplot::ggdraw() + 
+  cowplot::draw_plot(mcg_graph, 0, 0, 1, 1) + 
+  cowplot::draw_plot(even, 0.75, 0.5675, 0.25, 0.4)
+mcg_graph_inset
 if (!interactive()){
-  pdf(file.path(PROJHOME, "results/figures/publication/Figure1Z.pdf"), width = 10, height = 5)
-  print(mcg_graph)
-  print(even, vp = vp1)
-  dev.off()
+  cowplot::ggsave(mcg_graph_inset, 
+                  filename = file.path(PROJHOME, "results/figures/publication/mcg-barplot.pdf"),
+                  width = 10,
+                  height = 5)
+  # pdf(file.path(PROJHOME, "results/figures/publication/Figure1Z.pdf"), width = 10, height = 5)
+  # print(mcg_graph)
+  # print(even, vp = vp1)
+  # dev.off()
 }
 ```
 
@@ -285,7 +292,7 @@ make_mcgmlg_graph <- function(x){
     rename(vertex = MCG)
   VAT <- bind_rows(MLGS, MCGS)
   g <- gdf %>% 
-    select(MCG, MLG, Freq) %>%
+    select(MLG, MCG, Freq) %>%
     rename(weight = Freq) %>%
     graph_from_data_frame(vertices = VAT)
   V(g)$type <- ifelse(grepl("MLG", V(g)$name), "Multilocus Genotype", "Mycelial Compatibility Group")
@@ -337,7 +344,7 @@ mcg_mlg_graph <- ggraph(lay2) +
   geom_edge_link(aes(start_cap = circle(node1.size, unit = "native"), 
                      end_cap = circle(node2.size, unit = "native"), 
                      width = weight),
-                 arrow = arrow(length = unit(0.01, "native"))) +
+                 arrow = arrow(length = unit(0.005, "native"))) +
   geom_node_text(aes(label = gsub("MLG.", "", name), 
                      color = community, 
                      size = size/10), 
@@ -355,7 +362,7 @@ mcg_mlg_graph <- ggraph(lay2) +
   
 mcg_mlg_graph
 if (!interactive()){
-  ggsave(plot = mcg_mlg_graph, filename = file.path(PROJHOME, "results/figures/publication/FigureS2.pdf"), 
+  ggsave(plot = mcg_mlg_graph, filename = file.path(PROJHOME, "results/figures/publication/full-graph.pdf"), 
        width = 88*3, height = 88*3.5, units = "mm")
   tmp <- new.env()
   assign("mcg_mlg_igraph", g, envir = tmp)
@@ -365,9 +372,31 @@ if (!interactive()){
        envir = tmp, 
        file = file.path(PROJHOME, "data", "mcg-mlg-graph.rda"))
 }
-
 cat("Community Structure:\n")
 cluster_walktrap(g)
+```
+
+
+Because showing this big, hairy graph can overload a reader, I'm creating an
+inset graph for later use.
+
+```{r mlgmcggraph2, fig.width = 2, fig.height = 2}
+mcg_mlg_graph2 <- ggraph(lay2) +
+  geom_edge_arc(#aes(width = weight), 
+                start_cap = circle(1.1, "mm"), 
+                end_cap = circle(1.1, "mm"), 
+                curvature = 0.1
+                ) + #arrow = arrow(length = unit(2, "mm"))) +
+  geom_node_point(aes(fill = type), pch = 21, size = 0.75) +
+  coord_fixed() +
+  scale_edge_width(range = c(0.25, 1.5)) +
+  scale_fill_manual(values = c("black", "white")) +
+  theme_graph(base_size = 16, base_family = "Helvetica") +
+  theme(legend.position = "none", legend.direction = "vertical") +
+  # theme(legend.box.spacing = unit(-1, "lines")) +
+  theme(plot.margin = unit(c(0, 0, 0, 0), "lines")) +
+  theme(plot.background = element_rect(fill = "grey98", color = "black"))
+mcg_mlg_graph2
 ```
 
 
@@ -565,23 +594,77 @@ vgn %>%
 ## Subgraph
 
 So that's a big hairy graph. What happens when we look at a subgraph of the
-top 5 MCGs?
+top 8 MCGs? Note, that these are all MCGs that have > 10 isolates associated.
 
 ```{r top5graph, fig.height = 7, fig.width = 7}
-top5 <- filter(mcgmlg, as.character(MCG) %in% mcgs$MCG[1:5])
+top5 <- filter(mcgmlg, as.character(MCG) %in% (mcgs %>% arrange(desc(Samples)) %>% slice(1:8) %>% pull(MCG)))
 top5g <- make_mcgmlg_graph(top5)
 tosize <- V(top5g)$size
 V(top5g)$size <- sqrt(tosize)/10
-set.seed(2017-05-08)
+# set.seed(2017-05-08)
+set.seed(2017-08-1)
 top5lay <- create_layout(top5g, layout = "igraph", algorithm = "fr", weights = rep(1, length(E(top5g))))
 top5lay$community <- inner_join(data_frame(vertex = top5lay$name), the_communities)$comm
-t5g <- mcg_mlg_graph %+% top5lay + ggtitle("Top 5 Mycelial Compatibility Groups and associated MLGs")
+levels(top5lay$type) <- c("Multilocus Genotype", "Mycelial Compatibility\nGroup")
+t5g <- ggraph(top5lay) +
+  geom_node_circle(aes(r = size, fill = type)) +
+  geom_edge_link(aes(start_cap = circle(node1.size, unit = "native"), 
+                     end_cap = circle(node2.size, unit = "native"), 
+                     width = weight),
+                 arrow = arrow(length = unit(0.01, "native"))) +
+  geom_node_text(aes(label = gsub("MLG.", "", name), 
+                     color = type, 
+                     size = size/10),
+                 show.legend = FALSE) +
+  coord_fixed() +
+  scale_edge_width(range = c(0.25, 1.5)) +
+  scale_fill_manual(values = c("black", "white")) +
+  scale_color_manual(values = c("white", "black")) +
+  theme_graph(base_size = 16, base_family = "Helvetica") +
+  # theme(legend.position = c(0.85, 0.35), legend.direction = "vertical") +
+  theme(legend.position = c(0.5, 0), legend.direction = "horizontal", legend.box = "horizontal") +
+  theme(legend.box.spacing = unit(-1, "lines")) +
+  theme(legend.spacing.x = unit(0, "lines")) +
+  # theme(legend.box.background = element_rect(color = "black")) +
+  theme(legend.text = element_text(size = 10)) +
+  theme(plot.margin = unit(c(0, 0, 0, 0), "lines"))
+t5g$labels$edge_width <- "shared isolates"
+t5g$labels$fill <- ""
 t5g
+
 if (!interactive())
-  ggsave(t5g, file = file.path("results", "figures", "publication", "FigureS2B.pdf"), width = 88, height = 88, scale = 3, units = "mm")
+  ggsave(t5g, file = file.path("results", "figures", "publication", "mcg-mlg-subgraph.pdf"), width = 88, height = 88, scale = 3, units = "mm")
 ```
 
 Vey nice!
+
+```{r subgraphs, fig.height = 10, fig.width = 8}
+mcg_theme <- theme(legend.text = element_text(size = 10)) +
+  theme(legend.title = element_text(size = 10)) +
+  theme(axis.text.x = element_blank()) +
+  # theme(legend.background = element_blank()) +
+  # theme(legend.box.background = element_blank()) +
+  theme(legend.key.size = unit(0.5, "line")) +
+  theme(legend.position = c(0.9, 0.5)) +
+  theme(legend.box = "vertical") +
+  theme(legend.box.margin = unit(c(0, 0, 0, 0), "lines")) +
+  theme(legend.spacing = unit(0, "lines")) + 
+  theme(aspect.ratio = 0.45) +
+  theme(plot.background = element_rect(color = "black", fill = "grey98"))
+mcg_subgraph_with_context <- cowplot::ggdraw(xlim = c(0, 2), ylim = c(0, 2.25)) +
+  cowplot::draw_plot(t5g, 0, -0.125, 2, 2) +
+  cowplot::draw_plot(mcg_graph + scale_alpha(breaks = c(0.5, 0.75, 1)) + mcg_theme, 0, 1.45, 1.35, 1) +
+  cowplot::draw_plot(mcg_mlg_graph2, x = 1.355, y = 1.633, width = 0.6345, height = 0.6345) +
+  cowplot::draw_plot_label(c("A", "B", "C"), x = c(0, 1.35, 0), y = c(2.25, 2.25, 1.65), size = 25)
+mcg_subgraph_with_context
+if (!interactive()){
+  cowplot::ggsave(plot = mcg_subgraph_with_context,
+                  filename = file.path(PROJHOME, "results", "figures", "publication", "mcg-subgraph-with-context.pdf"),
+                  width = 8, 
+                  height = 10)
+}
+```
+
 
 There are a whole buttload of MLGs for those 5 MCGs. What are the severity 
 ratings for those? Again, we take take a look at these AND simultaneously query
