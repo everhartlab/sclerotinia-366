@@ -245,11 +245,11 @@ plot_mlg_graph <- function(g, glayout = NULL, label = TRUE, seed = 2017-06-28){
     theme_void() +
     theme(text = element_text(size = 14)) +
     labs(list(
-      title = "Shared haplotypes across regions",
-      fill = "Number of\nhaplotypes",
+     # title = "Shared MLGs across regions",
+      fill = "Number of\nMLGs",
       edge_alpha = "Probability of\nsecond encounter",
-      edge_width = "Populations\nper haplotype",
-      caption = "Outer circle: Number of haplotypes in the region\nInner Circle: Number of private haplotypes in the region"
+      edge_width = "Populations\nper MLG"#,
+      #caption = "Outer circle: Number of MLGs in the region\nInner Circle: Number of private MLGs in the region"
     ))
 }
 
@@ -315,6 +315,35 @@ graph16loc <- make_graph_list(dat)
 graph11loc <- make_graph_list(dat[loc = keeploci, mlg.reset = TRUE])
 ```
 
+## Graph legend
+
+
+```r
+g <- graph_from_adjacency_matrix(matrix(0, 2, 2))
+V(g)$size <- c(56, 56 - 32)
+V(g)$label <- c("Number of MLGs in Region", "Number of private MLGs")
+lay <- as.data.frame(matrix(0, 2, 2, dimnames = list(NULL, c("x", "y"))))
+glegend <- create_layout(g, "manual", node.positions = as.data.frame(lay)) %>% ggraph() + 
+  geom_node_circle(aes(r = size, fill = size)) + 
+  coord_fixed() + 
+  viridis::scale_fill_viridis(option = "C", begin = 1 - 32/56, end = 1, guide = "none") + 
+  ggrepel::geom_text_repel(aes(label = label), 
+                           x = c(20, 0) + 25, 
+                           y = c(35, 0), 
+                           nudge_x = 350, 
+                           segment.size = 1, 
+                           arrow = arrow(length = unit(0.15, "native")), 
+                           family = "Helvetica") + 
+  theme_void() +
+  # theme(plot.background = element_rect(color = "black", fill = "grey98")) +
+  xlim(c(-60, 480))
+  
+glegend
+```
+
+![plot of chunk unnamed-chunk-5](./figures/MLG-distribution///unnamed-chunk-5-1.png)
+
+
 ### Individual population subgraphs
 
 Each subgraph shows all of the connections for a single population.
@@ -367,7 +396,8 @@ par(mfrow = c(1, 1))
 ```
 
 ```r
-plot_mlg_graph(graph16loc$total, alt_layout) + labs(list(subtitle = "(16 loci)"))
+gg16 <- plot_mlg_graph(graph16loc$total, alt_layout) #+ labs(list(subtitle = "(16 loci)"))
+gg16
 ```
 
 ```
@@ -377,12 +407,35 @@ plot_mlg_graph(graph16loc$total, alt_layout) + labs(list(subtitle = "(16 loci)")
 ![plot of chunk graph-16-loci](./figures/MLG-distribution///graph-16-loci-1.png)
 
 ```r
-ggsave(filename = "results/figures/publication/FigureS1Z.pdf", width = 88, height = 88, units = "mm", scale = 2)
+ggsave(filename = "results/figures/publication/FigureS1Z.pdf", width = 88, height = (6.25/7)*88, units = "mm", scale = 2)
 ```
 
 ```
 ## Warning: Removed 10 rows containing missing values (geom_label_repel).
 ```
+
+
+```r
+suppressWarnings(
+  gg16cp <- cowplot::ggdraw(xlim = c(0, 1), ylim = c(0, 1)) +
+  cowplot::draw_plot(gg16, x = 0, y = 0.05) +
+  cowplot::draw_plot(glegend, x = -0.125, y = 0, height = 0.1)
+  )
+gg16cp
+```
+
+![plot of chunk unnamed-chunk-6](./figures/MLG-distribution///unnamed-chunk-6-1.png)
+
+```r
+cowplot::ggsave(plot = gg16cp, 
+                file = file.path(PROJHOME, "results", "figures", "publication", "mlg-16.pdf"),
+                width = 88,
+                height = (6.25/7)*88,
+                units = "mm",
+                scale = 2)
+```
+
+
 
 What we see is that We are given three clusters showing a clustering of the
 plains states, the west coast, and Australia, France, and Minnesota. The last
@@ -413,7 +466,8 @@ regions that has a low probability of a second encounter.
 ```
 
 ```r
-plot_mlg_graph(graph11loc$total, alt_layout) + labs(list(subtitle = "(11 loci)"))
+gg11 <- plot_mlg_graph(graph11loc$total, alt_layout)
+gg11
 ```
 
 ```
@@ -423,12 +477,34 @@ plot_mlg_graph(graph11loc$total, alt_layout) + labs(list(subtitle = "(11 loci)")
 ![plot of chunk graph-11-loci](./figures/MLG-distribution///graph-11-loci-1.png)
 
 ```r
-ggsave(filename = "results/figures/publication/Figure3Z.pdf", width = 88, height = 88, units = "mm", scale = 2)
+ggsave(filename = "results/figures/publication/Figure3Z.pdf", width = 88, height = (6.25/7)*88, units = "mm", scale = 2)
 ```
 
 ```
 ## Warning: Removed 11 rows containing missing values (geom_label_repel).
 ```
+
+
+```r
+suppressWarnings(
+  gg11cp <- cowplot::ggdraw(xlim = c(0, 1), ylim = c(0, 1)) +
+  cowplot::draw_plot(gg11, x = 0, y = 0.05) +
+  cowplot::draw_plot(glegend, x = -0.125, y = 0, height = 0.1)
+  )
+gg11cp
+```
+
+![plot of chunk unnamed-chunk-7](./figures/MLG-distribution///unnamed-chunk-7-1.png)
+
+```r
+cowplot::ggsave(plot = gg11cp, 
+                file = file.path(PROJHOME, "results", "figures", "publication", "mlg-11.pdf"),
+                width = 88,
+                height = (6.25/7)*88,
+                units = "mm",
+                scale = 2)
+```
+
 
 
 ```r
@@ -590,7 +666,7 @@ reg$DAPC$posterior %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-02
+##  date     2017-08-15
 ```
 
 ```
@@ -607,19 +683,20 @@ reg$DAPC$posterior %>%
 ##  base        * 3.4.1      2017-07-07 local                               
 ##  bindr         0.1        2016-11-13 CRAN (R 3.4.0)                      
 ##  bindrcpp    * 0.2        2017-06-17 CRAN (R 3.4.0)                      
-##  boot          1.3-19     2017-04-21 CRAN (R 3.4.0)                      
+##  boot          1.3-20     2017-07-30 CRAN (R 3.4.1)                      
 ##  broom         0.4.2      2017-02-13 CRAN (R 3.4.0)                      
 ##  cellranger    1.1.0      2016-07-27 CRAN (R 3.4.0)                      
 ##  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                      
 ##  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                      
 ##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                      
 ##  compiler      3.4.1      2017-07-07 local                               
+##  cowplot       0.8.0      2017-07-30 CRAN (R 3.4.1)                      
 ##  datasets    * 3.4.1      2017-07-07 local                               
 ##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                      
-##  devtools      1.13.2     2017-06-02 CRAN (R 3.4.0)                      
+##  devtools      1.13.3     2017-08-02 CRAN (R 3.4.1)                      
 ##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                      
 ##  dplyr       * 0.7.2      2017-07-20 CRAN (R 3.4.1)                      
-##  evaluate      0.10       2016-10-11 CRAN (R 3.4.0)                      
+##  evaluate      0.10.1     2017-06-24 CRAN (R 3.4.1)                      
 ##  expm          0.999-2    2017-03-29 CRAN (R 3.4.0)                      
 ##  ezknitr       0.6        2016-09-16 CRAN (R 3.4.0)                      
 ##  fastmatch     1.1-0      2017-01-28 CRAN (R 3.4.0)                      
@@ -639,11 +716,11 @@ reg$DAPC$posterior %>%
 ##  gridExtra     2.2.1      2016-02-29 CRAN (R 3.4.0)                      
 ##  gtable        0.2.0      2016-02-26 CRAN (R 3.4.0)                      
 ##  gtools        3.5.0      2015-05-29 CRAN (R 3.4.0)                      
-##  haven         1.0.0      2016-09-23 CRAN (R 3.4.0)                      
+##  haven         1.1.0      2017-07-09 CRAN (R 3.4.1)                      
 ##  highr         0.6        2016-05-09 CRAN (R 3.4.0)                      
 ##  hms           0.3        2016-11-22 CRAN (R 3.4.0)                      
 ##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                      
-##  httpuv        1.3.3      2015-08-04 CRAN (R 3.4.0)                      
+##  httpuv        1.3.5      2017-07-04 CRAN (R 3.4.1)                      
 ##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                      
 ##  igraph      * 1.1.2      2017-07-21 cran (@1.1.2)                       
 ##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                      
@@ -659,10 +736,10 @@ reg$DAPC$posterior %>%
 ##  Matrix        1.2-10     2017-04-28 CRAN (R 3.4.0)                      
 ##  memoise       1.1.0      2017-04-21 CRAN (R 3.4.0)                      
 ##  methods     * 3.4.1      2017-07-07 local                               
-##  mgcv          1.8-17     2017-02-08 CRAN (R 3.4.0)                      
+##  mgcv          1.8-18     2017-07-28 CRAN (R 3.4.1)                      
 ##  mime          0.5        2016-07-07 CRAN (R 3.4.0)                      
 ##  mnormt        1.5-5      2016-10-15 CRAN (R 3.4.0)                      
-##  modelr        0.1.0      2016-08-31 CRAN (R 3.4.0)                      
+##  modelr        0.1.1      2017-07-24 CRAN (R 3.4.1)                      
 ##  munsell       0.4.3      2016-02-13 CRAN (R 3.4.0)                      
 ##  nlme          3.1-131    2017-02-06 CRAN (R 3.4.0)                      
 ##  parallel      3.4.1      2017-07-07 local                               
@@ -671,9 +748,9 @@ reg$DAPC$posterior %>%
 ##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                      
 ##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                      
 ##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                      
-##  poppr       * 2.4.1.99-2 2017-07-16 Github (grunwaldlab/poppr@cd4cba2)  
+##  poppr       * 2.4.1.99-2 2017-08-13 local                               
 ##  psych         1.7.5      2017-05-03 CRAN (R 3.4.0)                      
-##  purrr       * 0.2.2.2    2017-05-11 cran (@0.2.2.2)                     
+##  purrr       * 0.2.3      2017-08-02 CRAN (R 3.4.1)                      
 ##  quadprog      1.5-5      2013-04-17 CRAN (R 3.4.0)                      
 ##  R.methodsS3   1.7.1      2016-02-16 CRAN (R 3.4.0)                      
 ##  R.oo          1.21.0     2016-11-01 CRAN (R 3.4.0)                      
@@ -686,9 +763,9 @@ reg$DAPC$posterior %>%
 ##  rlang         0.1.1      2017-05-18 CRAN (R 3.4.0)                      
 ##  rvest         0.3.2      2016-06-17 CRAN (R 3.4.0)                      
 ##  scales        0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)      
-##  seqinr        3.3-6      2017-04-06 CRAN (R 3.4.0)                      
+##  seqinr        3.4-5      2017-08-01 CRAN (R 3.4.1)                      
 ##  shiny         1.0.3      2017-04-26 CRAN (R 3.4.0)                      
-##  sp            1.2-4      2016-12-22 CRAN (R 3.4.0)                      
+##  sp            1.2-5      2017-06-29 CRAN (R 3.4.1)                      
 ##  spdep         0.6-13     2017-04-25 CRAN (R 3.4.0)                      
 ##  splines       3.4.1      2017-07-07 local                               
 ##  stats       * 3.4.1      2017-07-07 local                               
@@ -705,7 +782,7 @@ reg$DAPC$posterior %>%
 ##  vegan         2.4-3      2017-04-07 CRAN (R 3.4.0)                      
 ##  viridis       0.4.0      2017-03-27 CRAN (R 3.4.0)                      
 ##  viridisLite   0.2.0      2017-03-24 CRAN (R 3.4.0)                      
-##  withr         1.0.2      2016-06-20 CRAN (R 3.4.0)                      
+##  withr         2.0.0      2017-07-28 CRAN (R 3.4.1)                      
 ##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                      
 ##  xtable        1.8-2      2016-02-05 CRAN (R 3.4.0)
 ```

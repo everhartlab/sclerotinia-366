@@ -274,13 +274,13 @@ LDS <- full_join(LDS, LDS_pop)
 
 ```r
 LDS_PLOT <- ggplot(LDS, aes(x = LD1, y = LD2, color = Population)) + 
-  geom_point(aes(fill = Population), alpha = 0.5, pch = 21, color = "black") +
+  geom_point(aes(fill = Population), alpha = 0.5, pch = 21, color = "black", size = 2) +
   geom_segment(aes(x = mean1, y = mean2, xend = LD1, yend = LD2), alpha = 0.5) +
   stat_ellipse(type = "norm", level = 0.66, alpha = 0.75) + 
   ggrepel::geom_label_repel(aes(x = mean1, y = mean2, label = Population), 
                             data = LDS_pop, show.legend = FALSE, color = "black") +
   theme_bw() +  
-  theme(aspect.ratio = 1/1.618) +
+  # theme(aspect.ratio = 1/1.618) +
   theme(legend.position = "bottom") +
   theme(axis.text = element_blank()) + 
   theme(axis.title = element_blank()) + 
@@ -358,7 +358,7 @@ REGION_PLOT <- region_summary %>%
   filter(n >= 10) %>%
   ggplot(aes(x = Population, y = `Mean Assignment`)) +
   geom_segment(aes(xend = Population, yend = 0)) +
-  geom_point(aes(fill = Source), pch = 21) + 
+  geom_point(aes(fill = Source), pch = 21, size = 2) + 
   facet_wrap(~`Original Population`, ncol = 3, strip.position = "top") +
   scale_fill_grey() +
   # scale_x_discrete(position = "top") +
@@ -387,27 +387,53 @@ REGION_PLOT
 
 
 ```r
-cowplot::plot_grid(REGION_PLOT, LDS_PLOT, 
-                   nrow = 1, 
-                   rel_widths = c(1, 0.85),
-                   label_size = 16,
-                   labels = "auto")
+LEG <- cowplot::get_legend(LDS_PLOT + theme(legend.position = "right") + theme(legend.text = element_text(size = 12)))
 ```
 
 ```
 ## Too few points to calculate an ellipse
 ## Too few points to calculate an ellipse
 ## Too few points to calculate an ellipse
+```
+
+```r
+cowplot::plot_grid(REGION_PLOT +
+                     theme(plot.margin = unit(c(0, 0, 0, 0), "lines")), 
+                   LDS_PLOT + 
+                     theme(legend.position = "none") +
+                     theme(plot.margin = unit(c(0, 0, 0, 0), "lines")) +
+                     theme(aspect.ratio = 0.85), 
+                   LEG,
+                   nrow = 1, 
+                   rel_widths = c(1, 0.85, 0.25),
+                   label_size = 25,
+                   label_fontfamily = "Helvetica",
+                   labels = c("A", "B", NA),
+                   align = "v",
+                   axis = "t")
+```
+
+```
+## Too few points to calculate an ellipse
+## Too few points to calculate an ellipse
+## Too few points to calculate an ellipse
+```
+
+```
+## Warning: Removed 1 rows containing missing values (geom_text).
 ```
 
 <img src="./figures/pop-diff///dapc-region-dualplot-1.png" title="plot of chunk dapc-region-dualplot" alt="plot of chunk dapc-region-dualplot" style="display: block; margin: auto;" />
 
 ```r
-ggsave(filename = "results/figures/publication/DAPC.pdf")
+cowplot::ggsave(filename = file.path(PROJHOME, "results/figures/publication/DAPC.pdf"),
+       width = 13,
+       height = 6
+      )
 ```
 
 ```
-## Saving 13 x 6 in image
+## Warning: Removed 1 rows containing missing values (geom_text).
 ```
 
 
@@ -557,7 +583,7 @@ scatter(dat11.nc.dapc)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-03
+##  date     2017-08-15
 ```
 
 ```
@@ -581,7 +607,7 @@ scatter(dat11.nc.dapc)
 ##  coda           0.19-1     2016-12-08 CRAN (R 3.4.0)                      
 ##  colorspace     1.3-2      2016-12-14 CRAN (R 3.4.0)                      
 ##  compiler       3.4.1      2017-07-07 local                               
-##  cowplot        0.8.0      2017-07-30 cran (@0.8.0)                       
+##  cowplot        0.8.0      2017-07-30 CRAN (R 3.4.1)                      
 ##  datasets     * 3.4.1      2017-07-07 local                               
 ##  deldir         0.1-14     2017-04-22 CRAN (R 3.4.0)                      
 ##  devtools       1.13.3     2017-08-02 CRAN (R 3.4.1)                      
@@ -637,7 +663,7 @@ scatter(dat11.nc.dapc)
 ##  phangorn       2.2.0      2017-04-03 CRAN (R 3.4.0)                      
 ##  pkgconfig      2.0.1      2017-03-21 CRAN (R 3.4.0)                      
 ##  plyr           1.8.4      2016-06-08 CRAN (R 3.4.0)                      
-##  poppr        * 2.4.1.99-2 2017-07-16 Github (grunwaldlab/poppr@cd4cba2)  
+##  poppr        * 2.4.1.99-2 2017-08-13 local                               
 ##  psych          1.7.5      2017-05-03 CRAN (R 3.4.0)                      
 ##  purrr        * 0.2.3      2017-08-02 CRAN (R 3.4.1)                      
 ##  quadprog       1.5-5      2013-04-17 CRAN (R 3.4.0)                      
