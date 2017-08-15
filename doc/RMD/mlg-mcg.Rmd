@@ -198,6 +198,7 @@ mcg_graph <- mcgs %>%
   mutate(MCG = forcats::fct_inorder(MCG, ordered = TRUE)) %>%
   ggplot(aes(x = MCG, y = count, group = Type, fill = Type, alpha = Evenness)) +
   geom_col(aes(width = ifelse(Type == "MLGs", 0.5, 0.85)), color = "black", position = "identity") +
+  annotate(geom = "rect", xmin = 0.5, xmax = 8.5, ymin = 0, ymax = 75, color = "black", size = 1.5, alpha = 0, lty = 2) +
   # annotate(geom = "text", x = 18, y =35, 
   #          label = sprintf("Mean Evenness: %.3f", mean(mcgs$Evenness, na.rm = TRUE))) +
   scale_fill_manual(values = c("black", "white")) +
@@ -213,6 +214,7 @@ mcg_graph <- mcgs %>%
   theme(legend.box.margin = unit(c(0, 6.55, 0, 0), "lines")) +
   theme(legend.box.background = element_rect(fill = "white", color = "black")) +
   theme(legend.box = "horizontal") +
+  theme(legend.position = c(0.77, 0.75)) +
   theme(aspect.ratio = 1/2) +
   labs(list(
     alpha = "MLG\nEvenness"
@@ -246,7 +248,8 @@ if (!interactive()){
   cowplot::ggsave(mcg_graph_inset, 
                   filename = file.path(PROJHOME, "results/figures/publication/mcg-barplot.pdf"),
                   width = 10,
-                  height = 5)
+                  height = 5,
+                  units = "in")
   # pdf(file.path(PROJHOME, "results/figures/publication/Figure1Z.pdf"), width = 10, height = 5)
   # print(mcg_graph)
   # print(even, vp = vp1)
@@ -639,22 +642,24 @@ if (!interactive())
 Vey nice!
 
 ```{r subgraphs, fig.height = 10, fig.width = 8}
+greyground <- theme(plot.background = element_rect(color = "black", fill = "grey98"))
 mcg_theme <- theme(legend.text = element_text(size = 10)) +
   theme(legend.title = element_text(size = 10)) +
   theme(axis.text.x = element_blank()) +
   # theme(legend.background = element_blank()) +
-  # theme(legend.box.background = element_blank()) +
-  theme(legend.key.size = unit(0.5, "line")) +
+  theme(legend.box.background = element_rect(fill = "grey98")) +
+  theme(legend.key.size = unit(0.75, "line")) +
+  theme(legend.box.just = "left") +
   theme(legend.position = c(0.9, 0.5)) +
   theme(legend.box = "vertical") +
   theme(legend.box.margin = unit(c(0, 0, 0, 0), "lines")) +
-  theme(legend.spacing = unit(0, "lines")) + 
+  theme(legend.spacing = unit(0, "lines")) +
   theme(aspect.ratio = 0.45) +
-  theme(plot.background = element_rect(color = "black", fill = "grey98"))
+  greyground
 mcg_subgraph_with_context <- cowplot::ggdraw(xlim = c(0, 2), ylim = c(0, 2.25)) +
   cowplot::draw_plot(t5g, 0, -0.125, 2, 2) +
   cowplot::draw_plot(mcg_graph + scale_alpha(breaks = c(0.5, 0.75, 1)) + mcg_theme, 0, 1.45, 1.35, 1) +
-  cowplot::draw_plot(mcg_mlg_graph2, x = 1.355, y = 1.633, width = 0.6345, height = 0.6345) +
+  cowplot::draw_plot(mcg_mlg_graph2 + greyground, x = 1.355, y = 1.633, width = 0.6345, height = 0.6345) +
   cowplot::draw_plot_label(c("A", "B", "C"), x = c(0, 1.35, 0), y = c(2.25, 2.25, 1.65), size = 25)
 mcg_subgraph_with_context
 if (!interactive()){
