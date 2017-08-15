@@ -163,7 +163,13 @@ Prior to DNA extraction, isolates were grown on PDA and plugs were subsequently 
 Mycelial was collected in a buchner funnel, agar plugs removed, lyophilizedm and pulverized manually in whirl-pak bags. 
 Lyophilized mycelia was then stored in microcentrifuge tubes at -$20^{\circ}$C until needed for DNA extraction.
 
-DNA was purified from approximately 100 mg mycelium collected from an actively growing culture of each isolate using a Qiagen DNeasy Plant Mini Kit (Qiagen Inc., Valencia, CA) according to the manufacturer's instructions.
+DNA was purified using a phenol-chloroform extraction method.
+First, approximately 25 mg of lyophilized mycelia was suspended in 600$\mu$l of LETS Buffer (0.1 M LiCl, 0.01 M Na2EDTA, 0.01 M Tris-Cl (pH 7.4), 0.2% SDS) in a 2.0ml microcentrifuge tube.
+An equal amount of buffer-saturated phenol (600$\mu$l) was added and mixed by inversion, followed by 300$\mu$l chloroform, mixed by inversion. 
+The suspension was then transferred into a 2.0ml Phase-lock gel tube (VWR, Randor, PA) and centrifuged for 8--10 minutes at 12,000 RPM.
+Another aloquat of 300$\mu$l was added and centrifuged for another 8--10 minutes at 12,000 RPM and the aqueous phase was subsequently transferred into a microcentrifuge tube with an equal volume of 2-propanol added and mixed via gentle inversion.
+
+<!-- using a Qiagen DNeasy Plant Mini Kit (Qiagen Inc., Valencia, CA) according to the manufacturer's instructions. -->
 
 <!-- Fungal DNA mini-prep Updated from Jeff Rollins’ protocol           Rev. Nov 2012
 
