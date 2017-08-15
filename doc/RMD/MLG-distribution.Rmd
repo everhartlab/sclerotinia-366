@@ -152,11 +152,11 @@ plot_mlg_graph <- function(g, glayout = NULL, label = TRUE, seed = 2017-06-28){
     theme_void() +
     theme(text = element_text(size = 14)) +
     labs(list(
-      title = "Shared haplotypes across regions",
-      fill = "Number of\nhaplotypes",
+     # title = "Shared MLGs across regions",
+      fill = "Number of\nMLGs",
       edge_alpha = "Probability of\nsecond encounter",
-      edge_width = "Populations\nper haplotype",
-      caption = "Outer circle: Number of haplotypes in the region\nInner Circle: Number of private haplotypes in the region"
+      edge_width = "Populations\nper MLG"#,
+      #caption = "Outer circle: Number of MLGs in the region\nInner Circle: Number of private MLGs in the region"
     ))
 }
 
@@ -223,6 +223,32 @@ graph16loc <- make_graph_list(dat)
 graph11loc <- make_graph_list(dat[loc = keeploci, mlg.reset = TRUE])
 ```
 
+## Graph legend
+
+```{r}
+g <- graph_from_adjacency_matrix(matrix(0, 2, 2))
+V(g)$size <- c(56, 56 - 32)
+V(g)$label <- c("Number of MLGs in Region", "Number of private MLGs")
+lay <- as.data.frame(matrix(0, 2, 2, dimnames = list(NULL, c("x", "y"))))
+glegend <- create_layout(g, "manual", node.positions = as.data.frame(lay)) %>% ggraph() + 
+  geom_node_circle(aes(r = size, fill = size)) + 
+  coord_fixed() + 
+  viridis::scale_fill_viridis(option = "C", begin = 1 - 32/56, end = 1, guide = "none") + 
+  ggrepel::geom_text_repel(aes(label = label), 
+                           x = c(20, 0) + 25, 
+                           y = c(35, 0), 
+                           nudge_x = 350, 
+                           segment.size = 1, 
+                           arrow = arrow(length = unit(0.15, "native")), 
+                           family = "Helvetica") + 
+  theme_void() +
+  # theme(plot.background = element_rect(color = "black", fill = "grey98")) +
+  xlim(c(-60, 480))
+  
+glegend
+```
+
+
 ### Individual population subgraphs
 
 Each subgraph shows all of the connections for a single population.
@@ -246,12 +272,30 @@ congruent in their community predictions.
 First, I'm going to show the results of a community analysis. I'm using the 
 igraph function `cluster_optimal()` to cluster the nodes.
 
-```{r graph-16-loci, fig.width = 7, fig.height = 7}
+```{r graph-16-loci, fig.width = 7, fig.height = 6.25}
 par(mfrow = c(1, 1))
 (g16o <- cluster_optimal(graph16loc$total))
-plot_mlg_graph(graph16loc$total, alt_layout) + labs(list(subtitle = "(16 loci)"))
-ggsave(filename = "results/figures/publication/FigureS1Z.pdf", width = 88, height = 88, units = "mm", scale = 2)
+gg16 <- plot_mlg_graph(graph16loc$total, alt_layout) #+ labs(list(subtitle = "(16 loci)"))
+gg16
+ggsave(filename = "results/figures/publication/FigureS1Z.pdf", width = 88, height = (6.25/7)*88, units = "mm", scale = 2)
 ```
+
+```{r, fig.width = 7, fig.height = 6.25}
+suppressWarnings(
+  gg16cp <- cowplot::ggdraw(xlim = c(0, 1), ylim = c(0, 1)) +
+  cowplot::draw_plot(gg16, x = 0, y = 0.05) +
+  cowplot::draw_plot(glegend, x = -0.125, y = 0, height = 0.1)
+  )
+gg16cp
+cowplot::ggsave(plot = gg16cp, 
+                file = file.path(PROJHOME, "results", "figures", "publication", "mlg-16.pdf"),
+                width = 88,
+                height = (6.25/7)*88,
+                units = "mm",
+                scale = 2)
+```
+
+
 
 What we see is that We are given three clusters showing a clustering of the
 plains states, the west coast, and Australia, France, and Minnesota. The last
@@ -262,11 +306,28 @@ regions that has a low probability of a second encounter.
 #### With 11 loci
 
 
-```{r graph-11-loci, fig.width = 7, fig.height = 7}
+```{r graph-11-loci, fig.width = 7, fig.height = 6.25}
 (g11o <- cluster_optimal(graph11loc$total))
-plot_mlg_graph(graph11loc$total, alt_layout) + labs(list(subtitle = "(11 loci)"))
-ggsave(filename = "results/figures/publication/Figure3Z.pdf", width = 88, height = 88, units = "mm", scale = 2)
+gg11 <- plot_mlg_graph(graph11loc$total, alt_layout)
+gg11
+ggsave(filename = "results/figures/publication/Figure3Z.pdf", width = 88, height = (6.25/7)*88, units = "mm", scale = 2)
 ```
+
+```{r, fig.width = 7, fig.height = 6.25}
+suppressWarnings(
+  gg11cp <- cowplot::ggdraw(xlim = c(0, 1), ylim = c(0, 1)) +
+  cowplot::draw_plot(gg11, x = 0, y = 0.05) +
+  cowplot::draw_plot(glegend, x = -0.125, y = 0, height = 0.1)
+  )
+gg11cp
+cowplot::ggsave(plot = gg11cp, 
+                file = file.path(PROJHOME, "results", "figures", "publication", "mlg-11.pdf"),
+                width = 88,
+                height = (6.25/7)*88,
+                units = "mm",
+                scale = 2)
+```
+
 
 ```{r, saving_data}
 save(graph16loc, graph11loc, alt_layout, file = "data/mlg-crosspop-graph.rda")
