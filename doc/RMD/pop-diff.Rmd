@@ -129,13 +129,13 @@ LDS_pop <- LDS %>%
   rename_all(function(x) gsub("LD", "mean", x))
 LDS <- full_join(LDS, LDS_pop)
 LDS_PLOT <- ggplot(LDS, aes(x = LD1, y = LD2, color = Population)) + 
-  geom_point(aes(fill = Population), alpha = 0.5, pch = 21, color = "black") +
+  geom_point(aes(fill = Population), alpha = 0.5, pch = 21, color = "black", size = 2) +
   geom_segment(aes(x = mean1, y = mean2, xend = LD1, yend = LD2), alpha = 0.5) +
   stat_ellipse(type = "norm", level = 0.66, alpha = 0.75) + 
   ggrepel::geom_label_repel(aes(x = mean1, y = mean2, label = Population), 
                             data = LDS_pop, show.legend = FALSE, color = "black") +
   theme_bw() +  
-  theme(aspect.ratio = 1/1.618) +
+  # theme(aspect.ratio = 1/1.618) +
   theme(legend.position = "bottom") +
   theme(axis.text = element_blank()) + 
   theme(axis.title = element_blank()) + 
@@ -181,7 +181,7 @@ REGION_PLOT <- region_summary %>%
   filter(n >= 10) %>%
   ggplot(aes(x = Population, y = `Mean Assignment`)) +
   geom_segment(aes(xend = Population, yend = 0)) +
-  geom_point(aes(fill = Source), pch = 21) + 
+  geom_point(aes(fill = Source), pch = 21, size = 2) + 
   facet_wrap(~`Original Population`, ncol = 3, strip.position = "top") +
   scale_fill_grey() +
   # scale_x_discrete(position = "top") +
@@ -208,12 +208,25 @@ REGION_PLOT
 
 
 ```{r dapc-region-dualplot, fig.width = 13, fig.height = 6}
-cowplot::plot_grid(REGION_PLOT, LDS_PLOT, 
+LEG <- cowplot::get_legend(LDS_PLOT + theme(legend.position = "right") + theme(legend.text = element_text(size = 12)))
+cowplot::plot_grid(REGION_PLOT +
+                     theme(plot.margin = unit(c(0, 0, 0, 0), "lines")), 
+                   LDS_PLOT + 
+                     theme(legend.position = "none") +
+                     theme(plot.margin = unit(c(0, 0, 0, 0), "lines")) +
+                     theme(aspect.ratio = 0.85), 
+                   LEG,
                    nrow = 1, 
-                   rel_widths = c(1, 0.85),
-                   label_size = 16,
-                   labels = "auto")
-ggsave(filename = "results/figures/publication/DAPC.pdf")
+                   rel_widths = c(1, 0.85, 0.25),
+                   label_size = 25,
+                   label_fontfamily = "Helvetica",
+                   labels = c("A", "B", NA),
+                   align = "v",
+                   axis = "t")
+cowplot::ggsave(filename = file.path(PROJHOME, "results/figures/publication/DAPC.pdf"),
+       width = 13,
+       height = 6
+      )
 ```
 
 
