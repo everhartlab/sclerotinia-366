@@ -132,7 +132,7 @@ Although the nursery locations were the same over sampling years, sampling plots
 Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or wmn in 11 states of the United States of America, Mexico, France, and Australia.
 The white mold screening nurseries in different regions are indicated by wmn and all other isolates came from commercial fields (Table \@ref(tab:isolate-table)). 
 
-After collection, the isolates were stored in petri plates lined with filter paper, then stored at $20^{\circ}$F or –$4^{\circ}$C. 
+After collection, the isolates were stored in petri plates lined with filter paper, then stored at $20^{\circ}$F or -$4^{\circ}$C. 
 Sclerotia were triple rinsed with (i) 50% Clorox bleach/50% double-distilled (dd)H2O solution for 3 min, (ii) ddH2O rinse for 3 min, and (iii) final ddH2O rinse for 3 min, then plated on water agar plates (16g of Bacto agar per liter of ddH2O), with four to five sclerotia of each isolate separated on each plate and stored on the bench top at room temperature for 5 to 6 days An 8-mm plug from a 5- or 6-day-old culture was transferred from the advancing margin of the mycelia onto a plate of Difco potato dextrose agar (PDA at 39 g/liter of ddH2O) [@otto-hanson2011variation].
 In combination with the 156 isolates described previously, we collected 210 isolates for a total of 366 isolates [@otto-hanson2011variation].
 
@@ -585,23 +585,29 @@ In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we fo
 
 ```{r table4, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 suppressPackageStartupMessages(library("tidyverse"))
-read_csv("../../results/tables/AMOVA-region.csv", 
+read_csv("../../results/tables/AMOVA-year.csv", 
          na = "NA", # spaces read in as spaces
          col_types = cols(.default = col_character()))  %>%
   rename(ps = `Phi statistic`) %>%
+  # mutate_if(is.numeric, format, digits = 3) %>%
+  mutate(ps = signif(as.numeric(ps), digits = 3)) %>%
   mutate(ps = gsub("0\\.00(\\d{1})(\\d{2})", "\\1.\\2e^-3^", ps)) %>%
-  mutate(ps = case_when(Hierarchy == "Between Source" ~ ps, TRUE ~ paste0("**", ps, "**"))) %>%
-  rename(`$\\Phi statistic$` = ps) %>%
+  mutate(ps = case_when(P > 0.05 ~ ps, TRUE ~ paste0("**", ps, "**"))) %>%
+  rename(`$\\Phi$ statistic` = ps) %>%
   rename(`% variation` = `Percent variation`) %>%
   rename(S.S. = `Sum of Squares`) %>%
-  select(-P) %>%
+  rename(`*P*` = P) %>%
+  select(c(1:4, 6, 5)) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>% 
-  huxtable::set_col_width(c(1.1, 0.6, 0.9, 0.9, 1.4)) %>% 
-  huxtable::set_align(huxtable::everywhere, 2:5, "center") %>% 
-  huxtable::print_md(max_width = 100)
+  huxtable::set_col_width(c(0.8, 0.15, 0.15, 0.35, 0.5, 0.15)) %>% 
+  huxtable::set_align(huxtable::everywhere, 2:6, "right") %>% 
+  huxtable::set_number_format(huxtable::everywhere, 2, 0) %>%
+  huxtable::set_number_format(huxtable::everywhere, 6, 3) %>%
+  huxtable::set_number_format(huxtable::everywhere, 5, 4) %>%
+  huxtable::print_md(max_width = 80)
 ```
 
-Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance showing little differentiation between white mold screening nurseries (wmn) and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a wmn or not. Bold $\Phi$ values indicate significant values (P < 1.00e^-4^). Numbers in parentheses represent AMOVA run with the regions NE, WA, and MI. S.S. = Sum of Squares, d.f. = degrees of freedom.
+Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance showing little differentiation between white mold screening nurseries (wmn) and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a wmn or not. Bold $\Phi$ values indicate significant values (*P* < 0.05). S.S. = Sum of Squares, d.f. = degrees of freedom.
 
 ### Discriminant Analysis of Principal Components {-}
 
