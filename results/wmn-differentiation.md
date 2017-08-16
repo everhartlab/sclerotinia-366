@@ -87,7 +87,7 @@ make_amova_table <- function(am, amt, samples = "Region"){
   res <- data.frame(list(am$results[-tot, c("Df", "Sum Sq")], 
                          Percent = am$componentsofcovariance[-tot, 2],
                          Pval    = rev(amt$pvalue), 
-                         Phi     = am$statphi$Phi[-tot]))
+                         Phi     = rev(am$statphi$Phi[-tot])))
   res <- as.matrix(res)
   colnames(res) <- c("d.f.", "Sum of Squares", "Percent variation", "P", 
                      "Phi statistic")
@@ -202,7 +202,7 @@ ssc_amova_test
 ## Alternative hypothesis: greater 
 ## 
 ##       Std.Obs   Expectation      Variance 
-##  8.248604e+00 -2.464083e-05  2.866368e-07
+##  8.365250e+00 -1.243905e-05  2.771608e-07
 ```
 
 
@@ -234,9 +234,9 @@ plot(ssc_amova_region_test)
 ##   Within Region                     296     56.6667061        86.3618966
 ##                                   statistic
 ## levels                                  P Phi statistic
-##   Between SourceType               0.2847   0.136381034
+##   Between SourceType               0.2866  -0.001583345
 ##   Between Region Within SourceType 0.0001   0.137746279
-##   Within Region                    0.0001  -0.001583345
+##   Within Region                    0.0001   0.136381034
 ```
 
 Okay! This shows that when we account for Region after accounting for Source
@@ -266,9 +266,9 @@ plot(ssc_amova_nm_test)
 ##   Within Region                     282     55.0854125         90.349725
 ##                                   statistic
 ## levels                                  P Phi statistic
-##   Between SourceType               0.2750    0.09650275
+##   Between SourceType               0.2713    0.00115560
 ##   Between Region Within SourceType 0.0001    0.09545746
-##   Within Region                    0.0001    0.00115560
+##   Within Region                    0.0001    0.09650275
 ```
 
 When we remove the Mexican isolates (which only contained white mold nurseries
@@ -315,10 +315,10 @@ plot(ssc_amova_newami_test)
 ##   Between Region Within SourceType    4      2.6285603          8.309128
 ##   Within Region                     147     30.0470395         93.522707
 ##                                   statistic
-## levels                                 P Phi statistic
-##   Between SourceType               4e-01    0.06477293
-##   Between Region Within SourceType 1e-04    0.08159657
-##   Within Region                    1e-04   -0.01831835
+## levels                                  P Phi statistic
+##   Between SourceType               0.4072   -0.01831835
+##   Between Region Within SourceType 0.0001    0.08159657
+##   Within Region                    0.0001    0.06477293
 ```
 
 
@@ -326,7 +326,7 @@ plot(ssc_amova_newami_test)
 make_amova_printable(ssc_amova_table, ssc_amova_newami_table) %>%  
   as_tibble() %>%
   add_column(Hierarchy = c("Between Source", "Between Region within Source", "Within Region"), .before = 1) %>%
-  readr::write_csv(path = file.path("results", "tables", "AMOVA-region.csv"), col_names = TRUE) %>%
+  readr::write_csv(path = file.path(PROJHOME, "results", "tables", "AMOVA-region.csv"), col_names = TRUE) %>%
   rename(ps = `Phi statistic`) %>%
   mutate(ps = gsub("0\\.00(\\d{1})(\\d{2})", "\\1.\\2e^-3^", ps)) %>%
   mutate(ps = case_when(Hierarchy == "Between Source" ~ ps, TRUE ~ paste0("**", ps, "**"))) %>%
@@ -335,23 +335,23 @@ make_amova_printable(ssc_amova_table, ssc_amova_newami_table) %>%
   rename(S.S. = `Sum of Squares`) %>%
   select(-P) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>% 
-  huxtable::set_col_width(c(1.1, 0.6, 0.9, 0.9, 1.4)) %>% 
+  huxtable::set_col_width(c(1.1, 0.6, 0.8, 0.8, 1.1)) %>% 
   huxtable::set_align(huxtable::everywhere, 2:5, "center") %>% 
-  huxtable::print_md(max_width = 100)
+  huxtable::print_md(max_width = 90)
 ```
 
 ```
--------------------------------------------------------------------------------------------------
-Hierarchy                d.f.           S.S.           % variation         $\Phi statistic$       
---------------------- ----------- ----------------- ----------------- ---------------------------
-Between Source           1 (1)      0.897 (0.367)    -0.158 (-1.83)         0.136 (0.0648)        
+---------------------------------------------------------------------------------------
+Hierarchy                d.f.          S.S.         % variation     $\Phi statistic$    
+--------------------- ----------- --------------- --------------- ---------------------
+Between Source           1 (1)     0.897 (0.367)  -0.158 (-1.83)  -1.58e^-3^ (-0.0183)  
 
-Between Region within   20 (4)        12 (2.63)        13.8 (8.31)        **0.138 (0.0816)**      
- Source                                                                                           
+Between Region within   20 (4)       12 (2.63)      13.8 (8.31)    **0.138 (0.0816)**   
+ Source                                                                                 
 
-Within Region          296 (147)      56.7 (30)        86.4 (93.5)     **-1.58e^-3^ (-0.0183)**   
+Within Region          296 (147)     56.7 (30)      86.4 (93.5)    **0.136 (0.0648)**   
 
--------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
 ```
 
 
@@ -855,7 +855,7 @@ LDS_PLOT
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-15
+##  date     2017-08-16
 ```
 
 ```
@@ -877,6 +877,7 @@ LDS_PLOT
 ##  cellranger    1.1.0      2016-07-27 CRAN (R 3.4.0)                      
 ##  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                      
 ##  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                      
+##  codetools     0.2-15     2016-10-05 CRAN (R 3.4.0)                      
 ##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                      
 ##  compiler      3.4.1      2017-07-07 local                               
 ##  datasets    * 3.4.1      2017-07-07 local                               
@@ -891,8 +892,12 @@ LDS_PLOT
 ##  forcats       0.2.0      2017-01-23 CRAN (R 3.4.0)                      
 ##  foreign       0.8-69     2017-06-21 CRAN (R 3.4.0)                      
 ##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                      
-##  ggcompoplot   0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)
+##  ggcompoplot * 0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)
+##  ggforce       0.1.1      2016-11-28 CRAN (R 3.4.0)                      
 ##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                      
+##  ggraph      * 1.0.0      2017-02-24 CRAN (R 3.4.0)                      
+##  ggrepel     * 0.6.12     2017-08-02 Github (slowkow/ggrepel@fd15d0a)    
+##  ggtree      * 1.6.11     2017-08-03 Bioconductor                        
 ##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                      
 ##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                      
 ##  graphics    * 3.4.1      2017-07-07 local                               
@@ -905,14 +910,15 @@ LDS_PLOT
 ##  highr         0.6        2016-05-09 CRAN (R 3.4.0)                      
 ##  hms           0.3        2016-11-22 CRAN (R 3.4.0)                      
 ##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                      
+##  htmlwidgets   0.9        2017-07-10 cran (@0.9)                         
 ##  httpuv        1.3.5      2017-07-04 CRAN (R 3.4.1)                      
 ##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                      
 ##  huxtable      0.3.0      2017-05-18 CRAN (R 3.4.0)                      
-##  igraph        1.1.2      2017-07-21 cran (@1.1.2)                       
+##  igraph      * 1.1.2      2017-07-21 cran (@1.1.2)                       
 ##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                      
 ##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                      
 ##  labeling      0.3        2014-08-23 CRAN (R 3.4.0)                      
-##  lattice       0.20-35    2017-03-25 CRAN (R 3.4.0)                      
+##  lattice     * 0.20-35    2017-03-25 CRAN (R 3.4.0)                      
 ##  lazyeval      0.2.0      2016-06-12 CRAN (R 3.4.0)                      
 ##  LearnBayes    2.15       2014-05-29 CRAN (R 3.4.0)                      
 ##  lubridate     1.6.0      2016-09-13 CRAN (R 3.4.0)                      
@@ -929,7 +935,7 @@ LDS_PLOT
 ##  nlme          3.1-131    2017-02-06 CRAN (R 3.4.0)                      
 ##  parallel      3.4.1      2017-07-07 local                               
 ##  pegas         0.10       2017-05-03 CRAN (R 3.4.0)                      
-##  permute       0.9-4      2016-09-09 CRAN (R 3.4.0)                      
+##  permute     * 0.9-4      2016-09-09 CRAN (R 3.4.0)                      
 ##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                      
 ##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                      
 ##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                      
@@ -954,16 +960,21 @@ LDS_PLOT
 ##  spdep         0.6-13     2017-04-25 CRAN (R 3.4.0)                      
 ##  splines       3.4.1      2017-07-07 local                               
 ##  stats       * 3.4.1      2017-07-07 local                               
+##  stats4        3.4.1      2017-07-07 local                               
 ##  stringi       1.1.5      2017-04-07 CRAN (R 3.4.0)                      
 ##  stringr       1.2.0      2017-02-18 CRAN (R 3.4.0)                      
 ##  tibble      * 1.3.3      2017-05-28 CRAN (R 3.4.0)                      
 ##  tidyr       * 0.6.3      2017-05-15 CRAN (R 3.4.0)                      
 ##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.4.0)                      
 ##  tools         3.4.1      2017-07-07 local                               
+##  tweenr        0.1.5      2016-10-10 CRAN (R 3.4.0)                      
+##  udunits2      0.13       2016-11-17 CRAN (R 3.4.0)                      
+##  units         0.4-5      2017-06-15 CRAN (R 3.4.0)                      
 ##  utils       * 3.4.1      2017-07-07 local                               
-##  vegan         2.4-3      2017-04-07 CRAN (R 3.4.0)                      
-##  viridis       0.4.0      2017-03-27 CRAN (R 3.4.0)                      
-##  viridisLite   0.2.0      2017-03-24 CRAN (R 3.4.0)                      
+##  vegan       * 2.4-3      2017-04-07 CRAN (R 3.4.0)                      
+##  viridis     * 0.4.0      2017-03-27 CRAN (R 3.4.0)                      
+##  viridisLite * 0.2.0      2017-03-24 CRAN (R 3.4.0)                      
+##  visNetwork  * 2.0.1      2017-07-30 cran (@2.0.1)                       
 ##  withr         2.0.0      2017-07-28 CRAN (R 3.4.1)                      
 ##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                      
 ##  xtable        1.8-2      2016-02-05 CRAN (R 3.4.0)
