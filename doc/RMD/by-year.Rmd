@@ -1,0 +1,270 @@
+---
+title: "Differentiation By Year"
+output: 
+  html_notebook:
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = PROJHOME)
+```
+
+# Purpose
+
+Because we have collections of isolates from the same WMN across different years,
+we can investigate how populations change over the years. I'm attempting to be
+careful with this analysis because, much like the white mold screening nursery
+analysis, there are small sample sizes, which could bias the results.
+
+# Data
+
+```{r packages}
+library("poppr")
+library("tidyverse")
+library("cowplot")
+make_amova_table <- function(am, amt, samples = "Region"){
+  tot <- nrow(am$results)
+  res <- data.frame(list(am$results[-tot, c("Df", "Sum Sq")], 
+                         Percent = am$componentsofcovariance[-tot, 2],
+                         Pval    = rev(amt$pvalue), 
+                         Phi     = rev(am$statphi$Phi[-tot])))
+  res <- as.matrix(res)
+  colnames(res) <- c("d.f.", "Sum of Squares", "Percent variation", "P", 
+                     "Phi statistic")
+  names(dimnames(res)) <- c("levels", "statistic")
+  rownames(res) <- gsub("samples", samples, rownames(res))
+  return(res)
+}
+
+make_amova_printable <- function(amtab, amtabcc){
+  am_array <- array(dim      = c(dim(amtab), 2),
+                    dimnames = c(dimnames(amtab), 
+                                 list(c("full", "clone-corrected"))))
+  am_array[, , 1] <- amtab
+  am_array[, , 2] <- amtabcc
+  tabfun <- function(x){
+    x <- paste0(paste0(signif(x, 3), collapse = " ("), ")")
+    return(x)
+  }
+  res <- apply(am_array, c(1, 2), tabfun)
+  return(res)
+}
+```
+
+```{r data}
+load("data/sclerotinia_16_loci.rda")
+dat11cc <- dat11 %>%
+  clonecorrect(~Region/Source/Host/Year) %>% 
+  setPop(~Region/Year)
+
+addStrata(dat11cc) <- strata(dat11cc) %>% 
+  mutate(SourceType = forcats::fct_inorder(ifelse(Source == "wmn", "wmn", "other"))) %>%
+  select(SourceType)
+wmncc   <- dat11cc %>% 
+  setPop(~Source) %>% 
+  popsub("wmn") %>% 
+  setPop(~Region/Year)
+table(strata(dat11cc) %>% select(Region, Year))
+table(strata(wmncc) %>% select(Region, Year))
+```
+
+# Analysis of Molecular Variance
+
+First, we should see what AMOVA tells us about population structure
+
+
+```{r wmn_amova, cache = TRUE}
+bdwmn <- bruvo.dist(wmncc, replen = other(wmncc)$REPLEN)
+(wmn.amova <- poppr.amova(wmncc, ~Region/Year, dist = bdwmn))
+(wmn.amova.test <- randtest(wmn.amova, nrepet = 999))
+make_amova_table(wmn.amova, wmn.amova.test, samples = "Year")
+```
+```{r, full_amova, cache = TRUE}
+bdfull <- bruvo.dist(dat11cc, replen = other(dat11cc)$REPLEN)
+(full.amova.2 <- poppr.amova(dat11cc, ~Region/Year, dist = bdfull))
+(full.amova.2.test <- randtest(full.amova.2, nrepet = 999))
+(full.amova.3 <- poppr.amova(dat11cc, ~Region/SourceType/Year, dist = bdfull))
+(full.amova.3.test <- randtest(full.amova.3, nrepet = 999))
+make_amova_table(full.amova.2, full.amova.2.test, samples = "Year")
+make_amova_table(full.amova.3, full.amova.3.test, samples = "Year")
+```
+
+```{r AMOVA_table, comment = NA}
+make_amova_table(full.amova.3, full.amova.3.test, samples = "Year") %>%  
+  as_tibble() %>%
+  add_column(Hierarchy = c("Between Region", "Between Source within Region", "Between Year within Source", "Within Year"), .before = 1) %>%
+  readr::write_csv(path = file.path(PROJHOME, "results", "tables", "AMOVA-year.csv"), col_names = TRUE) %>%
+  rename(ps = `Phi statistic`) %>%
+  mutate_if(is.numeric, format, digits = 3) %>%
+  # mutate(ps = signif(ps, digits = 3)) %>%
+  mutate(ps = gsub("0\\.00(\\d{1})(\\d{2})", "\\1.\\2e^-3^", ps)) %>%
+  # mutate(ps = case_when(P > 0.05 ~ ps, TRUE ~ paste0("**", ps, "**"))) %>%
+  rename(`$\\Phi$ statistic` = ps) %>%
+  rename(`% variation` = `Percent variation`) %>%
+  rename(S.S. = `Sum of Squares`) %>%
+  rename(`*P*` = P) %>%
+  select(c(1:4, 6, 5)) %>%
+  huxtable::as_huxtable(add_colnames = TRUE) %>% 
+  huxtable::set_col_width(c(0.8, 0.15, 0.15, 0.35, 0.5, 0.15)) %>% 
+  huxtable::set_align(huxtable::everywhere, 2:6, "right") %>% 
+  huxtable::set_number_format(huxtable::everywhere, 2, 0) %>%
+  huxtable::set_number_format(huxtable::everywhere, 6, 3) %>%
+  huxtable::set_number_format(huxtable::everywhere, 5, 4) %>%
+  huxtable::print_md(max_width = 80)
+```
+
+# DAPC
+
+Now that we have a result for the AMOVA showing a signficant difference in years, we can use DAPC to see where this difference is.
+
+```{r dapc}
+setPop(dat11cc) <- ~Region/Year
+regyear.dapc <- dapc(dat11cc, n.pca = 20, n.da = 20)
+```
+
+```{r dapc_plot, fig.width = 7, fig.height = 7}
+RYD <- bind_cols(Population = regyear.dapc$grp, strata(dat11cc), as.data.frame(regyear.dapc$ind.coord)) %>%
+  as_tibble()
+RYD_pop <- RYD %>% 
+  group_by(Population) %>% 
+  summarize_if(is.numeric, mean, na.rm = TRUE) %>%
+  rename_all(function(x) gsub("LD", "mean", x))
+RYD <- full_join(RYD, RYD_pop, by = "Population")
+RYD_PLOT <- ggplot(RYD, aes(x = LD1, y = LD2, color = Year)) + 
+  geom_text(aes(label = Year), alpha = 0.5) +
+  geom_segment(aes(x = mean1, y = mean2, xend = LD1, yend = LD2), alpha = 0.5) +
+  stat_ellipse(type = "norm", level = 0.66, alpha = 0.75) + 
+  facet_wrap(~Region) +
+  theme_bw() +  
+  theme(aspect.ratio = 0.8) +
+  theme(legend.position = "bottom") +
+  theme(axis.text = element_blank()) + 
+  theme(axis.title = element_blank()) + 
+  theme(axis.ticks = element_blank()) + 
+  viridis::scale_color_viridis(discrete = TRUE, direction = -1) +
+  viridis::scale_fill_viridis(discrete = TRUE, direction = -1) +
+  scale_y_continuous(breaks = 0) + 
+  scale_x_continuous(breaks = 0) + 
+  theme(panel.background = element_rect(fill = "grey95")) +
+  theme(panel.grid.major = element_line(color = "black"))
+RYD_PLOT
+par(mfrow = c(2, 1))
+loadingplot(regyear.dapc$var.contr, axis = 1)
+loadingplot(regyear.dapc$var.contr, axis = 2)
+par(mfrow = c(1, 1))
+```
+
+The loading plot shows us the variables that are important for the first axis of
+separation, mainly:
+
+----------------
+ Locus    Allele
+-------- -------
+7-2(F)       174
+8-3(H)       256
+9-2(F)       372
+55-4(F)      157
+110-4(H)     370
+----------------
+
+There's an important thing going on in Washington where it appears that the
+2008 population is separated from the main population.
+
+If we look at the tables above, we can see that there are only 12 samples from 
+2008, all of whicha are in white mold screening nurseries. We also notice that
+the coördinates for these isolates in the first two discriminant components are
+overlapping with CA isolates. I suspect that there may be duplicate genotypes:
+
+```{r crosspop, results = "asis"}
+mlg.crosspop(dat11cc, ~Region/Year, quiet = TRUE, df = TRUE) %>%
+  inner_join(filter(., Population == "WA_2008") %>% select(MLG), by = "MLG") %>%
+  spread(Population, Count, fill = 0) %>%
+  knitr::kable()
+```
+
+Well! It appears that ALL of the isolates in WA in 2008 have buddies in 2005 in
+CA and France. We can take a look at how the allele frequencies are responding.
+
+```{r fig.width = 10, fig.height = 12}
+dat11ccloc <- dat11cc[loc = c("7-2(F)", "8-3(H)", "9-2(F)", "55-4(F)", "110-4(H)")]
+loc <- map(seploc(dat11ccloc), . %>% 
+             tab() %>% 
+             as.data.frame() %>% 
+             bind_cols(strata(dat11cc)) %>% 
+             select(-MCG) %>%
+             group_by(Region, Year) %>% 
+             mutate(N = n()) %>%
+             filter(N > 5) %>%
+             summarize_if(is.numeric, mean, na.rm = TRUE) %>%
+             ungroup() %>%
+             mutate(Year = as.integer(as.character(Year))) %>%
+             gather(allele, frequency, -Region, -Year, -N) %>%
+             mutate(allele = as.integer(gsub("^.+?\\.([[:alnum:]]+)$", "\\1", allele)))
+             # ,
+             # .id = "Locus"
+           )
+
+ggloc <- function(dat, REG, years = 2003:2008){
+  map(dat, . %>% 
+    filter(Region == REG) %>%
+    {ggplot(., aes(x = Year, y = frequency, color = allele, group = allele)) +
+    geom_line() + 
+    geom_point(aes(size = N), show.legend = FALSE) +
+    # geom_label(aes(label = allele), size = 1, color = "black") +
+    scale_x_continuous(breaks = years) +
+    scale_y_continuous(limits = c(0, 1)) +
+    theme_bw(base_size = 16, base_family = "Helvetica") +
+    theme(legend.position = "top") +
+    theme(aspect.ratio = 1/2) +
+    theme(axis.text = element_text(color = "black")) +
+    theme(axis.ticks.y = element_blank()) +
+    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+    # theme(axis.text.x.top = element_text(angle = 90, vjust = 0.5, hjust = 0)) +
+    theme(panel.grid.minor.x = element_line(linetype = 0, color = "grey50")) +
+    theme(panel.grid.major.x = element_line(linetype = 0, color = "grey50")) +
+    theme(panel.grid.major = element_line(colour = "grey20")) +
+    theme(panel.grid.minor = element_line(linetype = 3, colour = "grey50")) +
+    # theme(panel.spacing.y = unit(0, "line")) +
+    theme(panel.background = element_rect(color = NA, fill = "grey96")) +
+    theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
+    theme(panel.border = element_blank()) +
+    scale_size(range = c(3, 6)) +
+    scale_color_viridis(option = "C", end = 0.9, 
+                        guide = "legend",
+                        breaks = sort(unique(.$allele)))
+  })
+}
+ggl <- ggloc(loc, "WA")
+
+cowplot::plot_grid(plotlist = ggl, labels = names(ggl), ncol = 2)
+```
+
+We can see that the allele frequencies seem to have a drastic change in the 
+allele frequencies from 2007 to 2008. What happens if we look at a stable region
+like NE?
+
+```{r NEplot, fig.width = 10, fig.height = 10}
+gglNE <- ggloc(loc, "NE", 2003:2012)
+cowplot::plot_grid(plotlist = gglNE, labels = names(gglNE), ncol = 2)
+```
+```{r MIplot, fig.width = 10, fig.height = 10}
+gglMI <- ggloc(loc, "MI", 2003:2012)
+cowplot::plot_grid(plotlist = gglMI, labels = names(gglMI), ncol = 2)
+```
+
+It appears that MI is fairly stable, NE has some weird things going on with 2007
+and 2008... I'm wondering if this may be a labeling issue.
+
+
+
+<details>
+<summary>Session Information</summary>
+
+```{r, echo = FALSE}
+options(width = 100)
+devtools::session_info()
+```
+
+</details>

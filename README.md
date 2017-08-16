@@ -23,6 +23,7 @@ The analyses are arranged in the following order according to the [Makefile]:
  1. [pop-diff.md]
  1. [tree.md]
  1. [wmn-differentiation.md]
+ 1. [by-year.md]
 
 [Makefile]: Makefile
 [table-1.md]: results/table-1.md
@@ -34,3 +35,4 @@ The analyses are arranged in the following order according to the [Makefile]:
 [pop-diff.md]: results/pop-diff.md
 [tree.md]: results/tree.md
 [wmn-differentiation.md]: results/wmn-differentiation.md
+[by-year.md]: results/by-year.md
