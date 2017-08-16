@@ -45,7 +45,7 @@ make_amova_table <- function(am, amt, samples = "Region"){
   res <- data.frame(list(am$results[-tot, c("Df", "Sum Sq")], 
                          Percent = am$componentsofcovariance[-tot, 2],
                          Pval    = rev(amt$pvalue), 
-                         Phi     = am$statphi$Phi[-tot]))
+                         Phi     = rev(am$statphi$Phi[-tot])))
   res <- as.matrix(res)
   colnames(res) <- c("d.f.", "Sum of Squares", "Percent variation", "P", 
                      "Phi statistic")
@@ -147,7 +147,7 @@ plot(ssc_amova_newami_test)
 make_amova_printable(ssc_amova_table, ssc_amova_newami_table) %>%  
   as_tibble() %>%
   add_column(Hierarchy = c("Between Source", "Between Region within Source", "Within Region"), .before = 1) %>%
-  readr::write_csv(path = file.path("results", "tables", "AMOVA-region.csv"), col_names = TRUE) %>%
+  readr::write_csv(path = file.path(PROJHOME, "results", "tables", "AMOVA-region.csv"), col_names = TRUE) %>%
   rename(ps = `Phi statistic`) %>%
   mutate(ps = gsub("0\\.00(\\d{1})(\\d{2})", "\\1.\\2e^-3^", ps)) %>%
   mutate(ps = case_when(Hierarchy == "Between Source" ~ ps, TRUE ~ paste0("**", ps, "**"))) %>%
@@ -156,9 +156,9 @@ make_amova_printable(ssc_amova_table, ssc_amova_newami_table) %>%
   rename(S.S. = `Sum of Squares`) %>%
   select(-P) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>% 
-  huxtable::set_col_width(c(1.1, 0.6, 0.9, 0.9, 1.4)) %>% 
+  huxtable::set_col_width(c(1.1, 0.6, 0.8, 0.8, 1.1)) %>% 
   huxtable::set_align(huxtable::everywhere, 2:5, "center") %>% 
-  huxtable::print_md(max_width = 100)
+  huxtable::print_md(max_width = 90)
 ```
 
 
