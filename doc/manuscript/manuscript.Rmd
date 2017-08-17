@@ -311,37 +311,44 @@ N = Number of Isolates.
 Key abbreviations: wmn = white mold screening nursery, producer = producer field, unk = unknown cultivar.
 
 
---------------------------------------------
-Locus  Range    No. alleles    *h*  Evenness 
------- ------- ------------ ------ ---------
-5-2    318-324            4   0.45      0.62 
+```{r , echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
+suppressPackageStartupMessages(library("tidyverse"))
+loc_columns <- cols(
+  Locus = col_character(),
+  Range = col_character(),
+  Repeats = col_double(),
+  allele = col_integer(),
+  Hexp = col_double(),
+  Evenness = col_double()
+)
+loc_table <- readr::read_csv("../../results/tables/locus-table.csv", 
+                             col_types = loc_columns,
+                             col_names = TRUE)
+loc_table %>%
+  mutate(allele = round(allele, 2)) %>%
+  mutate(Repeats = case_when(
+    Repeats <= 2 ~ "di-",
+    Repeats <= 3 ~ "tri-",
+    Repeats <= 4 ~ "tetra-",
+    Repeats <= 5 ~ "penta-",
+    Repeats <= 6 ~ "hexa-"
+  )) %>%
+  rename(`*h*` = Hexp) %>%
+  rename(`No. alleles` = allele) %>%
+  rename(`Repeat Motif` = Repeats) %>%
+  huxtable::as_huxtable(add_colnames = TRUE) %>%
+  huxtable::set_number_format(huxtable::everywhere, 3:4, 0) %>%
+  huxtable::set_number_format(huxtable::everywhere, 5:6, 2) %>%
+  huxtable::set_align(huxtable::everywhere, 2:6, "right") %>%
+  huxtable::set_col_width(c(0.06, 0.07, 0.11, 0.1, 0.05, 0.075)) %>%
+  huxtable::print_md(max_width = 61)
 
-6-2    483-495            3   0.64      0.95 
+Amean <- mean(loc_table$allele)
+Hmean <- mean(loc_table$Hexp)
+Emean <- mean(loc_table$Evenness)
+```
 
-7-2    158-174            7   0.73      0.76 
-
-8-3    244-270            7   0.74      0.79 
-
-9-2    360-382            9   0.35      0.41 
-
-12-2   214-222            5   0.58      0.78 
-
-17-3   342-363            7   0.55      0.53 
-
-20-3   280-282            2   0.05      0.42 
-
-55-4   153-216           10   0.72      0.66 
-
-110-4  370-386            5   0.76      0.91 
-
-114-4  339-416           10   0.83      0.80 
-
-mean   153-495         6.27   0.58      0.69 
-
---------------------------------------------
-
-
-Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation].
+Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation]. Average *h* = `r signif(Hmean, 3)`, average Evenness = `r signif(Emean, 3)`, average no. alleles = `r signif(Amean, 3)`
 
 ## Variable Assessment {-}
 

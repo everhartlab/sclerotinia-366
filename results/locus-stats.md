@@ -22,55 +22,65 @@ load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
 
 
 ```r
-makerange <- . %>% as.integer() %>% range() %>% paste(collapse = "-")
+makerange <- . %>% as.integer() %>% range() %>% paste(collapse = "--")
 
 ranges <- map_chr(alleles(dat11), makerange)
-ranges <- c(ranges, alleles(dat11) %>% unlist(use.names = FALSE) %>% makerange)
+# ranges <- c(ranges, alleles(dat11) %>% unlist(use.names = FALSE) %>% makerange)
 locus_table(dat11, information = FALSE) %>% 
   as.data.frame() %>%
   rownames_to_column("Locus") %>%
+  slice(-n()) %>%
   mutate(Locus = gsub("\\([FH]\\)", "", Locus)) %>%
   add_column(Range = ranges) %>%
-  select(Locus, Range, allele, Hexp, Evenness) %>%
+  add_column(Repeats = other(dat11)$REPLEN[locNames(dat11)]) %>%
+  select(Locus, Range, Repeats, allele, Hexp, Evenness) %>%
+  readr::write_csv(file.path(PROJHOME, "results/tables/locus-table.csv"), col_names = TRUE) %>%
   mutate(allele = round(allele, 2)) %>%
-  rename(`*h*` = Hexp, `No. alleles` = allele) %>%
+  mutate(Repeats = case_when(
+    Repeats <= 2 ~ "di-",
+    Repeats <= 3 ~ "tri-",
+    Repeats <= 4 ~ "tetra-",
+    Repeats <= 5 ~ "penta-",
+    Repeats <= 6 ~ "hexa-"
+  )) %>%
+  rename(`*h*` = Hexp) %>%
+  rename(`No. alleles` = allele) %>%
+  rename(`Repeat Motif` = Repeats) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>%
-  huxtable::set_number_format(1:12, 3, 0) %>%
-  huxtable::set_number_format(huxtable::everywhere, 4:5, 2) %>%
-  huxtable::set_align(huxtable::everywhere, 3:5, "right") %>%
-  huxtable::set_col_width(c(0.06, 0.07, 0.12, 0.06, 0.09)) %>%
-  huxtable::print_md(max_width = 47)
+  huxtable::set_number_format(huxtable::everywhere, 3:4, 0) %>%
+  huxtable::set_number_format(huxtable::everywhere, 5:6, 2) %>%
+  huxtable::set_align(huxtable::everywhere, 2:6, "right") %>%
+  huxtable::set_col_width(c(0.06, 0.07, 0.11, 0.1, 0.05, 0.075)) %>%
+  huxtable::print_md(max_width = 61)
 ```
 
 ```
---------------------------------------------
-Locus  Range    No. alleles    *h*  Evenness 
------- ------- ------------ ------ ---------
-5-2    318-324            4   0.45      0.62 
+------------------------------------------------------------
+Locus      Range  Repeat Motif  No. alleles    *h*  Evenness 
+------- -------- ------------- ------------ ------ ---------
+5-2     318--324           di-            4   0.45      0.62 
 
-6-2    483-495            3   0.64      0.95 
+6-2     483--495         hexa-            3   0.64      0.95 
 
-7-2    158-174            7   0.73      0.76 
+7-2     158--174           di-            7   0.73      0.76 
 
-8-3    244-270            7   0.74      0.79 
+8-3     244--270           di-            7   0.74      0.79 
 
-9-2    360-382            9   0.35      0.41 
+9-2     360--382           di-            9   0.35      0.41 
 
-12-2   214-222            5   0.58      0.78 
+12-2    214--222           di-            5   0.58      0.78 
 
-17-3   342-363            7   0.55      0.53 
+17-3    342--363          tri-            7   0.55      0.53 
 
-20-3   280-282            2   0.05      0.42 
+20-3    280--282           di-            2   0.05      0.42 
 
-55-4   153-216           10   0.72      0.66 
+55-4    153--216        tetra-           10   0.72      0.66 
 
-110-4  370-386            5   0.76      0.91 
+110-4   370--386        tetra-            5   0.76      0.91 
 
-114-4  339-416           10   0.83      0.80 
+114-4   339--416        tetra-           10   0.83      0.80 
 
-mean   153-495         6.27   0.58      0.69 
-
---------------------------------------------
+------------------------------------------------------------
 ```
 
 <details>
