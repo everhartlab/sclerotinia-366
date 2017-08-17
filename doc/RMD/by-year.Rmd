@@ -119,9 +119,11 @@ make_amova_table(full.amova.3, full.amova.3.test, samples = "Year") %>%
 
 Now that we have a result for the AMOVA showing a signficant difference in years, we can use DAPC to see where this difference is.
 
-```{r dapc}
+```{r dapc, cache = TRUE}
 setPop(dat11cc) <- ~Region/Year
-regyear.dapc <- dapc(dat11cc, n.pca = 20, n.da = 20)
+set.seed(2017-08-18)
+regyear.dapc <- xvalDapc(tab(dat11cc), pop(dat11cc), n.pca.max = 20, n.rep = 1000)$DAPC
+regyear.dapc
 ```
 
 ```{r dapc_plot, fig.width = 7, fig.height = 7, warning = FALSE, message = FALSE}
@@ -177,9 +179,16 @@ ggscatter <- function(DAPC, STRATA, color = "Year", filter = NULL){
   RYD_PLOT
 }
 
+quart <- quantile(regyear.dapc$var.contr, 0.95)
 par(mfrow = c(2, 1))
-loadingplot(regyear.dapc$var.contr, axis = 1)
-loadingplot(regyear.dapc$var.contr, axis = 2)
+ax1 <- loadingplot(regyear.dapc$var.contr, axis = 1, threshold = quart)$var.names %>%
+  strsplit("\\.") %>% 
+  map_chr(1) %>%
+  unique()
+ax2 <- loadingplot(regyear.dapc$var.contr, axis = 2, threshold = quart)$var.names %>%
+  strsplit("\\.") %>% 
+  map_chr(1) %>%
+  unique()
 par(mfrow = c(1, 1))
 
 gg_region_year <- ggscatter(regyear.dapc, strata(dat11cc)) +
@@ -202,17 +211,7 @@ if (!interactive()) {
 
 
 The loading plot shows us the variables that are important for the first axis of
-separation, mainly:
-
-----------------
- Locus    Allele
--------- -------
-7-2(F)       174
-8-3(H)       256
-9-2(F)       372
-55-4(F)      157
-110-4(H)     370
-----------------
+separation.
 
 There's an important thing going on in Washington where it appears that the
 2008 population is separated from the main population.
@@ -255,8 +254,8 @@ mlg.crosspop(dat11cc, ~Region/Year, quiet = TRUE, df = TRUE) %>%
 Well! It appears that ALL of the isolates in WA in 2008 have buddies in 2005 in
 CA and France. We can take a look at how the allele frequencies are responding.
 
-```{r fig.width = 10, fig.height = 12}
-dat11ccloc <- dat11cc[loc = c("7-2(F)", "8-3(H)", "9-2(F)", "55-4(F)", "110-4(H)")]
+```{r fig.width = 12, fig.height = 14}
+dat11ccloc <- dat11cc[loc = c(ax1, ax2)]
 loc <- map(seploc(dat11ccloc), . %>% 
              tab() %>% 
              as.data.frame() %>% 
@@ -313,7 +312,7 @@ We can see that the allele frequencies seem to have a drastic change in the
 allele frequencies from 2007 to 2008. What happens if we look at a stable region
 like NE?
 
-```{r NEplot, fig.width = 10, fig.height = 12}
+```{r NEplot, fig.width = 12, fig.height = 14}
 gglNE <- suppressMessages(ggloc(loc, "NE", 2003:2012))
 cowplot::plot_grid(plotlist = gglNE, labels = names(gglNE), ncol = 2)
 ```
