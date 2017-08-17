@@ -261,7 +261,7 @@ USA       CO     producer          2007, 2010 Pinto, Yellow                41
 USA       ID     producer                2003 GH                            1 
 
 USA       MI     wmn        2003, 2004, 2005, 11A, 37, 38, B07104,         43 
-                                   2008, 2009 Beryl, Bunsi, cornell,       
+                                   2008, 2009 Beryl, Bunsi, Cornell,       
                                               G122, Orion, PO7863, WM31      
 
                  producer    2003, 2008, 2009 BL, Black, Fuji, GH,         19 
@@ -287,10 +287,10 @@ USA       OR     wmn               2003, 2004 Beryl, Bunsi, G122           15
                  producer                2003 G122, GH                      2 
 
 USA       WA     wmn        2003, 2004, 2005, 11A, 37, 38, Beryl, Bunsi,   36 
-                                         2008  cornell, G122, Orion, PO7      
+                                         2008  Cornell, G122, Orion, PO7      
                                               104, PO7863, WM31               
 
-                 producer          2003, 2007 GH, Merlot, Pinto, redkid    23 
+                 producer          2003, 2007 GH, Merlot, Pinto, Redkid    23 
 
 USA       WI     producer                2003 GH                            2 
 
