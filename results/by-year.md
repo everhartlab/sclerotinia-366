@@ -450,61 +450,77 @@ regyear.dapc <- dapc(dat11cc, n.pca = 20, n.da = 20)
 
 
 ```r
-RYD <- bind_cols(Population = regyear.dapc$grp, strata(dat11cc), as.data.frame(regyear.dapc$ind.coord)) %>%
-  as_tibble()
-RYD_pop <- RYD %>% 
-  group_by(Population) %>% 
-  summarize_if(is.numeric, mean, na.rm = TRUE) %>%
-  rename_all(function(x) gsub("LD", "mean", x))
-RYD <- full_join(RYD, RYD_pop, by = "Population")
-RYD_PLOT <- ggplot(RYD, aes(x = LD1, y = LD2, color = Year)) + 
-  geom_text(aes(label = Year), alpha = 0.5) +
-  geom_segment(aes(x = mean1, y = mean2, xend = LD1, yend = LD2), alpha = 0.5) +
-  stat_ellipse(type = "norm", level = 0.66, alpha = 0.75) + 
-  facet_wrap(~Region) +
-  theme_bw() +  
-  theme(aspect.ratio = 0.8) +
-  theme(legend.position = "bottom") +
-  theme(axis.text = element_blank()) + 
-  theme(axis.title = element_blank()) + 
-  theme(axis.ticks = element_blank()) + 
-  viridis::scale_color_viridis(discrete = TRUE, direction = -1) +
-  viridis::scale_fill_viridis(discrete = TRUE, direction = -1) +
-  scale_y_continuous(breaks = 0) + 
-  scale_x_continuous(breaks = 0) + 
-  theme(panel.background = element_rect(fill = "grey95")) +
-  theme(panel.grid.major = element_line(color = "black"))
-RYD_PLOT
-```
+# A ggplot2 version of scatter.dapc
+#
+# @param DAPC an object of class "dapc" derived from [adegenet::dapc]
+# @param STRATA a data frame defining the population strata (see [adegenet::strata])
+# @param color the variable in `STRATA` defining the color palette for the plot
+# @param filter a "quosure" containing a filtering method to be passed to [dplyr::filter]
+#
+# @return
+# @export
+#
+# @examples
+# library("adegenet")
+# data(microbov)
+# strata(microbov) <- as.data.frame(other(microbov))
+# setPop(microbov) <- ~spe/breed
+# mscat <- ggscatter(dapc(microbov, n.pca = 20, n.da = 40), strata(microbov),
+#                    color = "breed",
+#                    filter = quo(breed %in% c("Borgou", "Zebu", "Montbeliard", "Salers")))
+# mscat + facet_wrap(~coun)
+# mscat + facet_wrap(~spe)
+# mscat + facet_wrap(~breed)
+ggscatter <- function(DAPC, STRATA, color = "Year", filter = NULL){
+  RYD <- bind_cols(Population = DAPC$grp, STRATA, as.data.frame(DAPC$ind.coord)) %>%
+    as_tibble()
+  RYD_pop <- RYD %>% 
+    group_by(Population) %>% 
+    summarize_if(is.numeric, mean, na.rm = TRUE) %>%
+    rename_all(function(x) gsub("LD", "mean", x))
+  RYD <- full_join(RYD, RYD_pop, by = "Population")
+  yminor <- pretty(RYD$LD2)
+  xminor <- pretty(RYD$LD1)
+  RYD <- if (!is.null(filter)) filter(RYD, !!filter) else RYD
+  RYD_PLOT <- ggplot(RYD, aes_string(x = "LD1", y = "LD2", color = color)) + 
+    geom_text(aes_string(label = color), alpha = 0.75) +
+    geom_segment(aes(x = mean1, y = mean2, xend = LD1, yend = LD2), alpha = 0.5) +
+    stat_ellipse(type = "norm", level = 0.66, alpha = 0.75) + 
+    theme_bw(base_size = 16, base_family = "Helvetica") +  
+    theme(aspect.ratio = 0.8) +
+    theme(legend.position = "bottom") +
+    theme(axis.text = element_blank()) + 
+    theme(axis.title = element_blank()) + 
+    theme(axis.ticks = element_blank()) + 
+    viridis::scale_color_viridis(discrete = TRUE, direction = -1) +
+    viridis::scale_fill_viridis(discrete = TRUE, direction = -1) +
+    scale_y_continuous(breaks = 0, minor_breaks = yminor) + 
+    scale_x_continuous(breaks = 0, minor_breaks = xminor) + 
+    theme(panel.background = element_rect(fill = "grey95")) +
+    theme(panel.grid.major = element_line(color = "black")) +
+    theme(panel.grid.minor = element_line(color = "white")) 
+  RYD_PLOT
+}
 
-```
-## Too few points to calculate an ellipse
-## Too few points to calculate an ellipse
-## Too few points to calculate an ellipse
-## Too few points to calculate an ellipse
-## Too few points to calculate an ellipse
-## Too few points to calculate an ellipse
-## Too few points to calculate an ellipse
-## Too few points to calculate an ellipse
-```
-
-```
-## Warning: Removed 7 rows containing missing values (geom_path).
-```
-
-![plot of chunk dapc_plot](./figures/by-year///dapc_plot-1.png)
-
-```r
 par(mfrow = c(2, 1))
 loadingplot(regyear.dapc$var.contr, axis = 1)
 loadingplot(regyear.dapc$var.contr, axis = 2)
 ```
 
-![plot of chunk dapc_plot](./figures/by-year///dapc_plot-2.png)
+![plot of chunk dapc_plot](./figures/by-year///dapc_plot-1.png)
 
 ```r
 par(mfrow = c(1, 1))
+
+ggscatter(regyear.dapc, strata(dat11cc)) +
+  facet_wrap(~Region) +
+  theme(legend.position = c(0.75, 0.1)) +
+  guides(color = guide_legend(nrow = 4)) +
+  theme(legend.direction = "horizontal")
 ```
+
+![plot of chunk dapc_plot](./figures/by-year///dapc_plot-2.png)
+
 
 The loading plot shows us the variables that are important for the first axis of
 separation, mainly:
@@ -521,6 +537,16 @@ separation, mainly:
 
 There's an important thing going on in Washington where it appears that the
 2008 population is separated from the main population.
+
+
+```r
+ggscatter(regyear.dapc, strata(dat11cc), filter = quo(Region %in% c("WA", "CA", "NE", "MI"))) +
+  facet_wrap(~Region, nrow = 2) +
+  theme(legend.position = "right") +
+  theme(legend.key = element_rect(fill = "grey95"))
+```
+
+![plot of chunk dapc_plot_newamica](./figures/by-year///dapc_plot_newamica-1.png)
 
 If we look at the tables above, we can see that there are only 12 samples from 
 2008, all of whicha are in white mold screening nurseries. We also notice that
@@ -577,35 +603,35 @@ loc <- map(seploc(dat11ccloc), . %>%
 
 ggloc <- function(dat, REG, years = 2003:2008){
   map(dat, . %>% 
-    filter(Region == REG) %>%
-    {ggplot(., aes(x = Year, y = frequency, color = allele, group = allele)) +
-    geom_line() + 
-    geom_point(aes(size = N), show.legend = FALSE) +
-    # geom_label(aes(label = allele), size = 1, color = "black") +
-    scale_x_continuous(breaks = years) +
-    scale_y_continuous(limits = c(0, 1)) +
-    theme_bw(base_size = 16, base_family = "Helvetica") +
-    theme(legend.position = "top") +
-    theme(aspect.ratio = 1/2) +
-    theme(axis.text = element_text(color = "black")) +
-    theme(axis.ticks.y = element_blank()) +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-    # theme(axis.text.x.top = element_text(angle = 90, vjust = 0.5, hjust = 0)) +
-    theme(panel.grid.minor.x = element_line(linetype = 0, color = "grey50")) +
-    theme(panel.grid.major.x = element_line(linetype = 0, color = "grey50")) +
-    theme(panel.grid.major = element_line(colour = "grey20")) +
-    theme(panel.grid.minor = element_line(linetype = 3, colour = "grey50")) +
-    # theme(panel.spacing.y = unit(0, "line")) +
-    theme(panel.background = element_rect(color = NA, fill = "grey96")) +
-    theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
-    theme(panel.border = element_blank()) +
-    scale_size(range = c(3, 6)) +
-    scale_color_viridis(option = "C", end = 0.9, 
-                        guide = "legend",
-                        breaks = sort(unique(.$allele)))
+    filter(Region == REG) %>% {
+      ggplot(., aes(x = Year, y = frequency, color = allele, group = allele)) +
+        geom_text(aes(label = paste0("(", N, ")")), y = 0.99, color = "grey20", vjust = 1) +
+        geom_line(alpha = 0.75) +
+        geom_point(aes(size = N), show.legend = FALSE, alpha = 0.75) +
+        scale_x_continuous(breaks = years) +
+        scale_y_continuous(limits = c(0, 1)) +
+        theme_bw(base_size = 16, base_family = "Helvetica") +
+        theme(legend.position = "top") +
+        theme(aspect.ratio = 1/2) +
+        theme(axis.text = element_text(color = "black")) +
+        theme(axis.ticks.y = element_blank()) +
+        theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+        # theme(axis.text.x.top = element_text(angle = 90, vjust = 0.5, hjust = 0)) +
+        theme(panel.grid.minor.x = element_line(linetype = 0, color = "grey50")) +
+        theme(panel.grid.major.x = element_line(linetype = 0, color = "grey50")) +
+        theme(panel.grid.major = element_line(colour = "grey20")) +
+        theme(panel.grid.minor = element_line(linetype = 3, colour = "grey50")) +
+        # theme(panel.spacing.y = unit(0, "line")) +
+        theme(panel.background = element_rect(color = NA, fill = "grey98")) +
+        theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
+        theme(panel.border = element_blank()) +
+        scale_size(range = c(3, 6), limits = c(6, 25)) +
+        viridis::scale_color_viridis(option = "C", end = 0.9, 
+                                     guide = "legend",
+                                     breaks = sort(unique(.$allele)))
   })
 }
-ggl <- ggloc(loc, "WA")
+ggl <- suppressMessages(ggloc(loc, "WA"))
 
 cowplot::plot_grid(plotlist = ggl, labels = names(ggl), ncol = 2)
 ```
@@ -618,14 +644,14 @@ like NE?
 
 
 ```r
-gglNE <- ggloc(loc, "NE", 2003:2012)
+gglNE <- suppressMessages(ggloc(loc, "NE", 2003:2012))
 cowplot::plot_grid(plotlist = gglNE, labels = names(gglNE), ncol = 2)
 ```
 
 ![plot of chunk NEplot](./figures/by-year///NEplot-1.png)
 
 ```r
-gglMI <- ggloc(loc, "MI", 2003:2012)
+gglMI <- suppressMessages(ggloc(loc, "MI", 2003:2012))
 cowplot::plot_grid(plotlist = gglMI, labels = names(gglMI), ncol = 2)
 ```
 
@@ -652,7 +678,7 @@ and 2008... I'm wondering if this may be a labeling issue.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-16
+##  date     2017-08-17
 ```
 
 ```
@@ -660,121 +686,109 @@ and 2008... I'm wondering if this may be a labeling issue.
 ```
 
 ```
-##  package     * version    date       source                              
-##  ade4        * 1.7-6      2017-03-23 CRAN (R 3.4.0)                      
-##  adegenet    * 2.1.0      2017-07-17 local                               
-##  ape           4.1        2017-02-14 CRAN (R 3.4.0)                      
-##  assertr       2.0.2.2    2017-06-06 CRAN (R 3.4.0)                      
-##  assertthat    0.2.0      2017-04-11 CRAN (R 3.4.0)                      
-##  base        * 3.4.1      2017-07-07 local                               
-##  bindr         0.1        2016-11-13 CRAN (R 3.4.0)                      
-##  bindrcpp    * 0.2        2017-06-17 CRAN (R 3.4.0)                      
-##  boot          1.3-20     2017-07-30 CRAN (R 3.4.1)                      
-##  broom         0.4.2      2017-02-13 CRAN (R 3.4.0)                      
-##  cellranger    1.1.0      2016-07-27 CRAN (R 3.4.0)                      
-##  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                      
-##  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                      
-##  codetools     0.2-15     2016-10-05 CRAN (R 3.4.0)                      
-##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                      
-##  compiler      3.4.1      2017-07-07 local                               
-##  cowplot     * 0.8.0      2017-07-30 CRAN (R 3.4.1)                      
-##  datasets    * 3.4.1      2017-07-07 local                               
-##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                      
-##  devtools      1.13.3     2017-08-02 CRAN (R 3.4.1)                      
-##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                      
-##  dplyr       * 0.7.2      2017-07-20 CRAN (R 3.4.1)                      
-##  evaluate      0.10.1     2017-06-24 CRAN (R 3.4.1)                      
-##  expm          0.999-2    2017-03-29 CRAN (R 3.4.0)                      
-##  ezknitr       0.6        2016-09-16 CRAN (R 3.4.0)                      
-##  fastmatch     1.1-0      2017-01-28 CRAN (R 3.4.0)                      
-##  forcats       0.2.0      2017-01-23 CRAN (R 3.4.0)                      
-##  foreign       0.8-69     2017-06-21 CRAN (R 3.4.0)                      
-##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                      
-##  ggcompoplot * 0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)
-##  ggforce       0.1.1      2016-11-28 CRAN (R 3.4.0)                      
-##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                      
-##  ggraph      * 1.0.0      2017-02-24 CRAN (R 3.4.0)                      
-##  ggrepel     * 0.6.12     2017-08-02 Github (slowkow/ggrepel@fd15d0a)    
-##  ggtree      * 1.6.11     2017-08-03 Bioconductor                        
-##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                      
-##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                      
-##  graphics    * 3.4.1      2017-07-07 local                               
-##  grDevices   * 3.4.1      2017-07-07 local                               
-##  grid          3.4.1      2017-07-07 local                               
-##  gridExtra     2.2.1      2016-02-29 CRAN (R 3.4.0)                      
-##  gtable        0.2.0      2016-02-26 CRAN (R 3.4.0)                      
-##  gtools        3.5.0      2015-05-29 CRAN (R 3.4.0)                      
-##  haven         1.1.0      2017-07-09 CRAN (R 3.4.1)                      
-##  highr         0.6        2016-05-09 CRAN (R 3.4.0)                      
-##  hms           0.3        2016-11-22 CRAN (R 3.4.0)                      
-##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                      
-##  htmlwidgets   0.9        2017-07-10 cran (@0.9)                         
-##  httpuv        1.3.5      2017-07-04 CRAN (R 3.4.1)                      
-##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                      
-##  huxtable      0.3.0      2017-05-18 CRAN (R 3.4.0)                      
-##  igraph      * 1.1.2      2017-07-21 cran (@1.1.2)                       
-##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                      
-##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                      
-##  labeling      0.3        2014-08-23 CRAN (R 3.4.0)                      
-##  lattice     * 0.20-35    2017-03-25 CRAN (R 3.4.0)                      
-##  lazyeval      0.2.0      2016-06-12 CRAN (R 3.4.0)                      
-##  LearnBayes    2.15       2014-05-29 CRAN (R 3.4.0)                      
-##  lubridate     1.6.0      2016-09-13 CRAN (R 3.4.0)                      
-##  magrittr      1.5        2014-11-22 CRAN (R 3.4.0)                      
-##  MASS          7.3-47     2017-04-21 CRAN (R 3.4.0)                      
-##  Matrix        1.2-10     2017-04-28 CRAN (R 3.4.0)                      
-##  memoise       1.1.0      2017-04-21 CRAN (R 3.4.0)                      
-##  methods     * 3.4.1      2017-07-07 local                               
-##  mgcv          1.8-18     2017-07-28 CRAN (R 3.4.1)                      
-##  mime          0.5        2016-07-07 CRAN (R 3.4.0)                      
-##  mnormt        1.5-5      2016-10-15 CRAN (R 3.4.0)                      
-##  modelr        0.1.1      2017-07-24 CRAN (R 3.4.1)                      
-##  munsell       0.4.3      2016-02-13 CRAN (R 3.4.0)                      
-##  nlme          3.1-131    2017-02-06 CRAN (R 3.4.0)                      
-##  parallel      3.4.1      2017-07-07 local                               
-##  pegas         0.10       2017-05-03 CRAN (R 3.4.0)                      
-##  permute     * 0.9-4      2016-09-09 CRAN (R 3.4.0)                      
-##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                      
-##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                      
-##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                      
-##  poppr       * 2.4.1.99-2 2017-08-13 local                               
-##  psych         1.7.5      2017-05-03 CRAN (R 3.4.0)                      
-##  purrr       * 0.2.3      2017-08-02 CRAN (R 3.4.1)                      
-##  quadprog      1.5-5      2013-04-17 CRAN (R 3.4.0)                      
-##  R.methodsS3   1.7.1      2016-02-16 CRAN (R 3.4.0)                      
-##  R.oo          1.21.0     2016-11-01 CRAN (R 3.4.0)                      
-##  R.utils       2.5.0      2016-11-07 CRAN (R 3.4.0)                      
-##  R6            2.2.2      2017-06-17 cran (@2.2.2)                       
-##  Rcpp          0.12.12    2017-07-15 cran (@0.12.12)                     
-##  readr       * 1.1.1      2017-05-16 CRAN (R 3.4.0)                      
-##  readxl        1.0.0      2017-04-18 CRAN (R 3.4.0)                      
-##  reshape2      1.4.2      2016-10-22 CRAN (R 3.4.0)                      
-##  rlang         0.1.1      2017-05-18 CRAN (R 3.4.0)                      
-##  rvest         0.3.2      2016-06-17 CRAN (R 3.4.0)                      
-##  scales        0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)      
-##  seqinr        3.4-5      2017-08-01 CRAN (R 3.4.1)                      
-##  shiny         1.0.3      2017-04-26 CRAN (R 3.4.0)                      
-##  sp            1.2-5      2017-06-29 CRAN (R 3.4.1)                      
-##  spdep         0.6-13     2017-04-25 CRAN (R 3.4.0)                      
-##  splines       3.4.1      2017-07-07 local                               
-##  stats       * 3.4.1      2017-07-07 local                               
-##  stats4        3.4.1      2017-07-07 local                               
-##  stringi       1.1.5      2017-04-07 CRAN (R 3.4.0)                      
-##  stringr       1.2.0      2017-02-18 CRAN (R 3.4.0)                      
-##  tibble      * 1.3.3      2017-05-28 CRAN (R 3.4.0)                      
-##  tidyr       * 0.6.3      2017-05-15 CRAN (R 3.4.0)                      
-##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.4.0)                      
-##  tools         3.4.1      2017-07-07 local                               
-##  tweenr        0.1.5      2016-10-10 CRAN (R 3.4.0)                      
-##  udunits2      0.13       2016-11-17 CRAN (R 3.4.0)                      
-##  units         0.4-5      2017-06-15 CRAN (R 3.4.0)                      
-##  utils       * 3.4.1      2017-07-07 local                               
-##  vegan       * 2.4-3      2017-04-07 CRAN (R 3.4.0)                      
-##  viridis     * 0.4.0      2017-03-27 CRAN (R 3.4.0)                      
-##  viridisLite * 0.2.0      2017-03-24 CRAN (R 3.4.0)                      
-##  visNetwork  * 2.0.1      2017-07-30 cran (@2.0.1)                       
-##  withr         2.0.0      2017-07-28 CRAN (R 3.4.1)                      
-##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                      
+##  package     * version    date       source                        
+##  ade4        * 1.7-6      2017-03-23 CRAN (R 3.4.0)                
+##  adegenet    * 2.1.0      2017-07-17 local                         
+##  ape           4.1        2017-02-14 CRAN (R 3.4.0)                
+##  assertr       2.0.2.2    2017-06-06 CRAN (R 3.4.0)                
+##  assertthat    0.2.0      2017-04-11 CRAN (R 3.4.0)                
+##  base        * 3.4.1      2017-07-07 local                         
+##  bindr         0.1        2016-11-13 CRAN (R 3.4.0)                
+##  bindrcpp    * 0.2        2017-06-17 CRAN (R 3.4.0)                
+##  boot          1.3-20     2017-07-30 CRAN (R 3.4.1)                
+##  broom         0.4.2      2017-02-13 CRAN (R 3.4.0)                
+##  cellranger    1.1.0      2016-07-27 CRAN (R 3.4.0)                
+##  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                
+##  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                
+##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                
+##  compiler      3.4.1      2017-07-07 local                         
+##  cowplot     * 0.8.0      2017-07-30 CRAN (R 3.4.1)                
+##  datasets    * 3.4.1      2017-07-07 local                         
+##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                
+##  devtools      1.13.3     2017-08-02 CRAN (R 3.4.1)                
+##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                
+##  dplyr       * 0.7.2      2017-07-20 CRAN (R 3.4.1)                
+##  evaluate      0.10.1     2017-06-24 CRAN (R 3.4.1)                
+##  expm          0.999-2    2017-03-29 CRAN (R 3.4.0)                
+##  ezknitr       0.6        2016-09-16 CRAN (R 3.4.0)                
+##  fastmatch     1.1-0      2017-01-28 CRAN (R 3.4.0)                
+##  forcats       0.2.0      2017-01-23 CRAN (R 3.4.0)                
+##  foreign       0.8-69     2017-06-21 CRAN (R 3.4.0)                
+##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                
+##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                
+##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                
+##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                
+##  graphics    * 3.4.1      2017-07-07 local                         
+##  grDevices   * 3.4.1      2017-07-07 local                         
+##  grid          3.4.1      2017-07-07 local                         
+##  gridExtra     2.2.1      2016-02-29 CRAN (R 3.4.0)                
+##  gtable        0.2.0      2016-02-26 CRAN (R 3.4.0)                
+##  gtools        3.5.0      2015-05-29 CRAN (R 3.4.0)                
+##  haven         1.1.0      2017-07-09 CRAN (R 3.4.1)                
+##  highr         0.6        2016-05-09 CRAN (R 3.4.0)                
+##  hms           0.3        2016-11-22 CRAN (R 3.4.0)                
+##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                
+##  httpuv        1.3.5      2017-07-04 CRAN (R 3.4.1)                
+##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                
+##  huxtable      0.3.0      2017-05-18 CRAN (R 3.4.0)                
+##  igraph        1.1.2      2017-07-21 cran (@1.1.2)                 
+##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                
+##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                
+##  labeling      0.3        2014-08-23 CRAN (R 3.4.0)                
+##  lattice       0.20-35    2017-03-25 CRAN (R 3.4.0)                
+##  lazyeval      0.2.0      2016-06-12 CRAN (R 3.4.0)                
+##  LearnBayes    2.15       2014-05-29 CRAN (R 3.4.0)                
+##  lubridate     1.6.0      2016-09-13 CRAN (R 3.4.0)                
+##  magrittr      1.5        2014-11-22 CRAN (R 3.4.0)                
+##  MASS          7.3-47     2017-04-21 CRAN (R 3.4.0)                
+##  Matrix        1.2-10     2017-04-28 CRAN (R 3.4.0)                
+##  memoise       1.1.0      2017-04-21 CRAN (R 3.4.0)                
+##  methods     * 3.4.1      2017-07-07 local                         
+##  mgcv          1.8-18     2017-07-28 CRAN (R 3.4.1)                
+##  mime          0.5        2016-07-07 CRAN (R 3.4.0)                
+##  mnormt        1.5-5      2016-10-15 CRAN (R 3.4.0)                
+##  modelr        0.1.1      2017-07-24 CRAN (R 3.4.1)                
+##  munsell       0.4.3      2016-02-13 CRAN (R 3.4.0)                
+##  nlme          3.1-131    2017-02-06 CRAN (R 3.4.0)                
+##  parallel      3.4.1      2017-07-07 local                         
+##  pegas         0.10       2017-05-03 CRAN (R 3.4.0)                
+##  permute       0.9-4      2016-09-09 CRAN (R 3.4.0)                
+##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                
+##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                
+##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                
+##  poppr       * 2.4.1.99-2 2017-08-13 local                         
+##  psych         1.7.5      2017-05-03 CRAN (R 3.4.0)                
+##  purrr       * 0.2.3      2017-08-02 CRAN (R 3.4.1)                
+##  quadprog      1.5-5      2013-04-17 CRAN (R 3.4.0)                
+##  R.methodsS3   1.7.1      2016-02-16 CRAN (R 3.4.0)                
+##  R.oo          1.21.0     2016-11-01 CRAN (R 3.4.0)                
+##  R.utils       2.5.0      2016-11-07 CRAN (R 3.4.0)                
+##  R6            2.2.2      2017-06-17 cran (@2.2.2)                 
+##  Rcpp          0.12.12    2017-07-15 cran (@0.12.12)               
+##  readr       * 1.1.1      2017-05-16 CRAN (R 3.4.0)                
+##  readxl        1.0.0      2017-04-18 CRAN (R 3.4.0)                
+##  reshape2      1.4.2      2016-10-22 CRAN (R 3.4.0)                
+##  rlang         0.1.1      2017-05-18 CRAN (R 3.4.0)                
+##  rvest         0.3.2      2016-06-17 CRAN (R 3.4.0)                
+##  scales        0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)
+##  seqinr        3.4-5      2017-08-01 CRAN (R 3.4.1)                
+##  shiny         1.0.3      2017-04-26 CRAN (R 3.4.0)                
+##  sp            1.2-5      2017-06-29 CRAN (R 3.4.1)                
+##  spdep         0.6-13     2017-04-25 CRAN (R 3.4.0)                
+##  splines       3.4.1      2017-07-07 local                         
+##  stats       * 3.4.1      2017-07-07 local                         
+##  stringi       1.1.5      2017-04-07 CRAN (R 3.4.0)                
+##  stringr       1.2.0      2017-02-18 CRAN (R 3.4.0)                
+##  tibble      * 1.3.3      2017-05-28 CRAN (R 3.4.0)                
+##  tidyr       * 0.6.3      2017-05-15 CRAN (R 3.4.0)                
+##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.4.0)                
+##  tools         3.4.1      2017-07-07 local                         
+##  utils       * 3.4.1      2017-07-07 local                         
+##  vegan         2.4-3      2017-04-07 CRAN (R 3.4.0)                
+##  viridis       0.4.0      2017-03-27 CRAN (R 3.4.0)                
+##  viridisLite   0.2.0      2017-03-24 CRAN (R 3.4.0)                
+##  withr         2.0.0      2017-07-28 CRAN (R 3.4.1)                
+##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                
 ##  xtable        1.8-2      2016-02-05 CRAN (R 3.4.0)
 ```
 
