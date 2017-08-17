@@ -22,24 +22,36 @@ load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
 ```
 
 ```{r locus_table, comment = NA}
-makerange <- . %>% as.integer() %>% range() %>% paste(collapse = "-")
+makerange <- . %>% as.integer() %>% range() %>% paste(collapse = "--")
 
 ranges <- map_chr(alleles(dat11), makerange)
-ranges <- c(ranges, alleles(dat11) %>% unlist(use.names = FALSE) %>% makerange)
+# ranges <- c(ranges, alleles(dat11) %>% unlist(use.names = FALSE) %>% makerange)
 locus_table(dat11, information = FALSE) %>% 
   as.data.frame() %>%
   rownames_to_column("Locus") %>%
+  slice(-n()) %>%
   mutate(Locus = gsub("\\([FH]\\)", "", Locus)) %>%
   add_column(Range = ranges) %>%
-  select(Locus, Range, allele, Hexp, Evenness) %>%
+  add_column(Repeats = other(dat11)$REPLEN[locNames(dat11)]) %>%
+  select(Locus, Range, Repeats, allele, Hexp, Evenness) %>%
+  readr::write_csv(file.path(PROJHOME, "results/tables/locus-table.csv"), col_names = TRUE) %>%
   mutate(allele = round(allele, 2)) %>%
-  rename(`*h*` = Hexp, `No. alleles` = allele) %>%
+  mutate(Repeats = case_when(
+    Repeats <= 2 ~ "di-",
+    Repeats <= 3 ~ "tri-",
+    Repeats <= 4 ~ "tetra-",
+    Repeats <= 5 ~ "penta-",
+    Repeats <= 6 ~ "hexa-"
+  )) %>%
+  rename(`*h*` = Hexp) %>%
+  rename(`No. alleles` = allele) %>%
+  rename(`Repeat Motif` = Repeats) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>%
-  huxtable::set_number_format(1:12, 3, 0) %>%
-  huxtable::set_number_format(huxtable::everywhere, 4:5, 2) %>%
-  huxtable::set_align(huxtable::everywhere, 3:5, "right") %>%
-  huxtable::set_col_width(c(0.06, 0.07, 0.12, 0.06, 0.09)) %>%
-  huxtable::print_md(max_width = 47)
+  huxtable::set_number_format(huxtable::everywhere, 3:4, 0) %>%
+  huxtable::set_number_format(huxtable::everywhere, 5:6, 2) %>%
+  huxtable::set_align(huxtable::everywhere, 2:6, "right") %>%
+  huxtable::set_col_width(c(0.06, 0.07, 0.11, 0.1, 0.05, 0.075)) %>%
+  huxtable::print_md(max_width = 61)
 ```
 
 <details>
