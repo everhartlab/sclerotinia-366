@@ -313,11 +313,11 @@ We can see that the allele frequencies seem to have a drastic change in the
 allele frequencies from 2007 to 2008. What happens if we look at a stable region
 like NE?
 
-```{r NEplot, fig.width = 10, fig.height = 10}
+```{r NEplot, fig.width = 10, fig.height = 12}
 gglNE <- suppressMessages(ggloc(loc, "NE", 2003:2012))
 cowplot::plot_grid(plotlist = gglNE, labels = names(gglNE), ncol = 2)
 ```
-```{r MIplot, fig.width = 10, fig.height = 10}
+```{r MIplot, fig.width = 10, fig.height = 12}
 gglMI <- suppressMessages(ggloc(loc, "MI", 2003:2012))
 cowplot::plot_grid(plotlist = gglMI, labels = names(gglMI), ncol = 2)
 ```
