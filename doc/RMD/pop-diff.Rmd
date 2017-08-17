@@ -107,6 +107,7 @@ region.dapc <- region.xval$DAPC
 ```
 
 ```{r dapc-region, fig.width = 9, fig.height = 8, cache = TRUE}
+region.dapc
 scatter(region.dapc, 
         scree.pca = TRUE,
         bg = "grey95",

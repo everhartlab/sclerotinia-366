@@ -40,6 +40,31 @@ knitr::opts_knit$set(eval.after = c('fig.cap', 'fig.scap'))
 knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 ```
 
+```{r initiate, echo = FALSE, message = FALSE, warning = FALSE}
+library("poppr")
+load("../../data/sclerotinia_16_loci.rda")
+dat11cc <- clonecorrect(dat11, ~Region/Source/Host/Year)
+
+dapc_region      <- dapc(setPop(dat11cc, ~Region), n.da = 13, n.pca = 20)
+dapc_region_year <- dapc(setPop(dat11cc, ~Region/Year), n.da = 12, n.pca = 22)
+dapc_host <- dat11cc %>% 
+  setPop(~Source) %>%
+  popsub("wmn") %>%
+  setPop(~Host) %>% 
+  popsub(c("Beryl", "Bunsi", "G122")) %>%
+  dapc(n.da = 2, n.pca = 20)
+
+prettify <- function(x, i) signif((1 - x[i])*100, 3)
+paxis <- function(d, i = 1 ){
+  res <- cumsum(d$eig)/sum(d$eig)
+  prettify(res, i)
+}
+passp <- function(d, i = 1){
+  res <- apply(d$posterior, 2, mean, na.rm = TRUE)
+  prettify(1 - res, i)
+}
+```
+
 
 # Introduction {-}
 
@@ -553,14 +578,14 @@ Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance 
 
 ### Discriminant Analysis of Principal Components {-}
 
-Discriminant Analysis of Principal Components (DAPC) was performed grouping by Region with the first 21 principal components, representing 88% of the total variance. 
-The first discriminant axis (representing 64% of the discriminatory power) separated the centroid for the Mexico isolates from the rest of the data, indicating strong differentiation (Fig. \@ref(DAPC)b). 
-The second discriminant axis separated the centroid for the California isolates.
+Discriminant Analysis of Principal Components (DAPC) was performed grouping by Region with the first `r dapc_region$n.pca` principal components, representing `r signif(dapc_region$var*100, 3)`% of the total variance. 
+The first discriminant axis (representing `r paxis(dapc_region)`% of the discriminatory power) separated the centroid for the Mexico isolates from the rest of the data, indicating strong differentiation (Fig. \@ref(DAPC)b). 
+The second discriminant axis, representing `r paxis(dapc_region, 2)`% of the discriminatory power, separated the centroid for the California isolates.
 The mean population assignment probabilities for all populations with n > 10 showed that only isolates from Mexico, CA, and France had > 50% probabilities of being reassigned to their source populations (Fig. \@ref(DAPC)a). 
 DAPC grouping by cultivar used the first 20 principal components, representing 89% of the total variance.
-The first two discriminant axes failed to separate any of the cultivars where the mean posterior assignment probabilities were 34.0% (G122), 36.0% (Beryl), and 30.1% (Bunsi).
-DAPC grouping by Region and Year used the first 20 principal components, representing 87.7% of the total variance.
-The Midwestern populations (NE, MI, CO, ND) did not appear to have any variation across time in contrast to WA, which showed a shift in population structure in the last year of sampling, 2008 (\@ref(DAPC-RY)).
+The first two discriminant axes failed to separate any of the cultivars where the mean posterior assignment probabilities were `r passp(dapc_host, "G122")`% (G122), `r passp(dapc_host, "Beryl")`% (Beryl), and `r passp(dapc_host, "Bunsi")`% (Bunsi).
+DAPC grouping by Region and Year used the first `r dapc_region_year$n.pca` principal components, representing `r signif(dapc_region_year$var*100, 3)`% of the total variance.
+The Midwestern populations (NE, MI, CO, ND) did not appear to have any variation across time in contrast to WA, which showed a shift in population structure in the last year of sampling, 2008 (Fig. \@ref(DAPC-RY)).
 Further analysis of this population revealed that all 12 isolates in WA circa 2008 originated in a wmn and nine of these genotypes were shared with CA, and three were shared with France (Fig. \@ref(community-graph), \@ref(community-graph16)).
 
 

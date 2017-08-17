@@ -237,6 +237,53 @@ region.dapc <- region.xval$DAPC
 
 
 ```r
+region.dapc
+```
+
+```
+## 	#################################################
+## 	# Discriminant Analysis of Principal Components #
+## 	#################################################
+## class: dapc
+## $call: dapc.data.frame(x = as.data.frame(x), grp = ..1, n.pca = ..2, 
+##     n.da = ..3)
+## 
+## $n.pca: 20 first PCs of PCA used
+## $n.da: 13 discriminant functions saved
+## $var (proportion of conserved variance): 0.871
+## 
+## $eig (eigenvalues): 104.7 17.48 9.829 9.129 6.516 ...
+## 
+##   vector    length content                   
+## 1 $eig      13     eigenvalues               
+## 2 $grp      318    prior group assignment    
+## 3 $prior    14     prior group probabilities 
+## 4 $assign   318    posterior group assignment
+## 5 $pca.cent 69     centring vector of PCA    
+## 6 $pca.norm 69     scaling vector of PCA     
+## 7 $pca.eig  58     eigenvalues of PCA        
+## 
+##   data.frame    nrow ncol
+## 1 $tab          318  20  
+## 2 $means        14   20  
+## 3 $loadings     20   13  
+## 4 $ind.coord    318  13  
+## 5 $grp.coord    14   13  
+## 6 $posterior    318  14  
+## 7 $pca.loadings 69   20  
+## 8 $var.contr    69   13  
+##   content                                          
+## 1 retained PCs of PCA                              
+## 2 group means                                      
+## 3 loadings of variables                            
+## 4 coordinates of individuals (principal components)
+## 5 coordinates of groups                            
+## 6 posterior membership probabilities               
+## 7 PCA loadings of original variables               
+## 8 contribution of original variables
+```
+
+```r
 scatter(region.dapc, 
         scree.pca = TRUE,
         bg = "grey95",
