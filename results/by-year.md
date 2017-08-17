@@ -492,12 +492,12 @@ ggscatter <- function(DAPC, STRATA, color = "Year", filter = NULL){
     theme(axis.text = element_blank()) + 
     theme(axis.title = element_blank()) + 
     theme(axis.ticks = element_blank()) + 
-    viridis::scale_color_viridis(discrete = TRUE, direction = -1) +
-    viridis::scale_fill_viridis(discrete = TRUE, direction = -1) +
+    viridis::scale_color_viridis(discrete = TRUE, option = "C", direction = -1) +
+    viridis::scale_fill_viridis(discrete = TRUE,  option = "C", direction = -1) +
     scale_y_continuous(breaks = 0, minor_breaks = yminor) + 
     scale_x_continuous(breaks = 0, minor_breaks = xminor) + 
     theme(panel.background = element_rect(fill = "grey95")) +
-    theme(panel.grid.major = element_line(color = "black")) +
+    theme(panel.grid.major = element_line(color = "grey20")) +
     theme(panel.grid.minor = element_line(color = "white")) 
   RYD_PLOT
 }
@@ -512,14 +512,27 @@ loadingplot(regyear.dapc$var.contr, axis = 2)
 ```r
 par(mfrow = c(1, 1))
 
-ggscatter(regyear.dapc, strata(dat11cc)) +
+gg_region_year <- ggscatter(regyear.dapc, strata(dat11cc)) +
   facet_wrap(~Region) +
   theme(legend.position = c(0.75, 0.1)) +
   guides(color = guide_legend(nrow = 4)) +
-  theme(legend.direction = "horizontal")
+  theme(legend.direction = "horizontal") +
+  theme(strip.background = element_rect(color = NA, fill = "grey90")) +
+  theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
+  theme(panel.border = element_blank())
+gg_region_year
 ```
 
 ![plot of chunk dapc_plot](./figures/by-year///dapc_plot-2.png)
+
+```r
+if (!interactive()) {
+  ggsave(filename = file.path(PROJHOME, "results/figures/publication/dapc_region_year.pdf"),
+         plot = gg_region_year,
+         width = 7,
+         height = 7)
+}
+```
 
 
 The loading plot shows us the variables that are important for the first axis of
@@ -540,13 +553,32 @@ There's an important thing going on in Washington where it appears that the
 
 
 ```r
-ggscatter(regyear.dapc, strata(dat11cc), filter = quo(Region %in% c("WA", "CA", "NE", "MI"))) +
+gg_region_year_micanewa <- ggscatter(regyear.dapc, strata(dat11cc), filter = quo(Region %in% c("WA", "CA", "NE", "MI"))) +
   facet_wrap(~Region, nrow = 2) +
   theme(legend.position = "right") +
+  theme(legend.justification = "bottom") +
+  theme(legend.box.margin = unit(c(0, 0, 0, 0), "lines")) +
+  theme(legend.margin = unit(c(0, 0, 0, 0), "lines")) +
+  theme(strip.background = element_rect(color = NA, fill = "grey90")) +
+  theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
+  theme(panel.border = element_blank()) +
   theme(legend.key = element_rect(fill = "grey95"))
+gg_region_year_micanewa
 ```
 
 ![plot of chunk dapc_plot_newamica](./figures/by-year///dapc_plot_newamica-1.png)
+
+```r
+if (!interactive()) {
+    ggsave(filename = file.path(PROJHOME, "results/figures/publication/dapc_region_year_micanewa.pdf"),
+       plot = gg_region_year_micanewa,
+       width = 88,
+       height = 0.8*88,
+       units = "mm",
+       scale = 1.25
+       )
+}
+```
 
 If we look at the tables above, we can see that there are only 12 samples from 
 2008, all of whicha are in white mold screening nurseries. We also notice that

@@ -218,7 +218,7 @@ Community definitions were used to assess the average genetic distance (as defin
 
 ### Population Differentiation {-}
 
-We used analysis of molecular variance (AMOVA) with Bruvo's genetic distance in *poppr* version 2.4.1 to test for differentiation associated with wmn by quantifying the differentiation conferred by Source and Region [@excoffier1992analysis; @bruvo2004simple; @kamvar2014poppr].
+We used analysis of molecular variance (AMOVA) with Bruvo's genetic distance in *poppr* version 2.4.1 to test for differentiation associated with wmn by quantifying the differentiation conferred by Region, Source, and Year [@excoffier1992analysis; @bruvo2004simple; @kamvar2014poppr].
 Source in this case was defined as a population belonging to a wmn or not. 
 
 To identify specific Regions that were more differentiated than others, we used discriminant analysis of principal components (DAPC) as implemented in *adegenet* version 2.1.0, assessing the per-sample posterior group assignment probability [@jombart2008adegenet]. 
@@ -226,6 +226,7 @@ This method decomposes the genetic data into principal components, and then uses
 To avoid over-fitting data, the optimal number of principal components was selected by using the *adegenet* function `xvalDapc()`. 
 This function implements a cross-validation procedure to iterate over an increasing number of principal components on a subset (90%) of the data, trying to find the minimum number of principal components that maximizes the rate of successful group reassignment. 
 To assess if cultivar had an influence on genetic diversity between wmn, we first subset the clone-corrected data to contain only samples from wmn and from the cultivars Beryl, Bunsi, and G122 and tested differentiation using AMOVA and DAPC as described above. 
+We additionally assessed population stability over time by calculating DAPC over the combined groups of Region and Year as described above.
 
 ### Analysis of Shared Multilocus Genotypes {-}
 
@@ -513,8 +514,7 @@ Each edge represents a single MLG where its thickness represents the number of p
 
 ### Analysis of Molecular Variance {-}
 
-The analysis of molecular variance (AMOVA) over the hierarchy of Source and Region showed no significant variation between wmn and non-wmn after accounting for variation between regions (Table \@ref(tab:amova)).
-Because we observed that the sample sizes of wmn isolates and producer isolates were lopsided in several populations (Table \@ref(tab:isolate-table)), we ran the analysis again with regions that had at least ten isolates from both wmn and producer fields, showing similar results (Table \@ref(tab:amova)). 
+The analysis of molecular variance (AMOVA) over the hierarchy of Region, Source, and Year showed significant variation between regions and years, but no significant variation between wmn and non-wmn (Table \@ref(tab:amova)).
 In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Data).  
 
 
@@ -552,6 +552,9 @@ The second discriminant axis separated the centroid for the California isolates.
 The mean population assignment probabilities for all populations with n > 10 showed that only isolates from Mexico, CA, and France had > 50% probabilities of being reassigned to their source populations (Fig. \@ref(DAPC)a). 
 DAPC grouping by cultivar used the first 20 principal components, representing 89% of the total variance.
 The first two discriminant axes failed to separate any of the cultivars where the mean posterior assignment probabilities were 34.0% (G122), 36.0% (Beryl), and 30.1% (Bunsi).
+DAPC grouping by Region and Year used the first 20 principal components, representing 87.7% of the total variance.
+The Midwestern populations (NE, MI, CO, ND) did not appear to have any variation across time in contrast to WA, which showed a shift in population structure in the last year of sampling, 2008 (\@ref(DAPC-RY)).
+Further analysis of this population revealed that all 12 isolates in WA circa 2008 originated in a wmn and nine of these genotypes were shared with CA, and three were shared with France (Fig. \@ref(community-graph), \@ref(community-graph16)).
 
 
 <!-- DAPC figure -->
@@ -563,8 +566,19 @@ Numbers next to source populations indicate population size.
 All values sum to one.
 **B)** Scatter plot of first two components from DAPC.
 Points represent observed individuals connected to the population centroids with ellipses representing a 66% confidence interval for a normal distribution. 
-The center of each component is represented as grid lines.
+The center of each component is represented as black grid lines.
 ](../../results/figures/publication/DAPC.pdf){#DAPC width=100%}
+
+<!-- end figure -->
+
+<!-- DAPC figure 2: Electric Boogaloo-->
+
+![
+Scatter plot of Discriminant Analysis of Principal Components on Regions and Years showing temporal variation in WA and CA populations as compared to Midwestern Regions, NE and MI. 
+Points (text labels) represent observed individuals connected to the population centroids with ellipses representing a 66% confidence interval for a normal distribution. 
+The center of each component is represented as black grid lines.
+A more detailed view can be seen in Fig. \@ref(DAPC-RY-FULL).
+](../../results/figures/publication/dapc_region_year_micanewa.pdf){#DAPC-RY width=61%}
 
 <!-- end figure -->
 
@@ -643,11 +657,16 @@ This indicates that multilocus genotypes are widespread across the United States
 ## Population Differentiation {-}
 
 The primary interest of this study was to assess if isolates sampled from white mold screening nurseries represent isolates from producer fields within the region [@steadman2003identification; @otto-hanson2011variation].
-According to our AMOVA results, we have evidence for differentiation at the region level, but little to no differentiation between white mold screening nursery isolates and production field isolates within region (Table \@ref(tab:amova)).
-When we assessed AMOVA using only populations with equally representative white mold screening nursery isolates and producer field isolates, we see the same pattern, except the $\Phi$ values decrease by nearly half (Table \@ref(tab:amova)). 
-When we analyze the AMOVA results in light of the DAPC results (Fig. \@ref(DAPC)), it becomes clear that the patterns of differentiation are largely driven by isolates from Mexico and California. 
-Isolates from these populations had a higher posterior probability (> 0.75) of being reassigned to their own populations than any other (Fig. \@ref(DAPC)a). 
+According to our AMOVA results, we have evidence for differentiation at the Region and Year, but little to no differentiation between wmn isolates and production field isolates (Table \@ref(tab:amova)).
+When we analyze the AMOVA results in light of the DAPC results (Fig. \@ref(DAPC)), it becomes clear that the regional patterns of differentiation are largely driven by isolates from Mexico and CA.
+Isolates from these Regions had a higher posterior probability (> 0.75) of being reassigned to their own populations than any other (Fig. \@ref(DAPC)a). 
 All other populations in comparison (except France) has reassignment probabilities of < 0.5, which is reflected in the failure of the first two discriminant functions to separate these populations (Fig. \@ref(DAPC)b).
+
+Despite the evidence that Mexico and CA contributing to a large amount of the population differentiation, Region like WA still had a large amount of internal variation (Supplementary Information).
+The two distinct clusters for the WA Region showed that the 2008 population appeared different and, under further investigation, we found that the genotypes from this population were shared between CA and France (Fig. \@ref(DAPC-RY), \@ref(DAPC-RY-FULL), \@ref(community-graph)). 
+From the DAPC, we extracted 5 loci that contributed >10% of the observed variation to either of the first two discriminant axes and found that the alleles with an allele frequency of >50% in 2007 were reduced to < 10% in 2008, replaced by an allele that was > 2 mutational steps away (Supplementary Information).
+This could be due to several reasons which include mis-labeling of source material or introduction of migrant sclerotia in plant material.
+Except for the WA Region, populations that were sampled across several years appeared to be relatively stable over time with overlapping distributions in the DAPC (i.e. NE and MI, Fig. \@ref(DAPC-RY)). 
 DAPC is based on the principal components of Euclidean distance between genotypes [@jombart2010discriminant]. 
 Unlike Bruvo's distance, Euclidean distance does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
 We found no evidence of private alleles in the Mexican and Californian isolates, suggesting that this pattern separating these populations from the others was not an artifact. 
@@ -865,5 +884,16 @@ Each edge represents a single MLG where its thickness represents the number of p
 ](../../results/figures/publication/mlg-16.pdf){#community-graph16 width=100%} 
 
 <!-- end fig -->
+
+
+<!-- DAPC figure 3: The figure strikes back-->
+
+![
+Scatter plot of Discriminant Analysis of Principal Components on Regions and Years showing temporal variation across all Regions. 
+Points (text labels) represent observed individuals connected to the population centroids with ellipses representing a 66% confidence interval for a normal distribution. 
+The center of each component is represented as black grid lines.
+](../../results/figures/publication/dapc_region_year.pdf){#DAPC-RY-FULL width=100%}
+
+<!-- end figure -->
 
 \newpage

@@ -296,7 +296,7 @@ knitr::kable(vartab(cap16sum), digits = 3)
 First, we want to examine how the entire data fits with the model. We will use
 the alleles as the representative of the entire data.
 
-```{r}
+```{r varpart1}
 dat11raw <- genind2df(dat11cc, usepop = FALSE) %>% mutate_all(funs(as.integer(.)))
 dat16raw <- genind2df(dat16cc, usepop = FALSE) %>% mutate_all(funs(as.integer(.)))
 vp11     <- varpart(dat11cc.bruvo, ~Year + Region + Host + MCG, data = ENV11, comm = dat11raw, add = TRUE)
@@ -350,9 +350,9 @@ plot_dbrda(cap11cc2, arrows = 5) +
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +
   theme(aspect.ratio = 1)
-if (!interactive()){
+if (!interactive()) {
   FILE <- file.path(PROJHOME, "results", "figures", "publication", "Figure7Z.pdf")
-  ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.5)
+  ggsave(filename = FILE, width = 88, height = 88, units = "mm", scale = 1.25)
 }
 ```
 

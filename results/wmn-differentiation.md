@@ -855,7 +855,7 @@ LDS_PLOT
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-16
+##  date     2017-08-17
 ```
 
 ```
@@ -877,7 +877,6 @@ LDS_PLOT
 ##  cellranger    1.1.0      2016-07-27 CRAN (R 3.4.0)                      
 ##  cluster       2.0.6      2017-03-16 CRAN (R 3.4.0)                      
 ##  coda          0.19-1     2016-12-08 CRAN (R 3.4.0)                      
-##  codetools     0.2-15     2016-10-05 CRAN (R 3.4.0)                      
 ##  colorspace    1.3-2      2016-12-14 CRAN (R 3.4.0)                      
 ##  compiler      3.4.1      2017-07-07 local                               
 ##  datasets    * 3.4.1      2017-07-07 local                               
@@ -892,12 +891,8 @@ LDS_PLOT
 ##  forcats       0.2.0      2017-01-23 CRAN (R 3.4.0)                      
 ##  foreign       0.8-69     2017-06-21 CRAN (R 3.4.0)                      
 ##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                      
-##  ggcompoplot * 0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)
-##  ggforce       0.1.1      2016-11-28 CRAN (R 3.4.0)                      
+##  ggcompoplot   0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)
 ##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                      
-##  ggraph      * 1.0.0      2017-02-24 CRAN (R 3.4.0)                      
-##  ggrepel     * 0.6.12     2017-08-02 Github (slowkow/ggrepel@fd15d0a)    
-##  ggtree      * 1.6.11     2017-08-03 Bioconductor                        
 ##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                      
 ##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                      
 ##  graphics    * 3.4.1      2017-07-07 local                               
@@ -910,15 +905,14 @@ LDS_PLOT
 ##  highr         0.6        2016-05-09 CRAN (R 3.4.0)                      
 ##  hms           0.3        2016-11-22 CRAN (R 3.4.0)                      
 ##  htmltools     0.3.6      2017-04-28 CRAN (R 3.4.0)                      
-##  htmlwidgets   0.9        2017-07-10 cran (@0.9)                         
 ##  httpuv        1.3.5      2017-07-04 CRAN (R 3.4.1)                      
 ##  httr          1.2.1      2016-07-03 CRAN (R 3.4.0)                      
 ##  huxtable      0.3.0      2017-05-18 CRAN (R 3.4.0)                      
-##  igraph      * 1.1.2      2017-07-21 cran (@1.1.2)                       
+##  igraph        1.1.2      2017-07-21 cran (@1.1.2)                       
 ##  jsonlite      1.5        2017-06-01 CRAN (R 3.4.0)                      
 ##  knitr       * 1.16       2017-05-18 CRAN (R 3.4.0)                      
 ##  labeling      0.3        2014-08-23 CRAN (R 3.4.0)                      
-##  lattice     * 0.20-35    2017-03-25 CRAN (R 3.4.0)                      
+##  lattice       0.20-35    2017-03-25 CRAN (R 3.4.0)                      
 ##  lazyeval      0.2.0      2016-06-12 CRAN (R 3.4.0)                      
 ##  LearnBayes    2.15       2014-05-29 CRAN (R 3.4.0)                      
 ##  lubridate     1.6.0      2016-09-13 CRAN (R 3.4.0)                      
@@ -935,7 +929,7 @@ LDS_PLOT
 ##  nlme          3.1-131    2017-02-06 CRAN (R 3.4.0)                      
 ##  parallel      3.4.1      2017-07-07 local                               
 ##  pegas         0.10       2017-05-03 CRAN (R 3.4.0)                      
-##  permute     * 0.9-4      2016-09-09 CRAN (R 3.4.0)                      
+##  permute       0.9-4      2016-09-09 CRAN (R 3.4.0)                      
 ##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                      
 ##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                      
 ##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                      
@@ -960,21 +954,16 @@ LDS_PLOT
 ##  spdep         0.6-13     2017-04-25 CRAN (R 3.4.0)                      
 ##  splines       3.4.1      2017-07-07 local                               
 ##  stats       * 3.4.1      2017-07-07 local                               
-##  stats4        3.4.1      2017-07-07 local                               
 ##  stringi       1.1.5      2017-04-07 CRAN (R 3.4.0)                      
 ##  stringr       1.2.0      2017-02-18 CRAN (R 3.4.0)                      
 ##  tibble      * 1.3.3      2017-05-28 CRAN (R 3.4.0)                      
 ##  tidyr       * 0.6.3      2017-05-15 CRAN (R 3.4.0)                      
 ##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.4.0)                      
 ##  tools         3.4.1      2017-07-07 local                               
-##  tweenr        0.1.5      2016-10-10 CRAN (R 3.4.0)                      
-##  udunits2      0.13       2016-11-17 CRAN (R 3.4.0)                      
-##  units         0.4-5      2017-06-15 CRAN (R 3.4.0)                      
 ##  utils       * 3.4.1      2017-07-07 local                               
-##  vegan       * 2.4-3      2017-04-07 CRAN (R 3.4.0)                      
-##  viridis     * 0.4.0      2017-03-27 CRAN (R 3.4.0)                      
-##  viridisLite * 0.2.0      2017-03-24 CRAN (R 3.4.0)                      
-##  visNetwork  * 2.0.1      2017-07-30 cran (@2.0.1)                       
+##  vegan         2.4-3      2017-04-07 CRAN (R 3.4.0)                      
+##  viridis       0.4.0      2017-03-27 CRAN (R 3.4.0)                      
+##  viridisLite   0.2.0      2017-03-24 CRAN (R 3.4.0)                      
 ##  withr         2.0.0      2017-07-28 CRAN (R 3.4.1)                      
 ##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                      
 ##  xtable        1.8-2      2016-02-05 CRAN (R 3.4.0)

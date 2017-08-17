@@ -666,7 +666,7 @@ reg$DAPC$posterior %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-15
+##  date     2017-08-17
 ```
 
 ```

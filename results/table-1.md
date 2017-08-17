@@ -149,7 +149,7 @@ Australia -      wmn                     2004 Beryl, Bunsi, G122            4
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-02
+##  date     2017-08-17
 ```
 
 ```
@@ -164,10 +164,10 @@ Australia -      wmn                     2004 Beryl, Bunsi, G122            4
 ##  bindrcpp    * 0.2     2017-06-17 CRAN (R 3.4.0) 
 ##  compiler      3.4.1   2017-07-07 local          
 ##  datasets    * 3.4.1   2017-07-07 local          
-##  devtools      1.13.2  2017-06-02 CRAN (R 3.4.0) 
+##  devtools      1.13.3  2017-08-02 CRAN (R 3.4.1) 
 ##  digest        0.6.12  2017-01-27 CRAN (R 3.4.0) 
 ##  dplyr       * 0.7.2   2017-07-20 CRAN (R 3.4.1) 
-##  evaluate      0.10    2016-10-11 CRAN (R 3.4.0) 
+##  evaluate      0.10.1  2017-06-24 CRAN (R 3.4.1) 
 ##  ezknitr       0.6     2016-09-16 CRAN (R 3.4.0) 
 ##  glue          1.1.1   2017-06-21 CRAN (R 3.4.0) 
 ##  graphics    * 3.4.1   2017-07-07 local          
@@ -192,7 +192,7 @@ Australia -      wmn                     2004 Beryl, Bunsi, G122            4
 ##  tibble        1.3.3   2017-05-28 CRAN (R 3.4.0) 
 ##  tools         3.4.1   2017-07-07 local          
 ##  utils       * 3.4.1   2017-07-07 local          
-##  withr         1.0.2   2016-06-20 CRAN (R 3.4.0)
+##  withr         2.0.0   2017-07-28 CRAN (R 3.4.1)
 ```
 
 </details>
