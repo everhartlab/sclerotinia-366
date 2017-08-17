@@ -124,37 +124,71 @@ setPop(dat11cc) <- ~Region/Year
 regyear.dapc <- dapc(dat11cc, n.pca = 20, n.da = 20)
 ```
 
-```{r dapc_plot, fig.width = 7, fig.height = 7}
-RYD <- bind_cols(Population = regyear.dapc$grp, strata(dat11cc), as.data.frame(regyear.dapc$ind.coord)) %>%
-  as_tibble()
-RYD_pop <- RYD %>% 
-  group_by(Population) %>% 
-  summarize_if(is.numeric, mean, na.rm = TRUE) %>%
-  rename_all(function(x) gsub("LD", "mean", x))
-RYD <- full_join(RYD, RYD_pop, by = "Population")
-RYD_PLOT <- ggplot(RYD, aes(x = LD1, y = LD2, color = Year)) + 
-  geom_text(aes(label = Year), alpha = 0.5) +
-  geom_segment(aes(x = mean1, y = mean2, xend = LD1, yend = LD2), alpha = 0.5) +
-  stat_ellipse(type = "norm", level = 0.66, alpha = 0.75) + 
-  facet_wrap(~Region) +
-  theme_bw() +  
-  theme(aspect.ratio = 0.8) +
-  theme(legend.position = "bottom") +
-  theme(axis.text = element_blank()) + 
-  theme(axis.title = element_blank()) + 
-  theme(axis.ticks = element_blank()) + 
-  viridis::scale_color_viridis(discrete = TRUE, direction = -1) +
-  viridis::scale_fill_viridis(discrete = TRUE, direction = -1) +
-  scale_y_continuous(breaks = 0) + 
-  scale_x_continuous(breaks = 0) + 
-  theme(panel.background = element_rect(fill = "grey95")) +
-  theme(panel.grid.major = element_line(color = "black"))
-RYD_PLOT
+```{r dapc_plot, fig.width = 7, fig.height = 7, warning = FALSE, message = FALSE}
+# A ggplot2 version of scatter.dapc
+#
+# @param DAPC an object of class "dapc" derived from [adegenet::dapc]
+# @param STRATA a data frame defining the population strata (see [adegenet::strata])
+# @param color the variable in `STRATA` defining the color palette for the plot
+# @param filter a "quosure" containing a filtering method to be passed to [dplyr::filter]
+#
+# @return
+# @export
+#
+# @examples
+# library("adegenet")
+# data(microbov)
+# strata(microbov) <- as.data.frame(other(microbov))
+# setPop(microbov) <- ~spe/breed
+# mscat <- ggscatter(dapc(microbov, n.pca = 20, n.da = 40), strata(microbov),
+#                    color = "breed",
+#                    filter = quo(breed %in% c("Borgou", "Zebu", "Montbeliard", "Salers")))
+# mscat + facet_wrap(~coun)
+# mscat + facet_wrap(~spe)
+# mscat + facet_wrap(~breed)
+ggscatter <- function(DAPC, STRATA, color = "Year", filter = NULL){
+  RYD <- bind_cols(Population = DAPC$grp, STRATA, as.data.frame(DAPC$ind.coord)) %>%
+    as_tibble()
+  RYD_pop <- RYD %>% 
+    group_by(Population) %>% 
+    summarize_if(is.numeric, mean, na.rm = TRUE) %>%
+    rename_all(function(x) gsub("LD", "mean", x))
+  RYD <- full_join(RYD, RYD_pop, by = "Population")
+  yminor <- pretty(RYD$LD2)
+  xminor <- pretty(RYD$LD1)
+  RYD <- if (!is.null(filter)) filter(RYD, !!filter) else RYD
+  RYD_PLOT <- ggplot(RYD, aes_string(x = "LD1", y = "LD2", color = color)) + 
+    geom_text(aes_string(label = color), alpha = 0.75) +
+    geom_segment(aes(x = mean1, y = mean2, xend = LD1, yend = LD2), alpha = 0.5) +
+    stat_ellipse(type = "norm", level = 0.66, alpha = 0.75) + 
+    theme_bw(base_size = 16, base_family = "Helvetica") +  
+    theme(aspect.ratio = 0.8) +
+    theme(legend.position = "bottom") +
+    theme(axis.text = element_blank()) + 
+    theme(axis.title = element_blank()) + 
+    theme(axis.ticks = element_blank()) + 
+    viridis::scale_color_viridis(discrete = TRUE, direction = -1) +
+    viridis::scale_fill_viridis(discrete = TRUE, direction = -1) +
+    scale_y_continuous(breaks = 0, minor_breaks = yminor) + 
+    scale_x_continuous(breaks = 0, minor_breaks = xminor) + 
+    theme(panel.background = element_rect(fill = "grey95")) +
+    theme(panel.grid.major = element_line(color = "black")) +
+    theme(panel.grid.minor = element_line(color = "white")) 
+  RYD_PLOT
+}
+
 par(mfrow = c(2, 1))
 loadingplot(regyear.dapc$var.contr, axis = 1)
 loadingplot(regyear.dapc$var.contr, axis = 2)
 par(mfrow = c(1, 1))
+
+ggscatter(regyear.dapc, strata(dat11cc)) +
+  facet_wrap(~Region) +
+  theme(legend.position = c(0.75, 0.1)) +
+  guides(color = guide_legend(nrow = 4)) +
+  theme(legend.direction = "horizontal")
 ```
+
 
 The loading plot shows us the variables that are important for the first axis of
 separation, mainly:
@@ -171,6 +205,13 @@ separation, mainly:
 
 There's an important thing going on in Washington where it appears that the
 2008 population is separated from the main population.
+
+```{r dapc_plot_newamica, fig.width = 5, fig.height = 4, warning = FALSE, message = FALSE}
+ggscatter(regyear.dapc, strata(dat11cc), filter = quo(Region %in% c("WA", "CA", "NE", "MI"))) +
+  facet_wrap(~Region, nrow = 2) +
+  theme(legend.position = "right") +
+  theme(legend.key = element_rect(fill = "grey95"))
+```
 
 If we look at the tables above, we can see that there are only 12 samples from 
 2008, all of whicha are in white mold screening nurseries. We also notice that
@@ -208,35 +249,35 @@ loc <- map(seploc(dat11ccloc), . %>%
 
 ggloc <- function(dat, REG, years = 2003:2008){
   map(dat, . %>% 
-    filter(Region == REG) %>%
-    {ggplot(., aes(x = Year, y = frequency, color = allele, group = allele)) +
-    geom_line() + 
-    geom_point(aes(size = N), show.legend = FALSE) +
-    # geom_label(aes(label = allele), size = 1, color = "black") +
-    scale_x_continuous(breaks = years) +
-    scale_y_continuous(limits = c(0, 1)) +
-    theme_bw(base_size = 16, base_family = "Helvetica") +
-    theme(legend.position = "top") +
-    theme(aspect.ratio = 1/2) +
-    theme(axis.text = element_text(color = "black")) +
-    theme(axis.ticks.y = element_blank()) +
-    theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
-    # theme(axis.text.x.top = element_text(angle = 90, vjust = 0.5, hjust = 0)) +
-    theme(panel.grid.minor.x = element_line(linetype = 0, color = "grey50")) +
-    theme(panel.grid.major.x = element_line(linetype = 0, color = "grey50")) +
-    theme(panel.grid.major = element_line(colour = "grey20")) +
-    theme(panel.grid.minor = element_line(linetype = 3, colour = "grey50")) +
-    # theme(panel.spacing.y = unit(0, "line")) +
-    theme(panel.background = element_rect(color = NA, fill = "grey96")) +
-    theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
-    theme(panel.border = element_blank()) +
-    scale_size(range = c(3, 6)) +
-    scale_color_viridis(option = "C", end = 0.9, 
-                        guide = "legend",
-                        breaks = sort(unique(.$allele)))
+    filter(Region == REG) %>% {
+      ggplot(., aes(x = Year, y = frequency, color = allele, group = allele)) +
+        geom_text(aes(label = paste0("(", N, ")")), y = 0.99, color = "grey20", vjust = 1) +
+        geom_line(alpha = 0.75) +
+        geom_point(aes(size = N), show.legend = FALSE, alpha = 0.75) +
+        scale_x_continuous(breaks = years) +
+        scale_y_continuous(limits = c(0, 1)) +
+        theme_bw(base_size = 16, base_family = "Helvetica") +
+        theme(legend.position = "top") +
+        theme(aspect.ratio = 1/2) +
+        theme(axis.text = element_text(color = "black")) +
+        theme(axis.ticks.y = element_blank()) +
+        theme(axis.text.x = element_text(angle = 90, vjust = 0.5, hjust = 1)) +
+        # theme(axis.text.x.top = element_text(angle = 90, vjust = 0.5, hjust = 0)) +
+        theme(panel.grid.minor.x = element_line(linetype = 0, color = "grey50")) +
+        theme(panel.grid.major.x = element_line(linetype = 0, color = "grey50")) +
+        theme(panel.grid.major = element_line(colour = "grey20")) +
+        theme(panel.grid.minor = element_line(linetype = 3, colour = "grey50")) +
+        # theme(panel.spacing.y = unit(0, "line")) +
+        theme(panel.background = element_rect(color = NA, fill = "grey98")) +
+        theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
+        theme(panel.border = element_blank()) +
+        scale_size(range = c(3, 6), limits = c(6, 25)) +
+        viridis::scale_color_viridis(option = "C", end = 0.9, 
+                                     guide = "legend",
+                                     breaks = sort(unique(.$allele)))
   })
 }
-ggl <- ggloc(loc, "WA")
+ggl <- suppressMessages(ggloc(loc, "WA"))
 
 cowplot::plot_grid(plotlist = ggl, labels = names(ggl), ncol = 2)
 ```
@@ -246,11 +287,11 @@ allele frequencies from 2007 to 2008. What happens if we look at a stable region
 like NE?
 
 ```{r NEplot, fig.width = 10, fig.height = 10}
-gglNE <- ggloc(loc, "NE", 2003:2012)
+gglNE <- suppressMessages(ggloc(loc, "NE", 2003:2012))
 cowplot::plot_grid(plotlist = gglNE, labels = names(gglNE), ncol = 2)
 ```
 ```{r MIplot, fig.width = 10, fig.height = 10}
-gglMI <- ggloc(loc, "MI", 2003:2012)
+gglMI <- suppressMessages(ggloc(loc, "MI", 2003:2012))
 cowplot::plot_grid(plotlist = gglMI, labels = names(gglMI), ncol = 2)
 ```
 
