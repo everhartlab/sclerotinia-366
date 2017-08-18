@@ -545,7 +545,6 @@ Each edge represents a single MLG where its thickness represents the number of p
 
 <!-- end fig -->
 
-\newpage 
 
 ## Population Differentiation {-}
 
