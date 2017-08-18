@@ -16,6 +16,7 @@ MANUSCRIPT := doc/manuscript/manuscript.pdf
 COMPONENTS := doc/manuscript/abstract.md \
               doc/manuscript/ssc_bibliography.bib \
               doc/manuscript/wlpeerj.cls
+DIRS       := results/figures/publication results/tables/
 
 
 # TARGETS
@@ -33,10 +34,13 @@ bootstrap: results/bootstrap.txt
 $(THE_DATA) : bootstrap $(PARSE_DATA)
 
 # All the analyses (defined above) depend on the shared data set
-$(ANALYSES): $(THE_DATA)
+$(ANALYSES): $(THE_DATA) $(DIRS)
 
 # RECIPES
 # ---------------------------------------------------------
+$(DIRS) :
+	mkdir $@
+
 results/bootstrap.txt: DESCRIPTION
 	R --slave -e "devtools::install()"
 	date > results/bootstrap.txt
@@ -51,10 +55,21 @@ results/%.md : doc/RMD/%.Rmd
 doc/manuscript/%.pdf : doc/manuscript/%.Rmd $(COMPONENTS) $(ANALYSES)
 	R --slave -e "rmarkdown::render('$<')"
 
-.PHONY : clean
+.PHONY : tidy
 
-clean:
-	$(RM) cache/*
+# Tidy is for when you need to simply clear the results, but don't need to rerun
+# ALL of the analyses (the cache still exists)
+tidy:
 	$(RM) $(PARSE_DATA)
 	$(RM) $(ANALYSES)
 	$(RM) $(MANUSCRIPT)
+	$(RM) -r $(DIRS)
+
+.PHONY : clean
+
+# clean is for when you want to burn everything to the ground and run the
+# analysis anew. Note: this will take a while.
+clean: tidy
+	$(RM) cache/*
+
+
