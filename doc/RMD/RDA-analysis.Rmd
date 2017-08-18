@@ -188,7 +188,7 @@ plot_dbrda <- function(db, arrows = 10, seed = 2017-06-28, lab = TRUE){
                # fill = "white",
                # fill = "dark orange", 
                color = "grey45", 
-               size = 2.5, 
+               size = 3, 
                pch = 21)+
     coord_cartesian() +
     geom_segment(aes(x = 0, xend = CAP1, 
