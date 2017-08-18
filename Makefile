@@ -22,7 +22,7 @@ DIRS       := results/figures/publication results/tables/
 # TARGETS
 # ---------------------------------------------------------
 .PHONY: all
-all: $(ANALYSES) $(MANUSCRIPT)
+all: $(DIRS) $(ANALYSES) $(MANUSCRIPT)
 # In reality $(ANALYSES) -> shared_data -> $(PARSE_DATA) -> bootstrap
 
 # Bootstrap the  data by installing the dependencies
@@ -34,7 +34,7 @@ bootstrap: results/bootstrap.txt
 $(THE_DATA) : bootstrap $(PARSE_DATA)
 
 # All the analyses (defined above) depend on the shared data set
-$(ANALYSES): $(THE_DATA) $(DIRS)
+$(ANALYSES): $(THE_DATA)
 
 # RECIPES
 # ---------------------------------------------------------
