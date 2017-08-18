@@ -740,16 +740,14 @@ With the availability of an optically-mapped genome [@derbyshire2017complete], f
 
 ## Conclusions {-}
 
-eh.
+This study represents the largest genetic analysis of *S. sclerotiorum* from the USA to date, giving us a unique insight to continent-wide population structure and relationships between phenotypic and genotypic variables.
+Based on our analysis of the relationships between MCG and MLG, we found no clear evidence that the two are directly related, suggesting that MCG do not necessarily represent vegetative compatibility groups and thus should not be used as a proxy for identifying clones. 
+Populations in wmn appear to show no significant differentiation when compared to their production field counterparts, suggesting that the wmn populations of *S. sclerotiorum* may be considered representative of the surrounding regions. 
+While we found no direct relationship between genotype and severity, it is evident that there is a gradient of severity by region, further supporting the need for screening in multiple locations.
 
 ## Acknowledgements {-}
 
-The authors would like to thank Rebecca Higgens for providing valuable insights
-into the historical context of the data collection and curation. Funding for
-this research was provided by the North Central Soybean Research Program
-(#639K623) to SEE, a Layman Award (#2446) to SEE, USDA-ARS National Sclerotinia
-Initiative (#58-5442-2-209) to JRS/SEE, and start-up funds from the University of
-Nebraska-Lincoln to SEE.
+The authors would like to thank Rebecca Higgens for providing valuable insights into the historical context of the data collection and curation. Funding for this research was provided by the North Central Soybean Research Program (#639K623) to SEE, a Layman Award (#2446) to SEE, USDA-ARS National Sclerotinia Initiative (#58-5442-2-209) to JRS/SEE, and start-up funds from the University of Nebraska-Lincoln to SEE.
 
 ## Conflicts of Interest {-}
 
@@ -765,8 +763,8 @@ The authors declare no conflict of interest.
 <!-- Resources: SEE. -->
 <!-- Supervision: BSA. -->
 <!-- Visualization: BSA SEE. -->
-<!-- Writing – original draft: BSA. -->
-<!-- Writing – review & editing: SEE. -->
+<!-- Writing - original draft: BSA. -->
+<!-- Writing - review & editing: SEE. -->
 
 
 \newpage
