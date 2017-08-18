@@ -11,6 +11,7 @@ knitr::opts_knit$set(root.dir = PROJHOME)
 
 ```{r load_packages, message = FALSE, warning = FALSE}
 library("tidyverse")
+dir.create(file.path(PROJHOME, "results", "tables"))
 ```
 
 # Purpose

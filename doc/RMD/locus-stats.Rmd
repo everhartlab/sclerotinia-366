@@ -19,6 +19,7 @@ This will tabulate statistics per locus for presentation in a table.
 library("tidyverse")
 library("poppr")
 load(file.path(PROJHOME, "data", "sclerotinia_16_loci.rda"))
+dir.create(file.path(PROJHOME, "results", "tables"))
 ```
 
 ```{r locus_table, comment = NA}

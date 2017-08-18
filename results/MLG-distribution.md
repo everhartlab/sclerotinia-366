@@ -666,7 +666,7 @@ reg$DAPC$posterior %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-17
+##  date     2017-08-18
 ```
 
 ```
@@ -692,6 +692,7 @@ reg$DAPC$posterior %>%
 ##  compiler      3.4.1      2017-07-07 local                               
 ##  cowplot       0.8.0      2017-07-30 CRAN (R 3.4.1)                      
 ##  datasets    * 3.4.1      2017-07-07 local                               
+##  DBI           0.7        2017-06-18 CRAN (R 3.4.0)                      
 ##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                      
 ##  devtools      1.13.3     2017-08-02 CRAN (R 3.4.1)                      
 ##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                      
@@ -748,7 +749,7 @@ reg$DAPC$posterior %>%
 ##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                      
 ##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                      
 ##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                      
-##  poppr       * 2.4.1.99-2 2017-08-13 local                               
+##  poppr       * 2.4.1      2017-04-14 CRAN (R 3.4.0)                      
 ##  psych         1.7.5      2017-05-03 CRAN (R 3.4.0)                      
 ##  purrr       * 0.2.3      2017-08-02 CRAN (R 3.4.1)                      
 ##  quadprog      1.5-5      2013-04-17 CRAN (R 3.4.0)                      

@@ -47,21 +47,26 @@ dat11cc <- clonecorrect(dat11, ~Region/Source/Host/Year)
 
 dapc_region      <- dapc(setPop(dat11cc, ~Region), n.da = 13, n.pca = 20)
 dapc_region_year <- dapc(setPop(dat11cc, ~Region/Year), n.da = 12, n.pca = 22)
-dapc_host <- dat11cc %>% 
+dapc_host        <- dat11cc %>% 
   setPop(~Source) %>%
   popsub("wmn") %>%
   setPop(~Host) %>% 
   popsub(c("Beryl", "Bunsi", "G122")) %>%
   dapc(n.da = 2, n.pca = 20)
 
-prettify <- function(x, i) signif((1 - x[i])*100, 3)
-paxis <- function(d, i = 1 ){
+# convert fractions to percents with 3 sig figs
+prettify <- function(x, i) signif((x[i])*100, 3)
+
+# Get proportion of variance per discriminant axis
+paxis <- function(d, i = 1){
   res <- cumsum(d$eig)/sum(d$eig)
-  prettify(res, i)
+  prettify(1 - res, i)
 }
+
+# Get proportion of assignment probability for a given population
 passp <- function(d, i = 1){
   res <- apply(d$posterior, 2, mean, na.rm = TRUE)
-  prettify(1 - res, i)
+  prettify(res, i)
 }
 ```
 

@@ -10,6 +10,7 @@ output:
 
 ```r
 library("tidyverse")
+dir.create(file.path(PROJHOME, "results", "tables"))
 ```
 
 # Purpose
@@ -416,11 +417,8 @@ library("poppr")
 ```
 
 ```
-## This is poppr version 2.4.1.99.2. To get started, type package?poppr
+## This is poppr version 2.4.1. To get started, type package?poppr
 ## OMP parallel support: available
-## 
-## This version of poppr is under development.
-## If you find any bugs, please report them at https://github.com/grunwaldlab/poppr/issues
 ```
 
 ```r
@@ -581,7 +579,7 @@ grps %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-17
+##  date     2017-08-18
 ```
 
 ```
@@ -609,6 +607,7 @@ grps %>%
 ##  combinat      0.0-8      2012-10-29 CRAN (R 3.4.0)                
 ##  compiler      3.4.1      2017-07-07 local                         
 ##  datasets    * 3.4.1      2017-07-07 local                         
+##  DBI           0.7        2017-06-18 CRAN (R 3.4.0)                
 ##  deldir        0.1-14     2017-04-22 CRAN (R 3.4.0)                
 ##  devtools      1.13.3     2017-08-02 CRAN (R 3.4.1)                
 ##  digest        0.6.12     2017-01-27 CRAN (R 3.4.0)                
@@ -660,7 +659,7 @@ grps %>%
 ##  phangorn      2.2.0      2017-04-03 CRAN (R 3.4.0)                
 ##  pkgconfig     2.0.1      2017-03-21 CRAN (R 3.4.0)                
 ##  plyr          1.8.4      2016-06-08 CRAN (R 3.4.0)                
-##  poppr       * 2.4.1.99-2 2017-08-13 local                         
+##  poppr       * 2.4.1      2017-04-14 CRAN (R 3.4.0)                
 ##  psych         1.7.5      2017-05-03 CRAN (R 3.4.0)                
 ##  purrr       * 0.2.3      2017-08-02 CRAN (R 3.4.1)                
 ##  quadprog      1.5-5      2013-04-17 CRAN (R 3.4.0)                
