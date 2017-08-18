@@ -742,6 +742,31 @@ With the availability of an optically-mapped genome [@derbyshire2017complete], f
 
 eh.
 
+## Acknowledgements {-}
+
+The authors would like to thank Rebecca Higgens for providing valuable insights
+into the historical context of the data collection and curation. Funding for
+this research was provided by the North Central Soybean Research Program
+(#639K623), a Layman Award (#2446), and start-up funds from the University of
+Nebraska-Lincoln.
+
+## Conflicts of Interest {-}
+
+The authors declare no conflict of interest.
+
+## Author Contributions {-}
+
+
+<!-- Conceptualization: SEE. -->
+<!-- Formal analysis: BSA SEE. -->
+<!-- Funding acquisition: SEE. -->
+<!-- Investigation: BSA. -->
+<!-- Resources: SEE. -->
+<!-- Supervision: BSA. -->
+<!-- Visualization: BSA SEE. -->
+<!-- Writing – original draft: BSA. -->
+<!-- Writing – review & editing: SEE. -->
+
 <!-- 
 Our study was conducted to characterize *S. sclerotiorum* isolates from different geographic areas to determine important phenotypic variables influencing genotypes; to ascertain reproductive behavior of the pathogen; to test whether different sampling years or locations have any effect on genotype/sexuality; and to identify abundant and unique genotypes across isolates and geographies.
 The dbRDA revealed region, year, and host as the most influential phenotypic variables on genotypes.
@@ -874,7 +899,7 @@ These results indicate some level of heterothallic recombination is taking place
 An understanding of sexual behavior and ability of form new genotypes by *S. sclerotiorum* in dry bean cropping systems is useful for formulating disease management strategies. --> 
 
 
-
+\newpage
 # Supplementary Information {-}
 
 <!-- This part is necessary for adding the "S" before supplementary figures.
@@ -899,7 +924,7 @@ read_csv("../../results/tables/Region-aggressiveness.csv",
 
 Table: (\#tab:region-aggressiveness) Mean aggressiveness ratings for the Regions with greater than 5 samples; groupings according to 95% family-wise confidence interval.
 
-\newpage
+
 
 
 ![
