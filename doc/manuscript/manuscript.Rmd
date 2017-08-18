@@ -747,8 +747,9 @@ eh.
 The authors would like to thank Rebecca Higgens for providing valuable insights
 into the historical context of the data collection and curation. Funding for
 this research was provided by the North Central Soybean Research Program
-(#639K623), a Layman Award (#2446), and start-up funds from the University of
-Nebraska-Lincoln.
+(#639K623) to SEE, a Layman Award (#2446) to SEE, USDA-ARS National Sclerotinia
+Initiative (#58-5442-2-209) to JRS/SEE, and start-up funds from the University of
+Nebraska-Lincoln to SEE.
 
 ## Conflicts of Interest {-}
 
