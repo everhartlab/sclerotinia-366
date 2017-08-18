@@ -248,8 +248,10 @@ anova(cap16cc)
 We can also see the marginal effects with `by = "margin"`
 
 ```{r marginal_anova, cache = TRUE}
-anova(cap11cc, by = "margin")
-anova(cap16cc, by = "margin")
+set.seed(2017-08-17)
+(cap11anova <- anova(cap11cc, by = "margin"))
+set.seed(2017-08-17)
+(cap16anova <- anova(cap16cc, by = "margin"))
 ```
 
 
@@ -335,13 +337,15 @@ vegan::RsquareAdj(cap11cc2)
 
 
 ```{r total_anova2, cache = TRUE}
+set.seed(2017-08-17)
 anova(cap11cc2)
 ```
 
 We can also see the marginal effects with `by = "margin"`
 
 ```{r marginal_anova2, cache = TRUE}
-anova(cap11cc2, by = "margin")
+set.seed(2017-08-17)
+(cap11anova2 <- anova(cap11cc2, by = "margin"))
 ```
 
 ```{r resultplot2, fig.width = 5, fig.height = 5}
@@ -372,6 +376,19 @@ vp11 <- varpart(dat11cc.bruvo, ~Severity, ~Year, ~Region, ~Host, data = ENV11, a
 
 plot(vp11, digits = 2, Xnames = c("Severity", "Year", "Region", "Host"))
 ```
+
+## Saving Data
+
+These data are important for reporting in the manuscript and expensive to 
+generate, so I will save them here
+
+```{r save_data}
+save(cap11cc, cap11cc2, 
+     cap11sum, cap11sum2, 
+     cap11anova, cap11anova2,
+     file = file.path("data", "RDA_results.rda"))
+```
+
 
 # Conclusions
 

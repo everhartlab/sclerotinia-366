@@ -43,6 +43,7 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 ```{r initiate, echo = FALSE, message = FALSE, warning = FALSE}
 library("poppr")
 load("../../data/sclerotinia_16_loci.rda")
+load("../../data/RDA_results.rda")
 dat11cc <- clonecorrect(dat11, ~Region/Source/Host/Year)
 
 dapc_region      <- dapc(setPop(dat11cc, ~Region), n.da = 13, n.pca = 20)
@@ -68,6 +69,19 @@ passp <- function(d, i = 1){
   res <- apply(d$posterior, 2, mean, na.rm = TRUE)
   prettify(res, i)
 }
+
+vartab <- function(x){
+  tot <- x$tot.chi
+  con <- x$constr.chi
+  uco <- x$unconst.chi
+  data.frame(list(Inertia = c(tot, con, uco),
+                  Proportion = c(tot, con, uco)/tot))
+}
+RDA2R2 <- prettify(vegan::RsquareAdj(cap11cc2)$adj.r.squared)/100
+RDA1R2 <- prettify(vegan::RsquareAdj(cap11cc)$adj.r.squared)/100
+
+anova1res <- setNames(cap11anova$`Pr(>F)`, rownames(cap11anova))
+anova2res <- setNames(cap11anova2$`Pr(>F)`, rownames(cap11anova2))
 ```
 
 
@@ -202,27 +216,25 @@ Alleles were scored using PeakScanner version 1.0 (Life Technologies Corporation
 ## Data processing and Analysis{-}
 
 All analyses were performed on this data set unless otherwise mentioned.
-All data processing and analyses were performed in R version 3.4.1 [@R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/.
+All data processing and analyses were performed in `r substr(R.version.string, 1, 15)` [@R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/.
 Of the 16 microsatellite loci genotyped, five included compound repeats, which made it challenging to accurately/confidently bin alleles into fragment sizes expected for each locus based on the described repeat motif. 
 <!-- add something about repeat length consistency  -->
 Loci with compound repeats were removed for the reported statistics, but were processed and included in data analyses to ensure the integrity of the results with 11 loci as compared to 16.
-We assessed the power of our 11 markers by generating a genotype accumulation curve in the R package *poppr* version 2.4.1, looking for evidence of saturation, which would indicate that loci were sufficiently sampled to adequately represent the full set of genotypes [@arnaud2007standardizing; @kamvar2015novel].
+We assessed the power of our 11 markers by generating a genotype accumulation curve in the R package *poppr* version `r packageVersion("poppr")`, looking for evidence of saturation, which would indicate that loci were sufficiently sampled to adequately represent the full set of genotypes [@arnaud2007standardizing; @kamvar2015novel].
 To avoid including isolates potentially collected from the same plant (which increases the probability of collecting sclerotioa from the same point of infection more than once), data were clone-corrected on a hierarchy of region/source/host/year---meaning that one representative of each genotype was retained for each combined regions, source, host, and year---for subsequent analysis. 
 We assessed genotypic diversity by calculating Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], and evenness ($E_5$, *eMLG*) [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
 To assess the potential for random mating, we tested for linkage disequilibrium with the index of association, $I_A$ and its standardized version, $\bar{r}_d$ using 999 permutations [@agapow2001indices; @smith1993how; @brown1980multilocus].
-Both genotypic diversity and linkage disequilibrium were calculated in *poppr* version 2.4.1 [@kamvar2014poppr].
+Both genotypic diversity and linkage disequilibrium were calculated in *poppr* [@kamvar2014poppr].
 
 ## Assessing Importance of Variables  {-}
 
 ### Distance-based Redundancy Analysis {-}
 
-A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was performed with the function `capscale()` in the *vegan* package version 2.4-3 [@vegan].
+A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was performed with the function `capscale()` in the *vegan* package version `r packageVersion("vegan")` [@vegan].
 This method uses constrained ordinations on a distance matrix representing the response variable to delineate relative contribution of any number of independent explanatory variables. 
 We used this method to delineate the phenotypic (Aggressiveness, Mycelial Compatibility Group (MCG)), geographic (Region, Host, Location), and temporal (Year) components in predicting genetic composition of the populations.
-<!-- RDA is a multivariate linear regression analysis of independent (explanatory: eg. environmental and phenotypic) variables on dependent (non-explanatory or response) variables. -->
-The distance matrix we used as the response variable was generated using Bruvo's genetic distance from clone-corrected data (procedure described above) as implemented in *poppr* version 2.4.1, which employed a stepwise mutation model for microsatellite data [@bruvo2004simple; @kamvar2014poppr]. 
+The distance matrix we used as the response variable was generated using Bruvo's genetic distance from clone-corrected data (procedure described above) as implemented in *poppr*, which employed a stepwise mutation model for microsatellite data [@bruvo2004simple; @kamvar2014poppr]. 
 Because aggressiveness measures differed with each isolate, aggressiveness first averaged across clone-corrected isolates.
-<!-- In our case, a pairwise Bruvo's [@bruvo2004simple] distance matrix was generated from microsatellite data using *poppr* 2.4.1 [@kamvar2014poppr; @kamvar2015novel] and employed it as the dependent matrix for RDA analysis. -->
 To identify explanatory variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function `ordistep()` to identify the set of variables that explained more variation than predicted with the global model containing all variables.
 An ANOVA was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
 The `varpart()` function of vegan was used to determine variation partitioning of explanatory variables.
@@ -231,7 +243,7 @@ The `varpart()` function of vegan was used to determine variation partitioning o
 
 We used analysis of variance (ANOVA) to assess if aggressiveness could be explained by Region, MCG, or multilocus genotype (MLG). 
 To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 56.5% of the isolates collected, the top 10 MLGs representing 26.7% of the isolates, and populations with more than five isolates.
-Between-group differences were assessed using Tukey's HSD test with an alpha of 0.05 using the `HSD.test()` function in the package *agricolae* version 1.2.4 [@mendiburu2015agricolae].
+Between-group differences were assessed using Tukey's HSD test with an alpha of 0.05 using the `HSD.test()` function in the package *agricolae* version `r packageVersion("agricolae")` [@mendiburu2015agricolae].
 
 ### Correlating Multilocus Genotypes with Mycelial Compatibility Groups {-}
 
@@ -240,7 +252,7 @@ In simple terms, this was done using a network-based approach where both MLGs an
 The network-based approach allowed us to assess how "clumpy" the relationships between MLGs and MCGs were.
 In more specific terms, we first created a contingency table with MLGs and MCGs and converted it to a directed and weighted edgelist where each edge was a connection from an MCG to an MLG weighted by the number of samples shared in the connection. 
 This was then converted to a bipartite graph where top nodes represented MCGs and bottom nodes represented MLGs.
-The cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version 1.1.2 was used to define clusters of MLGs and MCGs [@csardi2006igraph; @pons2006computing].
+The cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version `r packageVersion("igraph")` was used to define clusters of MLGs and MCGs [@csardi2006igraph; @pons2006computing].
 All communities that had fewer than 10 members were then consolidated into one.
 Community definitions were used to assess the average genetic distance (as defined by Bruvo's distance) within members of the community [@bruvo2004simple].
 
@@ -248,10 +260,10 @@ Community definitions were used to assess the average genetic distance (as defin
 
 ### Population Differentiation {-}
 
-We used analysis of molecular variance (AMOVA) with Bruvo's genetic distance in *poppr* version 2.4.1 to test for differentiation associated with wmn by quantifying the differentiation conferred by Region, Source, and Year [@excoffier1992analysis; @bruvo2004simple; @kamvar2014poppr].
+We used analysis of molecular variance (AMOVA) with Bruvo's genetic distance in *poppr* to test for differentiation associated with wmn by quantifying the differentiation conferred by Region, Source, and Year [@excoffier1992analysis; @bruvo2004simple; @kamvar2014poppr].
 Source in this case was defined as a population belonging to a wmn or not. 
 
-To identify specific Regions that were more differentiated than others, we used discriminant analysis of principal components (DAPC) as implemented in *adegenet* version 2.1.0, assessing the per-sample posterior group assignment probability [@jombart2008adegenet]. 
+To identify specific Regions that were more differentiated than others, we used discriminant analysis of principal components (DAPC) as implemented in *adegenet* version `r packageVersion("adegenet")`, assessing the per-sample posterior group assignment probability [@jombart2008adegenet]. 
 This method decomposes the genetic data into principal components, and then uses a subset of these as the inputs for discriminant analysis, which attempts to minimize within-group variation and maximize among-group variation [@jombart2010discriminant]. 
 To avoid over-fitting data, the optimal number of principal components was selected by using the *adegenet* function `xvalDapc()`. 
 This function implements a cross-validation procedure to iterate over an increasing number of principal components on a subset (90%) of the data, trying to find the minimum number of principal components that maximizes the rate of successful group reassignment. 
@@ -262,12 +274,12 @@ We additionally assessed population stability over time by calculating DAPC over
 
 We wanted to evaluate patterns of connectivity between shared multilocus genotypes across geographic regions.
 We first tabulated the multilocus genotypes shared between at least two populations (defined as states or countries) with the *poppr* function `mlg.crosspop()` [@kamvar2014poppr].
-From these data, we constructed a graph with populations as nodes and shared genotypes as edges (connections) between nodes using the R packages *igraph* version 1.0.1 [@csardi2006igraph], *dplyr* version 0.7.1 [@dplyr], and *purrr* version 0.2.2.2 [@purrr].
+From these data, we constructed a graph with populations as nodes and shared genotypes as edges (connections) between nodes using the R packages *igraph* [@csardi2006igraph], *dplyr* version `r packageVersion("dplyr")` [@dplyr], and *purrr* version `r packageVersion("purrr")` [@purrr].
 Each node was weighted by the fraction of shared MLGs.
 Each edge represented a single MLG, but because a single MLG could be present in more than one population, that MLG would be represented by (*n*\*(*n*-1))/2 edges where n represents the number of populations crossed.
 Edges were weighted by $1-P_{sex}$, where $P_{sex}$ is the probability of encountering the same genotype via two independent meiotic events [@arnaud2007standardizing; @parks1993study].
 We then used the `cluster_optimal()` function from *igraph* to define communities [@csardi2006igraph].
-The graph was plotted using the R packages *ggplot2* version 2.2.1 [@ggplot2] and *ggraph* version 1.0.0 [@ggraph].
+The graph was plotted using the R packages *ggplot2* version `r packageVersion("ggplot2")` [@ggplot2] and *ggraph* `r packageVersion("ggraph")` [@ggraph].
 To ensure that we captured the same community signal, we additionally performed this analysis including the five polymorphic markers described above.
 
 # Results {-}
@@ -384,13 +396,13 @@ Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in th
 
 ### Variable Importance {-}
 
-The forward-backward selection process of the dbRDA models on clone-corrected data revealed Year, Region, Host, and Aggressiveness to be the optimal variables for the reduced model, accounting for 45% of the total variation.
-ANOVA revealed that the reduced model was significant with an adjusted R^2^ of 0.0674 (*P* = 0.001).
-Assessment of the marginal effects showed that region, host, year, and aggressiveness significantly explained genetic variation (*P* = 0.001, *P* = 0.009 for region).
+The forward-backward selection process of the dbRDA models on clone-corrected data revealed Year, Region, Host, and Aggressiveness to be the optimal variables for the reduced model, accounting for `r prettify(vartab(cap11sum)[2, "Proportion"])`% of the total variation.
+ANOVA revealed that the reduced model was significant with an adjusted R^2^ of `r RDA1R2` (*P* = 0.001).
+Assessment of the marginal effects showed that region, host, year, and aggressiveness significantly explained genetic variation (*P* = `r anova1res[["Year"]]`, *P* = `r anova1res[["Region"]]` for region).
 It was revealed that there was multicollinearity when MCG was combined with any other variable, so we followed the same procedure, dropping MCG from the list of potential predictors. 
-From these results, we found that aggressiveness, year, region, and host were optimal, accounting for 17.6% of the total variation.
-ANOVA revealed significant effects with an adjusted R^2^ of 0.0325 (*P* = 0.001).
-While the marginal effect assessment showed that region, host, and year all significantly explained the variation at *P* = 0.001, and aggressiveness significantly explained the variation at *P* = 0.045.
+From these results, we found that aggressiveness, year, region, and host were optimal, accounting for `r prettify(vartab(cap11sum2)[2, "Proportion"])`% of the total variation.
+ANOVA revealed significant effects with an adjusted R^2^ of `r RDA2R2` (*P* = 0.001).
+While the marginal effect assessment showed that region, host, and year all significantly explained the variation at *P* = `r anova2res[["Year"]]`, and aggressiveness significantly explained the variation at *P* = `r anova2res[["Severity"]]`.
 Much of the variation appears to be driven by isolates from Mexico and 2005 (Fig. \@ref(rda-biplot)).
 Variance partitioning of the independent variables without MCG indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
 
@@ -415,8 +427,8 @@ Boxplot representing aggressiveness (vertical axis) by population (horizontal ax
 <!-- end figure -->
 
 Our assessment of aggressiveness in association with Region showed a significant effect (P < 1.00e^-4^), with means that ranged from 5.8 (MN) to 4.0 (CA) (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
-MCGs also showed a significant effect (P < 1.00e^-4^), with means that ranged from 6.0 (MCG 44) to 4.6 (MCG 49).
-We additionally found a significant effect for MLGs (*P* = 7.44e^-4^) for MLGs, with means that ranged from 6.0 (MLG 78) to 4.3 (MLG 140).
+MCGs also showed a significant effect (P < 1.00e^-4^), with means that ranged from 6.0 ('MCG 44') to 4.6 ('MCG 49').
+We additionally found a significant effect for MLGs (*P* = 7.44e^-4^) for MLGs, with means that ranged from 6.0 ('MLG 78') to 4.3 ('MLG 140').
 
 ### Correlation of Mulitlocus Genotypes and Mycelial Compatibility Groups {-}
 
@@ -437,7 +449,7 @@ Data show complex associations between Mycelial Compatibility Groups and Multilo
 Singletons (46) were truncated, leaving 41 MCGs.
 White bars represent sample counts and grey bars represent counts of unique multilocus genotypes (MLG).
 The transparency of the bars represent the evenness of the distribution of the MLGs within a given MCG.
-A dashed box surrounds the 8 most common MCGs representing >51% of the data.
+A dashed box surrounds the 8 most common MCGs representing > 51% of the data.
 **B)** Full graph-representation of the relationship between MCGs (open circles) and MLGs (filled circles).
 Details in fig. \@ref(fullgraph). 
 **C)** A subset of **B** representing the 8 most common MCGs and their associated MLGs (dashed box in **A**).
@@ -551,7 +563,7 @@ Each edge represents a single MLG where its thickness represents the number of p
 ### Analysis of Molecular Variance {-}
 
 The analysis of molecular variance (AMOVA) over the hierarchy of Region, Source, and Year showed significant variation between regions and years, but no significant variation between wmn and non-wmn (Table \@ref(tab:amova)).
-In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Data).  
+In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Information).  
 
 
 ```{r table4, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
@@ -582,13 +594,13 @@ Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance 
 
 ### Discriminant Analysis of Principal Components {-}
 
-Discriminant Analysis of Principal Components (DAPC) was performed grouping by Region with the first `r dapc_region$n.pca` principal components, representing `r signif(dapc_region$var*100, 3)`% of the total variance. 
+Discriminant Analysis of Principal Components (DAPC) was performed grouping by Region with the first `r dapc_region$n.pca` principal components, representing `r prettify(dapc_region$var)`% of the total variance. 
 The first discriminant axis (representing `r paxis(dapc_region)`% of the discriminatory power) separated the centroid for the Mexico isolates from the rest of the data, indicating strong differentiation (Fig. \@ref(DAPC)b). 
 The second discriminant axis, representing `r paxis(dapc_region, 2)`% of the discriminatory power, separated the centroid for the California isolates.
 The mean population assignment probabilities for all populations with n > 10 showed that only isolates from Mexico, CA, and France had > 50% probabilities of being reassigned to their source populations (Fig. \@ref(DAPC)a). 
 DAPC grouping by cultivar used the first 20 principal components, representing 89% of the total variance.
 The first two discriminant axes failed to separate any of the cultivars where the mean posterior assignment probabilities were `r passp(dapc_host, "G122")`% (G122), `r passp(dapc_host, "Beryl")`% (Beryl), and `r passp(dapc_host, "Bunsi")`% (Bunsi).
-DAPC grouping by Region and Year used the first `r dapc_region_year$n.pca` principal components, representing `r signif(dapc_region_year$var*100, 3)`% of the total variance.
+DAPC grouping by Region and Year used the first `r dapc_region_year$n.pca` principal components, representing `r prettify(dapc_region_year$var)`% of the total variance.
 The Midwestern populations (NE, MI, CO, ND) did not appear to have any variation across time in contrast to WA, which showed a shift in population structure in the last year of sampling, 2008 (Fig. \@ref(DAPC-RY)).
 Further analysis of this population revealed that all 12 isolates in WA circa 2008 originated in a wmn and nine of these genotypes were shared with CA, and three were shared with France (Fig. \@ref(community-graph), \@ref(community-graph16)).
 
@@ -624,40 +636,21 @@ Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), whi
 The only exceptions are CA and Australia. Both of these populations showed only moderate significance (P < 0.05) with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
 
 # Discussion {-}
-
-<!-- 
- - Big Picture reminder of importance
-   + This is an extension of a previous work [@otto-hanson2011variation]
-   + white mold screening nurseries serve as good way to screen potential resistant lines, avoiding environmental effects
-   + It's unclear how genetic structure can influence
- - Critical Analysis of Major Findings
-   + This is the largest genetic analysis of *S. sclerotiorum* to date
-   + Similar to the findings of @otto-hanson2011variation, we found that
-     Region has a strong influence on both population structure and
-     aggressiveness.
-   + North Dakota appeared
- - Additional Findings and how they fit into the literature
- - Limitations
- - Future Directions
- - Overall Conclusion and Impact
--->
-
-
-
+ 
 In this study, we characterized the diversity of *Sclerotinia sclerotiorum* from dry bean fields across the United States.
 Our results suggest that, broadly, populations from white mold screening nurseries reflect the populations of the surrounding regions, indicating that resistance screening may be successful at a within regions. 
 We found significant population differentiation by geographic region, mainly differentiated into three broad North American groups based on shared genotypes and posterior groupings, a Coastal Region, Midwestern Region, and Mexico. 
 To date, with 366 isolates, this is the largest single population genetic study of *S. sclerotiorum* assessing population structure within managed and unmanaged agricultural environments. 
-These findings indicate that the wmns can be effective at screening for potential resistant lines within growing regions. 
+These findings indicate that the wmn can be effective at screening for potential resistant lines within growing regions. 
 
 ## Variable Importance {-}
 
 Borrowing a technique often used in the ecological literature, we used dbRDA to elucidate the effect of all variables (Aggressiveness, Region, Source,   Year, and Host) [@legendre1999distance].
 From the initial results, it appears that the most important factors for predicting genetic structure are MCG, region, and year.
-When we inspected the biplot of the initial results, we saw that the most important predictors were MCGs 44, 5, and 9. 
+When we inspected the biplot of the initial results, we saw that the most important predictors were 'MCG 44', 'MCG 5', and 'MCG 9'. 
 We believe that this is driven by the fact that these particular MCGs have uneven MLG distributions, meaning that they are heavily associated with one particular MLG (Fig. \@ref(biggraph)).
 We note these results with caution because of the apparent multicolinearity between MCG and Region, which is a violation of the analysis [@legendre1999distance].
-While the results indicated that Mexico and the year 2005 were the two most important variables, it's worth noting that all Mexican isolates were collected in 2005 (Fig. \@ref(rda-biplot)).
+While the results indicated that Mexico and the year 2005 were the two most important variables, it's worth noting that all Mexico isolates were collected in 2005 (Fig. \@ref(rda-biplot)).
 The results also show that the Vista cultivar explains some of the variance, but this represents six isolates in MI. 
 Aggressiveness and specific source field had little to no effect on genetic diversity. 
 These results are in agreement with studies that examined differentiation based on host [@aldrich-wolfe2015genetic] and aggressiveness [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia] reporting little or no correlation of genetic diversity to these variables. 
@@ -695,25 +688,26 @@ This indicates that multilocus genotypes are widespread across the United States
 The primary interest of this study was to assess if isolates sampled from white mold screening nurseries represent isolates from producer fields within the region [@steadman2003identification; @otto-hanson2011variation].
 According to our AMOVA results, we have evidence for differentiation at the Region and Year, but little to no differentiation between wmn isolates and production field isolates (Table \@ref(tab:amova)).
 When we analyze the AMOVA results in light of the DAPC results (Fig. \@ref(DAPC)), it becomes clear that the regional patterns of differentiation are largely driven by isolates from Mexico and CA.
-Isolates from these Regions had a higher posterior probability (> 0.75) of being reassigned to their own populations than any other (Fig. \@ref(DAPC)a). 
-All other populations in comparison (except France) has reassignment probabilities of < 0.5, which is reflected in the failure of the first two discriminant functions to separate these populations (Fig. \@ref(DAPC)b).
+Isolates from these Regions had a higher posterior probability (> 0.75) of being reassigned to their own populations than any other (Fig. \@ref(DAPC)A). 
+All other populations in comparison (except France) has reassignment probabilities of < 0.5, which is reflected in the failure of the first two discriminant functions to separate these populations (Fig. \@ref(DAPC)B).
 
-Despite the evidence that Mexico and CA contributing to a large amount of the population differentiation, Region like WA still had a large amount of internal variation (Supplementary Information).
-The two distinct clusters for the WA Region showed that the 2008 population appeared different and, under further investigation, we found that the genotypes from this population were shared between CA and France (Fig. \@ref(DAPC-RY), \@ref(DAPC-RY-FULL), \@ref(community-graph)). 
-From the DAPC, we extracted 5 loci that contributed >10% of the observed variation to either of the first two discriminant axes and found that the alleles with an allele frequency of >50% in 2007 were reduced to < 10% in 2008, replaced by an allele that was > 2 mutational steps away (Supplementary Information).
+Despite the evidence that Mexico and CA contributing to a large amount of the population differentiation, Regions like WA still had a large amount of internal variation (Supplementary Information).
+The two distinct clusters for the WA Region showed that the 2008 population appeared different and, under further investigation, we found that the genotypes from this population were shared between CA and France (Fig. \@ref(community-graph), \@ref(DAPC-RY), \@ref(DAPC-RY-FULL)). 
+From the DAPC, we extracted 6 loci that had alleles contributing more than the upper 95% quantile of the principal component loadings to either of the first two discriminant axes and found that the alleles with an allele frequency of > 50% in 2007 were reduced to < 10% in 2008, replaced by an allele that was > 2 mutational steps away (Supplementary Information).
 This could be due to several reasons which include mis-labeling of source material or introduction of migrant sclerotia in plant material.
 Except for the WA Region, populations that were sampled across several years appeared to be relatively stable over time with overlapping distributions in the DAPC (i.e. NE and MI, Fig. \@ref(DAPC-RY)). 
 DAPC is based on the principal components of Euclidean distance between genotypes [@jombart2010discriminant]. 
 Unlike Bruvo's distance, Euclidean distance does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
-We found no evidence of private alleles in the Mexican and Californian isolates, suggesting that this pattern separating these populations from the others was not an artifact. 
+We found no evidence of private alleles in the Mexico and CA isolates, suggesting that this pattern separating these populations from the others was not an artifact. 
 
 It has been proposed within the *S. sclerotiorum* literature that isolates from sub-tropical and tropical climates are differentiated or more variable than populations from temperate climates [@lehner2017sclerotinia;@carbone2001multilocus; @attanayake2013sclerotinia]. 
 This has been attributed to the notion that the fungus has the chance to undergo more reproductive cycles in the warmer climate [@carbone2001multilocus; @attanayake2013sclerotinia]. 
-Populations in sub-tropical regions of China have been found to be more variable, sexually reproducing, and unrelated to populations in temperate regions of the United States [@attanayake2013sclerotinia].
-The differentiation between the Mexican isolates and all other regions gives some evidence for this hypothesis as the only isolates in our study from sub-tropical regions are in the Mexican populations. 
+Populations in sub-tropical regions of China have been found to be more variable, sexually reproducing, and unrelated to populations in temperate regions of the USA [@attanayake2013sclerotinia].
+The differentiation between the Mexico isolates and all other regions gives some evidence for this hypothesis as the only isolates in our study from sub-tropical regions are in Mexico. 
 
-We were unable to find evidence for sexual reproduction in any region. 
-While the Australian population had a non-significant value of $\bar{r}_d$---which would suggest that we cannot reject the null hypothesis of random mating---the sample size was insufficient from which to draw conclusions [@agapow2001indices; @milgroom1996recombination].
+We were unable to find evidence for sexual reproduction in any region except for CA and Australia. 
+While the Australia population had a non-significant value of $\bar{r}_d$---which would suggest that we cannot reject the null hypothesis of random mating---the sample size was insufficient from which to draw conclusions [@agapow2001indices; @milgroom1996recombination].
+The low value of $\bar{r}_d$ in the CA population may represent sexual reproduction, but this could also be an artifact of sampling two different populations, which is known to reduce the value of $\bar{r}_d$ [@prugnolle2010apparent].
 
 
 ## Aggressiveness {-}
@@ -744,6 +738,10 @@ This study represents the largest genetic analysis of *S. sclerotiorum* from the
 Based on our analysis of the relationships between MCG and MLG, we found no clear evidence that the two are directly related, suggesting that MCG do not necessarily represent vegetative compatibility groups and thus should not be used as a proxy for identifying clones. 
 Populations in wmn appear to show no significant differentiation when compared to their production field counterparts, suggesting that the wmn populations of *S. sclerotiorum* may be considered representative of the surrounding regions. 
 While we found no direct relationship between genotype and severity, it is evident that there is a gradient of severity by region, further supporting the need for screening in multiple locations.
+
+## Data Availability {-}
+
+All scripts, data, and resources used to generate the results presented in this publication (including supplementary information) are fully reproducible and available at https://github.com/everhartlab/sclerotinia-366/ and archived at ZENODO. 
 
 ## Acknowledgements {-}
 
