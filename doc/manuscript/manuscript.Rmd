@@ -42,18 +42,13 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 
 ```{r initiate, echo = FALSE, message = FALSE, warning = FALSE}
 library("poppr")
+library("tidyverse")
 load("../../data/sclerotinia_16_loci.rda")
 load("../../data/RDA_results.rda")
 dat11cc <- clonecorrect(dat11, ~Region/Source/Host/Year)
+pop_size <- table(pop(dat11))
 
-dapc_region      <- dapc(setPop(dat11cc, ~Region), n.da = 13, n.pca = 20)
-dapc_region_year <- dapc(setPop(dat11cc, ~Region/Year), n.da = 12, n.pca = 22)
-dapc_host        <- dat11cc %>% 
-  setPop(~Source) %>%
-  popsub("wmn") %>%
-  setPop(~Host) %>% 
-  popsub(c("Beryl", "Bunsi", "G122")) %>%
-  dapc(n.da = 2, n.pca = 20)
+# Utility Functions -------------------------------------------------------
 
 # convert fractions to percents with 3 sig figs
 prettify <- function(x, i) signif((x[i])*100, 3)
@@ -77,9 +72,39 @@ vartab <- function(x){
   data.frame(list(Inertia = c(tot, con, uco),
                   Proportion = c(tot, con, uco)/tot))
 }
-RDA2R2 <- prettify(vegan::RsquareAdj(cap11cc2)$adj.r.squared)/100
-RDA1R2 <- prettify(vegan::RsquareAdj(cap11cc)$adj.r.squared)/100
 
+# Locus Table -------------------------------------------------------------
+
+loc_columns <- cols(
+  Locus = col_character(),
+  Range = col_character(),
+  Repeats = col_double(),
+  allele = col_integer(),
+  Hexp = col_double(),
+  Evenness = col_double()
+)
+loc_table <- readr::read_csv("../../results/tables/locus-table.csv", 
+                             col_types = loc_columns,
+                             col_names = TRUE)
+Amean <- mean(loc_table$allele)
+Hmean <- mean(loc_table$Hexp)
+Emean <- mean(loc_table$Evenness)
+
+# DAPC data ---------------------------------------------------------------
+
+dapc_region      <- dapc(setPop(dat11cc, ~Region), n.da = 13, n.pca = 20)
+dapc_region_year <- dapc(setPop(dat11cc, ~Region/Year), n.da = 12, n.pca = 22)
+dapc_host        <- dat11cc %>% 
+  setPop(~Source) %>%
+  popsub("wmn") %>%
+  setPop(~Host) %>% 
+  popsub(c("Beryl", "Bunsi", "G122")) %>%
+  dapc(n.da = 2, n.pca = 20)
+
+# RDA results -------------------------------------------------------------
+
+RDA2R2    <- prettify(vegan::RsquareAdj(cap11cc2)$adj.r.squared)/100
+RDA1R2    <- prettify(vegan::RsquareAdj(cap11cc)$adj.r.squared)/100
 anova1res <- setNames(cap11anova$`Pr(>F)`, rownames(cap11anova))
 anova2res <- setNames(cap11anova2$`Pr(>F)`, rownames(cap11anova2))
 ```
@@ -252,87 +277,14 @@ To ensure that we captured the same community signal, we additionally performed 
 # Results {-}
 
 A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in Australia, Mexico, France, and 11 states in the USA (Table \@ref(tab:isolate-table)).
-Over 50% of the isolates came from four states, MI (62), ND (60), WA (59), NE (47). 
-Four regions had fewer than 10 isolates, Australia (6), WI (2), NY (1), ID (1).
+Over 50% of the isolates came from four states, MI (`r pop_size[["MI"]]`), ND (`r pop_size[["ND"]]`), WA (`r pop_size[["WA"]]`), NE (`r pop_size[["NE"]]`). 
+Four regions had fewer than 10 isolates, Australia (`r pop_size[["Australia"]]`), WI (`r pop_size[["WI"]]`), NY (`r pop_size[["NY"]]`), ID (`r pop_size[["ID"]]`).
 We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 isolates over 37 MLGs (Fig \@ref(biggraph)A,C).
-After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with 318 isolates representing 165 MLGs (Table \@ref(tab:iatab)).
-Analysis of the genotype accumulation curve showed no clear plateau (Supplemental Information), indicating that we would likely obtain more multilocus genotypes if we were to genotype more loci. The number of observed alleles per locus ranged from two to 10 with an average of 6.27 (Table \@ref(tab:locus-stats)).
-
------------------------------------------------------------------------------
-Country   State  Field Code              Year Host                          N 
---------- ------ ---------- ----------------- -------------------------- ----
-USA       CA     wmn               2004, 2005 Beryl, Bunsi, G122           18 
-
-USA       CO     producer          2007, 2010 Pinto, Yellow                41 
-
-                 wmn                     2003 GH                            1 
-
-USA       ID     producer                2003 GH                            1 
-
-USA       MI     wmn        2003, 2004, 2005, 11A, 37, 38, B07104,         43 
-                                   2008, 2009 Beryl, Bunsi, Cornell,       
-                                              G122, Orion, PO7863, WM31      
-
-                 producer    2003, 2008, 2009 BL, Black, Fuji, GH,         19 
-                                              Merlot, SR06233, unk,        
-                                              Vista, Zorro 
-
-USA       MN     wmn               2003, 2004 Beryl, Bunsi, G122           11 
-
-USA       ND     producer          2007, 2010 unk                          53 
-
-                 wmn                     2005 Beryl, Bunsi, G122            7 
-
-USA       NE     wmn        2004, 2005, 2008, Beryl, Bunsi, G122,          27 
-                                         2010 PO7683, unk                    
-
-                 producer   2003, 2007, 2009, Beryl, Emerson, GH, Orion,   20 
-                                         2010  Pinto, Weihing                 
-
-USA       NY     producer                2003 GH                            1 
-
-USA       OR     wmn               2003, 2004 Beryl, Bunsi, G122           15 
-
-                 producer                2003 G122, GH                      2 
-
-USA       WA     wmn        2003, 2004, 2005, 11A, 37, 38, Beryl, Bunsi,   36 
-                                         2008  Cornell, G122, Orion, PO7      
-                                              104, PO7863, WM31               
-
-                 producer          2003, 2007 GH, Merlot, Pinto, Redkid    23 
-
-USA       WI     producer                2003 GH                            2 
-
-Mexico    -      wmn                     2005 Beryl, Bunsi, G122           18 
-
-France    -      wmn               2004, 2005 Beryl, Bunsi, G122           18 
-
-                 producer                2012 unk                           4 
-
-Australia -      wmn                     2004 Beryl, Bunsi, G122            4 
-
-                 producer                2004 Beryl                         2 
-
------------------------------------------------------------------------------
-
-Table: (\#tab:isolate-table) Description of *Sclerotinia sclerotiorum* isolates used in this study.
-N = Number of Isolates. 
-Key abbreviations: wmn = white mold screening nursery, producer = producer field, unk = unknown cultivar.
+Analysis of the genotype accumulation curve showed no clear plateau (Supplemental Information), indicating that we would likely obtain more multilocus genotypes if we were to genotype more loci. The number of observed alleles per locus ranged from two to 10 with an average of `r signif(Amean, 3)` (Table \@ref(tab:locus-stats)).
+After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLGs (Table \@ref(tab:iatab)).
 
 
 ```{r , echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
-suppressPackageStartupMessages(library("tidyverse"))
-loc_columns <- cols(
-  Locus = col_character(),
-  Range = col_character(),
-  Repeats = col_double(),
-  allele = col_integer(),
-  Hexp = col_double(),
-  Evenness = col_double()
-)
-loc_table <- readr::read_csv("../../results/tables/locus-table.csv", 
-                             col_types = loc_columns,
-                             col_names = TRUE)
 loc_table %>%
   mutate(allele = round(allele, 2)) %>%
   mutate(Repeats = case_when(
@@ -351,86 +303,9 @@ loc_table %>%
   huxtable::set_align(huxtable::everywhere, 2:6, "right") %>%
   huxtable::set_col_width(c(0.06, 0.07, 0.11, 0.1, 0.05, 0.075)) %>%
   huxtable::print_md(max_width = 61)
-
-Amean <- mean(loc_table$allele)
-Hmean <- mean(loc_table$Hexp)
-Emean <- mean(loc_table$Evenness)
 ```
 
 Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation]. Average *h* = `r signif(Hmean, 3)`, average Evenness = `r signif(Emean, 3)`, average no. alleles = `r signif(Amean, 3)`
-
-## Variable Assessment {-}
-
-### Variable Importance {-}
-
-The forward-backward selection process of the dbRDA models on clone-corrected data revealed Year, Region, Host, and Aggressiveness to be the optimal variables for the reduced model, accounting for `r prettify(vartab(cap11sum)[2, "Proportion"])`% of the total variation.
-ANOVA revealed that the reduced model was significant with an adjusted R^2^ of `r RDA1R2` (*P* = 0.001).
-Assessment of the marginal effects showed that region, host, year, and aggressiveness significantly explained genetic variation (*P* = `r anova1res[["Year"]]`, *P* = `r anova1res[["Region"]]` for region).
-It was revealed that there was multicollinearity when MCG was combined with any other variable, so we followed the same procedure, dropping MCG from the list of potential predictors. 
-From these results, we found that aggressiveness, year, region, and host were optimal, accounting for `r prettify(vartab(cap11sum2)[2, "Proportion"])`% of the total variation.
-ANOVA revealed significant effects with an adjusted R^2^ of `r RDA2R2` (*P* = 0.001).
-While the marginal effect assessment showed that region, host, and year all significantly explained the variation at *P* = `r anova2res[["Year"]]`, and aggressiveness significantly explained the variation at *P* = `r anova2res[["Severity"]]`.
-Much of the variation appears to be driven by isolates from Mexico and 2005 (Fig. \@ref(rda-biplot)).
-Variance partitioning of the independent variables without MCG indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
-
-<!-- RDA figure -->
-
-![
-Biplot showing five most influential explanatory variables (arrows) overlayed on the first two eigenvectors of distance based redundancy analysis of *S. sclerotiorum* isolates. 
-The length of the arrows are directly proportional to the strength of the correlation between explanatory and molecular variables. 
-Open circles represent the 318 clone-corrected samples in ordination space. 
-](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=61%}
-
-<!-- end figure -->
-
-### Aggressiveness {-}
-
-<!-- aggressiveness figure -->
-
-![
-Boxplot representing aggressiveness (vertical axis) by population (horizontal axis) arranged in descending order of mean aggressiveness for all populations with N > 5. Box boundaries represent 25% and 75% percentiles and whiskers extend to at most 1.5 $\times$ the interquartile range. Horizontal line represents median value. Circles represent individual observations where filled circles indicate isolates from white mold screening nurseries (wmn).
-](../../results/figures/publication/aggressiveness.pdf){#aggressiveness-boxplot}
-
-<!-- end figure -->
-
-Our assessment of aggressiveness in association with Region showed a significant effect (P < 1.00e^-4^), with means that ranged from 5.8 (MN) to 4.0 (CA) (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
-MCGs also showed a significant effect (P < 1.00e^-4^), with means that ranged from 6.0 ('MCG 44') to 4.6 ('MCG 49').
-We additionally found a significant effect for MLGs (*P* = 7.44e^-4^) for MLGs, with means that ranged from 6.0 ('MLG 78') to 4.3 ('MLG 140').
-
-### Correlation of Mulitlocus Genotypes and Mycelial Compatibility Groups {-}
-
-Our network-based approach to correlating MLGs with MCGs revealed a large and complex network (Fig. \@ref(biggraph)). 
-Community analysis showed 51 communities, 15 of which consisted of a single MLG unconnected with any other community indicating that just 9.09% of the 165 MLGs are unable to cross with any other MLG in this data set (Fig. \@ref(fullgraph)).
-The three communities with the most members contained eight of the 10 most abundant MCGs. 
-Comparing these communities with Bruvo's genetic distance revealed an average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
-When we assessed the number of times two different MLGs that are in the same MCG, considering these as potential heterothallic pairings that could result in sexual recombination, we found an average of 16.5 potential heterothallic parings per MLG. 
-Representing just four isolates, 'MLG 75' had 57 neighbors that shared the same mycelial compatibility group (Fig \@ref(biggraph), \@ref(fullgraph)). 
-Overall, there was no clear pattern to the association between MLG and MCGs. 
-
-
-<!-- MCG graph figure -->
-
-![
-Data show complex associations between Mycelial Compatibility Groups and Multilocus Genotypes.
-**A)** Barplot of Mycelial Compatibility Group (MCG) abundance in descending order.
-Singletons (46) were truncated, leaving 41 MCGs.
-White bars represent sample counts and grey bars represent counts of unique multilocus genotypes (MLG).
-The transparency of the bars represent the evenness of the distribution of the MLGs within a given MCG.
-A dashed box surrounds the 8 most common MCGs representing > 51% of the data.
-**B)** Full graph-representation of the relationship between MCGs (open circles) and MLGs (filled circles).
-Details in fig. \@ref(fullgraph). 
-**C)** A subset of **B** representing the 8 most common MCGs and their associated MLGs (dashed box in **A**).
-Filled nodes represent MLGs and open nodes represent MCGs.
-Numbers inside nodes are the MLG/MCG label. 
-Node (circle) area scaled to the number of samples represented (range: 1--73).
-Edges (arrows) point from MLG to MCG where the weight (thickness) of the edge represents the number of shared isolates (range: 1--19).
-Edges extending from MLGs displayed to other MCGs are not shown.
-](../../results/figures/publication/mcg-subgraph-with-context.pdf){#biggraph width=100%}
-
-<!-- end fig -->
-
-
-## Structure of Shared Multilocus Genotypes {-}
 
 ```{r table_ia, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 suppressPackageStartupMessages(library("tidyverse"))
@@ -493,6 +368,77 @@ $E_5$ = Evenness,
 $\bar{r}_d$ = standardized index of association.
 An asterix indicates a significant value of $\bar{r}_d$ after 999 permutations, $P \leq 0.001$.
 
+<!-- MCG graph figure -->
+
+![
+Data show complex associations between Mycelial Compatibility Groups and Multilocus Genotypes.
+**A)** Barplot of Mycelial Compatibility Group (MCG) abundance in descending order.
+Singletons (46) were truncated, leaving 41 MCGs.
+White bars represent sample counts and grey bars represent counts of unique multilocus genotypes (MLG).
+The transparency of the bars represent the evenness of the distribution of the MLGs within a given MCG.
+A dashed box surrounds the 8 most common MCGs representing > 51% of the data.
+**B)** Full graph-representation of the relationship between MCGs (open circles) and MLGs (filled circles).
+Details in fig. \@ref(fullgraph). 
+**C)** A subset of **B** representing the 8 most common MCGs and their associated MLGs (dashed box in **A**).
+Filled nodes represent MLGs and open nodes represent MCGs.
+Numbers inside nodes are the MLG/MCG label. 
+Node (circle) area scaled to the number of samples represented (range: 1--73).
+Edges (arrows) point from MLG to MCG where the weight (thickness) of the edge represents the number of shared isolates (range: 1--19).
+Edges extending from MLGs displayed to other MCGs are not shown.
+](../../results/figures/publication/mcg-subgraph-with-context.pdf){#biggraph width=100%}
+
+<!-- end fig -->
+
+## Variable Assessment {-}
+
+### Variable Importance {-}
+
+The forward-backward selection process of the dbRDA models on clone-corrected data revealed Year, Region, Host, and Aggressiveness to be the optimal variables for the reduced model, accounting for `r prettify(vartab(cap11sum)[2, "Proportion"])`% of the total variation.
+ANOVA revealed that the reduced model was significant with an adjusted R^2^ of `r RDA1R2` (*P* = 0.001).
+Assessment of the marginal effects showed that region, host, year, and aggressiveness significantly explained genetic variation (*P* = `r anova1res[["Year"]]`, *P* = `r anova1res[["Region"]]` for region).
+It was revealed that there was multicollinearity when MCG was combined with any other variable, so we followed the same procedure, dropping MCG from the list of potential predictors. 
+From these results, we found that aggressiveness, year, region, and host were optimal, accounting for `r prettify(vartab(cap11sum2)[2, "Proportion"])`% of the total variation.
+ANOVA revealed significant effects with an adjusted R^2^ of `r RDA2R2` (*P* = 0.001).
+While the marginal effect assessment showed that region, host, and year all significantly explained the variation at *P* = `r anova2res[["Year"]]`, and aggressiveness significantly explained the variation at *P* = `r anova2res[["Severity"]]`.
+Much of the variation appears to be driven by isolates from Mexico and 2005 (Fig. \@ref(rda-biplot)).
+Variance partitioning of the independent variables without MCG indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
+
+<!-- RDA figure -->
+
+![
+Biplot showing five most influential explanatory variables (arrows) overlayed on the first two eigenvectors of distance based redundancy analysis of *S. sclerotiorum* isolates. 
+The length of the arrows are directly proportional to the strength of the correlation between explanatory and molecular variables. 
+Open circles represent the 318 clone-corrected samples in ordination space. 
+](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=61%}
+
+<!-- end figure -->
+
+### Aggressiveness {-}
+
+<!-- aggressiveness figure -->
+
+![
+Boxplot representing aggressiveness (vertical axis) by population (horizontal axis) arranged in descending order of mean aggressiveness for all populations with N > 5. Box boundaries represent 25% and 75% percentiles and whiskers extend to at most 1.5 $\times$ the interquartile range. Horizontal line represents median value. Circles represent individual observations where filled circles indicate isolates from white mold screening nurseries (wmn).
+](../../results/figures/publication/aggressiveness.pdf){#aggressiveness-boxplot}
+
+<!-- end figure -->
+
+Our assessment of aggressiveness in association with Region showed a significant effect (P < 1.00e^-4^), with means that ranged from 5.8 (MN) to 4.0 (CA) (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
+MCGs also showed a significant effect (P < 1.00e^-4^), with means that ranged from 6.0 ('MCG 44') to 4.6 ('MCG 49').
+We additionally found a significant effect for MLGs (*P* = 7.44e^-4^) for MLGs, with means that ranged from 6.0 ('MLG 78') to 4.3 ('MLG 140').
+
+### Correlation of Mulitlocus Genotypes and Mycelial Compatibility Groups {-}
+
+Our network-based approach to correlating MLGs with MCGs revealed a large and complex network (Fig. \@ref(biggraph)). 
+Community analysis showed 51 communities, 15 of which consisted of a single MLG unconnected with any other community indicating that just 9.09% of the 165 MLGs are unable to cross with any other MLG in this data set (Fig. \@ref(fullgraph)).
+The three communities with the most members contained eight of the 10 most abundant MCGs. 
+Comparing these communities with Bruvo's genetic distance revealed an average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
+When we assessed the number of times two different MLGs that are in the same MCG, considering these as potential heterothallic pairings that could result in sexual recombination, we found an average of 16.5 potential heterothallic parings per MLG. 
+Representing just four isolates, 'MLG 75' had 57 neighbors that shared the same mycelial compatibility group (Fig \@ref(biggraph), \@ref(fullgraph)). 
+Overall, there was no clear pattern to the association between MLG and MCGs. 
+
+## Structure of Shared Multilocus Genotypes {-}
+
 We observed a total of 165 MLGs (215 with 16 loci).
 The most abundant MLG was represented by 27 isolates (Table \@ref(tab:mlg-table)) from five regions (NE, MI, WA, CO, and ND). 
 Within regions, the genotypes were relatively evenly distributed with moderate to high diversity (Table \@ref(tab:iatab)). 
@@ -501,8 +447,20 @@ Community analysis of the MLGs shared between populations revealed 4 communities
 Analysis with 16 loci resulted in the removal of the NY node because it no longer shared a genotype with OR, but the same overall community structure was present with a modularity of 0.2 (Fig. \@ref(community-graph16)).
 The international community appears to be driven by MLG 4, which is shared between all three populations and has a $P_{sex}$ value of 2.87e^-5^, in contrast to the abundant MLG 25, which has a $P_{sex}$ value of 0.0168.
 
+
+<!-- community graph figure -->
+
+![
+Network of populations (nodes/circles) and their shared multilocus genotypes (MLG) (edges/lines) genotyped over 11 loci. 
+Each node is labeled with **name (number of MLGs shared/number of MLGs total).** 
+The shade and area of the nodes are proportional to the number of unique MLGs within the node and the inner nodes are proportional to the number of private MLGs to the region (bottom legend). 
+Each edge represents a single MLG where its thickness represents the number of populations that share the MLG and the shade represents the value of $P_{sex}$, or the probability of encountering that MLG from two independent meiotic events.
+](../../results/figures/publication/mlg-11.pdf){#community-graph width=75%} 
+
+<!-- end fig -->
+
+
 ```{r table3, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
-suppressPackageStartupMessages(library("tidyverse"))
 read_csv("../../results/tables/mlg_table.csv", 
          na = "NA", # spaces read in as spaces
          col_types = cols(.default = col_character())) %>%
@@ -513,16 +471,7 @@ read_csv("../../results/tables/mlg_table.csv",
 Table: (\#tab:mlg-table) The 5 most abundant Multilocus Genotypes (MLG) with
 the probability of second encounter ($P_{sex}$), Mycelial Compatibility Groups (MCG), and Regions with sample sizes in parentheses.
 
-<!-- community graph figure -->
 
-![
-Network of populations (nodes/circles) and their shared multilocus genotypes (MLG) (edges/lines) genotyped over 11 loci. 
-Each node is labeled with **name (number of MLGs shared/number of MLGs total).** 
-The shade and area of the nodes are proportional to the number of unique MLGs within the node and the inner nodes are proportional to the number of private MLGs to the region (bottom legend). 
-Each edge represents a single MLG where its thickness represents the number of populations that share the MLG and the shade represents the value of $P_{sex}$, or the probability of encountering that MLG from two independent meiotic events.
-](../../results/figures/publication/mlg-11.pdf){#community-graph width=100%} 
-
-<!-- end fig -->
 
 
 ## Population Differentiation {-}
@@ -530,11 +479,9 @@ Each edge represents a single MLG where its thickness represents the number of p
 ### Analysis of Molecular Variance {-}
 
 The analysis of molecular variance (AMOVA) over the hierarchy of Region, Source, and Year showed significant variation between regions and years, but no significant variation between wmn and non-wmn (Table \@ref(tab:amova)).
-In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Information).  
-
+In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Information).
 
 ```{r table4, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
-suppressPackageStartupMessages(library("tidyverse"))
 read_csv("../../results/tables/AMOVA-year.csv", 
          na = "NA", # spaces read in as spaces
          col_types = cols(.default = col_character()))  %>%
@@ -564,13 +511,7 @@ Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance 
 Discriminant Analysis of Principal Components (DAPC) was performed grouping by Region with the first `r dapc_region$n.pca` principal components, representing `r prettify(dapc_region$var)`% of the total variance. 
 The first discriminant axis (representing `r paxis(dapc_region)`% of the discriminatory power) separated the centroid for the Mexico isolates from the rest of the data, indicating strong differentiation (Fig. \@ref(DAPC)b). 
 The second discriminant axis, representing `r paxis(dapc_region, 2)`% of the discriminatory power, separated the centroid for the California isolates.
-The mean population assignment probabilities for all populations with n > 10 showed that only isolates from Mexico, CA, and France had > 50% probabilities of being reassigned to their source populations (Fig. \@ref(DAPC)a). 
-DAPC grouping by cultivar used the first 20 principal components, representing 89% of the total variance.
-The first two discriminant axes failed to separate any of the cultivars where the mean posterior assignment probabilities were `r passp(dapc_host, "G122")`% (G122), `r passp(dapc_host, "Beryl")`% (Beryl), and `r passp(dapc_host, "Bunsi")`% (Bunsi).
-DAPC grouping by Region and Year used the first `r dapc_region_year$n.pca` principal components, representing `r prettify(dapc_region_year$var)`% of the total variance.
-The Midwestern populations (NE, MI, CO, ND) did not appear to have any variation across time in contrast to WA, which showed a shift in population structure in the last year of sampling, 2008 (Fig. \@ref(DAPC-RY)).
-Further analysis of this population revealed that all 12 isolates in WA circa 2008 originated in a wmn and nine of these genotypes were shared with CA, and three were shared with France (Fig. \@ref(community-graph), \@ref(community-graph16)).
-
+The mean population assignment probabilities for all populations with n > 10 showed that only isolates from Mexico, CA, and France had > 50% probabilities of being reassigned to their source populations (Fig. \@ref(DAPC)a).
 
 <!-- DAPC figure -->
 
@@ -586,6 +527,12 @@ The center of each component is represented as black grid lines.
 
 <!-- end figure -->
 
+DAPC grouping by cultivar used the first 20 principal components, representing 89% of the total variance.
+The first two discriminant axes (representing `r sum(paxis(dapc_host, 1:2))`% of the discriminatory power) failed to separate any of the cultivars where the mean posterior assignment probabilities were `r passp(dapc_host, "G122")`% (G122), `r passp(dapc_host, "Beryl")`% (Beryl), and `r passp(dapc_host, "Bunsi")`% (Bunsi).
+DAPC grouping by Region and Year used the first `r dapc_region_year$n.pca` principal components, representing `r prettify(dapc_region_year$var)`% of the total variance.
+The Midwestern populations (NE, MI, CO, ND) did not appear to have any variation across time in contrast to WA, which showed a shift in population structure in the last year of sampling, 2008 (Fig. \@ref(DAPC-RY)).
+Further analysis of this population revealed that all 12 isolates in WA circa 2008 originated in a wmn and nine of these genotypes were shared with CA, and three were shared with France (Fig. \@ref(community-graph), \@ref(community-graph16)).
+
 <!-- DAPC figure 2: Electric Boogaloo-->
 
 ![
@@ -596,6 +543,7 @@ A more detailed view can be seen in Fig. \@ref(DAPC-RY-FULL).
 ](../../results/figures/publication/dapc_region_year_micanewa.pdf){#DAPC-RY width=61%}
 
 <!-- end figure -->
+
 
 ### Linkage Analysis {-}
 
@@ -720,19 +668,18 @@ The authors declare no conflict of interest.
 
 ## Author Contributions {-}
 
+ - **Zhian N. Kamvar** analyzed the data, contributed analysis tools, wrote the paper, prepared figures and tables, reviewed drafts of the paper.
 
-<!-- Conceptualization: SEE. -->
-<!-- Formal analysis: BSA SEE. -->
-<!-- Funding acquisition: SEE. -->
-<!-- Investigation: BSA. -->
-<!-- Resources: SEE. -->
-<!-- Supervision: BSA. -->
-<!-- Visualization: BSA SEE. -->
-<!-- Writing - original draft: BSA. -->
-<!-- Writing - review & editing: SEE. -->
+ - **Bimal Sajeewa Amadarasa** ...
 
+ - **Rachana Jhala** ...
 
-\newpage
+ - **Serena McCoy** ...
+
+ - **James Steadman** ...
+
+ - **Sydney E. Everhart** ...
+
 # Supplementary Information {-}
 
 <!-- This part is necessary for adding the "S" before supplementary figures.
@@ -742,6 +689,68 @@ Will not work with HTML outputs, though. -->
 \renewcommand{\thetable}{S\arabic{table}}
 \setcounter{figure}{0}
 \renewcommand{\thefigure}{S\arabic{figure}}
+
+-----------------------------------------------------------------------------
+Country   State  Field Code              Year Host                          N 
+--------- ------ ---------- ----------------- -------------------------- ----
+USA       CA     wmn               2004, 2005 Beryl, Bunsi, G122           18 
+
+USA       CO     producer          2007, 2010 Pinto, Yellow                41 
+
+                 wmn                     2003 GH                            1 
+
+USA       ID     producer                2003 GH                            1 
+
+USA       MI     wmn        2003, 2004, 2005, 11A, 37, 38, B07104,         43 
+                                   2008, 2009 Beryl, Bunsi, Cornell,       
+                                              G122, Orion, PO7863, WM31      
+
+                 producer    2003, 2008, 2009 BL, Black, Fuji, GH,         19 
+                                              Merlot, SR06233, unk,        
+                                              Vista, Zorro 
+
+USA       MN     wmn               2003, 2004 Beryl, Bunsi, G122           11 
+
+USA       ND     producer          2007, 2010 unk                          53 
+
+                 wmn                     2005 Beryl, Bunsi, G122            7 
+
+USA       NE     wmn        2004, 2005, 2008, Beryl, Bunsi, G122,          27 
+                                         2010 PO7683, unk                    
+
+                 producer   2003, 2007, 2009, Beryl, Emerson, GH, Orion,   20 
+                                         2010  Pinto, Weihing                 
+
+USA       NY     producer                2003 GH                            1 
+
+USA       OR     wmn               2003, 2004 Beryl, Bunsi, G122           15 
+
+                 producer                2003 G122, GH                      2 
+
+USA       WA     wmn        2003, 2004, 2005, 11A, 37, 38, Beryl, Bunsi,   36 
+                                         2008  Cornell, G122, Orion, PO7      
+                                              104, PO7863, WM31               
+
+                 producer          2003, 2007 GH, Merlot, Pinto, Redkid    23 
+
+USA       WI     producer                2003 GH                            2 
+
+Mexico    -      wmn                     2005 Beryl, Bunsi, G122           18 
+
+France    -      wmn               2004, 2005 Beryl, Bunsi, G122           18 
+
+                 producer                2012 unk                           4 
+
+Australia -      wmn                     2004 Beryl, Bunsi, G122            4 
+
+                 producer                2004 Beryl                         2 
+
+-----------------------------------------------------------------------------
+
+Table: (\#tab:isolate-table) Description of *Sclerotinia sclerotiorum* isolates used in this study.
+N = Number of Isolates. 
+Key abbreviations: wmn = white mold screening nursery, producer = producer field, unk = unknown cultivar.
+
 
 ```{r table2, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 suppressPackageStartupMessages(library("tidyverse"))
@@ -766,6 +775,7 @@ Node size reflect the number of samples represented by each node (circle).
 Edges (arrows) point from MLG to MCG where the weight (thickness) of the edge represents the number of samples shared. 
 Node color represents the community assignment based on the walktrap algorithm with a maximum of four steps [@pons2006computing]. 
 ](../../results/figures/publication/full-graph.pdf){#fullgraph width=100%}
+
 
 
 <!-- community graph figure -->
