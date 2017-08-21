@@ -100,10 +100,25 @@ Outline:
  - Our hypotheses and specific questions.
  -->
 
-*Sclerotinia sclerotiorum* (Lib.) de Bary is an ascomycete plant pathogen found worldwide.
-This is a necrotrophic pathogen that is primarily homothallic (self-fertilization) [@bolton2006sclerotinia; @sexton2006population] that causes disease on more than 400 plant species belonging to 75 families [@boland1994index].
-These include crops of major economic importance such as sunflower (*Helianthus spp.*), soybean (*Glycine max* L.), canola (*Brassica napa* L., *Brassica campestris* L.), and dry bean (*Phaseolus vulgaris* L.) [@bolton2006sclerotinia]. 
-On dry bean, *S. sclerotiorum* is the causal agent of White Mold, a devastating disease that can be a yield-limiting in temperate climates [@steadman1983white].
+*Sclerotinia sclerotiorum* (Lib.) de Bary is an ascomycete plant pathogen with a worldwide distribution.
+This is a necrotrophic pathogen that is primarily homothallic (self-fertilization) and has the ability to survive fore more than five years in soil using melanized survival structures called sclerotia [@bolton2006sclerotinia; @sexton2006population]. 
+It causes disease on more than 400 plant species belonging to 75 families [@boland1994index] including crops of major economic importance such as sunflower (*Helianthus spp.*), soybean (*Glycine max* L.), canola (*Brassica napa* L., *Brassica campestris* L.), and dry bean (*Phaseolus vulgaris* L.) [@bolton2006sclerotinia]. 
+On dry bean, *S. sclerotiorum* is the causal agent of white mold, a devastating disease that can be a yield-limiting in temperate climates [@steadman1983white].
+
+Currently, there are no known resistant cultivars of dry bean commercially available [@otto-hanson2011variation].
+Organized breeding efforts have been using a common-garden approach with white mold screening nurseries in dry bean production areas across the United States with additional sites in Mexico, France, and Australia [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification]. 
+These white mold screening nurseries use no chemical or cultural treatments against *S. sclerotiorum* and employ standardized protocols for screening new cultivars for resistance to white mold. 
+It has previously been shown that aggressiveness (the severity of disease symptoms on the host) is significantly different across white mold screening nursery sites in separate geographic regions [@otto-hanson2011variation].
+The genetic structure and mode of reproduction in these populations, however, is currently unknown.
+Understanding genetic relationships and reproduction behavior of *S. sclerotiorum* populations is beneficial for breeders seeking to develop new resistant cultivars for worldwide deployment [@mcdonald2002pathogen; @milgroom1996recombination]. 
+
+Most populations of *S. sclerotiorum* are predominantly clonal and have a large degree of population fragmentation [@attanayake2012genetic; @carbone2001multilocus; @cubeta1997clonality; @ekins2011population; @kohli1998random; @kohli1995clonal]. 
+Some populations are sexual [@atallah2004high; @attanayake2013sclerotinia; @sexton2004microsatellite]....
+
+Nearly all population genetic studies of *S. sclerotiorum* employ a macroscopic assay to determine mycelial compatibility, the ability for fungal hyphae from different colonies to appear to grow together without forming a barrier of dead cells between them (known as a barrage line) [@leslie1993fungal; @sirjusingh2001characterisation].
+Mycelial compatibility has been used as a proxy for vegetative compatibility, a fungal trait controlled by several independent genes controlling the ability for two hyphae to fuse and grow as a single unit [@leslie1993fungal; @schafer2006optimized].
+Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible have been considered to be clones, but correlation with genetic markers such as microsatellites have shown mixed results [@attanayake2012genetic; @lehner2017independently; @leslie1993fungal].
+
 
 <!-- ZNK: TMI -->
 <!-- Sclerotia are capable of surviving more than five years in soil [@steadman1983white] and germinate carpogenically or myceliogenically to infect the plant when environmental conditions are favorable.
@@ -116,11 +131,11 @@ Symptoms on individual plants are water-soaked lesions on leaves, pods and stems
 Lesions on stems and branches become necrotic as they age and dead tissues appear bleached.
 Sclerotia are often produced on dead or dying plants once conditions become unfavorable for fungal growth. -->
 
-Previous studies of *S. sclerotiorum* population biology in North America and Australia have reported clonal propagation of the pathogen [@cubeta1997clonality; @ekins2011population; @kohli1998random; @kohli1995clonal] with evidence of outcrossing observed in some areas [@atallah2004high; @kohli1998random; @malvarez2007new; @sexton2004microsatellite].
-One such study examined *S. sclerotiorum* population structure using microsatellite markers from potato fields in the Columbia Basin of Washington state.
-Due to high crop diversity and high presence of the pathogen, it was important to understand the potential for outcrossing in order to develop disease management strategies.
-Molecular analysis revealed 92% of the isolate variability was found within subpopulations [@atallah2004high].
-However, there was evidence of linkage equilibrium of microsatellite loci in 2 locations and illustrated the possibility of outcrossing in this region.  
+<!-- Previous studies of *S. sclerotiorum* population biology in North America and Australia have reported clonal propagation of the pathogen [@cubeta1997clonality; @ekins2011population; @kohli1998random; @kohli1995clonal] with evidence of outcrossing observed in some areas [@atallah2004high; @kohli1998random; @malvarez2007new; @sexton2004microsatellite]. -->
+<!-- One such study examined *S. sclerotiorum* population structure using microsatellite markers from potato fields in the Columbia Basin of Washington state. -->
+<!-- Due to high crop diversity and high presence of the pathogen, it was important to understand the potential for outcrossing in order to develop disease management strategies. -->
+<!-- Molecular analysis revealed 92% of the isolate variability was found within subpopulations [@atallah2004high]. -->
+<!-- However, there was evidence of linkage equilibrium of microsatellite loci in 2 locations and illustrated the possibility of outcrossing in this region.   -->
 
 <!-- ZNK: This is more discussion-material -->
 <!-- A population study from Australian canola fields showed evidence of sexual outcrossing of *S. sclerotiorum* isolates [@sexton2004microsatellite].
@@ -129,24 +144,23 @@ While all three populations were  clonal, the index of association ($I_A$) based
 Populations from Australian sunflower with evidence of clonal reproduction were reported, and despite populations sampled from fields separated 50 to 400 km and from both head and basal rots, all showed similar gene diversity, with authors concluding isolates representing different geographies belong to one large genetic population of *S. sclerotiorum* [@ekins2011population].  -->
 
 <!-- SEE: Avoid sentences that start with the authors/reference. -->
-@attanayake2013sclerotinia studied population differentiation of *S. sclerotiorum* isolates infecting canola from China and the USA.
-There were no shared microsatellite multilocus genotypes (MLG) between the two populations.
-Sexual outcrossing was detected in both populations with higher recombination rate in Chinese population than the USA population.
-Additionally, phenotypic traits such as production of sclerotia, mycelial compatibility group (MCG), growth rate were also significantly different between the two populations.
-Genetic diversity of *S. sclerotiorum* from soy bean, canola, sunflower, and dry bean in the North Central region of the USA was studied by [@aldrich-wolfe2015genetic].
-Microsatellite analysis revealed little host- specificity or genetic-isolation of *S. sclerotiorum* isolates among host crops as 93% of the observed genetic variation was explained by within-host differences.
-Isolates from all host crops were primarily reproducing clonally while there were also evidence of genetic recombination of isolates from canola and sunflower.
+<!-- @attanayake2013sclerotinia studied population differentiation of *S. sclerotiorum* isolates infecting canola from China and the USA. -->
+<!-- There were no shared microsatellite multilocus genotypes (MLG) between the two populations. -->
+<!-- Sexual outcrossing was detected in both populations with higher recombination rate in Chinese population than the USA population. -->
+<!-- Additionally, phenotypic traits such as production of sclerotia, mycelial compatibility group (MCG), growth rate were also significantly different between the two populations. -->
+<!-- Genetic diversity of *S. sclerotiorum* from soy bean, canola, sunflower, and dry bean in the North Central region of the USA was studied by [@aldrich-wolfe2015genetic]. -->
+<!-- Microsatellite analysis revealed little host- specificity or genetic-isolation of *S. sclerotiorum* isolates among host crops as 93% of the observed genetic variation was explained by within-host differences. -->
+<!-- Isolates from all host crops were primarily reproducing clonally while there were also evidence of genetic recombination of isolates from canola and sunflower. -->
 
 <!-- Most of the previous studies on *S. sclerotiorum* had been conducted in the USA, Canada and Australia but not in Europe. 
 In those studies, different dry bean cultivars had been rarely used as  hosts to investigate any host-pathogen relationships or specificity.
 No white mold resistant dry bean cultivars exist.
 Canopy architecture and growth pattern of some cultivars enable improved disease avoidance [@kolkman2002agronomic]. -->
-To date, no commercial white mold-resistant dry bean cultivars exist. 
-Field trials in some regions of the USA have shown the G122 cultivar is partially resistant while the Beryl cultivar is susceptible [@otto-hanson2011variation; @steadman2004identification].
+<!-- To date, no commercial white mold-resistant dry bean cultivars exist.  -->
+<!-- Field trials in some regions of the USA have shown the G122 cultivar is partially resistant while the Beryl cultivar is susceptible [@otto-hanson2011variation; @steadman2004identification]. -->
 <!-- This puny paragraph needs a lot of work to more fully describe the operation of the wmn -->
 
-Understanding genetic relationships and reproduction behavior of *S. sclerotiorum* populations from locations worldwide is beneficial for plant breeders seeking to develop white mold resistance cultivars for deployment worldwide. 
-This information is also helpful in making disease management decisions and developing disease resistance screening methods.
+
 
 <!-- Microsatellite markers (simple sequence repeats or SSR) are codominant, polymorphic and also able to detect multiple alleles per locus [@atallah2004high; @sirjusingh2001characterisation].
 Reproducibility of microsatellites is higher compared other fingerprinting techniques such as random amplified polymorphic DNA (RAPD) [@atallah2004high].
