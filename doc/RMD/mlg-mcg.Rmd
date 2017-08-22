@@ -499,11 +499,15 @@ setting the mode to 2.
 
 ```{r community_counting, fig.width = 6, fig.height = 3.5}
 in_reach <- ego(g, 2, nodes = which(grepl("Genotype", V(g)$type)), mode = "all") %>%
-  map_df(function(.x) as_tibble(list(MLG = list(names(.x[grepl("MLG", names(.x))])), 
-                                     MCG = list(names(.x[!grepl("MLG", names(.x))])), 
-                                     WHO = names(.x[1])
-                                     )
-                                )) %>% 
+  map_df(function(.x){
+    as_tibble(
+      list(
+        MLG = list(names(.x[grepl("MLG", names(.x))][-1])), # -1 to remove self
+        MCG = list(names(.x[!grepl("MLG", names(.x))])), 
+        WHO = names(.x[1])
+        )
+      )
+    }) %>% 
   mutate(N = lengths(MLG))
 
 in_reach_summary <- in_reach %>% 
@@ -512,8 +516,8 @@ in_reach_summary <- in_reach %>%
             MCG = n_distinct(unlist(MCG)), 
             MLG = n())
 knitr::kable(in_reach_summary)
-ggplot(in_reach_summary, aes(x = N - 1, y = MLG, fill = E)) +
-  geom_segment(aes(yend = 0, xend = N-1)) +
+in_reach_plot <- ggplot(in_reach_summary, aes(x = N, y = MLG, fill = E)) +
+  geom_segment(aes(yend = 0, xend = N)) +
   geom_point(aes(size = MCG), pch = 21) +
   # ggrepel::geom_label_repel(aes(label = MCG)) +
   viridis::scale_fill_viridis(option = "D") +
@@ -531,8 +535,12 @@ ggplot(in_reach_summary, aes(x = N - 1, y = MLG, fill = E)) +
             size = "MCG"
             # caption = "size and fill represent\nthe number and distribution\nof MCG"
             )) +
-  xlab("Maximum Heterothallic Pairings") +
+  xlab("Potential Heterothallic Pairings") +
   ylab("Multilocus Genotypes")
+in_reach_plot
+if (!interactive()){
+  save(in_reach, in_reach_summary, in_reach_plot, file = file.path(PROJHOME, "data/heterothallic-pairings.rda"))
+}
 ```  
 
 The maximum here is `r in_reach %>% arrange(N) %>% tail(1) %>% pull(N)`, which 
