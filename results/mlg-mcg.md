@@ -882,11 +882,15 @@ setting the mode to 2.
 
 ```r
 in_reach <- ego(g, 2, nodes = which(grepl("Genotype", V(g)$type)), mode = "all") %>%
-  map_df(function(.x) as_tibble(list(MLG = list(names(.x[grepl("MLG", names(.x))])), 
-                                     MCG = list(names(.x[!grepl("MLG", names(.x))])), 
-                                     WHO = names(.x[1])
-                                     )
-                                )) %>% 
+  map_df(function(.x){
+    as_tibble(
+      list(
+        MLG = list(names(.x[grepl("MLG", names(.x))][-1])), # -1 to remove self
+        MCG = list(names(.x[!grepl("MLG", names(.x))])), 
+        WHO = names(.x[1])
+        )
+      )
+    }) %>% 
   mutate(N = lengths(MLG))
 
 in_reach_summary <- in_reach %>% 
@@ -901,40 +905,40 @@ knitr::kable(in_reach_summary)
 
 |  N|         E| MCG| MLG|
 |--:|---------:|---:|---:|
-|  1| 1.0000000|  18|  15|
-|  2| 0.9353124|  10|   9|
-|  3| 0.9093024|  13|  16|
-|  4| 0.8848082|  10|  10|
-|  5| 1.0000000|   4|   2|
-|  6| 0.8361178|   7|  15|
-|  7|       NaN|   1|   2|
-|  8| 0.7819388|   7|  12|
-|  9| 0.7286386|  10|  14|
-| 10| 0.9428738|   7|   4|
-| 11| 1.0000000|   7|   3|
-| 12| 0.9303060|   5|   3|
-| 13| 1.0000000|   6|   3|
-| 15| 1.0000000|   2|   1|
-| 17| 1.0000000|   2|   2|
-| 18| 1.0000000|   3|   1|
-| 19| 0.6319993|   4|   8|
-| 20| 0.8213964|   5|   3|
-| 25| 0.8213191|   5|   4|
-| 37| 0.3950058|  10|  21|
-| 38| 0.9115303|   3|   2|
-| 39| 1.0000000|   2|   1|
-| 40| 0.9308473|   4|   3|
-| 42| 0.9115303|   3|   2|
-| 44| 0.8116548|   4|   3|
-| 45| 1.0000000|   2|   1|
-| 48| 1.0000000|   3|   1|
-| 53| 1.0000000|   2|   2|
-| 54| 1.0000000|   5|   1|
-| 58| 1.0000000|   3|   1|
+|  0| 1.0000000|  18|  15|
+|  1| 0.9353124|  10|   9|
+|  2| 0.9093024|  13|  16|
+|  3| 0.8848082|  10|  10|
+|  4| 1.0000000|   4|   2|
+|  5| 0.8361178|   7|  15|
+|  6|       NaN|   1|   2|
+|  7| 0.7819388|   7|  12|
+|  8| 0.7286386|  10|  14|
+|  9| 0.9428738|   7|   4|
+| 10| 1.0000000|   7|   3|
+| 11| 0.9303060|   5|   3|
+| 12| 1.0000000|   6|   3|
+| 14| 1.0000000|   2|   1|
+| 16| 1.0000000|   2|   2|
+| 17| 1.0000000|   3|   1|
+| 18| 0.6319993|   4|   8|
+| 19| 0.8213964|   5|   3|
+| 24| 0.8213191|   5|   4|
+| 36| 0.3950058|  10|  21|
+| 37| 0.9115303|   3|   2|
+| 38| 1.0000000|   2|   1|
+| 39| 0.9308473|   4|   3|
+| 41| 0.9115303|   3|   2|
+| 43| 0.8116548|   4|   3|
+| 44| 1.0000000|   2|   1|
+| 47| 1.0000000|   3|   1|
+| 52| 1.0000000|   2|   2|
+| 53| 1.0000000|   5|   1|
+| 57| 1.0000000|   3|   1|
 
 ```r
-ggplot(in_reach_summary, aes(x = N - 1, y = MLG, fill = E)) +
-  geom_segment(aes(yend = 0, xend = N-1)) +
+in_reach_plot <- ggplot(in_reach_summary, aes(x = N, y = MLG, fill = E)) +
+  geom_segment(aes(yend = 0, xend = N)) +
   geom_point(aes(size = MCG), pch = 21) +
   # ggrepel::geom_label_repel(aes(label = MCG)) +
   viridis::scale_fill_viridis(option = "D") +
@@ -952,13 +956,20 @@ ggplot(in_reach_summary, aes(x = N - 1, y = MLG, fill = E)) +
             size = "MCG"
             # caption = "size and fill represent\nthe number and distribution\nof MCG"
             )) +
-  xlab("Maximum Heterothallic Pairings") +
+  xlab("Potential Heterothallic Pairings") +
   ylab("Multilocus Genotypes")
+in_reach_plot
 ```
 
 ![plot of chunk community_counting](./figures/mlg-mcg///community_counting-1.png)
 
-The maximum here is 58, which 
+```r
+if (!interactive()){
+  save(in_reach, in_reach_summary, in_reach_plot, file = file.path(PROJHOME, "data/heterothallic-pairings.rda"))
+}
+```
+
+The maximum here is 57, which 
 represents MLG.75. 
 
 ## Interactive Visualizations
@@ -1590,7 +1601,7 @@ on average 7 steps.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-18
+##  date     2017-08-22
 ```
 
 ```

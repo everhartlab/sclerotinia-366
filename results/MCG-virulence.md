@@ -187,12 +187,12 @@ plot(TukeyHSD(ANOVA, conf.level = 0.95), las = 2)
 
 ```r
 grps <- agricolae::HSD.test(ANOVA, "MCG", alpha = 0.05)$groups
-readr::write_csv(grps, path = "results/tables/MCG-aggressiveness.csv", col_names = TRUE)
 
 grps %>% 
   dplyr::rename(MCG = trt) %>%
   dplyr::rename(Group = M) %>%
   dplyr::rename(`Mean Aggressiveness` = means) %>%
+  readr::write_csv(path = "results/tables/MCG-aggressiveness.csv", col_names = TRUE) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>%
   huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
   huxtable::set_col_width(c(0.05, 0.3, 0.08)) %>%
@@ -353,11 +353,8 @@ plot(TukeyHSD(ANOVA, conf.level = 0.95), las = 2)
 grps <- agricolae::HSD.test(ANOVA, "Region", alpha = 0.05)$groups %>% 
   dplyr::rename(Region = trt) %>%
   dplyr::rename(Group = M) %>%
-  dplyr::rename(`Mean Aggressiveness` = means)
-
-readr::write_csv(grps, path = "results/tables/Region-aggressiveness.csv", col_names = TRUE)
-
-grps %>%
+  dplyr::rename(`Mean Aggressiveness` = means) %>%
+  readr::write_csv(path = "results/tables/Region-aggressiveness.csv", col_names = TRUE) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>%
   huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
   huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
@@ -524,11 +521,8 @@ plot(TukeyHSD(ANOVA, conf.level = 0.95), las = 2)
 grps <- agricolae::HSD.test(ANOVA, "MLG", alpha = 0.05)$groups %>% 
   dplyr::rename(MLG = trt) %>%
   dplyr::rename(Group = M) %>%
-  dplyr::rename(`Mean Aggressiveness` = means)
-
-readr::write_csv(grps, path = "results/tables/MLG-aggressiveness.csv", col_names = TRUE)
-
-grps %>%
+  dplyr::rename(`Mean Aggressiveness` = means) %>%
+  readr::write_csv(path = "results/tables/MLG-aggressiveness.csv", col_names = TRUE) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>%
   huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
   huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
@@ -579,7 +573,7 @@ grps %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-18
+##  date     2017-08-22
 ```
 
 ```
