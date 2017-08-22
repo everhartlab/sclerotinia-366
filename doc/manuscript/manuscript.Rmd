@@ -45,6 +45,8 @@ library("poppr")
 library("tidyverse")
 load("../../data/sclerotinia_16_loci.rda")
 load("../../data/RDA_results.rda")
+load("../../data/mcg-mlg-graph.rda")
+load("../../data/heterothallic-pairings.rda")
 dat11cc <- clonecorrect(dat11, ~Region/Source/Host/Year)
 pop_size <- table(pop(dat11))
 
@@ -65,6 +67,7 @@ passp <- function(d, i = 1){
   prettify(res, i)
 }
 
+# Tabulate variance partitions
 vartab <- function(x){
   tot <- x$tot.chi
   con <- x$constr.chi
@@ -72,6 +75,10 @@ vartab <- function(x){
   data.frame(list(Inertia = c(tot, con, uco),
                   Proportion = c(tot, con, uco)/tot))
 }
+
+# Take a character vector and create a list in english (WITH OXFORD COMMA): 
+# e.g. "Juice, Eggs, and Toast"
+andlist <- function(x) paste( paste(x[-length(x)], collapse = ", "), x[length(x)], sep = ", and " )
 
 # Locus Table -------------------------------------------------------------
 
@@ -105,8 +112,14 @@ dapc_host        <- dat11cc %>%
 
 RDA2R2    <- prettify(vegan::RsquareAdj(cap11cc2)$adj.r.squared)/100
 RDA1R2    <- prettify(vegan::RsquareAdj(cap11cc)$adj.r.squared)/100
-anova1res <- setNames(cap11anova$`Pr(>F)`, rownames(cap11anova))
-anova2res <- setNames(cap11anova2$`Pr(>F)`, rownames(cap11anova2))
+anova1res <- setNames(cap11anova$`Pr(>F)`, rownames(cap11anova)) %>% na.omit()
+anova2res <- setNames(cap11anova2$`Pr(>F)`, rownames(cap11anova2)) %>% na.omit()
+RDAVAR1   <- andlist(names(cap11cc$terminfo$ordered))
+RDAVAR2   <- andlist(gsub("Severity", "Aggressiveness", names(cap11cc2$terminfo$ordered)))
+
+# MLG/MCG comparison
+
+big_genotype <- in_reach %>% filter(N == max(N))
 ```
 
 
@@ -165,9 +178,7 @@ Sampling was carried out by collecting diseased tissue in zig-zag transects acro
 Because sampling depended on disease incidence, the number of samples isolated varied from year to year.
 Although the nursery locations were the same over sampling years, sampling plots within a location varied for sampling years.
 
-Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or wmn in 11 states of the United States of America, Mexico, France, and Australia.
-The white mold screening nurseries in different regions are indicated by wmn and all other isolates came from commercial fields (Table \@ref(tab:isolate-table)). 
-
+Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or wmn in 11 states of the United States of America, Mexico, France, and Australia (Table \@ref(tab:isolate-table)). 
 After collection, the isolates were stored in petri plates lined with filter paper, then stored at $20^{\circ}$F or -$4^{\circ}$C. 
 Sclerotia were triple rinsed with (i) 50% Clorox bleach/50% double-distilled (dd)H2O solution for 3 min, (ii) ddH2O rinse for 3 min, and (iii) final ddH2O rinse for 3 min, then plated on water agar plates (16g of Bacto agar per liter of ddH2O), with four to five sclerotia of each isolate separated on each plate and stored on the bench top at room temperature for 5 to 6 days An 8-mm plug from a 5- or 6-day-old culture was transferred from the advancing margin of the mycelia onto a plate of Difco potato dextrose agar (PDA at 39 g/liter of ddH2O) [@otto-hanson2011variation].
 In combination with the 156 isolates described previously, we collected 210 isolates for a total of 366 isolates [@otto-hanson2011variation].
@@ -208,12 +219,12 @@ Alleles were scored using PeakScanner version 1.0 (Life Technologies Corporation
 ## Data processing and Analysis{-}
 
 All analyses were performed on this data set unless otherwise mentioned.
-All data processing and analyses were performed in `r substr(R.version.string, 1, 15)` [@R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/.
+All data processing and analyses were performed in `r R.version.string %>% strsplit("\\(") %>% map_chr(1)`[@R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/.
 Of the 16 microsatellite loci genotyped, five included compound repeats, which made it challenging to accurately/confidently bin alleles into fragment sizes expected for each locus based on the described repeat motif. 
 <!-- add something about repeat length consistency  -->
 Loci with compound repeats were removed for the reported statistics, but were processed and included in data analyses to ensure the integrity of the results with 11 loci as compared to 16.
 We assessed the power of our 11 markers by generating a genotype accumulation curve in the R package *poppr* version `r packageVersion("poppr")`, looking for evidence of saturation, which would indicate that loci were sufficiently sampled to adequately represent the full set of genotypes [@arnaud2007standardizing; @kamvar2015novel].
-To avoid including isolates potentially collected from the same plant (which increases the probability of collecting sclerotioa from the same point of infection more than once), data were clone-corrected on a hierarchy of region/source/host/year---meaning that one representative of each genotype was retained for each combined regions, source, host, and year---for subsequent analysis. 
+To avoid including isolates potentially collected from the same plant (which increases the probability of collecting sclerotioa from the same point of infection more than once), data were clone-corrected on a hierarchy of Region/Source/Host/Year---meaning that one representative of each genotype was retained for each nested combination of Region, Source, Host, and Year---for subsequent analysis. 
 We assessed genotypic diversity by calculating Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], and evenness ($E_5$, *eMLG*) [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
 To assess the potential for random mating, we tested for linkage disequilibrium with the index of association, $I_A$ and its standardized version, $\bar{r}_d$ using 999 permutations [@agapow2001indices; @smith1993how; @brown1980multilocus].
 Both genotypic diversity and linkage disequilibrium were calculated in *poppr* [@kamvar2014poppr].
@@ -227,13 +238,13 @@ This method uses constrained ordinations on a distance matrix representing the r
 We used this method to delineate the phenotypic (Aggressiveness, Mycelial Compatibility Group (MCG)), geographic (Region, Host, Location), and temporal (Year) components in predicting genetic composition of the populations.
 The distance matrix we used as the response variable was generated using Bruvo's genetic distance from clone-corrected data (procedure described above) as implemented in *poppr*, which employed a stepwise mutation model for microsatellite data [@bruvo2004simple; @kamvar2014poppr]. 
 Because aggressiveness measures differed with each isolate, aggressiveness first averaged across clone-corrected isolates.
-To identify explanatory variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function `ordistep()` to identify the set of variables that explained more variation than predicted with the global model containing all variables.
-An ANOVA was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
+To identify explanatory variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function `ordistep()`.
+An analysis of variance (ANOVA) was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
 The `varpart()` function of vegan was used to determine variation partitioning of explanatory variables.
 
 ### Aggressiveness Assessment {-}
 
-We used analysis of variance (ANOVA) to assess if aggressiveness could be explained by Region, MCG, or multilocus genotype (MLG). 
+We used ANOVA to assess if aggressiveness could be explained by Region, MCG, or multilocus genotype (MLG). 
 To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 56.5% of the isolates collected, the top 10 MLGs representing 26.7% of the isolates, and populations with more than five isolates.
 Between-group differences were assessed using Tukey's HSD test with an alpha of 0.05 using the `HSD.test()` function in the package *agricolae* version `r packageVersion("agricolae")` [@mendiburu2015agricolae].
 
@@ -393,13 +404,13 @@ Edges extending from MLGs displayed to other MCGs are not shown.
 
 ### Variable Importance {-}
 
-The forward-backward selection process of the dbRDA models on clone-corrected data revealed Year, Region, Host, and Aggressiveness to be the optimal variables for the reduced model, accounting for `r prettify(vartab(cap11sum)[2, "Proportion"])`% of the total variation.
+The forward-backward selection process of the dbRDA models on clone-corrected data revealed `r RDAVAR1` to be the optimal variables for the reduced model, accounting for `r prettify(vartab(cap11sum)[2, "Proportion"])`% of the total variation.
 ANOVA revealed that the reduced model was significant with an adjusted R^2^ of `r RDA1R2` (*P* = 0.001).
-Assessment of the marginal effects showed that region, host, year, and aggressiveness significantly explained genetic variation (*P* = `r anova1res[["Year"]]`, *P* = `r anova1res[["Region"]]` for region).
+Assessment of the marginal effects showed that all of these varaibles significantly explained genetic variation (*P* = `r anova1res[["Year"]]`, *P* = `r anova1res[["Region"]]` for region).
 It was revealed that there was multicollinearity when MCG was combined with any other variable, so we followed the same procedure, dropping MCG from the list of potential predictors. 
-From these results, we found that aggressiveness, year, region, and host were optimal, accounting for `r prettify(vartab(cap11sum2)[2, "Proportion"])`% of the total variation.
+From these results, we found that `r RDAVAR2` were optimal, accounting for `r prettify(vartab(cap11sum2)[2, "Proportion"])`% of the total variation.
 ANOVA revealed significant effects with an adjusted R^2^ of `r RDA2R2` (*P* = 0.001).
-While the marginal effect assessment showed that region, host, and year all significantly explained the variation at *P* = `r anova2res[["Year"]]`, and aggressiveness significantly explained the variation at *P* = `r anova2res[["Severity"]]`.
+While the marginal effect assessment showed that `r andlist(names(anova2res)[anova2res <= 0.01])` all significantly explained the variation at *P* = `r anova2res[["Year"]]`, and Aggressiveness significantly explained the variation at *P* = `r anova2res[["Severity"]]`.
 Much of the variation appears to be driven by isolates from Mexico and 2005 (Fig. \@ref(rda-biplot)).
 Variance partitioning of the independent variables without MCG indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
 
@@ -424,17 +435,17 @@ Boxplot representing aggressiveness (vertical axis) by population (horizontal ax
 <!-- end figure -->
 
 Our assessment of aggressiveness in association with Region showed a significant effect (P < 1.00e^-4^), with means that ranged from 5.8 (MN) to 4.0 (CA) (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
-MCGs also showed a significant effect (P < 1.00e^-4^), with means that ranged from 6.0 ('MCG 44') to 4.6 ('MCG 49').
-We additionally found a significant effect for MLGs (*P* = 7.44e^-4^) for MLGs, with means that ranged from 6.0 ('MLG 78') to 4.3 ('MLG 140').
+MCGs also showed a significant effect (P < 1.00e^-4^), with means that ranged from 6.0 ('MCG 44') to 4.6 ('MCG 49') (Table \@ref(tab:MCG-aggressiveness)).
+We additionally found a significant effect for MLGs (*P* = 7.44e^-4^) for MLGs, with means that ranged from 6.0 ('MLG 78') to 4.3 ('MLG 140') (Table \@ref(tab:MLG-aggressiveness)).
 
 ### Correlation of Mulitlocus Genotypes and Mycelial Compatibility Groups {-}
 
 Our network-based approach to correlating MLGs with MCGs revealed a large and complex network (Fig. \@ref(biggraph)). 
-Community analysis showed 51 communities, 15 of which consisted of a single MLG unconnected with any other community indicating that just 9.09% of the 165 MLGs are unable to cross with any other MLG in this data set (Fig. \@ref(fullgraph)).
+Community analysis showed 51 communities, `r sum(in_reach$N == 0)` of which consisted of a single MLG unconnected with any other community indicating that just `r prettify(mean(in_reach$N == 0))`% of the 165 MLGs are unable to cross with any other MLG in this data set (Fig. \@ref(fullgraph)).
 The three communities with the most members contained eight of the 10 most abundant MCGs. 
 Comparing these communities with Bruvo's genetic distance revealed an average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
-When we assessed the number of times two different MLGs that are in the same MCG, considering these as potential heterothallic pairings that could result in sexual recombination, we found an average of 16.5 potential heterothallic parings per MLG. 
-Representing just four isolates, 'MLG 75' had 57 neighbors that shared the same mycelial compatibility group (Fig \@ref(biggraph), \@ref(fullgraph)). 
+When we assessed the number of times two different MLGs that are in the same MCG, considering these as potential heterothallic pairings that could result in sexual recombination, we found an average of `r signif(mean(in_reach$N), 3)` potential heterothallic parings per MLG. 
+Representing just four isolates, 'MLG 75' had `r big_genotype$N` neighbors that shared the same mycelial compatibility group (Fig \@ref(biggraph), \@ref(fullgraph)). 
 Overall, there was no clear pattern to the association between MLG and MCGs. 
 
 ## Structure of Shared Multilocus Genotypes {-}
@@ -560,7 +571,7 @@ These findings indicate that the wmn can be effective at screening for potential
 
 ## Variable Importance {-}
 
-Borrowing a technique often used in the ecological literature, we used dbRDA to elucidate the effect of all variables (Aggressiveness, Region, Source,   Year, and Host) [@legendre1999distance].
+Borrowing a technique often used in the ecological literature, we used dbRDA to elucidate the effect of all variables (`r andlist(c(names(strata(dat11)), "Aggressiveness"))`) [@legendre1999distance].
 From the initial results, it appears that the most important factors for predicting genetic structure are MCG, region, and year.
 When we inspected the biplot of the initial results, we saw that the most important predictors were 'MCG 44', 'MCG 5', and 'MCG 9'. 
 We believe that this is driven by the fact that these particular MCGs have uneven MLG distributions, meaning that they are heavily associated with one particular MLG (Fig. \@ref(biggraph)).
@@ -568,7 +579,7 @@ We note these results with caution because of the apparent multicolinearity betw
 While the results indicated that Mexico and the year 2005 were the two most important variables, it's worth noting that all Mexico isolates were collected in 2005 (Fig. \@ref(rda-biplot)).
 The results also show that the Vista cultivar explains some of the variance, but this represents six isolates in MI. 
 Aggressiveness and specific source field had little to no effect on genetic diversity. 
-These results are in agreement with studies that examined differentiation based on host [@aldrich-wolfe2015genetic] and aggressiveness [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia] reporting little or no correlation of genetic diversity to these variables. 
+These results are in agreement with studies that examined differentiation based on Host [@aldrich-wolfe2015genetic] and Aggressiveness [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia] reporting little or no correlation of genetic diversity to these variables. 
 This indicates that a) breeders should keep in mind regional differences when assessing resistance and b) it is possible that we have not yet measured biologically relevant variables that can predict genetic differentiation, which could include variables such as soil community composition. 
 
 ## Mycelial Compatibility Groups and Multilocus Genotypes {-}
@@ -578,7 +589,7 @@ Our results do not support this assumption.
 It can be seen in Fig. \@ref(biggraph)A that the most abundant MCG contains several MLGs, but the diversity of those MLGs are low as indicated by the evenness (transparency), which indicates that there is one dominant MLG ('MLG 25').
 What is not shown in Fig. \@ref(biggraph)A is the MLGs that are shared between MCGs. 
 This is illustrated in both table \@ref(tab:mlg-table) and Fig. \@ref(biggraph)B,C. 
-It could be argued, however that 'MLG 25', with its high value of $P_{sex}$ represents different true MLGs across the five MCGs it occupies, but this doesn't account for the overall structure of Fig. \@ref(fullgraph) where, for example, 'MLG 75' ($P_{sex}$ = 1.81e^-4^) is compatible with 58 other genotypes through three MCG when the population structure of *S. sclerotiorum* is known to be clonal.
+It could be argued, however that 'MLG 25', with its high value of $P_{sex}$ represents different true MLGs across the five MCGs it occupies, but this doesn't account for the overall structure of Fig. \@ref(fullgraph) where, for example, 'MLG 75' ($P_{sex}$ = 1.81e^-4^) is compatible with `r big_genotype$N` other genotypes through three MCG when the population structure of *S. sclerotiorum* is known to be clonal.
 
 Over the past few years, researchers have noticed inconsistencies among the relationship between MCGs and MLGs [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic; @lehner2015genetic]. 
 Either several MCGs belong to one MLG, which could be explained by insufficient sampling of loci; several MLGs belong to one MCG, which could be explained by clonal expansion; or a mixture of both.
@@ -766,8 +777,31 @@ read_csv("../../results/tables/Region-aggressiveness.csv",
 
 Table: (\#tab:region-aggressiveness) Mean aggressiveness ratings for the Regions with greater than 5 samples; groupings according to 95% family-wise confidence interval.
 
+```{r MCG-ag, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
+read_csv("../../results/tables/MCG-aggressiveness.csv", 
+         na = "NA", # spaces read in as spaces
+         col_types = cols(.default = col_character())) %>%
+  huxtable::as_huxtable(add_colnames = TRUE) %>%
+  huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
+  huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
+  huxtable::set_align(row = huxtable::everywhere, col = 2, "right") %>%
+  huxtable::print_md(max_width = 40)
+```
 
+Table: (\#tab:MCG-aggressiveness) Mean aggressiveness ratings for the first 10 MCG; groupings according to 95% family-wise confidence interval.
 
+```{r MLG-ag, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
+read_csv("../../results/tables/MLG-aggressiveness.csv", 
+         na = "NA", # spaces read in as spaces
+         col_types = cols(.default = col_character())) %>%
+  huxtable::as_huxtable(add_colnames = TRUE) %>%
+  huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
+  huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
+  huxtable::set_align(row = huxtable::everywhere, col = 2, "right") %>%
+  huxtable::print_md(max_width = 40)
+```
+
+Table: (\#tab:MLG-aggressiveness) Mean aggressiveness ratings for the first 10 MLG; groupings according to 95% family-wise confidence interval.
 
 ![
 Graph showing complex associations between Mycelial Compatibility Groups (MCG) (dotted nodes) and Multilocus Genotypes (MLG) (full nodes) where the number in each node represents the MLG/MCG assignment. 
