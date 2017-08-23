@@ -8,7 +8,7 @@ The manuscript has mostly been written, but it still needs some cleaning:
 > Population structure and phenotypic variation of *Sclerotinia sclerotiorum*
 > from dry bean in the United States
 >
-> Z. N. Kamvar, B. S. Amaradasa, R. Jhala, J. Steadman, and S. E. Everhart
+> Z. N. Kamvar, B. S. Amaradasa, R. Jhala, S. McCoy, J. Steadman, and S. E. Everhart
 
 # TOC
 
