@@ -226,7 +226,7 @@ Of the 16 microsatellite loci genotyped, five included compound repeats, which m
 Loci with compound repeats were removed for the reported statistics, but were processed and included in data analyses to ensure the integrity of the results with 11 loci as compared to 16.
 We assessed the power of our 11 markers by generating a genotype accumulation curve in the R package *poppr* version `r packageVersion("poppr")`, looking for evidence of saturation, which would indicate that loci were sufficiently sampled to adequately represent the full set of haplotypes [@arnaud2007standardizing; @kamvar2015novel].
 To avoid including isolates potentially collected from the same plant (which increases the probability of collecting sclerotioa from the same point of infection more than once), data were clone-corrected on a hierarchy of Region/Source/Host/Year---meaning that one representative of each haplotype was retained for each nested combination of Region, Source, Host, and Year---for subsequent analysis. 
-We assessed genotypic diversity by calculating Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], and evenness ($E_5$, *eMLG*) [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
+We assessed genotypic diversity by calculating Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], and evenness ($E_5$, *eMLH*) [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
 To assess the potential for random mating, we tested for linkage disequilibrium with the index of association, $I_A$ and its standardized version, $\bar{r}_d$ using 999 permutations [@agapow2001indices; @smith1993how; @brown1980multilocus].
 Both genotypic diversity and linkage disequilibrium were calculated in *poppr* [@kamvar2014poppr].
 
@@ -280,7 +280,7 @@ We wanted to evaluate patterns of connectivity between shared multilocus haploty
 We first tabulated the multilocus haplotypes shared between at least two populations (defined as states or countries) with the *poppr* function `mlg.crosspop()` [@kamvar2014poppr].
 From these data, we constructed a graph with populations as nodes and shared haplotypes as edges (connections) between nodes using the R packages *igraph* [@csardi2006igraph], *dplyr* version `r packageVersion("dplyr")` [@dplyr], and *purrr* version `r packageVersion("purrr")` [@purrr].
 Each node was weighted by the fraction of shared MLHs.
-Each edge represented a single MLG, but because a single MLH could be present in more than one population, that MLH would be represented by (*n*\*(*n*-1))/2 edges where n represents the number of populations crossed.
+Each edge represented a single MLH, but because a single MLH could be present in more than one population, that MLH would be represented by (*n*\*(*n*-1))/2 edges where n represents the number of populations crossed.
 Edges were weighted by $1-P_{sex}$, where $P_{sex}$ is the probability of encountering the same haplotype via two independent meiotic events [@arnaud2007standardizing; @parks1993study].
 We then used the `cluster_optimal()` function from *igraph* to define communities [@csardi2006igraph].
 The graph was plotted using the R packages *ggplot2* version `r packageVersion("ggplot2")` [@ggplot2] and *ggraph* `r packageVersion("ggraph")` [@ggraph].
@@ -394,7 +394,7 @@ A dashed box surrounds the 8 most common MCGs representing > 51% of the data.
 Details in fig. \@ref(fullgraph). 
 **C)** A subset of **B** representing the 8 most common MCGs and their associated MLHs (dashed box in **A**).
 Filled nodes represent MLHs and open nodes represent MCGs.
-Numbers inside nodes are the MLG/MCG label. 
+Numbers inside nodes are the MLH/MCG label. 
 Node (circle) area scaled to the number of samples represented (range: 1--73).
 Edges (arrows) point from MLH to MCG where the weight (thickness) of the edge represents the number of shared isolates (range: 1--19).
 Edges extending from MLHs displayed to other MCGs are not shown.
@@ -446,7 +446,7 @@ Our network-based approach to correlating MLHs with MCGs revealed a large and co
 Community analysis showed 51 communities, `r sum(in_reach$N == 0)` of which consisted of a single MLH unconnected with any other community indicating that just `r prettify(mean(in_reach$N == 0))`% of the 165 MLHs are unable to cross with any other MLH in this data set (Fig. \@ref(fullgraph)).
 The three communities with the most members contained eight of the 10 most abundant MCGs. 
 Comparing these communities with Bruvo's genetic distance revealed an average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
-When we assessed the number of times two different MLHs that are in the same MCG, considering these as potential heterothallic pairings that could result in sexual recombination, we found an average of `r signif(mean(in_reach$N), 3)` potential heterothallic parings per MLG. 
+When we assessed the number of times two different MLHs that are in the same MCG, considering these as potential heterothallic pairings that could result in sexual recombination, we found an average of `r signif(mean(in_reach$N), 3)` potential heterothallic parings per MLH. 
 Representing just four isolates, 'MLH 75' had `r big_haplotype$N` neighbors that shared the same mycelial compatibility group (Fig \@ref(biggraph), \@ref(fullgraph)). 
 Overall, there was no clear pattern to the association between MLH and MCGs. 
 
@@ -478,6 +478,7 @@ read_csv("../../results/tables/mlg_table.csv",
          na = "NA", # spaces read in as spaces
          col_types = cols(.default = col_character())) %>%
   rename(`$P_{sex}$` = Psex) %>% 
+  rename(MLH = MLG) %>%
   knitr::kable(format = "pandoc")
 ```
 
@@ -594,7 +595,7 @@ This is illustrated in both table \@ref(tab:mlg-table) and Fig. \@ref(biggraph)B
 It could be argued, however that 'MLH 25', with its high value of $P_{sex}$ represents different true MLHs across the five MCGs it occupies, but this doesn't account for the overall structure of Fig. \@ref(fullgraph) where, for example, 'MLH 75' ($P_{sex}$ = 1.81e^-4^) is compatible with `r big_haplotype$N` other haplotypes through three MCG when the population structure of *S. sclerotiorum* is known to be clonal.
 
 Over the past few years, researchers have noticed inconsistencies among the relationship between MCGs and MLHs [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic; @lehner2015genetic]. 
-Either several MCGs belong to one MLG, which could be explained by insufficient sampling of loci; several MLHs belong to one MCG, which could be explained by clonal expansion; or a mixture of both.
+Either several MCGs belong to one MLH, which could be explained by insufficient sampling of loci; several MLHs belong to one MCG, which could be explained by clonal expansion; or a mixture of both.
 Some studies have shown a correlation between MCG and MLH [@aldrich-wolfe2015genetic; @carbone1999patterns; @lehner2015genetic], whereas other studies have shown no apparent correlation, even on small spatial scales [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia].
 
 One long-held assumption was that MCGs (as determined via barrage reaction) represent vegetative compatibility groups (VCGs) [@schafer2006optimized; @kohn1990mycelial; @lehner2015genetic], which are known to have a genetic component [@saupe2000molecular; @hall2010evolution; @strom2016genomes].
@@ -663,7 +664,7 @@ With the availability of an optically-mapped genome [@derbyshire2017complete], f
 ## Conclusions {-}
 
 This study represents the largest genetic analysis of *S. sclerotiorum* from the USA to date, giving us a unique insight to continent-wide population structure and relationships between phenotypic and genotypic variables.
-Based on our analysis of the relationships between MCG and MLG, we found no clear evidence that the two are directly related, suggesting that MCG do not necessarily represent vegetative compatibility groups and thus should not be used as a proxy for identifying clones. 
+Based on our analysis of the relationships between MCG and MLH, we found no clear evidence that the two are directly related, suggesting that MCG do not necessarily represent vegetative compatibility groups and thus should not be used as a proxy for identifying clones. 
 Populations in wmn appear to show no significant differentiation when compared to their production field counterparts, suggesting that the wmn populations of *S. sclerotiorum* may be considered representative of the surrounding regions. 
 While we found no direct relationship between haplotype and severity, it is evident that there is a gradient of severity by region, further supporting the need for screening in multiple locations.
 
@@ -796,6 +797,7 @@ Table: (\#tab:MCG-aggressiveness) Mean aggressiveness ratings for the first 10 M
 read_csv("../../results/tables/MLG-aggressiveness.csv", 
          na = "NA", # spaces read in as spaces
          col_types = cols(.default = col_character())) %>%
+  rename(MLH = MLG) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>%
   huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
   huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
@@ -803,10 +805,10 @@ read_csv("../../results/tables/MLG-aggressiveness.csv",
   huxtable::print_md(max_width = 40)
 ```
 
-Table: (\#tab:MLG-aggressiveness) Mean aggressiveness ratings for the first 10 MLG; groupings according to 95% family-wise confidence interval.
+Table: (\#tab:MLG-aggressiveness) Mean aggressiveness ratings for the first 10 MLH; groupings according to 95% family-wise confidence interval.
 
 ![
-Graph showing complex associations between Mycelial Compatibility Groups (MCG) (dotted nodes) and Multilocus Haplotypes (MLH) (full nodes) where the number in each node represents the MLG/MCG assignment. 
+Graph showing complex associations between Mycelial Compatibility Groups (MCG) (dotted nodes) and Multilocus Haplotypes (MLH) (full nodes) where the number in each node represents the MLH/MCG assignment. 
 Node size reflect the number of samples represented by each node (circle). 
 Edges (arrows) point from MLH to MCG where the weight (thickness) of the edge represents the number of samples shared. 
 Node color represents the community assignment based on the walktrap algorithm with a maximum of four steps [@pons2006computing]. 
