@@ -410,9 +410,10 @@ mcg_graph <- mcgs %>%
   gather(type, count, MLGs, Samples, -Evenness) %>%
   arrange(desc(type), desc(count)) %>%
   rename(Type = type) %>%
+  mutate(Type = ifelse(Type == "MLGs", "MLHs", Type)) %>%
   mutate(MCG = forcats::fct_inorder(MCG, ordered = TRUE)) %>%
   ggplot(aes(x = MCG, y = count, group = Type, fill = Type, alpha = Evenness)) +
-  geom_col(aes(width = ifelse(Type == "MLGs", 0.5, 0.85)), color = "black", position = "identity") +
+  geom_col(aes(width = ifelse(Type == "MLHs", 0.5, 0.85)), color = "black", position = "identity") +
   annotate(geom = "rect", xmin = 0.5, xmax = 8.5, ymin = 0, ymax = 75, color = "black", size = 1.5, alpha = 0, lty = 2) +
   # annotate(geom = "text", x = 18, y =35, 
   #          label = sprintf("Mean Evenness: %.3f", mean(mcgs$Evenness, na.rm = TRUE))) +
@@ -432,7 +433,7 @@ mcg_graph <- mcgs %>%
   theme(legend.position = c(0.77, 0.75)) +
   theme(aspect.ratio = 1/2) +
   labs(list(
-    alpha = "MLG\nEvenness"
+    alpha = "MLH\nEvenness"
   ))
 ```
 
@@ -957,7 +958,7 @@ in_reach_plot <- ggplot(in_reach_summary, aes(x = N, y = MLG, fill = E)) +
             # caption = "size and fill represent\nthe number and distribution\nof MCG"
             )) +
   xlab("Potential Heterothallic Pairings") +
-  ylab("Multilocus Genotypes")
+  ylab("Multilocus Haplotypes")
 in_reach_plot
 ```
 
@@ -1054,7 +1055,7 @@ top5lay$community <- inner_join(data_frame(vertex = top5lay$name), the_communiti
 ```
 
 ```r
-levels(top5lay$type) <- c("Multilocus Genotype", "Mycelial Compatibility\nGroup")
+levels(top5lay$type) <- c("Multilocus Haplotype", "Mycelial Compatibility\nGroup")
 t5g <- ggraph(top5lay) +
   geom_node_circle(aes(r = size, fill = type)) +
   geom_edge_link(aes(start_cap = circle(node1.size, unit = "native"), 
@@ -1156,7 +1157,7 @@ severity_plot <- ggplot(Severity, aes(x = MCG, y = Severity)) +
   ylim(c(3.5, 8)) +
   labs(list(
     title = "Severity by MCG and Region",
-    fill = "Multilocus Genotype",
+    fill = "Multilocus Haplotype",
     subtitle = "Five most abundant multilocus genotypes shown"
   ))
 severity_plot
@@ -1601,7 +1602,7 @@ on average 7 steps.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-22
+##  date     2017-08-23
 ```
 
 ```
