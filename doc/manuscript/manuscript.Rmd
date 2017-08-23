@@ -44,10 +44,11 @@ knitr::opts_chunk$set(message = FALSE, warning = FALSE)
 library("poppr")
 library("tidyverse")
 load("../../data/sclerotinia_16_loci.rda")
-load("../../data/RDA_results.rda")
 load("../../data/mcg-mlg-graph.rda")
 load("../../data/heterothallic-pairings.rda")
-dat11cc <- clonecorrect(dat11, ~Region/Source/Host/Year)
+caplist1 <- read_rds("../../data/caplist1.rds")
+caplist2 <- read_rds("../../data/caplist2.rds")
+dat11cc  <- clonecorrect(dat11, ~Region/Source/Host/Year)
 pop_size <- table(pop(dat11))
 
 # Utility Functions -------------------------------------------------------
@@ -110,12 +111,12 @@ dapc_host        <- dat11cc %>%
 
 # RDA results -------------------------------------------------------------
 
-RDA2R2    <- prettify(vegan::RsquareAdj(cap11cc2)$adj.r.squared)/100
-RDA1R2    <- prettify(vegan::RsquareAdj(cap11cc)$adj.r.squared)/100
-anova1res <- setNames(cap11anova$`Pr(>F)`, rownames(cap11anova)) %>% na.omit()
-anova2res <- setNames(cap11anova2$`Pr(>F)`, rownames(cap11anova2)) %>% na.omit()
-RDAVAR1   <- andlist(names(cap11cc$terminfo$ordered))
-RDAVAR2   <- andlist(gsub("Severity", "Aggressiveness", names(cap11cc2$terminfo$ordered)))
+RDA2R2    <- prettify(caplist1$R2$adj.r.squared)/100
+RDA1R2    <- prettify(caplist2$R2$adj.r.squared)/100
+anova1res <- setNames(caplist1$anova$`Pr(>F)`, rownames(caplist1$anova)) %>% na.omit()
+anova2res <- setNames(caplist2$anova$`Pr(>F)`, rownames(caplist2$anova)) %>% na.omit()
+RDAVAR1   <- andlist(names(anova1res))
+RDAVAR2   <- andlist(gsub("Severity", "Aggressiveness", names(anova2res)))
 
 # MLG/MCG comparison
 
@@ -404,11 +405,11 @@ Edges extending from MLGs displayed to other MCGs are not shown.
 
 ### Variable Importance {-}
 
-The forward-backward selection process of the dbRDA models on clone-corrected data revealed `r RDAVAR1` to be the optimal variables for the reduced model, accounting for `r prettify(vartab(cap11sum)[2, "Proportion"])`% of the total variation.
+The forward-backward selection process of the dbRDA models on clone-corrected data revealed `r RDAVAR1` to be the optimal variables for the reduced model, accounting for `r prettify(vartab(caplist1$components)[2, "Proportion"])`% of the total variation.
 ANOVA revealed that the reduced model was significant with an adjusted R^2^ of `r RDA1R2` (*P* = 0.001).
 Assessment of the marginal effects showed that all of these varaibles significantly explained genetic variation (*P* = `r anova1res[["Year"]]`, *P* = `r anova1res[["Region"]]` for region).
 It was revealed that there was multicollinearity when MCG was combined with any other variable, so we followed the same procedure, dropping MCG from the list of potential predictors. 
-From these results, we found that `r RDAVAR2` were optimal, accounting for `r prettify(vartab(cap11sum2)[2, "Proportion"])`% of the total variation.
+From these results, we found that `r RDAVAR2` were optimal, accounting for `r prettify(vartab(caplist2$components)[2, "Proportion"])`% of the total variation.
 ANOVA revealed significant effects with an adjusted R^2^ of `r RDA2R2` (*P* = 0.001).
 While the marginal effect assessment showed that `r andlist(names(anova2res)[anova2res <= 0.01])` all significantly explained the variation at *P* = `r anova2res[["Year"]]`, and Aggressiveness significantly explained the variation at *P* = `r anova2res[["Severity"]]`.
 Much of the variation appears to be driven by isolates from Mexico and 2005 (Fig. \@ref(rda-biplot)).

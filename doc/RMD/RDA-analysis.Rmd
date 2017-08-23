@@ -383,10 +383,18 @@ These data are important for reporting in the manuscript and expensive to
 generate, so I will save them here
 
 ```{r save_data}
-save(cap11cc, cap11cc2, 
-     cap11sum, cap11sum2, 
-     cap11anova, cap11anova2,
-     file = file.path("data", "RDA_results.rda"))
+caplist1 <- list(
+  anova = cap11anova,
+  R2    = RsquareAdj(cap11cc),
+  components = cap11sum[-1]
+)
+caplist2 <- list(
+  anova = cap11anova2,
+  R2    = RsquareAdj(cap11cc2),
+  components = cap11sum2[-1]
+)
+saveRDS(caplist1, file.path(PROJHOME, "data", "caplist1.rds")) 
+saveRDS(caplist2, file.path(PROJHOME, "data", "caplist2.rds")) 
 ```
 
 
