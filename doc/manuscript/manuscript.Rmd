@@ -101,7 +101,7 @@ Emean <- mean(loc_table$Evenness)
 # DAPC data ---------------------------------------------------------------
 
 dapc_region      <- dapc(setPop(dat11cc, ~Region), n.da = 13, n.pca = 20)
-dapc_region_year <- dapc(setPop(dat11cc, ~Region/Year), n.da = 12, n.pca = 22)
+dapc_region_year <- dapc(setPop(dat11cc, ~Region/Year), n.da = 15, n.pca = 15)
 dapc_host        <- dat11cc %>% 
   setPop(~Source) %>%
   popsub("wmn") %>%
