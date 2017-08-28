@@ -621,9 +621,11 @@ All other populations in comparison (except France) has reassignment probabiliti
 Despite the evidence that Mexico and CA contributing to a large amount of the population differentiation, Regions like WA still had a large amount of internal variation.
 The two distinct clusters for the WA Region showed that the 2008 population appeared different and, under further investigation, we found that the haplotypes from this population were shared between CA and France (Fig. \@ref(community-graph), \@ref(DAPC-RY), \@ref(DAPC-RY-FULL)). 
 The isolates from WA in 2003--2005, and 2008 all came from the same wmn.
-All of the isolates in 2003--2005 came from the same field location that were cropped with dry bean since 2002 (Miklas, Phil Pers. comm.).
-While white mold pressure had been sufficient for infection in previous years, sclerotia from the central bean company was added to the innoculum load. 
-The 2008 isolates, on the other hand, came from a field that was previously cropped with brassica, sundgrass, peas, and potatoes.
+All of the isolates in 2003--2005 came from the same NE field location that were cropped with dry bean since 2002 (Miklas, Phil Pers. comm.).
+The 2008 isolates, on the other hand, came from a SE field that was previously cropped with brassica, sundgrass, peas, beans, and potatoes.
+Both of these fields were inoculated with sclerotia in 2002, the NE field with sclerotia provided by a commercial bean producer and the SE field with sclerotia from peas (although this was thought to be unsuccessful).
+Despite this information, it is still unclear what has contributed to the differentiation of the 2008 population from WA.
+While the evidence my suggest host as being a factor, previous studies have shown no significant differentiation across host species [@aldrich-wolfe2015genetic]. 
 
 From the DAPC, we extracted 6 loci that had alleles contributing more than the upper 95% quantile of the principal component loadings to either of the first two discriminant axes and found that the alleles with an allele frequency of > 50% in 2007 were reduced to < 10% in 2008, replaced by an allele that was > 2 mutational steps away (Supplementary Information).
 This could be due to several reasons which include mis-labeling of source material or introduction of migrant sclerotia in plant material.

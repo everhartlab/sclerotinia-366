@@ -1188,7 +1188,7 @@ MLG 25).
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-23
+##  date     2017-08-28
 ```
 
 ```
@@ -1197,8 +1197,8 @@ MLG 25).
 
 ```
 ##  package     * version    date       source                          
-##  ade4        * 1.7-6      2017-03-23 CRAN (R 3.4.0)                  
-##  adegenet    * 2.1.0      2017-07-17 local                           
+##  ade4        * 1.7-8      2017-08-09 cran (@1.7-8)                   
+##  adegenet    * 2.1.0      2017-08-28 local                           
 ##  ape           4.1        2017-02-14 CRAN (R 3.4.0)                  
 ##  assertr       2.0.2.2    2017-06-06 CRAN (R 3.4.0)                  
 ##  assertthat    0.2.0      2017-04-11 CRAN (R 3.4.0)                  
@@ -1281,7 +1281,7 @@ MLG 25).
 ##  rvest         0.3.2      2016-06-17 CRAN (R 3.4.0)                  
 ##  scales        0.4.1.9002 2017-08-02 Github (hadley/scales@842ad87)  
 ##  seqinr        3.4-5      2017-08-01 CRAN (R 3.4.1)                  
-##  shiny         1.0.3      2017-04-26 CRAN (R 3.4.0)                  
+##  shiny         1.0.5      2017-08-23 cran (@1.0.5)                   
 ##  sp            1.2-5      2017-06-29 CRAN (R 3.4.1)                  
 ##  spdep         0.6-13     2017-04-25 CRAN (R 3.4.0)                  
 ##  splines       3.4.1      2017-07-07 local                           
@@ -1293,7 +1293,7 @@ MLG 25).
 ##  tidyverse   * 1.1.1      2017-01-27 CRAN (R 3.4.0)                  
 ##  tools         3.4.1      2017-07-07 local                           
 ##  utils       * 3.4.1      2017-07-07 local                           
-##  vegan       * 2.4-3      2017-04-07 CRAN (R 3.4.0)                  
+##  vegan       * 2.4-4      2017-08-24 cran (@2.4-4)                   
 ##  withr         2.0.0      2017-07-28 CRAN (R 3.4.1)                  
 ##  xml2          1.1.1      2017-01-24 CRAN (R 3.4.0)                  
 ##  xtable        1.8-2      2016-02-05 CRAN (R 3.4.0)
