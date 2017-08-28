@@ -618,8 +618,13 @@ When we analyze the AMOVA results in light of the DAPC results (Fig. \@ref(DAPC)
 Isolates from these Regions had a higher posterior probability (> 0.75) of being reassigned to their own populations than any other (Fig. \@ref(DAPC)A). 
 All other populations in comparison (except France) has reassignment probabilities of < 0.5, which is reflected in the failure of the first two discriminant functions to separate these populations (Fig. \@ref(DAPC)B).
 
-Despite the evidence that Mexico and CA contributing to a large amount of the population differentiation, Regions like WA still had a large amount of internal variation (Supplementary Information).
-The two distinct clusters for the WA Region showed that the 2008 population appeared different and, under further investigation, we found that the genotypes from this population were shared between CA and France (Fig. \@ref(community-graph), \@ref(DAPC-RY), \@ref(DAPC-RY-FULL)). 
+Despite the evidence that Mexico and CA contributing to a large amount of the population differentiation, Regions like WA still had a large amount of internal variation.
+The two distinct clusters for the WA Region showed that the 2008 population appeared different and, under further investigation, we found that the haplotypes from this population were shared between CA and France (Fig. \@ref(community-graph), \@ref(DAPC-RY), \@ref(DAPC-RY-FULL)). 
+The isolates from WA in 2003--2005, and 2008 all came from the same wmn.
+All of the isolates in 2003--2005 came from the same field location that were cropped with dry bean since 2002 (Miklas, Phil Pers. comm.).
+While white mold pressure had been sufficient for infection in previous years, sclerotia from the central bean company was added to the innoculum load. 
+The 2008 isolates, on the other hand, came from a field that was previously cropped with brassica, sundgrass, peas, and potatoes.
+
 From the DAPC, we extracted 6 loci that had alleles contributing more than the upper 95% quantile of the principal component loadings to either of the first two discriminant axes and found that the alleles with an allele frequency of > 50% in 2007 were reduced to < 10% in 2008, replaced by an allele that was > 2 mutational steps away (Supplementary Information).
 This could be due to several reasons which include mis-labeling of source material or introduction of migrant sclerotia in plant material.
 Except for the WA Region, populations that were sampled across several years appeared to be relatively stable over time with overlapping distributions in the DAPC (i.e. NE and MI, Fig. \@ref(DAPC-RY)). 
