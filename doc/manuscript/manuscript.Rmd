@@ -12,7 +12,7 @@ author:
     email: rjhala2@unl.edu
     affiliation: 1
   - name: Serena McCoy
-    email: ¯\_(ツ)_/¯
+    email: serena.mccoy@icloud.com
     affiliation: 1
   - name: James Steadman
     email: jsteadman1@unl.edu
