@@ -145,7 +145,7 @@ It causes disease on more than 400 plant species belonging to 75 families [@bola
 On dry bean, *S. sclerotiorum* is the causal agent of white mold, a devastating disease that can be a yield-limiting in temperate climates [@steadman1983white].
 
 Currently, there are no known resistant cultivars of dry bean commercially available [@otto-hanson2011variation].
-Organized breeding efforts have been using a common-garden approach with white mold screening nurseries in dry bean production areas across the United States with additional sites in Mexico, France, and Australia [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification]. 
+Organized breeding efforts have been using a common-garden approach with white mold screening nurseries in dry bean production areas across the United States with additional sites in Mexico, France, and Australia [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification; @otto2008identification; @mccoy2009use]. 
 These white mold screening nurseries use no chemical or cultural treatments against *S. sclerotiorum* and employ standardized protocols for screening new cultivars for resistance to white mold. 
 It has previously been shown that aggressiveness (the severity of disease symptoms on the host) is significantly different across white mold screening nursery sites in separate geographic regions [@otto-hanson2011variation].
 The genetic structure and mode of reproduction in these populations, however, is currently unknown.
@@ -174,7 +174,7 @@ By investigating these aims, we hope to effectively describe the population stru
 Several of the isolates used for this study were collected and reported in previous studies and were collected using the same methods [@otto-hanson2011variation].
 Broadly, isolates were collected from two sources, white mold screening nurseries (wmn) or producer fields.
 The white mold screening nurseries were 5m x 10m in size and maintained without applying fungicides to observe natural incidence of white mold.
-The nursery plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of 0:3:2 during the growing season [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification].
+The nursery plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of 0:3:2 during the growing season [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification; @otto2008identification; @mccoy2009use].
 Sampling was carried out by collecting diseased tissue in zig-zag transects across field plots. 
 Because sampling depended on disease incidence, the number of samples isolated varied from year to year.
 Although the nursery locations were the same over sampling years, sampling plots within a location varied for sampling years.
@@ -566,7 +566,7 @@ The only exceptions are CA and Australia. Both of these populations showed only 
  
 In this study, we characterized the diversity of *Sclerotinia sclerotiorum* from dry bean fields across the United States.
 Our results suggest that, broadly, populations from white mold screening nurseries reflect the populations of the surrounding regions, indicating that resistance screening may be successful at a within regions. 
-We found significant population differentiation by geographic region, mainly differentiated into three broad North American groups based on shared genotypes and posterior groupings, a Coastal Region, Midwestern Region, and Mexico. 
+We found significant population differentiation by geographic region and year, mainly differentiated into three broad North American groups based on shared genotypes and posterior groupings, a Coastal Region, Midwestern Region, and Mexico. 
 To date, with 366 isolates, this is the largest single population genetic study of *S. sclerotiorum* assessing population structure within managed and unmanaged agricultural environments. 
 These findings indicate that the wmn can be effective at screening for potential resistant lines within growing regions. 
 
@@ -597,8 +597,8 @@ Either several MCGs belong to one MLG, which could be explained by insufficient 
 Some studies have shown a correlation between MCG and MLG [@aldrich-wolfe2015genetic; @carbone1999patterns; @lehner2015genetic], whereas other studies have shown no apparent correlation, even on small spatial scales [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia].
 
 One long-held assumption was that MCGs (as determined via barrage reaction) represent vegetative compatibility groups (VCGs) [@schafer2006optimized; @kohn1990mycelial; @lehner2015genetic], which are known to have a genetic component [@saupe2000molecular; @hall2010evolution; @strom2016genomes].
-While our results appear to contradict this assumption, our protocol for assessing MCGs utilized a different substrate for these reactions and, thus may not accurately reflect the true MCG dynamics. 
-However, it has been demonstrated in several Ascomycetes---including *Neurospora crassa* [@micali2003independence], *Sclerotinia homoecarpa* [@jo2008reassessment], *Verticillium dahliae* [@papaioannou2014barrage], and *S. sclerotiorum* [@ford1995heterokaryon]---that barrage reactions are independent from stable anastomosis.
+While our protocol for assessing MCGs utilized a different substrate for the MCG reactions, the patterns we observe are not dissimilar from what have previously been reported in the literature.
+It has been demonstrated in several Ascomycetes---including *Neurospora crassa* [@micali2003independence], *Sclerotinia homoecarpa* [@jo2008reassessment], *Verticillium dahliae* [@papaioannou2014barrage], and *S. sclerotiorum* [@ford1995heterokaryon]---that barrage reactions are independent from stable anastomosis.
 Thus, the inconsistencies in this study and other studies indicate that researchers studying *S. sclerotiorum* should not rely on MCG data derived from barrage reactions as an indicator for genetic diversity.  
  
 ## Genotypic Structure {-}
