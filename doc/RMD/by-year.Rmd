@@ -29,6 +29,7 @@ make_amova_table <- function(am, amt, samples = "Region"){
   res <- data.frame(list(am$results[-tot, c("Df", "Sum Sq")], 
                          Percent = am$componentsofcovariance[-tot, 2],
                          Pval    = rev(amt$pvalue), 
+                         Sigma   = am$componentsofcovariance[-tot, 1],
                          Phi     = rev(am$statphi$Phi[-tot])))
   res <- as.matrix(res)
   colnames(res) <- c("d.f.", "Sum of Squares", "Percent variation", "P", 
@@ -84,7 +85,7 @@ make_amova_table(wmn.amova, wmn.amova.test, samples = "Year")
 ```{r, full_amova, cache = TRUE}
 bdfull <- bruvo.dist(dat11cc, replen = other(dat11cc)$REPLEN)
 (full.amova.2 <- poppr.amova(dat11cc, ~Region/Year, dist = bdfull))
-(full.amova.2.test <- randtest(full.amova.2, nrepet = 999))
+(full.amova.2.test <- randtest(full.amova.2, nrepet = 999)) 
 (full.amova.3 <- poppr.amova(dat11cc, ~Region/SourceType/Year, dist = bdfull))
 (full.amova.3.test <- randtest(full.amova.3, nrepet = 999))
 make_amova_table(full.amova.2, full.amova.2.test, samples = "Year")
@@ -102,17 +103,18 @@ make_amova_table(full.amova.3, full.amova.3.test, samples = "Year") %>%
   mutate(ps = gsub("0\\.00(\\d{1})(\\d{2})", "\\1.\\2e^-3^", ps)) %>%
   # mutate(ps = case_when(P > 0.05 ~ ps, TRUE ~ paste0("**", ps, "**"))) %>%
   rename(`$\\Phi$ statistic` = ps) %>%
+  rename(`$\\sigma^2$` = Sigma) %>%
   rename(`% variation` = `Percent variation`) %>%
   rename(S.S. = `Sum of Squares`) %>%
   rename(`*P*` = P) %>%
-  select(c(1:4, 6, 5)) %>%
+  select(c(1:3, 6, 4, 7, 5)) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>% 
-  huxtable::set_col_width(c(0.8, 0.15, 0.15, 0.35, 0.5, 0.15)) %>% 
-  huxtable::set_align(huxtable::everywhere, 2:6, "right") %>% 
+  huxtable::set_col_width(c(0.7, 0.1, 0.12, 0.27, 0.31, 0.42, 0.15)) %>% 
+  huxtable::set_align(huxtable::everywhere, 2:7, "right") %>% 
   huxtable::set_number_format(huxtable::everywhere, 2, 0) %>%
-  huxtable::set_number_format(huxtable::everywhere, 6, 3) %>%
-  huxtable::set_number_format(huxtable::everywhere, 5, 4) %>%
-  huxtable::print_md(max_width = 80)
+  huxtable::set_number_format(huxtable::everywhere, c(4, 6), 3) %>%
+  huxtable::set_number_format(huxtable::everywhere, 7, 4) %>%
+  huxtable::print_md(max_width = 93)
 ```
 
 # DAPC

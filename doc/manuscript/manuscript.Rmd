@@ -498,6 +498,7 @@ read_csv("../../results/tables/AMOVA-year.csv",
          na = "NA", # spaces read in as spaces
          col_types = cols(.default = col_character()))  %>%
   rename(ps = `Phi statistic`) %>%
+  select(-Sigma) %>%
   # mutate_if(is.numeric, format, digits = 3) %>%
   mutate(ps = signif(as.numeric(ps), digits = 3)) %>%
   mutate(ps = gsub("0\\.00(\\d{1})(\\d{2})", "\\1.\\2e^-3^", ps)) %>%

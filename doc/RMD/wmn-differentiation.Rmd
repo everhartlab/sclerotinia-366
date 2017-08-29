@@ -45,6 +45,7 @@ make_amova_table <- function(am, amt, samples = "Region"){
   res <- data.frame(list(am$results[-tot, c("Df", "Sum Sq")], 
                          Percent = am$componentsofcovariance[-tot, 2],
                          Pval    = rev(amt$pvalue), 
+                         # Sigma   = rev(amt$)
                          Phi     = rev(am$statphi$Phi[-tot])))
   res <- as.matrix(res)
   colnames(res) <- c("d.f.", "Sum of Squares", "Percent variation", "P", 
@@ -158,7 +159,7 @@ make_amova_printable(ssc_amova_table, ssc_amova_newami_table) %>%
   huxtable::as_huxtable(add_colnames = TRUE) %>% 
   huxtable::set_col_width(c(1.1, 0.6, 0.8, 0.8, 1.1)) %>% 
   huxtable::set_align(huxtable::everywhere, 2:5, "center") %>% 
-  huxtable::print_md(max_width = 90)
+  huxtable::print_md(max_width = 90) 
 ```
 
 
