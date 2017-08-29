@@ -618,21 +618,28 @@ When we analyze the AMOVA results in light of the DAPC results (Fig. \@ref(DAPC)
 Isolates from these Regions had a higher posterior probability (> 0.75) of being reassigned to their own populations than any other (Fig. \@ref(DAPC)A). 
 All other populations in comparison (except France) has reassignment probabilities of < 0.5, which is reflected in the failure of the first two discriminant functions to separate these populations (Fig. \@ref(DAPC)B).
 
-Despite the evidence that Mexico and CA contributing to a large amount of the population differentiation, Regions like WA still had a large amount of internal variation.
-The two distinct clusters for the WA Region showed that the 2008 population appeared different and, under further investigation, we found that the haplotypes from this population were shared between CA and France (Fig. \@ref(community-graph), \@ref(DAPC-RY), \@ref(DAPC-RY-FULL)). 
-The isolates from WA in 2003--2005, and 2008 all came from the same wmn.
-All of the isolates in 2003--2005 came from the same NE field location that were cropped with dry bean since 2002 (Miklas, Phil Pers. comm.).
-The 2008 isolates, on the other hand, came from a SE field that was previously cropped with brassica, sundgrass, peas, beans, and potatoes.
+These patterns may reflect the degree of innoculum exchange among white mold screening nurseries.
+One possible explanation for these overlapping patterns of uncertainty could be that sclerotia from the source fields (where breeders would bulk their seed) were being transplanted to test fields.
+Because records of these fields were not kept for these purposes, it was not possible to test this hypothesis.
+Another explanation could be that the breeders were all obtaining innoculum from the same source.
+As the purpose of the wmn was to test the resistance of new bean varieties, the breeders needed to ensure that there was enough innoculum pressure in the field to induce disease. 
+To acheive this, it was not uncommon for breeders to innoculate their fields with sclerotia from anyone who had it. 
+These hypotheses, however, do not explain why regional fields are not significantly differentiated and share genotypes with wmn.
+
+Despite the evidence that Mexico and CA contributed to much of the population differentiation, Regions like WA still had a large amount of internal variation.
+The two distinct clusters for the WA Region showed that the 2008 population appeared differentiated and, under further investigation, we found that all the haplotypes from this year were shared between CA and France (Fig. \@ref(community-graph), \@ref(DAPC-RY), \@ref(DAPC-RY-FULL)). 
+All of the isolates from WA in 2003--2005, and 2008 came from the same wmn; those in 2003--2005 came a NE field location cropped with dry bean since 2002, and those in 2008 from a SE field that was previously cropped with brassica, sundgrass, peas, beans, and potatoes (Miklas, Phil Pers. comm.).
 Both of these fields were inoculated with sclerotia in 2002, the NE field with sclerotia provided by a commercial bean producer and the SE field with sclerotia from peas (although this was thought to be unsuccessful).
 Despite this information, it is still unclear what has contributed to the differentiation of the 2008 population from WA.
 While the evidence my suggest host as being a factor, previous studies have shown no significant differentiation across host species [@aldrich-wolfe2015genetic]. 
 
-From the DAPC, we extracted 6 loci that had alleles contributing more than the upper 95% quantile of the principal component loadings to either of the first two discriminant axes and found that the alleles with an allele frequency of > 50% in 2007 were reduced to < 10% in 2008, replaced by an allele that was > 2 mutational steps away (Supplementary Information).
-This could be due to several reasons which include mis-labeling of source material or introduction of migrant sclerotia in plant material.
+<!-- From the DAPC, we extracted 6 loci that had alleles contributing more than the upper 95% quantile of the principal component loadings to either of the first two discriminant axes and found that the alleles with an allele frequency of > 50% in 2007 were reduced to < 10% in 2008, replaced by an allele that was > 2 mutational steps away (Supplementary Information). -->
+<!-- This could be due to several reasons which include mis-labeling of source material or introduction of migrant sclerotia in plant material. -->
+
 Except for the WA Region, populations that were sampled across several years appeared to be relatively stable over time with overlapping distributions in the DAPC (i.e. NE and MI, Fig. \@ref(DAPC-RY)). 
 DAPC is based on the principal components of Euclidean distance between genotypes [@jombart2010discriminant]. 
 Unlike Bruvo's distance, Euclidean distance does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
-We found no evidence of private alleles in the Mexico and CA isolates, suggesting that this pattern separating these populations from the others was not an artifact. 
+We found no evidence of private alleles in the Mexico and CA isolates, suggesting that this pattern separating these populations from the others was not an artifact.
 
 It has been proposed within the *S. sclerotiorum* literature that isolates from sub-tropical and tropical climates are differentiated or more variable than populations from temperate climates [@lehner2017sclerotinia;@carbone2001multilocus; @attanayake2013sclerotinia]. 
 This has been attributed to the notion that the fungus has the chance to undergo more reproductive cycles in the warmer climate [@carbone2001multilocus; @attanayake2013sclerotinia]. 
