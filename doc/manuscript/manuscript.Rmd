@@ -677,7 +677,7 @@ While we found no direct relationship between genotype and severity, it is evide
 
 ## Data Availability {-}
 
-All scripts, data, and resources used to generate the results presented in this publication (including supplementary information) are fully reproducible and available at https://github.com/everhartlab/sclerotinia-366/ and archived at ZENODO. 
+All scripts, data, and resources used to generate the results presented in this publication (including supplementary information) are fully reproducible and available at The Open Science Framework https://osf.io/ejb5y. 
 
 ## Acknowledgements {-}
 
