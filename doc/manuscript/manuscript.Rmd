@@ -29,9 +29,10 @@ abstract: >
 header-includes: >
   \usepackage{indentfirst}
 bibliography: ssc_bibliography.bib
+csl: apa.csl
 output: 
   rticles::peerj_article:
-    citation_package: natbib
+    citation_package: none
     base_format: bookdown::pdf_document2 # for using \@ref()
 ---
 
@@ -700,7 +701,10 @@ The authors declare no conflict of interest.
 
  - **Sydney E. Everhart** ...
 
+\newpage
+
 # Supplementary Information {-}
+
 
 <!-- This part is necessary for adding the "S" before supplementary figures.
 Will not work with HTML outputs, though. -->
@@ -844,3 +848,7 @@ The center of each component is represented as black grid lines.
 <!-- end figure -->
 
 \newpage
+
+# References {-}
+
+
