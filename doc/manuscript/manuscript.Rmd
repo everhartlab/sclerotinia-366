@@ -609,7 +609,11 @@ Our network-based approach by treating the genotypes as edges and weighting each
 This allowed us to use a graph walking algorithm to see how close the populations were simply based off of the proportion of clones they shared.
 The most abundant genotype was shared across four populations, but its high value of $P_{sex}$ meant that it did not contribute significantly to the overall structure. 
 The graph walking algorithm was able to divide the network into three groups, but had a modularity of 0.17, which indicates that the groups are only weakly differentiated.
-This indicates that multilocus genotypes are widespread across the United States, giving more evidence for a clonal population structure.
+
+The widespread nature of multilocus genotypes in both wmn and production fields with relatively small values of $P_{sex}$ may indicate the spread of inoculum between regions. 
+It has previously been shown that infections can be transmitted through seed [@botelho2013performance], but seedborne transmission is thought to be of insignificant epidemiological importance [@strausbaugh2003management].
+Thus, we hypothesize that shared genotypes between populations may arise due to transmission events of seed or sclerotia.
+However, because we observe population structure based on Region, we speculate that these transmission events are rare. 
 
 ## Population Differentiation {-}
 
@@ -619,14 +623,6 @@ When we analyze the AMOVA results in light of the DAPC results (Fig. \@ref(DAPC)
 Isolates from these Regions had a higher posterior probability (> 0.75) of being reassigned to their own populations than any other (Fig. \@ref(DAPC)A). 
 All other populations in comparison (except France) has reassignment probabilities of < 0.5, which is reflected in the failure of the first two discriminant functions to separate these populations (Fig. \@ref(DAPC)B).
 
-These patterns may reflect the degree of innoculum exchange among white mold screening nurseries.
-One possible explanation for these overlapping patterns of uncertainty could be that sclerotia from the source fields (where breeders would bulk their seed) were being transplanted to test fields.
-Because records of these fields were not kept for these purposes, it was not possible to test this hypothesis.
-Another explanation could be that the breeders were all obtaining innoculum from the same source.
-As the purpose of the wmn was to test the resistance of new bean varieties, the breeders needed to ensure that there was enough innoculum pressure in the field to induce disease. 
-To acheive this, it was not uncommon for breeders to innoculate their fields with sclerotia from anyone who had it. 
-These hypotheses, however, do not explain why regional fields are not significantly differentiated and share genotypes with wmn.
-
 Despite the evidence that Mexico and CA contributed to much of the population differentiation, Regions like WA still had a large amount of internal variation.
 The two distinct clusters for the WA Region showed that the 2008 population appeared differentiated and, under further investigation, we found that all the haplotypes from this year were shared between CA and France (Fig. \@ref(community-graph), \@ref(DAPC-RY), \@ref(DAPC-RY-FULL)). 
 All of the isolates from WA in 2003--2005, and 2008 came from the same wmn; those in 2003--2005 came a NE field location cropped with dry bean since 2002, and those in 2008 from a SE field that was previously cropped with brassica, sundgrass, peas, beans, and potatoes (Miklas, Phil Pers. comm.).
@@ -634,10 +630,7 @@ Both of these fields were inoculated with sclerotia in 2002, the NE field with s
 Despite this information, it is still unclear what has contributed to the differentiation of the 2008 population from WA.
 While the evidence my suggest host as being a factor, previous studies have shown no significant differentiation across host species [@aldrich-wolfe2015genetic]. 
 
-<!-- From the DAPC, we extracted 6 loci that had alleles contributing more than the upper 95% quantile of the principal component loadings to either of the first two discriminant axes and found that the alleles with an allele frequency of > 50% in 2007 were reduced to < 10% in 2008, replaced by an allele that was > 2 mutational steps away (Supplementary Information). -->
-<!-- This could be due to several reasons which include mis-labeling of source material or introduction of migrant sclerotia in plant material. -->
-
-Except for the WA Region, populations that were sampled across several years appeared to be relatively stable over time with overlapping distributions in the DAPC (i.e. NE and MI, Fig. \@ref(DAPC-RY)). 
+With the exception of the WA Region, populations that were sampled across several years appeared to be relatively stable over time with overlapping distributions in the DAPC (i.e. NE and MI, Fig. \@ref(DAPC-RY)). 
 DAPC is based on the principal components of Euclidean distance between genotypes [@jombart2010discriminant]. 
 Unlike Bruvo's distance, Euclidean distance does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
 We found no evidence of private alleles in the Mexico and CA isolates, suggesting that this pattern separating these populations from the others was not an artifact.
