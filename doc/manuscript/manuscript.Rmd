@@ -146,7 +146,7 @@ It causes disease on more than 400 plant species belonging to 75 families [@bola
 On dry bean, *S. sclerotiorum* is the causal agent of white mold, a devastating disease that can be a yield-limiting in temperate climates [@steadman1983white].
 
 Currently, there are no known resistant cultivars of dry bean commercially available [@otto-hanson2011variation].
-Organized breeding efforts have been using a common-garden approach with white mold screening nurseries in dry bean production areas across the United States with additional sites in Mexico, France, and Australia [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification; @otto2008identification; @mccoy2009use]. 
+Organized breeding efforts have used a common-garden approach with white mold screening nurseries in dry bean production areas across the United States with additional sites in Mexico, France, and Australia [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification; @otto2008identification; @mccoy2009use]. 
 These white mold screening nurseries use no chemical or cultural treatments against *S. sclerotiorum* and employ standardized protocols for screening new cultivars for resistance to white mold. 
 It has previously been shown that aggressiveness (the severity of disease symptoms on the host) is significantly different across white mold screening nursery sites in separate geographic regions [@otto-hanson2011variation].
 The genetic structure and mode of reproduction in these populations, however, is currently unknown.
@@ -158,7 +158,7 @@ Some studies, however have found populations that show signatures of sexual repr
 
 Nearly all population genetic studies of *S. sclerotiorum* employ a macroscopic assay to determine mycelial compatibility, the ability for fungal hyphae from different colonies to appear to grow together without forming a barrier of dead cells between them (known as a barrage line) [@leslie1993fungal; @sirjusingh2001characterisation].
 Mycelial compatibility has been used as a proxy for vegetative compatibility, a fungal trait controlled by several independent genes controlling the ability for two hyphae to fuse and grow as a single unit [@leslie1993fungal; @schafer2006optimized].
-Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible have been considered to be clones, but correlation with genetic markers such as microsatellites have shown mixed results [@attanayake2012genetic; @lehner2017independently; @leslie1993fungal].
+Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible were considered clones [@leslie1993fungal]; but correlation with genetic markers, such as microsatellites, have shown mixed results [@attanayake2012genetic; @lehner2017independently].
 
 In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected between 2003 and 2012 from dry bean cultivars among different geographic locations in the United States, France, Mexico, and Australia. 
 We wanted to know if the *S. sclerotiorum* populations from white mold screening nurseries were representative of the fields within the same region. 
