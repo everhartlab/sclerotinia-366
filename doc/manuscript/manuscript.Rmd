@@ -186,13 +186,13 @@ Although the nursery locations were the same over sampling years, sampling plots
 Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or wmn in 11 states of the United States of America, Mexico, France, and Australia (Table \@ref(tab:isolate-table)). 
 After collection, sclerotia were stored in Petri plates lined with filter paper, then stored at $20~^{\circ}$F or -$4~^{\circ}$C. 
 Sclerotia were surface-sterilized with 50% sodium hypochlorite (at least 6% NaOCL, The Clorox Company, Oakland, CA) solution for 3 min, and double rinsed with ddH$_2$O 3 min.
-The sterilized sclerotia were then plated on water agar plates (16g of Bacto agar per liter of ddH$_2$O), with four to five sclerotia of each isolate separated on each plate and stored on the counter top at room temperature for 5 to 6 days. 
+The sterilized sclerotia were then plated on water agar plates (16g of Bacto agar per liter of ddH$_2$O, BD Diagnostic Systems, Sparks, MD), with four to five sclerotia of each isolate separated on each plate and stored on the counter top at room temperature for 5 to 6 days. 
 An 8-mm plug from a 5- or 6-day-old culture was transferred from the advancing margin of the mycelia onto a plate of Difco potato dextrose agar (PDA at 39 g/liter of ddH$_2$O) [@otto-hanson2011variation].
 In combination with the 156 isolates described previously, we collected 210 isolates for a total of 366 isolates [@otto-hanson2011variation].
 
 ## Mycelial Compatibility {-}
 
-MCG was determined as described previously through co-culturing pairs of 2-day-old isolates 2.5cm apart on Diana Sermons (DS) Medium [@cubeta2001mycelial]. 
+MCG was determined as described previously through co-culturing pairs of 2-day-old isolates 2.5 cm apart on Diana Sermons (DS) Medium [@cubeta2001mycelial]. 
 Incompatibility of different MCGs resulted in formation of a mycelial barrier of dead tissue (termed a barrage line) accompanied by formation of sclerotia on either side of the barrage line, indicating the limits of the isolates' growth [@otto-hanson2011variation; @kohn1990mycelial; @leslie1993fungal].
 Isolates were compared in a pairwise manner for each site and then representatives among sites were compared to determine mycelial compatibility groups by scoring compatible and incompatible interactions [@otto-hanson2011variation]. 
 
@@ -206,35 +206,35 @@ B) Incompatible reaction showing barrage reaction of dead cells at point of cont
 
 Aggressiveness of each isolate was assessed using a straw test as described in @otto-hanson2011variation that rated necrotic lesion size [@petzoldt1996straw; @teran2006modified].
 Briefly, the straw test uses 21-day-old G122 plants as the host in a greenhouse setting. 
-Clear drinking straws cut to 2.5cm and sealed were used to place two mycelial plugs of inoculum on the host plant after removing all plant growth &gt;2.5cm above the fourth node.
-Measurements were taken after 8 days using the Modified Petzoldt and Dickson scale where a score of 1--9 where 1 is no disease and 9 is plant death [@petzoldt1996straw; @teran2006modified].
+Clear drinking straws cut to 2.5 cm and sealed were used to place two mycelial plugs of inoculum on the host plant after removing all plant growth &gt;2.5 cm above the fourth node.
+Measurements were taken 8 days later using the Modified Petzoldt and Dickson scale of 1--9, where 1 is no disease and 9 is plant death [@petzoldt1996straw; @teran2006modified].
 
 ## Microsatellite genotyping {-}
 
 Prior to DNA extraction, isolates were grown on PDA and plugs were subsequently transferred to Potato Dextrose Broth (PDB) where they were grown until there was significant mycelial growth, but before the mycelial mat became solidified (4--5 days).
-Mycelial was collected in a buchner funnel, agar plugs removed, lyophilized and pulverized manually in whirl-pak bags. 
+Mycelia for each plate was collected in a buchner funnel, agar plugs removed, lyophilized and pulverized manually in Whirl-pak® HDPE sampling bags (Sigma-Aldrich, St. Louis, MO). 
 Lyophilized mycelia was then stored in microcentrifuge tubes at -$20~^{\circ}$C until needed for DNA extraction.
-DNA from 25mg of pulverized mycelia was purified using a phenol-chloroform extraction method followed by alcohol precipitation, suspending the DNA in 200$\mu$l TE [@sambrook1989molecular].
+DNA from 25mg of pulverized mycelia was purified using a phenol-chloroform extraction method followed by alcohol precipitation and evaporation, suspending the DNA in 200$\mu$l TE [@sambrook1989molecular].
 Suspended DNA was stored at $4~^{\circ}$C until genotyping.
 
-We genotyped *S. sclerotiorum* isolates using 16 microsatellite primer pairs developed previously [@sirjusingh2001characterisation].
-PCR was carried out as described using primers labeled with FAM fluorophore, and resulting amplicons were first resolved in a 1.5% agarose gel stained with ethidium bromide to ensure product was within the expected size range prior to capillary electrophoresis.
-
-Capillary electrophoresis (fragment analysis) of amplicons, with size standard GeneScan™ 500 LIZ®, was performed using an ABI 3730 genetic analyzer (Life Technologies Corporation, Carlsbad, CA) at the Michigan State University Genomic Sequencing Center. 
+We genotyped each *S. sclerotiorum* isolate using 16 microsatellite primer pairs developed previously [@sirjusingh2001characterisation].
+PCR was carried out as described previously, using primers labeled with FAM fluorophore.
+Resulting amplicons were first resolved in a 1.5% agarose gel stained with ethidium bromide to ensure product was within the expected size range prior to capillary electrophoresis.
+Capillary electrophoresis (fragment analysis) of amplicons, with size standard GeneScan™ 500 LIZ®, was performed using an ABI 3730 genetic analyzer (Life Technologies Corporation, Carlsbad, CA) at the Michigan State University Genomic Sequencing Center (East Lansing, MI). 
 Alleles were scored using PeakScanner version 1.0 (Life Technologies Corporation, Carlsbad, CA) and recorded manually in an excel sheet.
 
 ## Data processing and Analysis{-}
 
-All analyses were performed on this data set unless otherwise mentioned.
+<!-- All analyses were performed on this data set unless otherwise mentioned. -->
 All data processing and analyses were performed in `r R.version.string %>% strsplit("\\(") %>% map_chr(1)`[@R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/.
-Of the 16 microsatellite loci genotyped, five included compound repeats, which made it challenging to accurately/confidently bin alleles into fragment sizes expected for each locus based on the described repeat motif. 
-<!-- add something about repeat length consistency  -->
-Loci with compound repeats were removed for the reported statistics, but were processed and included in data analyses to ensure the integrity of the results with 11 loci as compared to 16.
+Of the 16 microsatellite loci genotyped, five included compound repeats, which made it challenging to accurately/confidently bin alleles into fragment sizes expected for each locus based on the described repeat motif.
+Loci with compound repeats were removed for the reported statistics.
+To ensure the integrity of the results we additionally processed these loci and included them in concurrent analyses.
 We assessed the power of our 11 markers by generating a genotype accumulation curve in the R package *poppr* version `r packageVersion("poppr")`, looking for evidence of saturation, which would indicate that loci were sufficiently sampled to adequately represent the full set of haplotypes [@arnaud2007standardizing; @kamvar2015novel].
-To avoid including isolates potentially collected from the same plant (which increases the probability of collecting sclerotioa from the same point of infection more than once), data were clone-corrected on a hierarchy of Region/Source/Host/Year---meaning that one representative of each haplotype was retained for each nested combination of Region, Source, Host, and Year---for subsequent analysis. 
-We assessed genotypic diversity by calculating Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], and evenness ($E_5$, *eMLH*) [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
+To avoid including isolates potentially collected from the same plant (which increases the probability of collecting sclerotia from the same point of infection more than once), data were clone-corrected on a hierarchy of Region/Source/Host/Year---meaning that duplicated genotypes were reduced to a single observation when they were collected in the same year from the same host cultivar located in the same source field (wmn or producer)---for subsequent analysis. 
+We assessed haplotype diversity by calculating Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], and evenness ($E_5$, *eMLH*) [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
 To assess the potential for random mating, we tested for linkage disequilibrium with the index of association, $I_A$ and its standardized version, $\bar{r}_d$ using 999 permutations [@agapow2001indices; @smith1993how; @brown1980multilocus].
-Both genotypic diversity and linkage disequilibrium were calculated in *poppr* [@kamvar2014poppr].
+Both haplotype diversity and linkage disequilibrium were calculated in *poppr* [@kamvar2014poppr].
 
 ## Assessing Importance of Variables  {-}
 
