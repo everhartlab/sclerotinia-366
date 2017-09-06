@@ -160,12 +160,13 @@ Nearly all population genetic studies of *S. sclerotiorum* employ a macroscopic 
 Mycelial compatibility has been used as a proxy for vegetative compatibility, a fungal trait controlled by several independent genes controlling the ability for two hyphae to fuse and grow as a single unit [@leslie1993fungal; @schafer2006optimized].
 Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible were considered clones [@leslie1993fungal]; but correlation with genetic markers, such as microsatellites, have shown mixed results [@attanayake2012genetic; @lehner2017independently].
 
-In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected between 2003 and 2012 from dry bean cultivars among different geographic locations in the United States, France, Mexico, and Australia. 
+In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected over 10 years between 2003 and 2012 from dry bean cultivars among different geographic locations in the United States, France, Mexico, and Australia. 
 We wanted to know if the *S. sclerotiorum* populations from white mold screening nurseries were representative of the fields within the same region. 
-As these nurseries are not treated with any chemical or cultural control of white mold, we hypothesized that these nurseries would represent the natural population of *S. sclerotiorum*.
+As these nurseries were not treated with any chemical or cultural control of white mold, we hypothesized that these nurseries would represent the natural population of *S. sclerotiorum*.
 Furthermore, we wanted to investigate the potential effect of cultivar on genetic diversity by assessing three dry bean cultivars with different levels of resistance, Beryl (great northern bean, susceptible), Bunsi (navy bean, low susceptibility), and G122 (cranberry bean, partial resistance) [@otto-hanson2011variation].
 We additionally wanted to determine categorical or phenotypic variables that best predicted genetic structure and if there was correlation between multilocus haplotype and mycelial compatibility group.
-By investigating these aims, we hope to effectively describe the population structure of *S. sclerotiorum* in the USA and make available our database of isolates for use in future dry bean breeding efforts. 
+Knowing what variables predict genetic structure can help direct breeding efforts.
+By investigating these aims, we hope to effectively describe the population structure of *S. sclerotiorum* in the USA and make available our database of isolates for use in future dry bean breeding efforts.
 
 
 # Materials and Methods {-}
