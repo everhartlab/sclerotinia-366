@@ -325,7 +325,7 @@ Four regions had fewer than 10 isolates, Australia (`r pop_size[["Australia"]]`)
 We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 isolates over 37 MLHs (Fig \@ref(biggraph)A,C).
 
 The number of observed alleles per locus ranged from two to 10 with an average of `r signif(Amean, 3)` (Table \@ref(tab:locus-stats)).
-Locus `r locus_table$Locus[locus_table$allele==2]`, which contained only 2 alleles, showed low values of both *h* (`r signif(locus_table$Hexp[locus_table$allele==2], 3)`) and evenness (`r signif(locus_table$Evenness[locus_table$allele==2], 3)`), indicating that there was one dominant allele present. 
+Locus `r loc_table$Locus[loc_table$allele==2]`, which contained only 2 alleles, showed low values of both *h* (`r signif(loc_table$Hexp[loc_table$allele==2], 3)`) and evenness (`r signif(loc_table$Evenness[loc_table$allele==2], 3)`), indicating that there was one dominant allele present. 
 Analysis of the haplotype accumulation curve showed no clear plateau (Supplemental Information), indicating that we would likely obtain more multilocus haplotypes if we were to genotype more loci. 
 
 After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLHs (Table \@ref(tab:iatab)).
