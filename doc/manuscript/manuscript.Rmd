@@ -814,7 +814,7 @@ Key abbreviations: wmn = white mold screening nursery, producer = producer field
 Regionagg %>% agghux
 ```
 
-Table: (\#tab:region-aggressiveness) Mean aggressiveness ratings for the Regions with greater than 5 samples; groupings according to 95% family-wise confidence interval.
+Table: (\#tab:region-aggressiveness) Mean aggressiveness ratings for Regions with more than five samples; groupings according to 95% family-wise confidence interval.
 
 ```{r MCG-ag, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 MCGagg %>% agghux
