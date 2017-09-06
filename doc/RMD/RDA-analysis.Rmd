@@ -296,7 +296,7 @@ knitr::kable(vartab(cap16sum), digits = 3)
 ## Variance partitioning
 
 First, we want to examine how the entire data fits with the model. We will use
-the alleles as the representative of the entire data.
+the alleles as the representative of the entire data. 
 
 ```{r varpart1}
 dat11raw <- genind2df(dat11cc, usepop = FALSE) %>% mutate_all(funs(as.integer(.)))
