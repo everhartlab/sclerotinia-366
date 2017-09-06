@@ -122,6 +122,29 @@ RDAVAR2   <- andlist(gsub("Severity", "Aggressiveness", names(anova2res)))
 # MLG/MCG comparison
 
 big_haplotype <- in_reach %>% filter(N == max(N))
+
+# Aggressiveness tables --------------------------------------------------
+agghux <- . %>%   huxtable::as_huxtable(add_colnames = TRUE) %>%
+  huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
+  huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
+  huxtable::set_align(row = huxtable::everywhere, col = 2, "right") %>%
+  huxtable::print_md(max_width = 40)
+
+Regionagg <- read_csv("../../results/tables/Region-aggressiveness.csv", 
+         na = "NA", # spaces read in as spaces
+         col_types = cols(.default = col_character()))
+
+MCGagg <- read_csv("../../results/tables/MCG-aggressiveness.csv", 
+         na = "NA", # spaces read in as spaces
+         col_types = cols(.default = col_character()))
+MLHagg <- read_csv("../../results/tables/MLG-aggressiveness.csv", 
+         na = "NA", # spaces read in as spaces
+         col_types = cols(.default = col_character())) %>%
+  rename(MLH = MLG) 
+
+Raggmean <- mean(as.numeric(Regionagg[[2]]))
+Maggmean <- mean(as.numeric(MCGagg[[2]]))
+Haggmean <- mean(as.numeric(MLHagg[[2]]))
 ```
 
 
@@ -296,12 +319,20 @@ To ensure that we captured the same community signal, we additionally performed 
 # Results {-}
 
 A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in Australia, Mexico, France, and 11 states in the USA (Table \@ref(tab:isolate-table)).
+We observed a total of 165 MLHs (215 with 16 loci).
 Over 50% of the isolates came from four states, MI (`r pop_size[["MI"]]`), ND (`r pop_size[["ND"]]`), WA (`r pop_size[["WA"]]`), NE (`r pop_size[["NE"]]`). 
 Four regions had fewer than 10 isolates, Australia (`r pop_size[["Australia"]]`), WI (`r pop_size[["WI"]]`), NY (`r pop_size[["NY"]]`), ID (`r pop_size[["ID"]]`).
 We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 isolates over 37 MLHs (Fig \@ref(biggraph)A,C).
-Analysis of the haplotype accumulation curve showed no clear plateau (Supplemental Information), indicating that we would likely obtain more multilocus haplotypes if we were to haplotype more loci. The number of observed alleles per locus ranged from two to 10 with an average of `r signif(Amean, 3)` (Table \@ref(tab:locus-stats)).
-After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLHs (Table \@ref(tab:iatab)).
 
+The number of observed alleles per locus ranged from two to 10 with an average of `r signif(Amean, 3)` (Table \@ref(tab:locus-stats)).
+Locus `r locus_table$Locus[locus_table$allele==2]`, which contained only 2 alleles, showed low values of both *h* (`r signif(locus_table$Hexp[locus_table$allele==2], 3)`) and evenness (`r signif(locus_table$Evenness[locus_table$allele==2], 3)`), indicating that there was one dominant allele present. 
+Analysis of the haplotype accumulation curve showed no clear plateau (Supplemental Information), indicating that we would likely obtain more multilocus haplotypes if we were to genotype more loci. 
+
+After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLHs (Table \@ref(tab:iatab)).
+The results show that most populations exhibited relatively high amounts of genotypic diversity, with the exception of MI and NE, which exhibited lower-than average $E_5$ values.
+Mexico had the lowest average value of gene diversity, *h* and the lowest *eMLH*, suggesting low overall genetic diversity. 
+Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
+The only exceptions are CA and Australia. Both of these populations showed only moderate significance (P < 0.05) with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
 
 ```{r , echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 loc_table %>%
@@ -380,7 +411,7 @@ read_csv("../../results/tables/genotype_diversity_table_region.csv",
 
 Table: (\#tab:iatab) Genotypic diversity and Linkage Disequilibrium summary for geographic populations arranged by abundance after clone-correction by a hierarchy of Region/Source/Host/Year. 
 Pop = Population, N = number of individuals (number of MLH in parentheses), 
-eMLH = expected number of MLHs based on rarefaction at min(10, N) individuals (standard error in parentheses), 
+eMLH = expected number of MLHs based on rarefaction at 10 individuals (standard error in parentheses), 
 H = Shannon-Weiner Index, G = Stoddardt and Taylor's Index, 
 $\lambda$ = Simpson's Index, 
 *h* = Nei's 1978 gene diversity, 
@@ -391,14 +422,14 @@ An asterix indicates a significant value of $\bar{r}_d$ after 999 permutations, 
 <!-- MCG graph figure -->
 
 ![
-Data show complex associations between Mycelial Compatibility Groups and Multilocus Haplotypes.
+Associations between Mycelial Compatibility Groups and Multilocus Haplotypes.
 **A)** Barplot of Mycelial Compatibility Group (MCG) abundance in descending order.
 Singletons (46) were truncated, leaving 41 MCGs.
 White bars represent sample counts and grey bars represent counts of unique multilocus haplotypes (MLH).
 The transparency of the bars represent the evenness of the distribution of the MLHs within a given MCG.
-A dashed box surrounds the 8 most common MCGs representing > 51% of the data.
+A dashed box surrounds the eight most common MCGs representing > 51% of the data.
 **B)** Full graph-representation of the relationship between MCGs (open circles) and MLHs (filled circles).
-Details in fig. \@ref(fullgraph). 
+Details in Fig. \@ref(fullgraph). 
 **C)** A subset of **B** representing the 8 most common MCGs and their associated MLHs (dashed box in **A**).
 Filled nodes represent MLHs and open nodes represent MCGs.
 Numbers inside nodes are the MLH/MCG label. 
@@ -414,21 +445,21 @@ Edges extending from MLHs displayed to other MCGs are not shown.
 ### Variable Importance {-}
 
 The forward-backward selection process of the dbRDA models on clone-corrected data revealed `r RDAVAR1` to be the optimal variables for the reduced model, accounting for `r prettify(vartab(caplist1$components)[2, "Proportion"])`% of the total variation.
-ANOVA revealed that the reduced model was significant with an adjusted R^2^ of `r RDA1R2` (*P* = 0.001).
-Assessment of the marginal effects showed that all of these varaibles significantly explained genetic variation (*P* = `r anova1res[["Year"]]`, *P* = `r anova1res[["Region"]]` for region).
-It was revealed that there was multicollinearity when MCG was combined with any other variable, so we followed the same procedure, dropping MCG from the list of potential predictors. 
-From these results, we found that `r RDAVAR2` were optimal, accounting for `r prettify(vartab(caplist2$components)[2, "Proportion"])`% of the total variation.
+ANOVA showed that the reduced model was significant with an adjusted R^2^ of `r RDA1R2` (*P* = 0.001).
+Assessment of the marginal effects showed that all varaibles significantly explained genetic variation (*P* = `r anova1res[["Year"]]`, *P* = `r anova1res[["Region"]]` for Region).
+We found that there was multicollinearity when MCG was combined with any other variable, so repeated the analysis, dropping MCG from the list of potential predictors. 
+From these results, `r RDAVAR2` were found to be optimal, accounting for `r prettify(vartab(caplist2$components)[2, "Proportion"])`% of the total variation.
 ANOVA revealed significant effects with an adjusted R^2^ of `r RDA2R2` (*P* = 0.001).
-While the marginal effect assessment showed that `r andlist(names(anova2res)[anova2res <= 0.01])` all significantly explained the variation at *P* = `r anova2res[["Year"]]`, and Aggressiveness significantly explained the variation at *P* = `r anova2res[["Severity"]]`.
-Much of the variation appears to be driven by isolates from Mexico and 2005 (Fig. \@ref(rda-biplot)).
-Variance partitioning of the independent variables without MCG indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data whereas the combination of variables accounted for 3.3%.
+While the marginal effect assessment revealed that `r andlist(names(anova2res)[anova2res <= 0.01])` significantly explained variation at *P* = `r anova2res[["Year"]]`, and Aggressiveness significantly explained variation at *P* = `r anova2res[["Severity"]]`.
+Much of the variation appeared to be driven by isolates from Mexico and 2005 (Fig. \@ref(rda-biplot)).
+Variance partitioning of the independent variables without MCG indicated aggressiveness to be the least influential factor with 0.1% contributing to explaining the variation of molecular data, whereas the combination of variables accounted for 3.3%.
 
 <!-- RDA figure -->
 
 ![
-Biplot showing five most influential explanatory variables (arrows) overlayed on the first two eigenvectors of distance based redundancy analysis of *S. sclerotiorum* isolates. 
+Biplot showing five most influential explanatory variables (arrows) overlayed on the first two eigenvectors of distance based redundancy analysis of *Sclerotinia sclerotiorum* isolates. 
 The length of the arrows are directly proportional to the strength of the correlation between explanatory and molecular variables. 
-Open circles represent the 318 clone-corrected samples in ordination space. 
+Open circles represent the 318 clone-corrected haplotypes in ordination space. 
 ](../../results/figures/publication/Figure7Z.pdf){#rda-biplot width=61%}
 
 <!-- end figure -->
@@ -438,34 +469,38 @@ Open circles represent the 318 clone-corrected samples in ordination space.
 <!-- aggressiveness figure -->
 
 ![
-Boxplot representing aggressiveness (vertical axis) by population (horizontal axis) arranged in descending order of mean aggressiveness for all populations with N > 5. Box boundaries represent 25% and 75% percentiles and whiskers extend to at most 1.5 $\times$ the interquartile range. Horizontal line represents median value. Circles represent individual observations where filled circles indicate isolates from white mold screening nurseries (wmn).
+Boxplot of aggressiveness by population arranged in descending order of mean aggressiveness for all populations with N > 5. Box boundaries represent 25th and 75th percentiles and whiskers extend to at most 1.5 $\times$ the interquartile range. Horizontal line represents median value. Circles represent individual isolates where filled circles are isolates from white mold screening nurseries (wmn) and open circles are isolates from producer fields.
 ](../../results/figures/publication/aggressiveness.pdf){#aggressiveness-boxplot}
 
 <!-- end figure -->
 
-Our assessment of aggressiveness in association with Region showed a significant effect (P < 1.00e^-4^), with means that ranged from 5.8 (MN) to 4.0 (CA) (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
-MCGs also showed a significant effect (P < 1.00e^-4^), with means that ranged from 6.0 ('MCG 44') to 4.6 ('MCG 49') (Table \@ref(tab:MCG-aggressiveness)).
+Agressiveness of the isolates ranged from `r paste(range(other(dat11)$meta$Severity), collapse = " to ")` with a mean of `r signif(mean(other(dat11)$meta$Severity), 3)` and median of `r signif(median(other(dat11)$meta$Severity), 3)`.
+The group mean averages were `r sprintf("%0.2f, %0.2f, and %0.2f", Raggmean, Maggmean, Haggmean)` for Region, MCG, and MLH, respectively.
+Our assessment of aggressiveness in association with Region showed a significant effect (*P* < 1.00e^-4^), with means that ranged from 5.8 (MN) to 4.0 (CA) (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
+MCGs also showed a significant effect (*P* < 1.00e^-4^), with means that ranged from 6.0 ('MCG 44') to 4.6 ('MCG 49'; Table \@ref(tab:MCG-aggressiveness)).
 We additionally found a significant effect for MLHs (*P* = 7.44e^-4^) for MLHs, with means that ranged from 6.0 ('MLH 78') to 4.3 ('MLH 140') (Table \@ref(tab:MLG-aggressiveness)).
 
 ### Correlation of Mulitlocus Haplotypes and Mycelial Compatibility Groups {-}
 
+In our analysis, we found `r nmll(dat11)` MLHs with `r sum(table(mll(dat11)) == 1)` singletons and `r nPop(setPop(dat11, ~MCG))` MCGs with `r sum(table(strata(dat11)$MCG) == 1)` singletons (Fig. \@ref(biggraph)A,B) where the eight most abundant MCGs represented > 51% of the data over 11 Regions, and all years except for 2012.
 Our network-based approach to correlating MLHs with MCGs revealed a large and complex network (Fig. \@ref(biggraph)). 
 Community analysis showed 51 communities, `r sum(in_reach$N == 0)` of which consisted of a single MLH unconnected with any other community indicating that just `r prettify(mean(in_reach$N == 0))`% of the 165 MLHs are unable to cross with any other MLH in this data set (Fig. \@ref(fullgraph)).
 The three communities with the most members contained eight of the 10 most abundant MCGs. 
-Comparing these communities with Bruvo's genetic distance revealed an average distance of 0.451 among communities and an average distance of 0.437 within communities, showing no significant difference.
+Comparing these communities with Bruvo's genetic distance showed an average distance of 0.451 among communities and an average distance of 0.437 within communities, which were not significantly different.
 When we assessed the number of times two different MLHs that are in the same MCG, considering these as potential heterothallic pairings that could result in sexual recombination, we found an average of `r signif(mean(in_reach$N), 3)` potential heterothallic parings per MLH. 
 Representing just four isolates, 'MLH 75' had `r big_haplotype$N` neighbors that shared the same mycelial compatibility group (Fig \@ref(biggraph), \@ref(fullgraph)). 
 Overall, there was no clear pattern to the association between MLH and MCGs. 
 
 ## Structure of Shared Multilocus Haplotypes {-}
 
-We observed a total of 165 MLHs (215 with 16 loci).
-The most abundant MLH was represented by 27 isolates (Table \@ref(tab:mlg-table)) from five regions (NE, MI, WA, CO, and ND). 
-Within regions, the haplotypes were relatively evenly distributed with moderate to high diversity (Table \@ref(tab:iatab)). 
-Of the 165 MLHs, 76 (46%) were found in at least two geographic regions except those found in WI (2), ID (1), and Mexico (18) (Fig. \@ref(community-graph)).
-Community analysis of the MLHs shared between populations revealed 4 communities with a modularity of 0.17 (Fig. \@ref(community-graph)): A coastal community (CA, OR, WA, and NY), a midwest community (CO, NE, ND, MI), and an international community (MN, France, Australia).
-Analysis with 16 loci resulted in the removal of the NY node because it no longer shared a haplotype with OR, but the same overall community structure was present with a modularity of 0.2 (Fig. \@ref(community-graph16)).
-The international community appears to be driven by MLH 4, which is shared between all three populations and has a $P_{sex}$ value of 2.87e^-5^, in contrast to the abundant MLH 25, which has a $P_{sex}$ value of 0.0168.
+The most abundant MLH was represented by 27 isolates (Table \@ref(tab:mlg-table)) from five Regions (NE, MI, WA, CO, and ND). 
+Within Regions, haplotypes were relatively evenly distributed with moderate to high diversity (Table \@ref(tab:iatab)). 
+Of the 165 MLHs, 76 (46%) were found in at least two Regions, except those found in WI (2), ID (1), and Mexico (18) (Fig. \@ref(community-graph)).
+
+We had performed an analysis on a network where the connections represented shared MLHs across populations, weighted by $1 - P_{sex}$ (Fig. \@ref(community-graph)). 
+Community analysis of the MLHs shared between populations revealed 4 communities with a modularity of 0.17: A coastal community (CA, OR, WA, and NY), a midwest community (CO, NE, ND, MI), and an international community (MN, France, Australia).
+Although analysis with 16 loci resulted in the removal of the NY node because it no longer shared a haplotype with OR, the same overall community structure was present with a modularity of 0.2 (Fig. \@ref(community-graph16)).
+Relative to the US, the international community appears to be driven by MLH 4, which is shared between all three populations and has a $P_{sex}$ value of 2.87e^-5^, in contrast to the abundant MLH 25, which has a $P_{sex}$ value of 0.0168.
 
 
 <!-- community graph figure -->
@@ -489,17 +524,14 @@ read_csv("../../results/tables/mlg_table.csv",
   knitr::kable(format = "pandoc")
 ```
 
-Table: (\#tab:mlg-table) The 5 most abundant Multilocus Haplotypes (MLH) with
+Table: (\#tab:mlg-table) The five most abundant Multilocus Haplotypes (MLH) with
 the probability of second encounter ($P_{sex}$), Mycelial Compatibility Groups (MCG), and Regions with sample sizes in parentheses.
-
-
-
 
 ## Population Differentiation {-}
 
 ### Analysis of Molecular Variance {-}
 
-The analysis of molecular variance (AMOVA) over the hierarchy of Region, Source, and Year showed significant variation between regions and years, but no significant variation between wmn and non-wmn (Table \@ref(tab:amova)).
+The analysis of molecular variance (AMOVA) for clone-corrected samples over the hierarchy of Region, Source, and Year showed significant variation between regions and years, but no significant variation between wmn and non-wmn (Table \@ref(tab:amova)).
 In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Information).
 
 ```{r table4, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
@@ -526,13 +558,13 @@ read_csv("../../results/tables/AMOVA-year.csv",
   huxtable::print_md(max_width = 80)
 ```
 
-Table: (\#tab:amova) Analysis of Molecular Variance on Bruvo's genetic distance showing little differentiation between white mold screening nurseries (wmn) and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a wmn or not. Bold $\Phi$ values indicate significant values (*P* < 0.05). S.S. = Sum of Squares, d.f. = degrees of freedom.
+Table: (\#tab:amova) Comparison of populations in the white mold screening nurseries (wmn) and producer fields using an analysis of molecular variance on Bruvo's genetic distance showing little differentiation between white mold screening nurseries (wmn) and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a wmn or producer field. Bold $\Phi$ values indicate significant difference (*P* < 0.05). S.S. = Sum of Squares, d.f. = degrees of freedom.
 
 ### Discriminant Analysis of Principal Components {-}
 
 Discriminant Analysis of Principal Components (DAPC) was performed grouping by Region with the first `r dapc_region$n.pca` principal components, representing `r prettify(dapc_region$var)`% of the total variance. 
 The first discriminant axis (representing `r paxis(dapc_region)`% of the discriminatory power) separated the centroid for the Mexico isolates from the rest of the data, indicating strong differentiation (Fig. \@ref(DAPC)b). 
-The second discriminant axis, representing `r paxis(dapc_region, 2)`% of the discriminatory power, separated the centroid for the California isolates.
+The second discriminant axis, representing `r paxis(dapc_region, 2)`% of the discriminatory power, separated the centroid for the CA isolates.
 The mean population assignment probabilities for all populations with n > 10 showed that only isolates from Mexico, CA, and France had > 50% probabilities of being reassigned to their source populations (Fig. \@ref(DAPC)a).
 
 <!-- DAPC figure -->
@@ -552,25 +584,19 @@ The center of each component is represented as black grid lines.
 DAPC grouping by cultivar used the first 20 principal components, representing 89% of the total variance.
 The first two discriminant axes (representing `r sum(paxis(dapc_host, 1:2))`% of the discriminatory power) failed to separate any of the cultivars where the mean posterior assignment probabilities were `r passp(dapc_host, "G122")`% (G122), `r passp(dapc_host, "Beryl")`% (Beryl), and `r passp(dapc_host, "Bunsi")`% (Bunsi).
 DAPC grouping by Region and Year used the first `r dapc_region_year$n.pca` principal components, representing `r prettify(dapc_region_year$var)`% of the total variance.
-The Midwestern populations (NE, MI, CO, ND) did not appear to have any variation across time in contrast to WA, which showed a shift in population structure in the last year of sampling, 2008 (Fig. \@ref(DAPC-RY)).
-Further analysis of this population revealed that all 12 isolates in WA circa 2008 originated in a wmn and nine of these haplotypes were shared with CA, and three were shared with France (Fig. \@ref(community-graph), \@ref(community-graph16)).
+The North Central US populations (NE, MI, CO, ND) did not appear to have any variation across time in contrast to WA, which showed a shift in population structure in the last year of sampling, 2008 (Fig. \@ref(DAPC-RY)).
+Further analysis of this population revealed that all 12 isolates in WA circa 2008 originated in a wmn; nine haplotypes were shared with CA, and three were shared with France (Fig. \@ref(community-graph), \@ref(community-graph16)).
 
 <!-- DAPC figure 2: Electric Boogaloo-->
 
 ![
-Scatter plot of Discriminant Analysis of Principal Components on Regions and Years showing temporal variation in WA and CA populations as compared to Midwestern Regions, NE and MI. 
+Scatter plot of Discriminant Analysis of Principal Components on Regions and Years showing non-differentiated temporal variation NE and MI and temporal variation in WA and CA. 
 Points (text labels) represent observed individuals connected to the population centroids with ellipses representing a 66% confidence interval for a normal distribution. 
 The center of each component is represented as black grid lines.
-A more detailed view can be seen in Fig. \@ref(DAPC-RY-FULL).
+A more detailed view is shown in Fig. \@ref(DAPC-RY-FULL).
 ](../../results/figures/publication/dapc_region_year_micanewa.pdf){#DAPC-RY width=61%}
 
 <!-- end figure -->
-
-
-### Linkage Analysis {-}
-
-Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
-The only exceptions are CA and Australia. Both of these populations showed only moderate significance (P < 0.05) with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
 
 # Discussion {-}
  
@@ -785,42 +811,19 @@ Key abbreviations: wmn = white mold screening nursery, producer = producer field
 
 
 ```{r table2, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
-suppressPackageStartupMessages(library("tidyverse"))
-read_csv("../../results/tables/Region-aggressiveness.csv", 
-         na = "NA", # spaces read in as spaces
-         col_types = cols(.default = col_character())) %>%
-  huxtable::as_huxtable(add_colnames = TRUE) %>%
-  huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
-  huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
-  huxtable::set_align(row = huxtable::everywhere, col = 2, "right") %>%
-  huxtable::print_md(max_width = 40)
+Regionagg %>% agghux
 ```
 
 Table: (\#tab:region-aggressiveness) Mean aggressiveness ratings for the Regions with greater than 5 samples; groupings according to 95% family-wise confidence interval.
 
 ```{r MCG-ag, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
-read_csv("../../results/tables/MCG-aggressiveness.csv", 
-         na = "NA", # spaces read in as spaces
-         col_types = cols(.default = col_character())) %>%
-  huxtable::as_huxtable(add_colnames = TRUE) %>%
-  huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
-  huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
-  huxtable::set_align(row = huxtable::everywhere, col = 2, "right") %>%
-  huxtable::print_md(max_width = 40)
+MCGagg %>% agghux
 ```
 
 Table: (\#tab:MCG-aggressiveness) Mean aggressiveness ratings for the first 10 MCG; groupings according to 95% family-wise confidence interval.
 
 ```{r MLG-ag, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
-read_csv("../../results/tables/MLG-aggressiveness.csv", 
-         na = "NA", # spaces read in as spaces
-         col_types = cols(.default = col_character())) %>%
-  rename(MLH = MLG) %>%
-  huxtable::as_huxtable(add_colnames = TRUE) %>%
-  huxtable::set_number_format(row = huxtable::everywhere, col = 1, 0) %>% 
-  huxtable::set_col_width(c(0.13, 0.25, 0.08)) %>%
-  huxtable::set_align(row = huxtable::everywhere, col = 2, "right") %>%
-  huxtable::print_md(max_width = 40)
+MLHagg %>% agghux
 ```
 
 Table: (\#tab:MLG-aggressiveness) Mean aggressiveness ratings for the first 10 MLH; groupings according to 95% family-wise confidence interval.
