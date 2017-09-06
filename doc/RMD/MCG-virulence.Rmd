@@ -133,22 +133,24 @@ region_dat <- dat %>%
   mutate(Region = forcats::fct_inorder(Region)) %>%
   select(Region, Severity, Source)
 
-plot.median <- function(x) {
+plot.mean <- function(x) {
   m <- mean(x, na.rm = TRUE)
   c(y = m, ymin = m, ymax = m)
 }
 
+set.seed(2017-09-06)
 ggplot(region_dat, aes(x = Region, y = Severity)) +
   ggforce::geom_sina(aes(fill = Source), 
-             pch = 21, 
-             alpha = 0.4) +
+                     pch = 21, 
+                     binwidth = 0.1, 
+                     alpha = 0.4) +
   # geom_point(aes(fill = Source), 
   #            pch = 21, 
   #            position = position_jitter(width = 0.25), 
   #            alpha = 0.35) +
   # geom_boxplot(alpha = 0.5) +
-  stat_summary(fun.data = "plot.median", geom = "errorbar", colour = "black", width = 0.6, size = 2, alpha = 0.5) +
-  stat_summary(fun.data = "plot.median", geom = "errorbar", colour = "white", width = 0.5, size = 1, alpha = 1) +
+  stat_summary(fun.data = plot.mean, geom = "errorbar", colour = "black", width = 0.6, size = 2, alpha = 0.5) +
+  stat_summary(fun.data = plot.mean, geom = "errorbar", colour = "white", width = 0.5, size = 1, alpha = 1) +
   scale_y_continuous(limits = c(1, 9), breaks = c(1, 3, 5, 7, 9), expand = c(0, 0.1)) +
   scale_fill_manual(values = rev(c("black", "white"))) +
   theme_bw(base_size = 16, base_family = "Helvetica") +
