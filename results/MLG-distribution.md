@@ -246,9 +246,9 @@ plot_mlg_graph <- function(g, glayout = NULL, label = TRUE, seed = 2017-06-28){
     theme(text = element_text(size = 14)) +
     labs(list(
      # title = "Shared MLGs across regions",
-      fill = "Number of\nMLGs",
+      fill = "Number of\nMLHs",
       edge_alpha = "Probability of\nsecond encounter",
-      edge_width = "Populations\nper MLG"#,
+      edge_width = "Populations\nper MLH"#,
       #caption = "Outer circle: Number of MLGs in the region\nInner Circle: Number of private MLGs in the region"
     ))
 }
@@ -321,7 +321,7 @@ graph11loc <- make_graph_list(dat[loc = keeploci, mlg.reset = TRUE])
 ```r
 g <- graph_from_adjacency_matrix(matrix(0, 2, 2))
 V(g)$size <- c(56, 56 - 32)
-V(g)$label <- c("Number of MLGs in Region", "Number of private MLGs")
+V(g)$label <- c("Number of MLHs in Region", "Number of private MLHs")
 lay <- as.data.frame(matrix(0, 2, 2, dimnames = list(NULL, c("x", "y"))))
 glegend <- create_layout(g, "manual", node.positions = as.data.frame(lay)) %>% ggraph() + 
   geom_node_circle(aes(r = size, fill = size)) + 
@@ -666,7 +666,7 @@ reg$DAPC$posterior %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-18
+##  date     2017-08-23
 ```
 
 ```
