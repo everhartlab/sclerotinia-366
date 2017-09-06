@@ -112,8 +112,8 @@ dapc_host        <- dat11cc %>%
 
 # RDA results -------------------------------------------------------------
 
-RDA2R2    <- prettify(caplist1$R2$adj.r.squared)/100
-RDA1R2    <- prettify(caplist2$R2$adj.r.squared)/100
+RDA1R2    <- prettify(caplist1$R2$adj.r.squared)/100
+RDA2R2    <- prettify(caplist2$R2$adj.r.squared)/100
 anova1res <- setNames(caplist1$anova$`Pr(>F)`, rownames(caplist1$anova)) %>% na.omit()
 anova2res <- setNames(caplist2$anova$`Pr(>F)`, rownames(caplist2$anova)) %>% na.omit()
 RDAVAR1   <- andlist(names(anova1res))
@@ -232,7 +232,7 @@ Loci with compound repeats were removed for the reported statistics.
 To ensure the integrity of the results we additionally processed these loci and included them in concurrent analyses.
 We assessed the power of our 11 markers by generating a genotype accumulation curve in the R package *poppr* version `r packageVersion("poppr")`, looking for evidence of saturation, which would indicate that loci were sufficiently sampled to adequately represent the full set of haplotypes [@arnaud2007standardizing; @kamvar2015novel].
 To avoid including isolates potentially collected from the same plant (which increases the probability of collecting sclerotia from the same point of infection more than once), data were clone-corrected on a hierarchy of Region/Source/Host/Year---meaning that duplicated genotypes were reduced to a single observation when they were collected in the same year from the same host cultivar located in the same source field (wmn or producer)---for subsequent analysis. 
-We assessed haplotype diversity by calculating Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], and evenness ($E_5$, *eMLH*) [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
+We assessed haplotype diversity by calculating Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], evenness ($E_5$), and the expected number of multilocus haplotypes (*eMLH*) [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
 To assess the potential for random mating, we tested for linkage disequilibrium with the index of association, $I_A$ and its standardized version, $\bar{r}_d$ using 999 permutations [@agapow2001indices; @smith1993how; @brown1980multilocus].
 Both haplotype diversity and linkage disequilibrium were calculated in *poppr* [@kamvar2014poppr].
 
@@ -244,26 +244,28 @@ A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was perform
 This method uses constrained ordinations on a distance matrix representing the response variable to delineate relative contribution of any number of independent explanatory variables. 
 We used this method to delineate the phenotypic (Aggressiveness, Mycelial Compatibility Group (MCG)), geographic (Region, Host, Location), and temporal (Year) components in predicting genetic composition of the populations.
 The distance matrix we used as the response variable was generated using Bruvo's genetic distance from clone-corrected data (procedure described above) as implemented in *poppr*, which employed a stepwise mutation model for microsatellite data [@bruvo2004simple; @kamvar2014poppr]. 
-Because aggressiveness measures differed with each isolate, aggressiveness first averaged across clone-corrected isolates.
+Because aggressiveness measures differed between isolates that were reduced to a single observation during clone-correction, aggressiveness was first averaged across clone-corrected isolates.
 To identify explanatory variable(s) correlated with genetic variation, a forward-backward selection process was applied with the vegan function `ordistep()`.
 An analysis of variance (ANOVA) was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
 The `varpart()` function of vegan was used to determine variation partitioning of explanatory variables.
 
 ### Aggressiveness Assessment {-}
 
-We used ANOVA to assess if aggressiveness could be explained by Region, MCG, or multilocus haplotype (MLH). 
-To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 56.5% of the isolates collected, the top 10 MLHs representing 26.7% of the isolates, and populations with more than five isolates.
-Between-group differences were assessed using Tukey's HSD test with an alpha of 0.05 using the `HSD.test()` function in the package *agricolae* version `r packageVersion("agricolae")` [@mendiburu2015agricolae].
+We used ANOVA to assess if aggressiveness was significantly different with respect to Region, MCG, or multilocus haplotype (MLH). 
+To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 56.5% of the isolates collected, the 10 most abundant MLHs representing 26.7% of the isolates, and populations with more than five isolates.
+If ANOVA results were significantly different at $\alpha$ = 0.05, pairwise differences were assessed using Tukey's HSD test ($\alpha$ = 0.05) using the `HSD.test()` function in the package *agricolae* version `r packageVersion("agricolae")` [@mendiburu2015agricolae].
 
 ### Correlating Multilocus Haplotypes with Mycelial Compatibility Groups {-}
 
 We wanted to assess if there was correlation between MLHs and MCGs. 
-In simple terms, this was done using a network-based approach where both MLHs and MCGs were considered nodes and the number of isolates in which they were found together was the strength of the connection between an MLH and and MCG node.
+This was performed using a network-based approach where both MLHs and MCGs were considered nodes and the number of isolates in which they were found together was the strength of the connection between an MLH and and MCG node.
 The network-based approach allowed us to assess how "clumpy" the relationships between MLHs and MCGs were.
-In more specific terms, we first created a contingency table with MLHs and MCGs and converted it to a directed and weighted edgelist where each edge was a connection from an MCG to an MLH weighted by the number of samples shared in the connection. 
-This was then converted to a bipartite graph where top nodes represented MCGs and bottom nodes represented MLHs.
-The cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version `r packageVersion("igraph")` was used to define clusters of MLHs and MCGs [@csardi2006igraph; @pons2006computing].
-All communities that had fewer than 10 members were then consolidated into one.
+To construct the network, a contingency table was created with MLHs and MCGs and converted to a directed and weighted edgelist where each edge represented a connection from an MCG to an MLH, weighted by the number of samples shared in the connection. 
+This was then converted to a bipartite graph where top nodes represented MLHs and bottom nodes represented MCGs.
+To identify clusters of MLHs and MCGs within the network, we used the cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version `r packageVersion("igraph")` [@csardi2006igraph; @pons2006computing].
+This algorithm attempts to define clusters of nodes by starting at a random nodes and performing short, random "walks" along the edges between nodes, assuming that these walks would stay within clusters.
+For this analysis, we set the number of steps within a walk to four and allowed the algorithm to use the edge weights in determining the path.
+All of the resulting communities that had fewer than 10 members were then consolidated into one.
 Community definitions were used to assess the average genetic distance (as defined by Bruvo's distance) within members of the community [@bruvo2004simple].
 
 ## Genetic Diversity {-}
