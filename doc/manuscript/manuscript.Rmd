@@ -272,10 +272,8 @@ Community definitions were used to assess the average genetic distance (as defin
 
 ### Population Differentiation {-}
 
-We used analysis of molecular variance (AMOVA) with Bruvo's genetic distance in *poppr* to test for differentiation associated with wmn by quantifying the differentiation conferred by Region, Source, and Year [@excoffier1992analysis; @bruvo2004simple; @kamvar2014poppr].
-Source in this case was defined as a population belonging to a wmn or not. 
-
-To identify specific Regions that were more differentiated than others, we used discriminant analysis of principal components (DAPC) as implemented in *adegenet* version `r packageVersion("adegenet")`, assessing the per-sample posterior group assignment probability [@jombart2008adegenet]. 
+We used analysis of molecular variance (AMOVA) with Bruvo's genetic distance in *poppr* to test for differentiation between populations in wmn and producer fields from the same region and collected in the same year [@excoffier1992analysis; @bruvo2004simple; @kamvar2014poppr].
+To identify Regions with greater differentiation, we used discriminant analysis of principal components (DAPC) as implemented in *adegenet* version `r packageVersion("adegenet")`, assessing the per-sample posterior group assignment probability [@jombart2008adegenet]. 
 This method decomposes the genetic data into principal components, and then uses a subset of these as the inputs for discriminant analysis, which attempts to minimize within-group variation and maximize among-group variation [@jombart2010discriminant]. 
 To avoid over-fitting data, the optimal number of principal components was selected by using the *adegenet* function `xvalDapc()`. 
 This function implements a cross-validation procedure to iterate over an increasing number of principal components on a subset (90%) of the data, trying to find the minimum number of principal components that maximizes the rate of successful group reassignment. 
@@ -288,9 +286,10 @@ We wanted to evaluate patterns of connectivity between shared multilocus haploty
 We first tabulated the multilocus haplotypes shared between at least two populations (defined as states or countries) with the *poppr* function `mlg.crosspop()` [@kamvar2014poppr].
 From these data, we constructed a graph with populations as nodes and shared haplotypes as edges (connections) between nodes using the R packages *igraph* [@csardi2006igraph], *dplyr* version `r packageVersion("dplyr")` [@dplyr], and *purrr* version `r packageVersion("purrr")` [@purrr].
 Each node was weighted by the fraction of shared MLHs.
-Each edge represented a single MLH, but because a single MLH could be present in more than one population, that MLH would be represented by (*n*\*(*n*-1))/2 edges where n represents the number of populations crossed.
+Each edge represented a single MLH, but because a single MLH could be present in more than one population, that MLH would have a number of edges equivalent to the total number of possible connections, calculated as (*n*\*(*n*-1))/2 edges where n represents the number of populations crossed.
 Edges were weighted by $1-P_{sex}$, where $P_{sex}$ is the probability of encountering the same haplotype via two independent meiotic events [@arnaud2007standardizing; @parks1993study].
-We then used the `cluster_optimal()` function from *igraph* to define communities [@csardi2006igraph].
+This weighting scheme would thus strengthen the connection of edges that represented genotypes with a low probability of being produced via sexual reproduction. 
+We then identified communities (among the Regions) in the graph using the `cluster_optimal()` function from *igraph* [@csardi2006igraph].
 The graph was plotted using the R packages *ggplot2* version `r packageVersion("ggplot2")` [@ggplot2] and *ggraph* `r packageVersion("ggraph")` [@ggraph].
 To ensure that we captured the same community signal, we additionally performed this analysis including the five polymorphic markers described above.
 
