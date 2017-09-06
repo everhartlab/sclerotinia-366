@@ -199,10 +199,10 @@ mcg_graph <- mcgs %>%
   mutate(MCG = forcats::fct_inorder(MCG, ordered = TRUE)) %>%
   ggplot(aes(x = MCG, y = count, group = Type, fill = Type, alpha = Evenness)) +
   geom_col(aes(width = ifelse(Type == "MLHs", 0.5, 0.85)), color = "black", position = "identity") +
-  annotate(geom = "rect", xmin = 0.5, xmax = 8.5, ymin = 0, ymax = 75, color = "black", size = 1.5, alpha = 0, lty = 2) +
+  annotate(geom = "rect", xmin = 0.5, xmax = 8.5, ymin = 0, ymax = 75, color = "black", size = 1.125, alpha = 0, lty = 2) +
   # annotate(geom = "text", x = 18, y =35, 
   #          label = sprintf("Mean Evenness: %.3f", mean(mcgs$Evenness, na.rm = TRUE))) +
-  scale_fill_manual(values = c("black", "white")) +
+  scale_fill_manual(values = c("black", "white"), labels = c("MLHs", "Isolates")) +
   scale_y_continuous(expand = c(0, 2)) +
   # scale_alpha(breaks = c(0.5, 0.75, 1)) +
   theme_minimal(base_size = 16, base_family = "Helvetica") +
@@ -624,7 +624,7 @@ t5g <- ggraph(top5lay) +
                      end_cap = circle(node2.size, unit = "native"), 
                      width = weight),
                  arrow = arrow(length = unit(0.01, "native"))) +
-  geom_node_text(aes(label = gsub("MLG.", "", name), 
+  geom_node_text(aes(label = gsub("MLG.", "", name), # ifelse(size > 0.1, gsub("MLG.", "", name), ""), 
                      color = type, 
                      size = size/10),
                  show.legend = FALSE) +
@@ -640,7 +640,7 @@ t5g <- ggraph(top5lay) +
   # theme(legend.box.background = element_rect(color = "black")) +
   theme(legend.text = element_text(size = 10)) +
   theme(plot.margin = unit(c(0, 0, 0, 0), "lines"))
-t5g$labels$edge_width <- "shared isolates"
+t5g$labels$edge_width <- "Shared Isolates"
 t5g$labels$fill <- ""
 t5g
 
