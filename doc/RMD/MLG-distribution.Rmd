@@ -143,7 +143,7 @@ plot_mlg_graph <- function(g, glayout = NULL, label = TRUE, seed = 2017-06-28){
   outg <- ggraph(glay) +
     geom_edge_fan(aes(alpha = 1 - weight, width = width + 1)) +
     geom_node_circle(aes(r = drop(scale(size, center = FALSE))/10, fill = size))
-  outg <- if (label) outg + geom_node_label(aes(label = label), repel = TRUE, parse = TRUE, label.size = 0.75, nudge_x = x_nudge, segment.size = 0) else outg
+  outg <- if (label) outg + geom_node_label(aes(label = label), repel = TRUE, parse = TRUE, label.size = 0.75, nudge_x = x_nudge, segment.size = 0, segment.alpha = 0) else outg
   outg + 
     viridis::scale_fill_viridis(option = "C") +
     scale_edge_alpha_continuous(range = c(1, 0.25), breaks = rev(breaks)) +

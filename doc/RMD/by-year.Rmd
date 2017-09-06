@@ -33,7 +33,7 @@ make_amova_table <- function(am, amt, samples = "Region"){
                          Phi     = rev(am$statphi$Phi[-tot])))
   res <- as.matrix(res)
   colnames(res) <- c("d.f.", "Sum of Squares", "Percent variation", "P", 
-                     "Phi statistic")
+                     "Sigma", "Phi statistic")
   names(dimnames(res)) <- c("levels", "statistic")
   rownames(res) <- gsub("samples", samples, rownames(res))
   return(res)
@@ -193,7 +193,7 @@ ax2 <- loadingplot(regyear.dapc$var.contr, axis = 2, threshold = quart)$var.name
   unique()
 par(mfrow = c(1, 1))
 
-yearscale <- viridis::viridis(nlevels(strata(dat11cc)$Year), option = "C")
+yearscale <- viridis::viridis(nlevels(strata(dat11cc)$Year), option = "C", end = 0.9)
 names(yearscale) <- sort(levels(strata(dat11cc)$Year))
 gg_region_year <- ggscatter(regyear.dapc, strata(dat11cc)) +
   facet_wrap(~Region) +
@@ -226,7 +226,7 @@ gg_region_year_micanewa <- ggscatter(regyear.dapc, strata(dat11cc), filter = quo
   facet_wrap(~Region, nrow = 2) +
   theme(legend.position = "right") +
   theme(legend.justification = "bottom") +
-  scale_color_manual(values =  yearscale, breaks = names(yearscale)) +
+  scale_color_manual(values = yearscale, breaks = names(yearscale)) +
   theme(legend.box.margin = unit(c(0, 0, 0, 0), "lines")) +
   theme(legend.margin = unit(c(0, 0, 0, 0), "lines")) +
   theme(strip.background = element_rect(color = NA, fill = "grey90")) +

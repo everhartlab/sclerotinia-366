@@ -571,12 +571,13 @@ The mean population assignment probabilities for all populations with n > 10 sho
 
 ![
 Discriminant Analysis of Principal Components on regions showing that Mexico is differentiated from other populations. 
-**A)** Mean population assignment (horizontal axis) probability (vertical axis) for all populations with N > 10 (facets).
-Numbers next to source populations indicate population size.
-All values sum to one.
-**B)** Scatter plot of first two components from DAPC.
+**A)** Scatter plot of first two components from DAPC.
 Points represent observed individuals connected to the population centroids with ellipses representing a 66% confidence interval for a normal distribution. 
 The center of each component is represented as black grid lines.
+**B)** Mean population assignment probability from the DAPC for all populations with N > 10 (facets).
+Populations represented along the horizontal axis and probability of assignment on the vertical.
+Numbers next to source populations indicate population size.
+All values sum to one.
 ](../../results/figures/publication/DAPC.pdf){#DAPC width=100%}
 
 <!-- end figure -->
