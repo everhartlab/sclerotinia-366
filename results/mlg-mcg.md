@@ -1062,7 +1062,7 @@ t5g <- ggraph(top5lay) +
                      end_cap = circle(node2.size, unit = "native"), 
                      width = weight),
                  arrow = arrow(length = unit(0.01, "native"))) +
-  geom_node_text(aes(label = gsub("MLG.", "", name), # ifelse(size > 0.1, gsub("MLG.", "", name), ""), 
+  geom_node_text(aes(label = ifelse(size > 0.1, gsub("MLG.", "", name), ""), 
                      color = type, 
                      size = size/10),
                  show.legend = FALSE) +
@@ -1602,7 +1602,7 @@ on average 7 steps.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-09-06
+##  date     2017-09-07
 ```
 
 ```

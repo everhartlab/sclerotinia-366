@@ -30,24 +30,24 @@ datcols <- cols(
   Host = col_character()
 )
 dat <- read_csv(file.path(PROJHOME, "data", "clean_data.csv"), col_types = datcols) %>%
-  select(Severity, MCG, Region, Source)
+  select(Severity, MCG, Region, Source, Year)
 dat
 ```
 
 ```
-## # A tibble: 366 x 4
-##    Severity   MCG Region Source
-##       <dbl> <int>  <chr>  <chr>
-##  1      3.9     4     NE    unk
-##  2      5.4    45     NE    unk
-##  3      6.3     5     NY    unk
-##  4      4.4     4     MN    wmn
-##  5      4.7     4     MN    wmn
-##  6      6.1     3     MI    wmn
-##  7      5.5     5     MI    wmn
-##  8      5.0     3     MI    wmn
-##  9      5.2     3     MI    wmn
-## 10      5.3     5     MI    wmn
+## # A tibble: 366 x 5
+##    Severity   MCG Region Source  Year
+##       <dbl> <int>  <chr>  <chr> <int>
+##  1      3.9     4     NE    unk  2003
+##  2      5.4    45     NE    unk  2003
+##  3      6.3     5     NY    unk  2003
+##  4      4.4     4     MN    wmn  2003
+##  5      4.7     4     MN    wmn  2003
+##  6      6.1     3     MI    wmn  2003
+##  7      5.5     5     MI    wmn  2003
+##  8      5.0     3     MI    wmn  2003
+##  9      5.2     3     MI    wmn  2003
+## 10      5.3     5     MI    wmn  2003
 ## # ... with 356 more rows
 ```
 
@@ -83,7 +83,7 @@ top_mcg
 ## # ... with 197 more rows
 ```
 
-## Visualizing distributions
+# Assessing virulence by MCG
 
 
 ```r
@@ -405,6 +405,62 @@ grps <- agricolae::HSD.test(ANOVA, "Region", alpha = 0.05)$groups %>%
 ```
 
 
+## Testing for differences by assessor
+
+The straw test, until the end of 2007, was performed by Lindsey Otto-Hanson. 
+After that, these were performed by Serena McCoy. The Steadman lab was careful
+to train their members consistently in these practices, so the results from this
+test should be equivalent, but we want to ensure that there are no hidden biases
+between the two. To do this, we will test for differences within region.
+
+
+
+```r
+set.seed(2017-06-29)
+assessor_dat <- dat %>%
+  group_by(Region, Year) %>%
+  filter(n() > 5) %>%
+  mutate(mean_sev = mean(Severity)) %>%
+  mutate(Source = ifelse(Source == "wmn", "wmn", "producer field")) %>%
+  arrange(desc(mean_sev)) %>%
+  ungroup() %>%
+  mutate(Region = forcats::fct_inorder(Region)) %>%
+  mutate(Assessor = factor(ifelse(Year <= 2007, "Otto-Hanson", "McCoy"))) %>% 
+  select(Region, Assessor, Severity, Source)
+res <- aov(Severity ~ Region + Assessor, data = assessor_dat)
+res
+```
+
+```
+## Call:
+##    aov(formula = Severity ~ Region + Assessor, data = assessor_dat)
+## 
+## Terms:
+##                    Region  Assessor Residuals
+## Sum of Squares   90.54166   0.29254 259.36272
+## Deg. of Freedom        10         1       339
+## 
+## Residual standard error: 0.8746895
+## Estimated effects may be unbalanced
+```
+
+```r
+summary(res)
+```
+
+```
+##              Df Sum Sq Mean Sq F value Pr(>F)    
+## Region       10  90.54   9.054  11.834 <2e-16 ***
+## Assessor      1   0.29   0.293   0.382  0.537    
+## Residuals   339 259.36   0.765                   
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+```
+
+# Assessing virulence by multilocus genotype
+
+
+
 ```r
 library("poppr")
 ```
@@ -586,7 +642,7 @@ grps <- agricolae::HSD.test(ANOVA, "MLG", alpha = 0.05)$groups %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-09-06
+##  date     2017-09-07
 ```
 
 ```
