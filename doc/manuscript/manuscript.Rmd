@@ -633,33 +633,31 @@ In this study, we characterized the diversity of *Sclerotinia sclerotiorum* from
 Our results suggest that, broadly, populations from white mold screening nurseries reflect the populations of the surrounding regions, indicating that resistance screening may be successful at a within regions. 
 We found significant population differentiation by geographic region and year, mainly differentiated into three broad North American groups based on shared haplotypes and posterior groupings, a Coastal Region, Midwestern Region, and Mexico. 
 To date, with 366 isolates, this is the largest single population genetic study of *S. sclerotiorum* assessing population structure within managed and unmanaged agricultural environments. 
-These findings indicate that the wmn can be effective at screening for potential resistant lines within growing regions. 
+These findings indicate that the white mold screening nurseries can be effective at screening for potential resistant lines within growing regions. 
 
 <!-- ## Variable Contributions {-} -->
 
+We found that te best predictors of genetic structure are Region and Year, supporting the hypothesis that *S. sclerotiorum* populations are spatially structured [@carbone2001multilocus].
 Borrowing a technique often used in the ecological literature, we used dbRDA to elucidate the effect of all variables (`r andlist(c(names(strata(dat11)), "Aggressiveness"))`) [@legendre1999distance].
-From the initial results, it appears that the most important factors for predicting genetic structure are MCG, region, and year.
+From the initial results, it appeared that the most important factors for predicting genetic structure were MCG, region, and year.
 When we inspected the biplot of the initial results, we saw that the most important predictors were 'MCG 44', 'MCG 5', and 'MCG 9'. 
-We believe that this is driven by the fact that these particular MCGs have uneven MLH distributions, meaning that they are heavily associated with one particular MLH (Fig. \@ref(biggraph)).
+We believe that this was driven by the fact that these particular MCGs have uneven MLH distributions, meaning that they are heavily associated with one particular MLH (Fig. \@ref(biggraph)).
 We note these results with caution because of the apparent multicolinearity between MCG and Region, which is a violation of the analysis [@legendre1999distance].
 While the results indicated that Mexico and the year 2005 were the two most important variables, it's worth noting that all Mexico isolates were collected in 2005 (Fig. \@ref(rda-biplot)).
-The results also show that the Vista cultivar explains some of the variance, but this represents six isolates in MI. 
-Aggressiveness and specific source field had little to no effect on prediction of genetic diversity. 
+The results also show that the Vista cultivar explains some of the variance, but this represents six isolates in MI, and thus we cannot draw broad conclusions from this axis. 
+Aggressiveness and source field had little to no effect on prediction of genetic diversity. 
 These results are in agreement with studies that examined differentiation based on Host [@aldrich-wolfe2015genetic] and Aggressiveness [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia] reporting little or no correlation of genetic diversity to these variables. 
-This indicates that a) breeders should keep in mind regional differences when assessing resistance and b) it is possible that we have not yet measured biologically relevant variables that can predict genetic differentiation, which could include variables such as soil community composition. 
+This indicates that a) breeders should keep in mind regional differences when assessing resistance and b) it is possible that we have not yet measured biologically relevant variables that can predict genetic differentiation, which could include variables such as soil community composition.
 
-<!-- ## Genotypic Structure {-} -->
+<!-- ## Aggressiveness {-} -->
 
-The results show several haplotypes shared across populations, except for Mexico and two states that had fewer than three samples each (Fig. \@ref(community-graph)).
-Our network-based approach by treating the haplotypes as edges and weighting each edge with the inverse of $P_{sex}$ treated the edges as springs connecting the populations with the strength proportional to the probability of obtaining the same haplotype as a clone. 
-This allowed us to use a graph walking algorithm to see how close the populations were simply based off of the proportion of clones they shared.
-The most abundant haplotype was shared across four populations, but its high value of $P_{sex}$ meant that it did not contribute significantly to the overall structure. 
-The graph walking algorithm was able to divide the network into three groups, but had a modularity of 0.17, which indicates that the groups are only weakly differentiated.
-
-The widespread nature of multilocus haplotypes in both wmn and production fields with relatively small values of $P_{sex}$ may indicate the spread of inoculum between regions. 
-It has previously been shown that infections can be transmitted through seed [@botelho2013performance], but seedborne transmission is thought to be of insignificant epidemiological importance [@strausbaugh2003management].
-Thus, we hypothesize that shared haplotypes between populations may arise due to transmission events of seed or sclerotia.
-However, because we observe population structure based on Region, we speculate that these transmission events are rare. 
+While aggressiveness was not shown to predict genetic structure, it is an important factor in breeding efforts, and we observed significant differences in aggressiveness based on region (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
+These results show a similar pattern to what was found previously in @otto-hanson2011variation with the exception of North Dakota, which increased in mean aggressiveness from 5 to 5.77.
+This increase was due in part to new data from producer field isolates collected after the previous study.
+These straw tests were performed by a different person for these later isolates, which could suggest a more lenient or strict scoring system.
+However, when we examined the within-region differences, we found no significant effect by individual. 
+Many of the ND isolates fell within the 6--7 range, which denotes a physical boundary (disease symptoms around the second node) between intermediate and susceptible [@otto-hanson2011variation]. 
+Thus, we observed a shift in aggressiveness without a significant shift in genotypic structure, which may indicate that aggressiveness may be controlled by environmental factors as opposed to genetic profile.
 
 <!-- ## Population Differentiation {-} -->
 
@@ -681,30 +679,38 @@ With the exception of the WA Region, populations that were sampled across severa
 DAPC is based on the principal components of Euclidean distance between genotypes [@jombart2010discriminant]. 
 Unlike Bruvo's distance, Euclidean distance does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
 We found no evidence of private alleles in the Mexico and CA isolates, suggesting that this pattern separating these populations from the others was not an artifact.
+We believe that the differences we observe from Mexico may reflect differences in climate.
 
+Many of the isolates in our study were from temperate climates and the only isolates representing a sub-tropical climate were from Mexico.
 It has been proposed within the *S. sclerotiorum* literature that isolates from sub-tropical and tropical climates are differentiated or more variable than populations from temperate climates [@carbone2001multilocus; @attanayake2013sclerotinia; @lehner2017sclerotinia;]. 
 This has been attributed to the notion that the fungus has the chance to undergo more reproductive cycles in the warmer climate [@carbone2001multilocus; @attanayake2013sclerotinia]. 
-Populations in sub-tropical regions of China have been found to be more variable, sexually reproducing, and unrelated to populations in temperate regions of the USA [@attanayake2013sclerotinia].
-The differentiation between the Mexico isolates and all other regions gives some evidence for this hypothesis as the only isolates in our study from sub-tropical regions are in Mexico. 
+The strongest evidence to date supporting this hypothesis is from @attanayake2013sclerotinia, showing that populations in sub-tropical regions of China have been found to be more variable, sexually reproducing, and unrelated to populations in temperate regions of the USA.
+This result however, may be driven more by geography and agricultural practice as opposed to climate.
 
-We were unable to find evidence for sexual reproduction in any region except for CA and Australia. 
+<!-- ## Genotypic Structure {-} -->
+
+The results from our shared haplotype analysis show several populations with at least one haplotype between them, except for Mexico and two states that had fewer than three samples each (Fig. \@ref(community-graph)).
+Our network-based approach by treating the haplotypes as edges and weighting each edge with the inverse of $P_{sex}$ treated the edges as springs connecting the populations with the strength proportional to the probability of obtaining the same haplotype as a clone. 
+This allowed us to use a graph walking algorithm to see how close the populations were simply based off of the proportion of clones they shared.
+The most abundant haplotype was shared across four populations, but its high value of $P_{sex}$ meant that it did not contribute significantly to the overall structure. 
+The graph walking algorithm was able to divide the network into three groups, but had a modularity of 0.17, which indicates that the groups are only weakly differentiated.
+
+The widespread nature of multilocus haplotypes in both wmn and production fields with relatively small values of $P_{sex}$ may indicate the spread of inoculum between regions. 
+While seedborne transmission is thought to be of insignificant epidemiological importance [@strausbaugh2003management], it has since been shown that *S. sclerotiorum* infections can be transmitted through seed [@botelho2013performance].
+Thus, we hypothesize that shared haplotypes between populations may arise due to transmission events of seed or sclerotia.
+This could explain the fact that we see shared genotypes with low $P_{sex}$ values shared between France, Australia, and the US.
+While we speculate that these transmission events are rare due to the genetic structuring by Region, these results suggest that seedborne infections may indeed reflect a source of inoculum.
+This may, in turn increase the risk of introducing new sources of genetic variation through potential outcrossing events.
+
+When we tested for sexual reproduction, we were unable to find evidence for it in any region except for CA and Australia. 
 While the Australia population had a non-significant value of $\bar{r}_d$---which would suggest that we cannot reject the null hypothesis of random mating---the sample size was insufficient from which to draw conclusions [@milgroom1996recombination; @agapow2001indices].
-The low value of $\bar{r}_d$ in the CA population may represent sexual reproduction, but this could also be an artifact of sampling two different populations, which is known to reduce the value of $\bar{r}_d$ [@prugnolle2010apparent].
-
-
-<!-- ## Aggressiveness {-} -->
-
-We observed significant differences in aggressiveness based on region (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
-These results show a similar pattern to what was found previously with the exception of North Dakota, which increased in mean aggressiveness from 5 to 5.77 [@otto-hanson2011variation].
-This increase was due in part to new data from producer field isolates collected after the previous study.
-These straw tests were performed by a different person for these later isolates, which could suggest a more lenient or strict scoring system.
-However, when we examined the within-region differences, we found no significant effect by individual. 
-Many of the ND isolates fell within the 6--7 range, which denotes a physical boundary (disease symptoms around the second node) between intermediate and susceptible [@otto-hanson2011variation]. 
-Thus, we observed a shift in aggressiveness without a significant shift in genotypic structure, which may indicate that aggressiveness may be controlled by environmental factors as opposed to genetics.
+The low value of $\bar{r}_d$ in the CA population may represent sexual reproduction, but we can see in Figure \@ref(DAPC-RY) that there is differentiation by year. 
+Thus, this could also be an artifact of sampling two different populations, which is known to reduce the value of $\bar{r}_d$ [@prugnolle2010apparent].
 
 <!-- ## Mycelial Compatibility Groups and Multilocus Haplotypes {-} -->
 
-Mycelial Compatibility Groups have historically been used as a proxy for clonal lineages, and thus, of interest in this study was testing the association between multilocus haplotypes (MLHs) and mycelial compatibility groups (MCGs) [@leslie1993fungal; @otto-hanson2011variation; @kohn1990mycelial; @schafer2006optimized; @kohn1995clonal; @carbone1999patterns]. 
+The previous study of the white mold screening nursery populations used MCGs to assess genotypic diversity [@otto-hanson2011variation].
+Historically, MCGs have been used as a proxy for clonal lineages, and thus, of interest in this study was testing the association between multilocus haplotypes (MLHs) and mycelial compatibility groups (MCGs) [@leslie1993fungal; @otto-hanson2011variation; @kohn1990mycelial; @schafer2006optimized; @kohn1995clonal; @carbone1999patterns]. 
 Our results, however, do not support this assumption.
 It can be seen in Fig. \@ref(biggraph)A that the most abundant MCG contains several MLHs, but the diversity of those MLHs are low as indicated by the evenness (transparency), which indicates that there is one dominant MLH ('MLH 25').
 What is not shown in Fig. \@ref(biggraph)A is the MLHs that are shared between MCGs. 
@@ -714,13 +720,6 @@ It could be argued, however that 'MLH 25', with its high value of $P_{sex}$ repr
 Over the past few years, researchers have noticed inconsistencies among the relationship between MCGs and MLHs [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic; @lehner2015genetic]. 
 Either several MCGs belong to one MLH, which could be explained by insufficient sampling of loci; several MLHs belong to one MCG, which could be explained by clonal expansion; or a mixture of both.
 Some studies have shown a correlation between MCG and MLH [@aldrich-wolfe2015genetic; @carbone1999patterns; @lehner2015genetic], whereas other studies have shown no apparent correlation, even on small spatial scales [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia].
-
-<!-- 
-SEE:
-
-Perhaps add some discussion of independently evolving vegetatively compatible
-lineages. 
--->
 
 One long-held assumption was that MCGs (as determined via barrage reaction) represent vegetative compatibility groups (VCGs) [@schafer2006optimized; @kohn1990mycelial; @lehner2015genetic], which are known to have a genetic component [@saupe2000molecular; @hall2010evolution; @strom2016genomes].
 While our protocol for assessing MCGs utilized a different substrate for the MCG reactions, the patterns we observe are not dissimilar from what have previously been reported in the literature.
