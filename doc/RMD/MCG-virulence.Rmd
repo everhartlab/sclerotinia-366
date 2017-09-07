@@ -30,7 +30,7 @@ datcols <- cols(
   Host = col_character()
 )
 dat <- read_csv(file.path(PROJHOME, "data", "clean_data.csv"), col_types = datcols) %>%
-  select(Severity, MCG, Region, Source)
+  select(Severity, MCG, Region, Source, Year)
 dat
 ```
 
@@ -48,7 +48,7 @@ top_mcg <- dat %>%
 top_mcg
 ```
 
-## Visualizing distributions
+# Assessing virulence by MCG
 
 ```{r vis, fig.width = 7, fig.height = 4}
 set.seed(2017-06-29)
@@ -198,6 +198,36 @@ grps <- agricolae::HSD.test(ANOVA, "Region", alpha = 0.05)$groups %>%
   huxtable::set_align(row = huxtable::everywhere, col = 2, "right") %>%
   huxtable::print_md(max_width = 40)
 ```
+
+
+## Testing for differences by assessor
+
+The straw test, until the end of 2007, was performed by Lindsey Otto-Hanson. 
+After that, these were performed by Serena McCoy. The Steadman lab was careful
+to train their members consistently in these practices, so the results from this
+test should be equivalent, but we want to ensure that there are no hidden biases
+between the two. To do this, we will test for differences within region.
+
+
+```{r assessor-diff}
+set.seed(2017-06-29)
+assessor_dat <- dat %>%
+  group_by(Region, Year) %>%
+  filter(n() > 5) %>%
+  mutate(mean_sev = mean(Severity)) %>%
+  mutate(Source = ifelse(Source == "wmn", "wmn", "producer field")) %>%
+  arrange(desc(mean_sev)) %>%
+  ungroup() %>%
+  mutate(Region = forcats::fct_inorder(Region)) %>%
+  mutate(Assessor = factor(ifelse(Year <= 2007, "Otto-Hanson", "McCoy"))) %>% 
+  select(Region, Assessor, Severity, Source)
+res <- aov(Severity ~ Region + Assessor, data = assessor_dat)
+res
+summary(res)
+```
+
+# Assessing virulence by multilocus genotype
+
 
 ```{r fig.width = 5, fig.height = 3.5}
 library("poppr")
