@@ -209,7 +209,10 @@ REGION_PLOT
 
 
 ```{r dapc-region-dualplot, fig.width = 13, fig.height = 6}
-LEG <- cowplot::get_legend(LDS_PLOT + theme(legend.position = "right") + theme(legend.text = element_text(size = 12)))
+LEG <- cowplot::get_legend(LDS_PLOT + 
+                             theme(legend.position = "right") + 
+                             theme(legend.margin = margin(t = 0, r = 0, b = 0, l = 0, unit = "lines")) +
+                             theme(legend.text = element_text(size = 12)))
 cowplot::plot_grid(LEG,
                    LDS_PLOT + 
                      theme(legend.position = "none") +
