@@ -154,8 +154,14 @@ arrowMul <- function(arrows, data, at = c(0, 0), fill = 0.75) {
 # Plotting the dbRDA results
 # 
 # @param db a capscale object
+# @param arrows the number of arrows to plot
+# @param seed a random seed to control plotting of labels
+# @param lab a switch indicating if percent variance should be displayed on the
+#   axes (default: TRUE)
+# @param segal for the arrow labels, the segment alpha channel. Default to 1,
+#   but can be set to 0, indicating that the labels should disappear.
 # @return a ggplot2 object from the scores 
-plot_dbrda <- function(db, arrows = 10, seed = 2017-06-28, lab = TRUE){
+plot_dbrda <- function(db, arrows = 10, seed = 2017-06-28, lab = TRUE, segal = 1){
   set.seed(seed)
   dbsum     <- scores(db, display = c("cn", "bp", "sites"), scaling = "sites")
   Centroids <- as.data.frame(dbsum$centroids)
@@ -165,8 +171,8 @@ plot_dbrda <- function(db, arrows = 10, seed = 2017-06-28, lab = TRUE){
   SampleCentroids <- rownames_to_column(data.frame(dbsum$sites), var = "isolate_names")
   if (lab){
     labs    <- vegan:::summary.cca(db, axes = 0)[["cont"]][["importance"]]["Proportion Explained", 1:2]
-    xl      <- paste0("Eig 1 (", round(labs[[1]]*100, 2), "% variance explained)")
-    yl      <- paste0("Eig 2 (", round(labs[[2]]*100, 2), "% variance explained)")
+    xl      <- paste0("Eig. 1 (", round(labs[[1]]*100, 2), "% variance explained)")
+    yl      <- paste0("Eig. 2 (", round(labs[[2]]*100, 2), "% variance explained)")
   } else {
     xl      <- "Eig 1"
     yl      <- "Eig 2"
@@ -199,6 +205,7 @@ plot_dbrda <- function(db, arrows = 10, seed = 2017-06-28, lab = TRUE){
     geom_label_repel(aes(x = CAP1, y = CAP2, label = class), 
                      point.padding = unit(0.5, "lines"),
                      segment.color = "grey25",
+                     segment.alpha = segal,
                      data = Arrows) +
     xlab(xl) +
     ylab(yl)
@@ -350,7 +357,7 @@ set.seed(2017-08-17)
 
 ```{r resultplot2, fig.width = 5, fig.height = 5}
 set.seed(999)
-plot_dbrda(cap11cc2, arrows = 5) + 
+plot_dbrda(cap11cc2, arrows = 5, segal = 0) + 
   theme_classic(base_size = 16, base_family = "Helvetica") + 
   theme(axis.text = element_text(color = "black")) +
   theme(aspect.ratio = 1)
