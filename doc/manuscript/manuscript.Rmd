@@ -150,21 +150,8 @@ Haggmean <- mean(as.numeric(MLHagg[[2]]))
 
 # Introduction {-}
 
-<!-- 
-ZNK: The introduction needs a lot of work. Here's an outline of what I think
-     needs to go in here.
-Outline:
-
- - *S. sclerotiorum* basic biology
- - What have genetic studies and phenotypic studies found
- - What are we missing? A detailed analysis of *S. sclerotiorum* from diverse
-   regions that may potentially identify haplotypes or MCGs that may be good
-   tools for testing breeding efforts.
- - Our hypotheses and specific questions.
- -->
-
 *Sclerotinia sclerotiorum* (Lib.) de Bary is an ascomycete plant pathogen with a worldwide distribution.
-This is a necrotrophic pathogen that is primarily homothallic (self-fertilization) and has the ability to survive fore more than five years in soil using melanized survival structures called sclerotia [@bolton2006sclerotinia; @sexton2006population]. 
+This is a necrotrophic pathogen that is primarily homothallic (self-fertilization) and has the ability to survive for more than five years in soil using melanized survival structures called sclerotia [@bolton2006sclerotinia; @sexton2006population]. 
 It causes disease on more than 400 plant species belonging to 75 families [@boland1994index] including crops of major economic importance such as sunflower (*Helianthus spp.*), soybean (*Glycine max* L.), canola (*Brassica napa* L., *Brassica campestris* L.), and dry bean (*Phaseolus vulgaris* L.) [@bolton2006sclerotinia]. 
 On dry bean, *S. sclerotiorum* is the causal agent of white mold, a devastating disease that can be a yield-limiting in temperate climates [@steadman1983white].
 
@@ -181,7 +168,7 @@ Some studies, however have found populations that show signatures of sexual repr
 
 Nearly all population genetic studies of *S. sclerotiorum* employ a macroscopic assay to determine mycelial compatibility, the ability for fungal hyphae from different colonies to appear to grow together without forming a barrier of dead cells between them (known as a barrage line) [@leslie1993fungal; @sirjusingh2001characterisation].
 Mycelial compatibility has been used as a proxy for vegetative compatibility, a fungal trait controlled by several independent genes controlling the ability for two hyphae to fuse and grow as a single unit [@leslie1993fungal; @schafer2006optimized].
-Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible were considered clones [@leslie1993fungal]; but correlation with genetic markers, such as microsatellites, have shown mixed results [@attanayake2012genetic; @lehner2017independently].
+Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible were considered clones [@leslie1993fungal]; but correlation with genetic markers, such as microsatellites, have shown mixed results [@ford1995heterokaryon; @micali2003independence; @jo2008reassessment; @attanayake2012genetic; @papaioannou2014barrage; @lehner2017independently].
 
 In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected over 10 years between 2003 and 2012 from dry bean cultivars among different geographic locations in the United States, France, Mexico, and Australia. 
 We wanted to know if the *S. sclerotiorum* populations from white mold screening nurseries were representative of the fields within the same region. 
@@ -198,9 +185,8 @@ By investigating these aims, we hope to effectively describe the population stru
 
 Several of the isolates used for this study were collected as reported in previous studies using the same methods [@otto-hanson2011variation].
 Broadly, isolates were collected from two sources: white mold screening nurseries (wmn) or producer fields.
-<!-- SEE: Insect or weed control? -->
 White mold screening nurseries were 5m x 10m in size and maintained without application of fungicides to observe natural incidence of white mold.
-The nursery plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of 0:3:2 during the growing season [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification; @otto2008identification; @mccoy2009use].
+The nursery plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of 0:3:2 during the growing season [@steadman2003identification].
 
 Sampling was carried out by collecting sclerotia from diseased tissue in zig-zag transects across field plots. 
 Because sampling depended on disease incidence, the number of samples isolated varied from year to year.
@@ -208,29 +194,25 @@ Although the nursery locations were the same over sampling years, sampling plots
 
 Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or wmn in 11 states of the United States of America, Mexico, France, and Australia (Table \@ref(tab:isolate-table)). 
 After collection, sclerotia were stored in Petri plates lined with filter paper, then stored at $20~^{\circ}$F or -$4~^{\circ}$C. 
-Sclerotia were surface-sterilized with 50% sodium hypochlorite (at least 6% NaOCL, The Clorox Company, Oakland, CA) solution for 3 min, and double rinsed with ddH$_2$O 3 min.
-The sterilized sclerotia were then plated on water agar plates (16g of Bacto agar per liter of ddH$_2$O, BD Diagnostic Systems, Sparks, MD), with four to five sclerotia of each isolate separated on each plate and stored on the counter top at room temperature for 5 to 6 days. 
+Sclerotia were surface-sterilized with 50% Clorox bleach (at least 6% NaOCL, The Clorox Company, Oakland, CA) solution for 3 min, and double rinsed with ddH$_2$O 3 min.
+The sterilized sclerotia were then placed on water agar plates (16g of Bacto agar per liter of ddH$_2$O, BD Diagnostic Systems, Sparks, MD), with four to five sclerotia of each isolate separated on each plate and stored on the counter top at room temperature for 5 to 6 days. 
 An 8-mm plug from a 5- or 6-day-old culture was transferred from the advancing margin of the mycelia onto a plate of Difco potato dextrose agar (PDA at 39 g/liter of ddH$_2$O) [@otto-hanson2011variation].
 In combination with the 156 isolates described previously, we collected 210 isolates for a total of 366 isolates [@otto-hanson2011variation].
 
 ## Mycelial Compatibility {-}
 
 MCG was determined as described previously through co-culturing pairs of 2-day-old isolates 2.5 cm apart on Diana Sermons (DS) Medium [@cubeta2001mycelial]. 
-Incompatibility of different MCGs resulted in formation of a mycelial barrier of dead tissue (termed a barrage line) accompanied by formation of sclerotia on either side of the barrage line, indicating the limits of the isolates' growth [@otto-hanson2011variation; @kohn1990mycelial; @leslie1993fungal].
+Incompatibility of different MCGs resulted in formation of a barrage line accompanied by formation of sclerotia on either side of the barrage line, indicating the limits of the isolates' growth [@otto-hanson2011variation; @kohn1990mycelial; @leslie1993fungal].
 Isolates were compared in a pairwise manner for each site and then representatives among sites were compared to determine mycelial compatibility groups by scoring compatible and incompatible interactions [@otto-hanson2011variation]. 
+No MCGs were compatible with any other MCG. 
 
-<!-- ![
-Examples of mycelial compatibility results in *S. sclerotiorum*. 
-A) Compatible reaction showing aerial hyphae.
-B) Incompatible reaction showing barrage reaction of dead cells at point of contact.
-](../../results/figures/publication/incompatibility2.JPG){#incompatibility width=25%} -->
 
 ## Aggressiveness {-}
 
 Aggressiveness of each isolate was assessed using a straw test as described in @otto-hanson2011variation that rated necrotic lesion size [@petzoldt1996straw; @teran2006modified].
 Briefly, the straw test uses 21-day-old G122 plants as the host in a greenhouse setting. 
 Clear drinking straws cut to 2.5 cm and sealed were used to place two mycelial plugs of inoculum on the host plant after removing all plant growth &gt;2.5 cm above the fourth node.
-Measurements were taken 8 days later using the Modified Petzoldt and Dickson scale of 1--9, where 1 is no disease and 9 is plant death [@petzoldt1996straw; @teran2006modified].
+Measurements of the necrotic lesion were taken 8 days later using the Modified Petzoldt and Dickson scale of 1--9, where 1 is no disease and 9 is plant death [@petzoldt1996straw; @teran2006modified].
 
 ## Microsatellite genotyping {-}
 
@@ -244,11 +226,10 @@ We genotyped each *S. sclerotiorum* isolate using 16 microsatellite primer pairs
 PCR was carried out as described previously, using primers labeled with FAM fluorophore.
 Resulting amplicons were first resolved in a 1.5% agarose gel stained with ethidium bromide to ensure product was within the expected size range prior to capillary electrophoresis.
 Capillary electrophoresis (fragment analysis) of amplicons, with size standard GeneScan™ 500 LIZ®, was performed using an ABI 3730 genetic analyzer (Life Technologies Corporation, Carlsbad, CA) at the Michigan State University Genomic Sequencing Center (East Lansing, MI). 
-Alleles were scored using PeakScanner version 1.0 (Life Technologies Corporation, Carlsbad, CA) and recorded manually in an excel sheet.
+Alleles were scored using PeakScanner version 1.0 (Life Technologies Corporation, Carlsbad, CA) and recorded manually in a spreadsheet.
 
 ## Data processing and Analysis{-}
 
-<!-- All analyses were performed on this data set unless otherwise mentioned. -->
 All data processing and analyses were performed in `r R.version.string %>% strsplit("\\(") %>% map_chr(1)`[@R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/.
 Of the 16 microsatellite loci genotyped, five included compound repeats, which made it challenging to accurately/confidently bin alleles into fragment sizes expected for each locus based on the described repeat motif.
 Loci with compound repeats were removed for the reported statistics.
@@ -282,7 +263,7 @@ If ANOVA results were significantly different at $\alpha$ = 0.05, pairwise diffe
 
 We wanted to assess if there was correlation between MLHs and MCGs. 
 This was performed using a network-based approach where both MLHs and MCGs were considered nodes and the number of isolates in which they were found together was the strength of the connection between an MLH and and MCG node.
-The network-based approach allowed us to assess how "clumpy" the relationships between MLHs and MCGs were.
+The network-based approach allowed us to assess the associations between MLHs and MCGs.
 To construct the network, a contingency table was created with MLHs and MCGs and converted to a directed and weighted edgelist where each edge represented a connection from an MCG to an MLH, weighted by the number of samples shared in the connection. 
 This was then converted to a bipartite graph where top nodes represented MLHs and bottom nodes represented MCGs.
 To identify clusters of MLHs and MCGs within the network, we used the cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version `r packageVersion("igraph")` [@csardi2006igraph; @pons2006computing].
@@ -326,7 +307,7 @@ We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 
 
 The number of observed alleles per locus ranged from two to 10 with an average of `r signif(Amean, 3)` (Table \@ref(tab:locus-stats)).
 Locus `r loc_table$Locus[loc_table$allele==2]`, which contained only 2 alleles, showed low values of both *h* (`r signif(loc_table$Hexp[loc_table$allele==2], 3)`) and evenness (`r signif(loc_table$Evenness[loc_table$allele==2], 3)`), indicating that there was one dominant allele present. 
-Analysis of the haplotype accumulation curve showed no clear plateau (Supplemental Information), indicating that we would likely obtain more multilocus haplotypes if we were to genotype more loci. 
+Analysis of the haplotype accumulation curve showed no clear plateau for 11 or 16 loci (Supplemental Information), indicating that we would likely obtain more multilocus haplotypes if we were to genotype more loci. 
 
 After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLHs (Table \@ref(tab:iatab)).
 The results show that most populations exhibited relatively high amounts of genotypic diversity, with the exception of MI and NE, which exhibited lower-than average $E_5$ values.
@@ -427,7 +408,7 @@ Associations between Mycelial Compatibility Groups and Multilocus Haplotypes.
 Singletons (46) were truncated, leaving 41 MCGs.
 White bars represent sample counts and grey bars represent counts of unique multilocus haplotypes (MLH).
 The transparency of the bars represent the evenness of the distribution of the MLHs within a given MCG.
-A dashed box surrounds the eight most common MCGs representing > 51% of the data.
+A dashed box surrounds the eight most common MCGs representing >&nbsp;51% of the data.
 **B)** Full graph-representation of the relationship between MCGs (open circles) and MLHs (filled circles).
 Details in Fig. \@ref(fullgraph). 
 **C)** A subset of **B** representing the 8 most common MCGs and their associated MLHs (dashed box in **A**).
@@ -519,7 +500,7 @@ Relative to the US, the international community appears to be driven by MLH 4, w
 <!-- community graph figure -->
 
 ![
-Network of populations (nodes/circles) and their shared multilocus haplotypes (MLH) (edges/lines) haplotyped over 11 loci. 
+Network of populations (nodes/circles) and their shared multilocus haplotypes (MLH) (edges/lines) genotyped over 11 loci. 
 Each node is labeled with **name (number of MLHs shared/number of MLHs total).** 
 The shade and area of the nodes are proportional to the number of unique MLHs within the node and the inner nodes are proportional to the number of private MLHs to the region (bottom legend). 
 Each edge represents a single MLH where its thickness represents the number of populations that share the MLH and the shade represents the value of $P_{sex}$, or the probability of encountering that MLH from two independent meiotic events.
@@ -532,7 +513,7 @@ Each edge represents a single MLH where its thickness represents the number of p
 
 ### Analysis of Molecular Variance {-}
 
-The analysis of molecular variance (AMOVA) for clone-corrected samples over the hierarchy of Region, Source, and Year showed significant variation between regions and years, but no significant variation between wmn and non-wmn (Table \@ref(tab:amova)).
+The analysis of molecular variance (AMOVA) for clone-corrected samples over the hierarchy of Region, Source, and Year showed significant variation between Regions and Years, but no significant variation between wmn and producer fields (Table \@ref(tab:amova)).
 In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Information).
 
 
@@ -560,7 +541,7 @@ read_csv("../../results/tables/AMOVA-year.csv",
   huxtable::print_md(max_width = 80)
 ```
 
-Table: (\#tab:amova) Comparison of populations in the white mold screening nurseries (wmn) and producer fields using an analysis of molecular variance on Bruvo's genetic distance showing little differentiation between white mold screening nurseries (wmn) and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a wmn or producer field. Bold $\Phi$ values indicate significant difference (*P* < 0.05). S.S. = Sum of Squares, d.f. = degrees of freedom.
+Table: (\#tab:amova) Comparison of populations in the white mold screening nurseries (wmn) and producer fields using an analysis of molecular variance on Bruvo's genetic distance showing no apparent differentiation between wmn and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a wmn or producer field. Bold $\Phi$ values indicate significant difference (*P* < 0.05). S.S. = Sum of Squares, d.f. = degrees of freedom.
 
 \newpage
 
@@ -577,7 +558,7 @@ The mean population assignment probabilities for all populations with n > 10 sho
 DAPC grouping by cultivar used the first 20 principal components, representing 89% of the total variance.
 The first two discriminant axes (representing `r sum(paxis(dapc_host, 1:2))`% of the discriminatory power) failed to separate any of the cultivars where the mean posterior assignment probabilities were `r passp(dapc_host, "G122")`% (G122), `r passp(dapc_host, "Beryl")`% (Beryl), and `r passp(dapc_host, "Bunsi")`% (Bunsi).
 DAPC grouping by Region and Year used the first `r dapc_region_year$n.pca` principal components, representing `r prettify(dapc_region_year$var)`% of the total variance.
-The North Central US populations (NE, MI, CO, ND) did not appear to have any variation across time in contrast to WA, which showed a shift in population structure in the last year of sampling, 2008 (Fig. \@ref(DAPC-RY)).
+The North Central USA populations (NE, MI, CO, ND) did not appear to have any variation across time in contrast to WA, which showed a shift in population structure in the last year of sampling, 2008 (Fig. \@ref(DAPC-RY)).
 Further analysis of this population revealed that all 12 isolates in WA circa 2008 originated in a wmn; nine haplotypes were shared with CA, and three were shared with France (Fig. \@ref(community-graph), \@ref(community-graph16)).
 
 
@@ -609,35 +590,15 @@ A more detailed view is shown in Fig. \@ref(DAPC-RY-FULL).
 
 # Discussion {-}
 
-<!-- 
-SEE:
-
-The foundation of the discussion is well built.
-Missing, however, is a synthesis of the information within each paragraph,
-connecting it from one section to the next. I suggest you move the paragraph on
-MCGs to the last (prior to limitations) and then delete all the sub-headings
-(keep limitations and conclusions sub-headers).
-
-I would also like to see more direct discussion of how the pouplation genetic
-can be interpreted epidemiologically. For some guidance here, I suggest
-revisiting Milgroom and Peever 2003 (10.1094/PDIS.2003.87.6.608).
-
-I also suggest supporting epidemiological interpretations with conclusions that
-other *S. sclerotiorum* population have shown. You've done an excellent job 
-using the broader *S. sclerotiorum* literature to support your claims without
-re-hashing the results. I think picking a couple of examples to highlight to
-compare and contrast with the current results would be helpful to readers.
--->
-
 In this study, we characterized the diversity of *Sclerotinia sclerotiorum* from dry bean fields across the United States.
-Our results suggest that, broadly, populations from white mold screening nurseries reflect the populations of the surrounding regions, indicating that resistance screening may be successful at a within regions. 
+Our results suggest that, broadly, populations from white mold screening nurseries reflect the populations of the surrounding regions, indicating that resistance screening may be successful within regions. 
 We found significant population differentiation by geographic region and year, mainly differentiated into three broad North American groups based on shared haplotypes and posterior groupings, a Coastal Region, Midwestern Region, and Mexico. 
 To date, with 366 isolates, this is the largest single population genetic study of *S. sclerotiorum* assessing population structure within managed and unmanaged agricultural environments. 
 These findings indicate that the white mold screening nurseries can be effective at screening for potential resistant lines within growing regions. 
 
 <!-- ## Variable Contributions {-} -->
 
-We found that te best predictors of genetic structure are Region and Year, supporting the hypothesis that *S. sclerotiorum* populations are spatially structured [@carbone2001multilocus].
+We found that the best predictors of genetic structure are Region and Year, supporting the hypothesis that *S. sclerotiorum* populations are spatially structured [@carbone2001multilocus].
 Borrowing a technique often used in the ecological literature, we used dbRDA to elucidate the effect of all variables (`r andlist(c(names(strata(dat11)), "Aggressiveness"))`) [@legendre1999distance].
 From the initial results, it appeared that the most important factors for predicting genetic structure were MCG, region, and year.
 When we inspected the biplot of the initial results, we saw that the most important predictors were 'MCG 44', 'MCG 5', and 'MCG 9'. 
@@ -651,7 +612,7 @@ This indicates that a) breeders should keep in mind regional differences when as
 
 <!-- ## Aggressiveness {-} -->
 
-While aggressiveness was not shown to predict genetic structure, it is an important factor in breeding efforts, and we observed significant differences in aggressiveness based on region (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
+While aggressiveness was not shown to predict genetic structure, it is an important factor in breeding efforts, and we observed significant differences in aggressiveness based on Region (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
 These results show a similar pattern to what was found previously in @otto-hanson2011variation with the exception of North Dakota, which increased in mean aggressiveness from 5 to 5.77.
 This increase was due in part to new data from producer field isolates collected after the previous study.
 These straw tests were performed by a different person for these later isolates, which could suggest a more lenient or strict scoring system.
@@ -715,7 +676,7 @@ Our results, however, do not support this assumption.
 It can be seen in Fig. \@ref(biggraph)A that the most abundant MCG contains several MLHs, but the diversity of those MLHs are low as indicated by the evenness (transparency), which indicates that there is one dominant MLH ('MLH 25').
 What is not shown in Fig. \@ref(biggraph)A is the MLHs that are shared between MCGs. 
 This is illustrated in both Table \@ref(tab:mlg-table) and Fig. \@ref(biggraph)B,C. 
-It could be argued, however that 'MLH 25', with its high value of $P_{sex}$ represents different true MLHs across the five MCGs it occupies, but this doesn't account for the overall structure of Fig. \@ref(fullgraph) where, for example, 'MLH 75' ($P_{sex}$ = 1.81e^-4^) is compatible with `r big_haplotype$N` other haplotypes through three MCG when the population structure of *S. sclerotiorum* is known to be clonal.
+It could be argued, however that 'MLH 25', with its high value of $P_{sex}$ represents different true MLHs across the five MCGs it occupies, but this does not account for the overall structure of Fig. \@ref(fullgraph) where, for example, 'MLH 75' ($P_{sex}$ = 1.81e^-4^) is compatible with `r big_haplotype$N` other haplotypes through three MCG when the population structure of *S. sclerotiorum* is known to be clonal.
 
 Over the past few years, researchers have noticed inconsistencies among the relationship between MCGs and MLHs [@aldrich-wolfe2015genetic; @carbone1999patterns; @attanayake2012genetic; @lehner2015genetic]. 
 Either several MCGs belong to one MLH, which could be explained by insufficient sampling of loci; several MLHs belong to one MCG, which could be explained by clonal expansion; or a mixture of both.
