@@ -149,7 +149,7 @@ Australia -      wmn                     2004 Beryl, Bunsi, G122            4
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-08-18
+##  date     2017-09-18
 ```
 
 ```
@@ -166,15 +166,15 @@ Australia -      wmn                     2004 Beryl, Bunsi, G122            4
 ##  datasets    * 3.4.1   2017-07-07 local          
 ##  devtools      1.13.3  2017-08-02 CRAN (R 3.4.1) 
 ##  digest        0.6.12  2017-01-27 CRAN (R 3.4.0) 
-##  dplyr       * 0.7.2   2017-07-20 CRAN (R 3.4.1) 
+##  dplyr       * 0.7.3   2017-09-09 CRAN (R 3.4.1) 
 ##  evaluate      0.10.1  2017-06-24 CRAN (R 3.4.1) 
 ##  ezknitr       0.6     2016-09-16 CRAN (R 3.4.0) 
 ##  glue          1.1.1   2017-06-21 CRAN (R 3.4.0) 
 ##  graphics    * 3.4.1   2017-07-07 local          
 ##  grDevices   * 3.4.1   2017-07-07 local          
 ##  hms           0.3     2016-11-22 CRAN (R 3.4.0) 
-##  huxtable    * 0.3.0   2017-05-18 CRAN (R 3.4.0) 
-##  knitr       * 1.16    2017-05-18 CRAN (R 3.4.0) 
+##  huxtable    * 0.3.1   2017-09-12 cran (@0.3.1)  
+##  knitr       * 1.17    2017-08-10 cran (@1.17)   
 ##  magrittr      1.5     2014-11-22 CRAN (R 3.4.0) 
 ##  memoise       1.1.0   2017-04-21 CRAN (R 3.4.0) 
 ##  methods     * 3.4.1   2017-07-07 local          
@@ -185,11 +185,11 @@ Australia -      wmn                     2004 Beryl, Bunsi, G122            4
 ##  R6            2.2.2   2017-06-17 cran (@2.2.2)  
 ##  Rcpp          0.12.12 2017-07-15 cran (@0.12.12)
 ##  readr       * 1.1.1   2017-05-16 CRAN (R 3.4.0) 
-##  rlang         0.1.1   2017-05-18 CRAN (R 3.4.0) 
+##  rlang         0.1.2   2017-08-09 cran (@0.1.2)  
 ##  stats       * 3.4.1   2017-07-07 local          
 ##  stringi       1.1.5   2017-04-07 CRAN (R 3.4.0) 
 ##  stringr       1.2.0   2017-02-18 CRAN (R 3.4.0) 
-##  tibble        1.3.3   2017-05-28 CRAN (R 3.4.0) 
+##  tibble        1.3.4   2017-08-22 cran (@1.3.4)  
 ##  tools         3.4.1   2017-07-07 local          
 ##  utils       * 3.4.1   2017-07-07 local          
 ##  withr         2.0.0   2017-07-28 CRAN (R 3.4.1)
