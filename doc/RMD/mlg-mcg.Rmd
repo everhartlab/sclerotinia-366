@@ -935,10 +935,10 @@ distplot %>%
   group_by(comparison) %>%
   summarize(mean = mean(dist), median = median(dist))
 
-if (require("ggjoy")){
+if (require("ggridges")){
   ggplot(distplot, aes(x = dist, y = COMMS, group = COMMS, height = ..density..)) + 
-    geom_joy(aes(lty = comparison, fill = mean)) + 
-    theme_joy() + 
+    geom_density_ridges(aes(lty = comparison, fill = mean)) + 
+    theme_ridges() + 
     theme(axis.text.y = element_text(hjust = 0)) + 
     viridis::scale_fill_viridis(option = "A", limits = quantile(distplot$dist, c(0.25, 0.75)))
 }

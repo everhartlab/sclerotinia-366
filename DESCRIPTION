@@ -7,6 +7,25 @@ Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports: tidyverse, ggraph, ggrepel (>= 0.6.9), igraph, viridis, poppr, vegan, readxl, assertr, ezknitr, visNetwork,
-             rticles, huxtable, agricolae, ggcompoplot, cowplot, bookdown, ggforce
-Remotes: slowkow/ggrepel zkamvar/rticles@update-peerj, zkamvar/ggcompoplot
+Imports: tidyverse,
+  igraph,
+  viridis,
+  poppr (>= 2.4.1),
+  vegan,
+  readxl,
+  assertr,
+  ezknitr,
+  visNetwork,
+  rticles,
+  huxtable,
+  agricolae (>= 1.2.7),
+  ggraph,
+  ggforce,
+  ggridges,
+  ggrepel (>= 0.6.9),
+  ggcompoplot,
+  cowplot,
+  bookdown
+Remotes: slowkow/ggrepel,
+  zkamvar/rticles@update-peerj,
+  zkamvar/ggcompoplot
