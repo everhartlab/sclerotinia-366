@@ -73,4 +73,20 @@ tidy:
 clean: tidy
 	$(RM) cache/*
 
+# Ignoring Derivatives ----------------------------------------------------
+#
+# This part is useful when testing several changes
 
+.PHONY: ignore
+
+ignore :
+        git update-index --assume-unchanged \
+        doc/manuscript/manuscript.tex \
+        doc/manuscript/manuscript.pdf
+
+.PHONY: unignore
+
+unignore :
+        git update-index --no-assume-unchanged \
+        doc/manuscript/manuscript.tex \
+        doc/manuscript/manuscript.pdf
