@@ -15,7 +15,8 @@ ANALYSES   := results/table-1.md \
 MANUSCRIPT := doc/manuscript/manuscript.pdf
 COMPONENTS := doc/manuscript/abstract.md \
               doc/manuscript/ssc_bibliography.bib \
-              doc/manuscript/wlpeerj.cls
+              doc/manuscript/wlpeerj.cls \
+              doc/manuscript/apa.csl
 DIRS       := results/figures/publication results/tables/
 
 
