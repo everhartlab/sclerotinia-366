@@ -47,7 +47,7 @@ Required software:
  - [devtools](https://github.com/hadley/devtools#readme)
 
 
- ## Docker
+## Docker
 
 This repository contains a [Dockerfile](Dockerfile), which specifies the
 instructions to build a [docker](https://www.docker.com/) container. This is
@@ -55,10 +55,20 @@ designed to capture the complete development environment of the analysis so
 that it can be accurately reproduced. The image is ~2.71Gb, so be sure that you
 have enough memory on your computer to run it. 
 
-To Install Docker, go here: https://docs.docker.com/engine/installation/#desktop
+To Install Docker, go here: https://docs.docker.com/engine/installation/#desktop. Once you have downloaded docker, you can either pull the container or build it. Pulling is by far the quickest way to do this.
+The docker container is located at https://hub.docker.com/r/zkamvar/sclerotinia-366/ 
 
-Once you've installed it, open docker. This should open a command line prompt.
-Navigate to this directory and type:
+> Note: both ways assume that you are in the analysis directory
+
+### Pulling the container
+
+```
+docker run --rm -it -v $(pwd):/analysis zkamvar/sclerotinia-366:v0.1 bash
+```
+
+### Building the container
+
+If you don't want to pull from docker hub, you can build the container.
 
 ```sh
 docker build .
@@ -76,9 +86,19 @@ you can run the analysis in the image with:
 
 ```
 docker run -it -v $(pwd):/analysis 8e1e4cd82e19 bash
-root@a4d84d719553:/# cd analysis/
-root@a4d84d719553:/analysis# make clean
-root@a4d84d719553:/analysis# make
+```
+
+### Running the Analysis
+
+Once you are in the container, you can run the analysis, which is mapped to
+`analysis/`. The `make clean` command will wipe out all derivative files and
+the `make` command will generate everything. Note that this took almost 2 hours
+to run on my machine due to several bootstrapping processes. 
+
+```
+cd analysis/
+make clean
+make
 ```
 
 
