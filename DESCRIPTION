@@ -24,6 +24,7 @@ Imports: tidyverse,
   ggridges,
   ggrepel (>= 0.6.9),
   ggcompoplot,
+  ggtree,
   cowplot,
   bookdown
 Remotes: slowkow/ggrepel@fd15d0a7d8afa873f4baced087dd38132f3484c4,
