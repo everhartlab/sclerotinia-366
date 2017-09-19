@@ -44,6 +44,7 @@ RUN rm -rf /tmp/*.rds \
     ggrepel \
     cowplot \
     bookdown \
+    KernSmooth \
 && Rscript -e 'source("http://bioconductor.org/biocLite.R"); biocLite("ggtree");' \
 && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
@@ -52,5 +53,6 @@ RUN installGithub.r \
     slowkow/ggrepel@fd15d0a7d8afa873f4baced087dd38132f3484c4 \
     rstudio/rticles@4111a3946de40f787b8115d29e6751246cb9c5d2 \
     zkamvar/ggcompoplot@bcf007d1ffd4d39afd9ac347213d2416163f380c \
+    thibautjombart/adegenet@8bc0ae08ec73fb431b0b5b3bc60a43308a1fe804 \
 && rm -rf /tmp/downloaded_packages/ /tmp/*.rds
 
