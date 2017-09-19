@@ -26,6 +26,6 @@ Imports: tidyverse,
   ggcompoplot,
   cowplot,
   bookdown
-Remotes: slowkow/ggrepel,
-  zkamvar/rticles@update-peerj,
-  zkamvar/ggcompoplot
+Remotes: slowkow/ggrepel@fd15d0a7d8afa873f4baced087dd38132f3484c4,
+  rstudio/rticles@4111a3946de40f787b8115d29e6751246cb9c5d2,
+  zkamvar/ggcompoplot@bcf007d1ffd4d39afd9ac347213d2416163f380c
