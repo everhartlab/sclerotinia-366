@@ -1602,7 +1602,7 @@ on average 7 steps.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-09-18
+##  date     2017-09-19
 ```
 
 ```
@@ -1643,7 +1643,7 @@ on average 7 steps.
 ##  ggforce        0.1.1      2016-11-28 CRAN (R 3.4.0)                   
 ##  ggplot2      * 2.2.1      2016-12-30 CRAN (R 3.4.0)                   
 ##  ggraph       * 1.0.0      2017-02-24 CRAN (R 3.4.0)                   
-##  ggrepel        0.6.12     2017-08-02 Github (slowkow/ggrepel@fd15d0a) 
+##  ggrepel        0.6.12     2017-09-19 Github (slowkow/ggrepel@fd15d0a) 
 ##  ggridges     * 0.4.1      2017-09-15 cran (@0.4.1)                    
 ##  glue           1.1.1      2017-06-21 CRAN (R 3.4.0)                   
 ##  gmodels        2.16.2     2015-07-22 CRAN (R 3.4.0)                   

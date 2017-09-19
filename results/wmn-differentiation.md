@@ -856,7 +856,7 @@ LDS_PLOT
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-09-18
+##  date     2017-09-19
 ```
 
 ```
@@ -893,7 +893,7 @@ LDS_PLOT
 ##  forcats       0.2.0      2017-01-23 CRAN (R 3.4.0)                      
 ##  foreign       0.8-69     2017-06-21 CRAN (R 3.4.0)                      
 ##  gdata         2.18.0     2017-06-06 CRAN (R 3.4.0)                      
-##  ggcompoplot   0.1.0      2017-06-30 Github (zkamvar/ggcompoplot@bcf007d)
+##  ggcompoplot   0.1.0      2017-09-19 Github (zkamvar/ggcompoplot@bcf007d)
 ##  ggplot2     * 2.2.1      2016-12-30 CRAN (R 3.4.0)                      
 ##  glue          1.1.1      2017-06-21 CRAN (R 3.4.0)                      
 ##  gmodels       2.16.2     2015-07-22 CRAN (R 3.4.0)                      

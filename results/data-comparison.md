@@ -181,7 +181,7 @@ First, we want to know what sheets exist.
 
 
 ```r
-excel_sheets("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xlsx")
+excel_sheets(file.path(PROJHOME, "data/raw/2017-02-16_copy-of-binned-genotypes_SE.xlsx"))
 ```
 
 ```
@@ -210,7 +210,7 @@ Quirks specific to thse data:
  
 
 ```r
-syd <- read_excel("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xlsx", 
+syd <- read_excel(file.path(PROJHOME, "data/raw/2017-02-16_copy-of-binned-genotypes_SE.xlsx"),
                 sheet = "GenAlexBinned", skip = 1) %>%
   select(-1) %>%                # removing first column, which is empty
   gather(locus, allele, -1) %>% # gather all loci into tidy columns
@@ -286,7 +286,7 @@ column_specification <- cols(
   `110-4(H)` = col_integer(),
   `114-4(H)` = col_integer()
 )
-saj <- read_csv("../Analysis4 ForManu/A2_Copy4 EUR_AUS_forManu.csv", skip = 2, col_types = column_specification) %>%
+saj <- read_csv(file.path(PROJHOME, "data/raw/2017-02-16_binned-genotypes-genalex_SA.csv"), skip = 2, col_types = column_specification) %>%
   select(-1) %>%
   gather(locus, allele, -1) %>% # gather all loci into tidy columns
   mutate(locus = trimws(locus)) %>% # remove any whitespace in the locus names
@@ -349,7 +349,7 @@ dplyr::setequal(saj, syd)
 ```
 
 ```
-## FALSE: Rows in x but not y: 365, 364, 363, 260, 366, 41, 40, 39, 38. Rows in y but not x: 366, 365, 364, 363, 260, 41, 38, 39, 40.
+## FALSE: Rows in x but not y: 366, 364, 363, 260, 365, 41, 40, 39, 38. Rows in y but not x: 365, 260, 41, 40, 39, 38, 364, 363, 366.
 ```
 
 Okay, something's not cromulent here. We'll have to manaully inspect these:
@@ -567,7 +567,7 @@ to have to clean them up by estimating the the true allele size.
 
 
 ```r
-ex <- readxl::read_excel("../Analysis4 ForManu/A1_Copy of binned-genotypes_SE.xlsx", sheet = "GenAlex", skip = 1) %>%
+ex <- readxl::read_excel(file.path(PROJHOME, "data/raw/2017-02-16_copy-of-binned-genotypes_SE.xlsx"), sheet = "GenAlex", skip = 1) %>%
   select(-1) %>%                # removing first column, which is empty
   gather(locus, allele, -1) %>% # gather all loci into tidy columns
   mutate(locus = trimws(locus)) %>% # remove (F) designator
@@ -810,7 +810,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       America/Chicago             
-##  date     2017-09-18
+##  date     2017-09-19
 ```
 
 ```
