@@ -19,6 +19,15 @@ COMPONENTS := doc/manuscript/abstract.md \
               doc/manuscript/apa.csl
 DIRS       := results/figures/publication results/tables/
 
+# Testing whether or not we are in a docker container
+ifeq ("$(wildcard /proc/1/cgroup)","")
+	RCMD="devtools::install()"
+else ifneq ("$(shell grep -cq docker /proc/1/cgroup)","0")
+	RCMD="Sys.Date()"
+else
+	RCMD="devtools::install()"
+endif
+
 
 # TARGETS
 # ---------------------------------------------------------
@@ -40,10 +49,10 @@ $(ANALYSES): $(THE_DATA)
 # RECIPES
 # ---------------------------------------------------------
 $(DIRS) :
-	mkdir $@
+	mkdir -p $@
 
 results/bootstrap.txt: DESCRIPTION
-	R --slave -e "devtools::install()"
+	R --slave -e $(RCMD)	
 	date > results/bootstrap.txt
 
 results/%.md : doc/RMD/%.Rmd
