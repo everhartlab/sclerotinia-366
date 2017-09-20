@@ -6,7 +6,7 @@ author:
     email: zkamvar@unl.edu
     affiliation: 1
   - name: Bimal Sajeewa Amaradasa
-    email: bamaradasa2@unl.edu
+    email: bamaradasa@ufl.edu
     affiliation: 1
   - name: Rachana Jhala
     email: rjhala2@unl.edu
@@ -23,11 +23,14 @@ author:
     corresponding: true
 affiliation:
   - code: 1
-    address: Department of Plant Pathology, University of Nebraska-Lincoln, Lincoln 68583
+    address: Department of Plant Pathology, University of Nebraska-Lincoln, Lincoln, NE 68583
 abstract: >
   `r paste(readLines("abstract.md"), collapse = "\n  ")`
-header-includes: >
+header-includes: |
   \usepackage{indentfirst}
+  
+  \newaff{second}{Plant Pathology Department, University of Florida, Gainsville, FL 32611}
+  
 bibliography: ssc_bibliography.bib
 csl: apa.csl
 output: 

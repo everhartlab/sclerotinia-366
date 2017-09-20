@@ -147,6 +147,13 @@
   \medskip
   Email address: #3\par}
 }
+% ZNK 2017-09-20
+% I'm adding a current address command as a kludge because it's not possible
+% currently to include multiple affiliations in the peerj rticles template :(
+\newcommand{\newaff}[2]{%
+  \def\thenewaff{%
+  Current address of #1 author: #2\par}
+}
 
 \def\xabstract{abstract}
 \long\def\abstract#1\end#2{\def\two{#2}\ifx\two\xabstract
@@ -169,6 +176,9 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 {\raggedright\sffamily\bfseries\fontsize{20}{25}\selectfont \@title\par}%
 \vskip10pt
 {\raggedright\sffamily\fontsize{12}{16}\selectfont  \@author\par}
+\ifdefined\thenewaff
+  {\raggedright\sffamily\footnotesize\thenewaff\par}
+\fi
 \vskip1em%
 % LLT 18 Aug 2016: needs corresponding author now
 \ifdefined\thecorrauthor
