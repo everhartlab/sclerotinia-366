@@ -1,6 +1,6 @@
 ## This Dockerfile describes the R analysis environment for:
 ##
-## Kamvar, Z.N., Amadarasa, B.S., Jhala, R., McCoy, S., Steadman, S., and 
+## Kamvar, Z.N., Amaradasa, B.S., Jhala, R., McCoy, S., Steadman, S., and
 ## Everhart, S.E. (2017). Population structure and phenotypic variation of
 ## _Sclerotinia sclerotiorum_ from dry bean in the United States PeerJ XXX
 ##
@@ -22,7 +22,7 @@ RUN apt-get update \
 &&  apt-get install -y libudunits2-dev
 
 ## Install population genetics packages from MRAN
-## Note that we are going to be re-installing some of these packages from 
+## Note that we are going to be re-installing some of these packages from
 ## github, but are installing them here initially to ensure that we have the
 ## correct dependencies
 RUN rm -rf /tmp/*.rds \

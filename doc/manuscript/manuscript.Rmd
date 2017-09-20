@@ -5,8 +5,8 @@ author:
   - name: Zhian N. Kamvar
     email: zkamvar@unl.edu
     affiliation: 1
-  - name: Bimal Sajeewa Amadarasa
-    email: bamadarasa2@unl.edu
+  - name: Bimal Sajeewa Amaradasa
+    email: bamaradasa2@unl.edu
     affiliation: 1
   - name: Rachana Jhala
     email: rjhala2@unl.edu
@@ -726,7 +726,7 @@ The authors declare no conflict of interest.
 
  - **Zhian N. Kamvar** analyzed the data, contributed analysis tools, wrote the paper, prepared figures and tables, reviewed drafts of the paper.
 
- - **Bimal Sajeewa Amadarasa** ...
+ - **Bimal Sajeewa Amaradasa** ...
 
  - **Rachana Jhala** ...
 
