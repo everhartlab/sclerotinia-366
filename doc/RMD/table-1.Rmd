@@ -66,10 +66,10 @@ dat <- readr::read_csv(file.path(PROJHOME, "data/clean_data.csv"), col_types = c
 dt <- huxtable::as_huxtable(dat, add_colnames = TRUE) %>% # Creating the huxtable
   set_align(everywhere, col = 4, value = "right") %>%     # Aligning numeric columns to the right
   set_align(everywhere, col = 6, value = "right") %>%     # 
-  set_wrap(TRUE) %>%                                      # Wrapping columns
-  set_number_format(value = 0)                            # Print numbers without decimals
-col_width(dt) <- c(0.055, 0.035, 0.06, 0.1, 0.151, 0.025) # Specify width for each column
-print_md(dt)                                              # print in pandoc markdown format
+  # set_wrap(TRUE) %>%                                      # Wrapping columns
+  set_number_format(value = 0) %>%                        # Print numbers without decimals
+  set_col_width(c(0.055, 0.035, 0.06, 0.1, 0.151, 0.025)) %>% # Specify width for each column
+  print_md(max_width = 80)                                # print in pandoc markdown format
 ```
 
 
