@@ -1,9 +1,6 @@
 # Analysis of 366 *S. sclerotiorum* isolates
 
-This is an attempt to clean up an analysis of 366 isolates of *Sclerotinia
-sclerotiorum* from the US and various countries around the world. 
-
-The manuscript has mostly been written, but it still needs some cleaning:
+This repository contains data, code, and a manuscript for analysis of 366 isolates of *Sclerotinia sclerotiorum* from the US and various countries around the world. 
 
 > Population structure and phenotypic variation of *Sclerotinia sclerotiorum*
 > from dry bean in the United States
