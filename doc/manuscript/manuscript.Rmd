@@ -102,6 +102,29 @@ Amean <- mean(loc_table$allele)
 Hmean <- mean(loc_table$Hexp)
 Emean <- mean(loc_table$Evenness)
 
+# Genotype Diversity Table ------------------------------------------------
+
+gdt <- read_csv("../../results/tables/genotype_diversity_table_region.csv", 
+         na = "NA", # spaces read in as spaces
+         col_types = cols(
+         Pop = col_character(),
+         N = col_integer(),
+         MLG = col_integer(),
+         eMLG = col_double(),
+         SE = col_double(),
+         H = col_double(),
+         G = col_double(),
+         lambda = col_double(),
+         E.5 = col_double(),
+         Hexp = col_double(),
+         Ia = col_double(),
+         p.Ia = col_double(),
+         rbarD = col_double(),
+         p.rD = col_double(),
+         File = col_character()
+      ))
+gdtrd <- setNames(signif(gdt$p.rD, 3), gdt$Pop)
+
 # DAPC data ---------------------------------------------------------------
 
 dapc_region      <- dapc(setPop(dat11cc, ~Region), n.da = 13, n.pca = 21)
@@ -156,9 +179,9 @@ Haggmean <- mean(as.numeric(MLHagg[[2]]))
 *Sclerotinia sclerotiorum* (Lib.) de Bary is an ascomycete plant pathogen with a worldwide distribution.
 This is a necrotrophic pathogen that is primarily homothallic (self-fertilization) and has the ability to survive for more than five years in soil using melanized survival structures called sclerotia [@bolton2006sclerotinia; @sexton2006population]. 
 It causes disease on more than 400 plant species belonging to 75 families [@boland1994index] including crops of major economic importance such as sunflower (*Helianthus spp.*), soybean (*Glycine max* L.), canola (*Brassica napa* L., *Brassica campestris* L.), and dry bean (*Phaseolus vulgaris* L.) [@bolton2006sclerotinia]. 
-On dry bean, *S. sclerotiorum* is the causal agent of white mold, a devastating disease that can be a yield-limiting in temperate climates [@steadman1983white].
+On dry bean, *S. sclerotiorum* is the causal agent of white mold, a devastating disease that can be yield-limiting in temperate climates [@steadman1983white].
 
-Currently, there are no known resistant cultivars of dry bean commercially available [@otto-hanson2011variation].
+Currently, there are no commercially available resistant cultivars of dry bean [@otto-hanson2011variation].
 Organized breeding efforts have used a common-garden approach with white mold screening nurseries in dry bean production areas across the United States with additional sites in Mexico, France, and Australia [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification; @otto2008identification; @mccoy2009use]. 
 These white mold screening nurseries use no chemical or cultural treatments against *S. sclerotiorum* and employ standardized protocols for screening new cultivars for resistance to white mold. 
 It has previously been shown that aggressiveness (the severity of disease symptoms on the host) is significantly different across white mold screening nursery sites in separate geographic regions [@otto-hanson2011variation].
@@ -173,10 +196,10 @@ Nearly all population genetic studies of *S. sclerotiorum* employ a macroscopic 
 Mycelial compatibility has been used as a proxy for vegetative compatibility, a fungal trait controlled by several independent genes controlling the ability for two hyphae to fuse and grow as a single unit [@leslie1993fungal; @schafer2006optimized].
 Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible were considered clones [@leslie1993fungal]; but correlation with genetic markers, such as microsatellites, have shown mixed results [@ford1995heterokaryon; @micali2003independence; @jo2008reassessment; @attanayake2012genetic; @papaioannou2014barrage; @lehner2017independently].
 
-In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected over 10 years between 2003 and 2012 from dry bean cultivars among different geographic locations in the United States, France, Mexico, and Australia. 
+In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected between 2003 and 2012 from dry bean cultivars among different geographic locations in the United States, France, Mexico, and Australia. 
 We wanted to know if the *S. sclerotiorum* populations from white mold screening nurseries were representative of the fields within the same region. 
 As these nurseries were not treated with any chemical or cultural control of white mold, we hypothesized that these nurseries would represent the natural population of *S. sclerotiorum*.
-Furthermore, we wanted to investigate the potential effect of cultivar on genetic diversity by assessing three dry bean cultivars with different levels of resistance, Beryl (great northern bean, susceptible), Bunsi (navy bean, low susceptibility), and G122 (cranberry bean, partial resistance) [@otto-hanson2011variation].
+Furthermore, we wanted to investigate the potential effect of cultivar on genetic diversity of the pathogen by assessing three dry bean cultivars with different levels of resistance, Beryl (great northern bean, susceptible), Bunsi (navy bean, low susceptibility), and G122 (cranberry bean, partial resistance) [@otto-hanson2011variation].
 We additionally wanted to determine categorical or phenotypic variables that best predicted genetic structure and if there was correlation between multilocus haplotype and mycelial compatibility group.
 Knowing what variables predict genetic structure can help direct breeding efforts.
 By investigating these aims, we hope to effectively describe the population structure of *S. sclerotiorum* in the USA and make available our database of isolates for use in future dry bean breeding efforts.
@@ -189,7 +212,7 @@ By investigating these aims, we hope to effectively describe the population stru
 Several of the isolates used for this study were collected as reported in previous studies using the same methods [@otto-hanson2011variation].
 Broadly, isolates were collected from two sources: white mold screening nurseries (wmn) or producer fields.
 White mold screening nurseries were 5m x 10m in size and maintained without application of fungicides to observe natural incidence of white mold.
-The nursery plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of 0:3:2 during the growing season [@steadman2003identification].
+The early nursery plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of 0:3:2 during the growing season [@steadman2003identification].
 
 Sampling was carried out by collecting sclerotia from diseased tissue in zig-zag transects across field plots. 
 Because sampling depended on disease incidence, the number of samples isolated varied from year to year.
@@ -197,7 +220,7 @@ Although the nursery locations were the same over sampling years, sampling plots
 
 Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or wmn in 11 states of the United States of America, Mexico, France, and Australia (Table \@ref(tab:isolate-table)). 
 After collection, sclerotia were stored in Petri plates lined with filter paper, then stored at $20~^{\circ}$F or -$4~^{\circ}$C. 
-Sclerotia were surface-sterilized with 50% Clorox bleach (at least 6% NaOCL, The Clorox Company, Oakland, CA) solution for 3 min, and double rinsed with ddH$_2$O 3 min.
+Sclerotia were surface-sterilized with 50% Clorox bleach (at least 6% NaOCL, The Clorox Company, Oakland, CA) solution for 3 min, and double rinsed with ddH$_2$O for 3 min.
 The sterilized sclerotia were then placed on water agar plates (16g of Bacto agar per liter of ddH$_2$O, BD Diagnostic Systems, Sparks, MD), with four to five sclerotia of each isolate separated on each plate and stored on the counter top at room temperature for 5 to 6 days. 
 An 8-mm plug from a 5- or 6-day-old culture was transferred from the advancing margin of the mycelia onto a plate of Difco potato dextrose agar (PDA at 39 g/liter of ddH$_2$O) [@otto-hanson2011variation].
 In combination with the 156 isolates described previously, we collected 210 isolates for a total of 366 isolates [@otto-hanson2011variation].
@@ -214,13 +237,13 @@ No MCGs were compatible with any other MCG.
 
 Aggressiveness of each isolate was assessed using a straw test as described in @otto-hanson2011variation that rated necrotic lesion size [@petzoldt1996straw; @teran2006modified].
 Briefly, the straw test uses 21-day-old G122 plants as the host in a greenhouse setting. 
-Clear drinking straws cut to 2.5 cm and sealed were used to place two mycelial plugs of inoculum on the host plant after removing all plant growth &gt;2.5 cm above the fourth node.
+Clear drinking straws cut to 2.5 cm and sealed were used to place two mycelial plugs of inoculum on the host plant after removing plant growth beyond 2.5 cm above the fourth node.
 Measurements of the necrotic lesion were taken 8 days later using the Modified Petzoldt and Dickson scale of 1--9, where 1 is no disease and 9 is plant death [@petzoldt1996straw; @teran2006modified].
 
 ## Microsatellite genotyping {-}
 
 Prior to DNA extraction, isolates were grown on PDA and plugs were subsequently transferred to Potato Dextrose Broth (PDB) where they were grown until there was significant mycelial growth, but before the mycelial mat became solidified (4--5 days).
-Mycelia for each plate was collected in a buchner funnel, agar plugs removed, lyophilized and pulverized manually in Whirl-pak® HDPE sampling bags (Sigma-Aldrich, St. Louis, MO). 
+Each mycelial mat was collected in a filtered Büchner funnel, agar plugs removed, lyophilized and pulverized manually in Whirl-pak® HDPE sampling bags (Sigma-Aldrich, St. Louis, MO). 
 Lyophilized mycelia was then stored in microcentrifuge tubes at -$20~^{\circ}$C until needed for DNA extraction.
 DNA from 25mg of pulverized mycelia was purified using a phenol-chloroform extraction method followed by alcohol precipitation and evaporation, suspending the DNA in 200$\mu$l TE [@sambrook1989molecular].
 Suspended DNA was stored at $4~^{\circ}$C until genotyping.
@@ -316,7 +339,7 @@ After clone-correction on the hierarchy of Region/Source/Host/Year, we were left
 The results show that most populations exhibited relatively high amounts of genotypic diversity, with the exception of MI and NE, which exhibited lower-than average $E_5$ values.
 Mexico had the lowest average value of gene diversity, *h* and the lowest *eMLH*, suggesting low overall genetic diversity. 
 Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
-The only exceptions are CA and Australia. Both of these populations showed only moderate significance (P < 0.05) with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
+The only exceptions are CA (*P* = `r gdtrd[["CA"]]`) and Australia (*P* = `r gdtrd[["Australia"]]`). Both of these populations showed only moderate significance with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
 
 ```{r , echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 loc_table %>%
@@ -342,26 +365,7 @@ loc_table %>%
 Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation]. Average *h* = `r signif(Hmean, 3)`, average Evenness = `r signif(Emean, 3)`, average no. alleles = `r signif(Amean, 3)`
 
 ```{r table_ia, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
-suppressPackageStartupMessages(library("tidyverse"))
-read_csv("../../results/tables/genotype_diversity_table_region.csv", 
-         na = "NA", # spaces read in as spaces
-         col_types = cols(
-         Pop = col_character(),
-         N = col_integer(),
-         MLG = col_integer(),
-         eMLG = col_double(),
-         SE = col_double(),
-         H = col_double(),
-         G = col_double(),
-         lambda = col_double(),
-         E.5 = col_double(),
-         Hexp = col_double(),
-         Ia = col_double(),
-         p.Ia = col_double(),
-         rbarD = col_double(),
-         p.rD = col_double(),
-         File = col_character()
-      )) %>%
+gdt %>%
   # mutate(Ia = case_when(
   #   !is.finite(p.Ia) ~ "-",
   #   p.Ia == 0.001 ~ paste0(round(Ia, 2), "*"),
@@ -449,7 +453,7 @@ Strip Plot of aggressiveness by population arranged in descending order of mean 
 
 The forward-backward selection process of the dbRDA models on clone-corrected data revealed `r RDAVAR1` to be the optimal variables for the reduced model, accounting for `r prettify(vartab(caplist1$components)[2, "Proportion"])`% of the total variation.
 ANOVA showed that the reduced model was significant with an adjusted R^2^ of `r RDA1R2` (*P* = 0.001).
-Assessment of the marginal effects showed that all varaibles significantly explained genetic variation (*P* = `r anova1res[["Year"]]`, *P* = `r anova1res[["Region"]]` for Region).
+Assessment of the marginal effects showed that all varaibles significantly explained genetic variation ($P \leq `r anova1res[["Region"]]`$).
 We found that there was multicollinearity when MCG was combined with any other variable, so repeated the analysis, dropping MCG from the list of potential predictors. 
 From these results, `r RDAVAR2` were found to be optimal, accounting for `r prettify(vartab(caplist2$components)[2, "Proportion"])`% of the total variation.
 ANOVA revealed significant effects with an adjusted R^2^ of `r RDA2R2` (*P* = 0.001).
@@ -463,7 +467,7 @@ Agressiveness of the isolates ranged from `r paste(range(other(dat11)$meta$Sever
 The group mean averages were `r sprintf("%0.2f, %0.2f, and %0.2f", Raggmean, Maggmean, Haggmean)` for Region, MCG, and MLH, respectively.
 Our assessment of aggressiveness in association with Region showed a significant effect (*P* < 1.00e^-4^), with means that ranged from 5.8 (MN) to 4.0 (CA) (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
 MCGs also showed a significant effect (*P* < 1.00e^-4^), with means that ranged from 6.0 ('MCG 44') to 4.6 ('MCG 49'; Table \@ref(tab:MCG-aggressiveness)).
-We additionally found a significant effect for MLHs (*P* = 7.44e^-4^) for MLHs, with means that ranged from 6.0 ('MLH 78') to 4.3 ('MLH 140') (Table \@ref(tab:MLG-aggressiveness)).
+We additionally found a significant effect for MLHs (*P* = 7.44e^-4^), with means that ranged from 6.0 ('MLH 78') to 4.3 ('MLH 140') (Table \@ref(tab:MLG-aggressiveness)).
 
 ### Correlation of Mulitlocus Haplotypes and Mycelial Compatibility Groups {-}
 
@@ -637,7 +641,7 @@ The two distinct clusters for the WA Region showed that the 2008 population appe
 All of the isolates from WA in 2003--2005, and 2008 came from the same wmn; within the wmn, those in 2003--2005 came a Northeastern field location cropped with dry bean since 2002, and those in 2008 from a Southeastern field that was previously cropped with brassica, sundgrass, peas, beans, and potatoes (Miklas, Phil Pers. comm.).
 Both of these fields were inoculated with sclerotia in 2002, the Northeastern field with sclerotia provided by a commercial bean producer and the Southeastern field with sclerotia from peas (although this was thought to be unsuccessful).
 Despite this information, it is still unclear what has contributed to the differentiation of the 2008 population from WA.
-While the evidence my suggest host as being a factor, previous studies have shown no significant differentiation across host species [@aldrich-wolfe2015genetic]. 
+While the evidence may suggest host as being a factor, previous studies have shown no significant differentiation across host species [@aldrich-wolfe2015genetic]. 
 
 With the exception of the WA Region, populations that were sampled across several years appeared to be relatively stable over time with overlapping distributions in the DAPC (i.e. NE and MI, Fig. \@ref(DAPC-RY)). 
 DAPC is based on the principal components of Euclidean distance between genotypes [@jombart2010discriminant]. 
@@ -686,7 +690,7 @@ Either several MCGs belong to one MLH, which could be explained by insufficient 
 Some studies have shown a correlation between MCG and MLH [@aldrich-wolfe2015genetic; @carbone1999patterns; @lehner2015genetic], whereas other studies have shown no apparent correlation, even on small spatial scales [@atallah2004high; @attanayake2012genetic; @attanayake2013sclerotinia].
 
 One long-held assumption was that MCGs (as determined via barrage reaction) represent vegetative compatibility groups (VCGs) [@schafer2006optimized; @kohn1990mycelial; @lehner2015genetic], which are known to have a genetic component [@saupe2000molecular; @hall2010evolution; @strom2016genomes].
-While our protocol for assessing MCGs utilized a different substrate for the MCG reactions, the patterns we observe are not dissimilar from what have previously been reported in the literature.
+While our protocol for assessing MCGs utilized Diana Sermons Medium [@cubeta2001mycelial] as compared to Patterson's Medium or Potato Dextrose Agar [@schafer2006optimized] for the MCG reactions, the patterns we observe are not dissimilar from what have previously been reported in the literature.
 It has been demonstrated in several Ascomycetes---including *Neurospora crassa* [@micali2003independence], *Sclerotinia homoecarpa* [@jo2008reassessment], *Verticillium dahliae* [@papaioannou2014barrage], and *S. sclerotiorum* [@ford1995heterokaryon]---that barrage reactions are independent from stable anastomosis.
 Thus, the inconsistencies in this study and other studies indicate that researchers studying *S. sclerotiorum* should not rely on MCG data derived from barrage reactions as an indicator for genetic diversity. 
 
@@ -706,7 +710,7 @@ With the availability of an optically-mapped genome [@derbyshire2017complete], f
 This study represents the largest genetic analysis of *S. sclerotiorum* from the USA to date, giving us a unique insight to continent-wide population structure and relationships between phenotypic and genotypic variables.
 Populations in wmn appear to show no significant differentiation when compared to their production field counterparts, suggesting that the wmn populations of *S. sclerotiorum* may be considered representative of the surrounding regions. 
 While we found no direct relationship between haplotype and severity, it is evident that there is a gradient of severity by region, further supporting the need for screening in multiple locations.
-Based on our analysis of the relationships between MCG and MLH, we found no clear evidence that the two are directly related, suggesting that MCG do not necessarily represent vegetative compatibility groups and thus should not be used as a proxy for identifying clones. 
+Based on our analysis of the relationships between MCG and MLH, we found no clear evidence that the two are directly related, suggesting that MCG does not necessarily represent vegetative compatibility groups and thus should not be used as a proxy for identifying clones. 
 
 ## Data Availability {-}
 
@@ -719,7 +723,7 @@ The funders had no role in study design, data collection and analysis, decision 
 
 ## Acknowledgements {-}
 
-The authors would like to thank Rebecca Higgens for providing valuable insights into the historical context of the data collection and curation. 
+The authors would like to thank Rebecca Higgens for technical support in generating the data for the MCG assessment, aggressiveness ratings, and genotyping; and for providing valuable insights into the historical context of the data collection and curation. 
 
 ## Conflicts of Interest {-}
 
@@ -727,17 +731,17 @@ The authors declare no conflict of interest.
 
 ## Author Contributions {-}
 
- - **Zhian N. Kamvar** analyzed the data, contributed analysis tools, wrote the paper, prepared figures and tables, reviewed drafts of the paper.
+ - **Zhian N. Kamvar** analyzed the data, contributed analysis tools, wrote the paper, prepared figures and tables, edited and reviewed drafts of the paper.
 
- - **Bimal Sajeewa Amaradasa** ...
+ - **Bimal Sajeewa Amaradasa** analyzed the data, contributed analysis tools, wrote drafts of the paper, edited and reviewed drafts of the paper.
 
- - **Rachana Jhala** ...
+ - **Rachana Jhala** Carried out experiments (MCG assessment, aggressiveness ratings, genotyping), edited and reviewed drafts of the paper.
 
- - **Serena McCoy** ...
+ - **Serena McCoy** Carried out experiments (MCG assessment, aggressiveness ratings, genotyping), edited and reviewed drafts of the paper.
 
- - **James Steadman** ...
+ - **James Steadman** Conceived and designed experiments, organized network of white mold screening nurseries, provided *S. sclerotiorum* isolates, edited and reviewed drafts of the paper.
 
- - **Sydney E. Everhart** ...
+ - **Sydney E. Everhart** supervised data analysis, analyzed the data, contributed analysis tools, wrote the paper, edited and reviewed drafts of the paper.
 
 \newpage
 
