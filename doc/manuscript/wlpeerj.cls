@@ -176,9 +176,13 @@ THE ABSTRACT\vskip12pt}\let\go\relax\fi
 {\raggedright\sffamily\bfseries\fontsize{20}{25}\selectfont \@title\par}%
 \vskip10pt
 {\raggedright\sffamily\fontsize{12}{16}\selectfont  \@author\par}
-\ifdefined\thenewaff
-  {\raggedright\sffamily\footnotesize\thenewaff\par}
-\fi
+{\raggedright\sffamily\footnotesize%
+Current address of second author: Plant Pathology Department, University of Florida, Gainsville, FL 32611\par%
+Current address of third author: Nebraska Center for Virology, University of Nebraska-Lincoln, Lincoln, NE 68583\par%
+\par}
+% \ifdefined\thenewaff
+%   {\raggedright\sffamily\footnotesize\thenewaff\par}
+% \fi
 \vskip1em%
 % LLT 18 Aug 2016: needs corresponding author now
 \ifdefined\thecorrauthor

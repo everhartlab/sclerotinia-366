@@ -29,8 +29,6 @@ abstract: >
 header-includes: |
   \usepackage{indentfirst}
   
-  \newaff{second}{Plant Pathology Department, University of Florida, Gainsville, FL 32611}
-  
 bibliography: ssc_bibliography.bib
 csl: apa.csl
 output: 
