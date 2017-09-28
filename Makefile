@@ -19,6 +19,10 @@ COMPONENTS := doc/manuscript/abstract.md \
               doc/manuscript/apa.csl
 DIRS       := results/figures/publication results/tables/
 
+ifndef VERSION
+VERSION := master
+endif
+
 # Testing whether or not we are in a docker container
 ifeq ("$(wildcard /proc/1/cgroup)","")
 	RCMD="devtools::install()"
@@ -52,7 +56,7 @@ $(DIRS) :
 	mkdir -p $@
 
 results/bootstrap.txt: DESCRIPTION
-	R --slave -e $(RCMD)	
+	R --slave -e $(RCMD)
 	date > results/bootstrap.txt
 
 results/%.md : doc/RMD/%.Rmd
@@ -81,6 +85,14 @@ tidy:
 # analysis anew. Note: this will take a while.
 clean: tidy
 	$(RM) cache/*
+
+.PHONY : diff
+
+diff : doc/manuscript/diff.pdf
+
+doc/manuscript/diff.pdf : doc/manuscript/manuscript.pdf
+	bash -c "latexdiff <(git show $(VERSION):doc/manuscript/manuscript.tex) doc/manuscript/manuscript.tex > doc/manuscript/diff.tex"
+	cd doc/manuscript; pdflatex diff.tex; rm diff.{tex,aux,log,out}
 
 # Ignoring Derivatives ----------------------------------------------------
 #
