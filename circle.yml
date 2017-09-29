@@ -1,0 +1,25 @@
+machine:
+  services:
+    - docker
+
+dependencies:
+  override:
+    - docker info
+    # so we can use COPY, we send all of the repo, rather than just the dockerfile
+    - docker build -t zkamvar/sclerotinia-366  .
+test:
+  override:
+      # see if we can start container...
+    - docker run --name sclerotinia-366 -d -p 8787:8787 zkamvar/sclerotinia-366 ; sleep 10
+      # make RStudio server run in browser...
+    - curl --retry 10 --retry-delay 5 -v http://localhost:8787
+
+deployment:
+  hub:
+    branch: master
+    commands:
+      - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker push zkamvar/sclerotinia-366
+
+
+

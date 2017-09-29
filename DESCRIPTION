@@ -1,8 +1,8 @@
 Package: WorldSclerotinia
-Title:
-Version: 0.0.0.9000
+Title: Research compendium for 'Population structure and phenotypic variation of _Sclerotinia sclerotiorum_ from dry bean in the United States'
+Version: 0.1.0
 Author: Zhian N. Kamvar, B. Sajeewa Amadarasa, Sydney E. Everhart
-Description: An analysis of Sclerotinia sclerotiorum from around the world
+Description: An analysis of _Sclerotinia sclerotiorum_ from around the world
 Depends: R (>= 3.4.0)
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -10,6 +10,7 @@ LazyData: true
 Imports: tidyverse,
   igraph,
   viridis,
+  adegenet,
   poppr (>= 2.4.1),
   vegan,
   readxl,
@@ -24,9 +25,13 @@ Imports: tidyverse,
   ggridges,
   ggrepel (>= 0.6.9),
   ggcompoplot,
+  treeio,
   ggtree,
   cowplot,
   bookdown
 Remotes: slowkow/ggrepel@fd15d0a7d8afa873f4baced087dd38132f3484c4,
   rstudio/rticles@4111a3946de40f787b8115d29e6751246cb9c5d2,
-  zkamvar/ggcompoplot@bcf007d1ffd4d39afd9ac347213d2416163f380c
+  zkamvar/ggcompoplot@bcf007d1ffd4d39afd9ac347213d2416163f380c,
+  thibautjombart/adegenet@8bc0ae08ec73fb431b0b5b3bc60a43308a1fe804,
+  GuangchuangYu/treeio@b6ae142,
+  GuangchuangYu/ggtree@07063f9
