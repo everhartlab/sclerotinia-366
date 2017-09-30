@@ -29,8 +29,9 @@ RUN apt-get update \
 
 ## Install population genetics packages from MRAN and GitHub from 2017-09-18
 ## You can find the descriptions of the packages in the DESCRIPTION file
+## I'm running devtools install twice here to force the github repos to install
 RUN . /etc/environment \
-&& R -e "options(repos='$MRAN'); devtools::install('/analysis', dep=TRUE)"
+&& R -e "devtools::install('/analysis', dep=TRUE, repos='$MRAN'); devtools::install('/analysis', dep=TRUE, repos='$MRAN')"
 RUN . /etc/environment \
 && cd /analysis \
 && make clean \
