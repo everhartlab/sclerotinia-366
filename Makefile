@@ -36,7 +36,7 @@ endif
 # TARGETS
 # ---------------------------------------------------------
 .PHONY: all
-all: $(DIRS) $(ANALYSES) $(MANUSCRIPT)
+all: $(DIRS) README.md $(ANALYSES) $(MANUSCRIPT)
 # In reality $(ANALYSES) -> shared_data -> $(PARSE_DATA) -> bootstrap
 
 # Bootstrap the  data by installing the dependencies
@@ -59,6 +59,9 @@ results/bootstrap.txt: DESCRIPTION
 	R --slave -e $(RCMD)
 	date > results/bootstrap.txt
 
+README.md : README.Rmd
+	R --slave -e 'rmarkdown::render("$<")'
+
 results/%.md : doc/RMD/%.Rmd
 	R --slave -e "ezknitr::ezknit('$<', \
 	              fig_dir = './figures/$*/', \
@@ -77,6 +80,7 @@ tidy:
 	$(RM) $(PARSE_DATA)
 	$(RM) $(ANALYSES)
 	$(RM) $(MANUSCRIPT)
+	$(RM) README
 	$(RM) -r $(DIRS)
 
 .PHONY : clean
