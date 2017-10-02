@@ -8,8 +8,8 @@
 ##
 ## Note: this Dockerfile was modified from
 ## https://github.com/NESCent/popgen-docker/blob/193387d3f1e5484ef8a1ddf6d66cfca64ccd40d7/Rpopgen/Dockerfile
-## 
-## It also includes logic from 
+##
+## It also includes logic from
 ## https://github.com/benmarwick/mjbtramp/blob/898ee99f17d64a41161a8b6760325572c7406b4b/Dockerfile
 
 ## Lock in a specific SHA from rocker verse
@@ -35,5 +35,5 @@ RUN . /etc/environment \
 RUN . /etc/environment \
 && cd /analysis \
 && make clean \
-&& make
+&& make -j 4
 
