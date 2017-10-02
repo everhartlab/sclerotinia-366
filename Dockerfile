@@ -4,7 +4,7 @@
 ## Everhart, S.E. (2017). Population structure and phenotypic variation of
 ## _Sclerotinia sclerotiorum_ from dry bean in the United States PeerJ XXX
 ##
-## package versions here are locked to those present on 2017-09-18
+## package versions here are locked to those present on 2017-09-30
 ##
 ## Note: this Dockerfile was modified from
 ## https://github.com/NESCent/popgen-docker/blob/193387d3f1e5484ef8a1ddf6d66cfca64ccd40d7/Rpopgen/Dockerfile
@@ -13,7 +13,7 @@
 ## https://github.com/benmarwick/mjbtramp/blob/898ee99f17d64a41161a8b6760325572c7406b4b/Dockerfile
 
 ## Lock in a specific SHA from rocker verse
-FROM rocker/verse:latest
+FROM rocker/verse:3.4.2
 MAINTAINER Zhian Kamvar <zkamvar@gmail.com>
 
 # Prevent error messages from debconf about non-interactive frontend
@@ -31,7 +31,7 @@ RUN apt-get update \
 ## You can find the descriptions of the packages in the DESCRIPTION file
 ## I'm running devtools install twice here to force the github repos to install
 RUN . /etc/environment \
-&& R -e "devtools::install('/analysis', dep=TRUE, repos='https://mran.microsoft.com/snapshot/2017-10-01/'); devtools::install('/analysis', dep=TRUE, repos='https://mran.microsoft.com/snapshot/2017-10-01/')"
+&& R -e "devtools::install('/analysis', dep=TRUE, repos='$MRAN'); devtools::install('/analysis', dep=TRUE, repos='$MRAN')"
 RUN . /etc/environment \
 && cd /analysis \
 && make clean \
