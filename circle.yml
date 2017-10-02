@@ -7,6 +7,7 @@ dependencies:
     - docker info
     # so we can use COPY, we send all of the repo, rather than just the dockerfile
     - docker build -t zkamvar/sclerotinia-366  .:
+        parallel: true
         timeout: 1800
 test:
   override:
@@ -15,6 +16,7 @@ test:
       # make RStudio server run in browser...
     - curl --retry 10 --retry-delay 5 -v http://localhost:8787
 
+# Todo: see about pushing runs to github
 deployment:
   hub:
     branch: master
