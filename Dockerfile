@@ -13,7 +13,7 @@
 ## https://github.com/benmarwick/mjbtramp/blob/898ee99f17d64a41161a8b6760325572c7406b4b/Dockerfile
 
 ## Lock in a specific SHA from rocker verse
-FROM rocker/verse@sha256:b673a3429f7e74c477dc62a320b99bb9faa991ec60a6267a8d89e02fd21f567e
+FROM rocker/verse:latest
 MAINTAINER Zhian Kamvar <zkamvar@gmail.com>
 
 # Prevent error messages from debconf about non-interactive frontend
@@ -31,7 +31,7 @@ RUN apt-get update \
 ## You can find the descriptions of the packages in the DESCRIPTION file
 ## I'm running devtools install twice here to force the github repos to install
 RUN . /etc/environment \
-&& R -e "devtools::install('/analysis', dep=TRUE, repos='$MRAN'); devtools::install('/analysis', dep=TRUE, repos='$MRAN')"
+&& R -e "devtools::install('/analysis', dep=TRUE, repos='https://mran.microsoft.com/snapshot/2017-10-01/'); devtools::install('/analysis', dep=TRUE, repos='https://mran.microsoft.com/snapshot/2017-10-01/')"
 RUN . /etc/environment \
 && cd /analysis \
 && make clean \
