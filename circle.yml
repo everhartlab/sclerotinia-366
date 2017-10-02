@@ -6,7 +6,8 @@ dependencies:
   override:
     - docker info
     # so we can use COPY, we send all of the repo, rather than just the dockerfile
-    - docker build -t zkamvar/sclerotinia-366  .
+    - docker build -t zkamvar/sclerotinia-366  .:
+      timeout: 1200
 test:
   override:
       # see if we can start container...
