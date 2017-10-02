@@ -102,7 +102,7 @@ This can tell us how well our regions separate
 ```{r dapc-region-calc, fig.width = 8, fig.height = 7, cache = TRUE}
 set.seed(2017-07-05)
 region.xval <- xvalDapc(tab(dat11cc), strata(dat11cc)$Region, n.pca = 15:25, 
-                        n.rep = 100, parallel = "multicore", ncpus = 4)
+                        n.rep = 100)
 region.dapc <- region.xval$DAPC
 ```
 
