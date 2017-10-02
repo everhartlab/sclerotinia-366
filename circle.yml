@@ -7,7 +7,6 @@ dependencies:
     - docker info
     # so we can use COPY, we send all of the repo, rather than just the dockerfile
     - docker build -t zkamvar/sclerotinia-366  .:
-        parallel: true
         timeout: 1800
 test:
   override:
