@@ -20,10 +20,15 @@ knitr::opts_chunk$set(
 
 This repository contains data, code, and a manuscript for analysis of 366 isolates of *Sclerotinia sclerotiorum* from the US and various countries around the world. 
 
-> Population structure and phenotypic variation of *Sclerotinia sclerotiorum*
-> from dry bean in the United States
->
-> Z. N. Kamvar, B. S. Amaradasa, R. Jhala, S. McCoy, J. Steadman, and S. E. Everhart
+# Citation
+
+## Manuscript
+
+> Kamvar ZN, Amaradasa BS, Jhala R, McCoy S, Steadman JR, Everhart SE. (2017) Population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean in the United States. *PeerJ Preprints* 5:e3311v1 <https://doi.org/10.7287/peerj.preprints.3311v1>
+
+## Data and Code
+
+> Kamvar, Z. N., Amaradasa, B. S., Jhala, R., McCoy, S., Steadman, J., & Everhart, S. E. (2017, October 3). Population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean in the United States. <http://doi.org/10.17605/OSF.IO/EJB5Y>
 
 # TOC
 
@@ -75,32 +80,34 @@ The docker container is located at https://hub.docker.com/r/zkamvar/sclerotinia-
 
 > Note: both ways assume that you are in the analysis directory
 
-### Pulling the container
+### RStudio Server
 
 ```
-docker run --rm -it -v $(pwd):/analysis zkamvar/sclerotinia-366:latest bash
+docker run --rm -dp 8787:8787 zkamvar/sclerotinia-366:latest
 ```
 
-### Building the container
+This will spin up the Docker container on your machine and expose it to port 8787. You can open your browser and type `localhost:8787`, and an instance of Rstudio server will appear. Sign in with the username: rstudio and password: rstudio.
+
+Since the files in `/analysis` are write-protected, if you wanted to explore, you should copy the directory to your current working space:
+
+
+- in the R console type: `system("cp -R /analysis .")`. 
+- open `/analysis` and double click on znk_analysis.Rproj
+
+From here you can re-run the analyses to your heart's content. 
+
+### Building the container locally
 
 If you don't want to pull from docker hub, you can build the container.
 
 ```sh
-docker build .
+docker build -t sclerotinia-366 .
 ```
 
-This will bootstrap the environment to build the container. Once it's finished
-you should see: 
+Now that things are built, you can run the analysis in the image with:
 
 ```
-Successfully built 8e1e4cd82e19
-```
-
-where `8e1e4cd82e19` will be replaced by your hash. Now that things are built,
-you can run the analysis in the image with:
-
-```
-docker run -it -v $(pwd):/analysis 8e1e4cd82e19 bash
+docker run -it sclerotinia-366 bash
 ```
 
 ### Running the Analysis
