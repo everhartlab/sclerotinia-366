@@ -100,7 +100,7 @@ Amean <- mean(loc_table$allele)
 Hmean <- mean(loc_table$Hexp)
 Emean <- mean(loc_table$Evenness)
 
-# Genotype Diversity Table ------------------------------------------------
+# Genotype Diversity Table -----------------------------------------------
 
 gdt <- read_csv("../../results/tables/genotype_diversity_table_region.csv", 
          na = "NA", # spaces read in as spaces
@@ -218,7 +218,7 @@ Although the nursery locations were the same over sampling years, sampling plots
 
 Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or wmn in 11 states of the United States of America, Mexico, France, and Australia (Table \@ref(tab:isolate-table)). 
 After collection, sclerotia were stored in Petri plates lined with filter paper, then stored at $20~^{\circ}$F or -$4~^{\circ}$C. 
-Sclerotia were surface-sterilized with 50% Clorox bleach (at least 6% NaOCL, The Clorox Company, Oakland, CA) solution for 3 min, and double rinsed with ddH$_2$O for 3 min.
+Sclerotia were surface-sterilized with 50% Clorox bleach (at least 6% NaOCl, The Clorox Company, Oakland, CA) solution for 3 min, and double rinsed with ddH$_2$O for 3 min.
 The sterilized sclerotia were then placed on water agar plates (16g of Bacto agar per liter of ddH$_2$O, BD Diagnostic Systems, Sparks, MD), with four to five sclerotia of each isolate separated on each plate and stored on the counter top at room temperature for 5 to 6 days. 
 An 8-mm plug from a 5- or 6-day-old culture was transferred from the advancing margin of the mycelia onto a plate of Difco potato dextrose agar (PDA at 39 g/liter of ddH$_2$O) [@otto-hanson2011variation].
 In combination with the 156 isolates described previously, we collected 210 isolates for a total of 366 isolates [@otto-hanson2011variation].
