@@ -1,12 +1,12 @@
 ---
-title: Population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean in the United States
+title: Population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean (*Phaseolus vulgaris*) in the United States
 preprint: false
 author:
   - name: Zhian N. Kamvar
     email: zkamvar@unl.edu
     affiliation: 1
   - name: Bimal Sajeewa Amaradasa
-    email: bamaradasa@ufl.edu
+    email: b.amaradasa@ufl.edu
     affiliation: 1
   - name: Rachana Jhala
     email: rjhala2@unl.edu
@@ -174,7 +174,7 @@ Haggmean <- mean(as.numeric(MLHagg[[2]]))
 
 # Introduction {-}
 
-*Sclerotinia sclerotiorum* (Lib.) de Bary is an ascomycete plant pathogen with a worldwide distribution.
+*Sclerotinia sclerotiorum* (Lib.) de Bary is an ascomycete plant pathogen with a worldwide distribution [@bolton2006sclerotinia].
 This is a necrotrophic pathogen that is primarily homothallic (self-fertilization) and has the ability to survive for more than five years in soil using melanized survival structures called sclerotia [@bolton2006sclerotinia; @sexton2006population]. 
 It causes disease on more than 400 plant species belonging to 75 families [@boland1994index] including crops of major economic importance such as sunflower (*Helianthus spp.*), soybean (*Glycine max* L.), canola (*Brassica napa* L., *Brassica campestris* L.), and dry bean (*Phaseolus vulgaris* L.) [@bolton2006sclerotinia]. 
 On dry bean, *S. sclerotiorum* is the causal agent of white mold, a devastating disease that can be yield-limiting in temperate climates [@steadman1983white].
