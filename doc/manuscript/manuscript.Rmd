@@ -208,7 +208,7 @@ By investigating these aims, we will effectively describe the population structu
 
 ## Isolate collection {-}
 
-Several of the isolates used for this study were collected as reported in previous studies using the same methods [@otto-hanson2011variation].
+Several (156) of the isolates used for this study were collected as reported in previous studies using the same methods [@otto-hanson2011variation].
 Broadly, isolates were collected from two sources: white mold screening nurseries (wmn) or producer fields.
 White mold screening nurseries were 5m x 10m in size and maintained without application of fungicides to observe natural incidence of white mold.
 The early nursery plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of 0:3:2 during the growing season [@steadman2003identification].
@@ -280,7 +280,7 @@ The `varpart()` function of vegan was used to determine variation partitioning o
 
 ### Aggressiveness Assessment {-}
 
-We used ANOVA to assess if aggressiveness was significantly different with respect to Region, MCG, or multilocus haplotype (MLH). 
+We used ANOVA to assess if aggressiveness (determined via straw test on a scale of 1--9) was significantly different with respect to Region, MCG, or multilocus haplotype (MLH). 
 To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 56.5% of the isolates collected, the 10 most abundant MLHs representing 26.7% of the isolates, and populations with more than five isolates.
 If ANOVA results were significantly different at $\alpha$ = 0.05, pairwise differences were assessed using Tukey's HSD test ($\alpha$ = 0.05) using the `HSD.test()` function in the package *agricolae* version `r packageVersion("agricolae")` [@mendiburu2015agricolae].
 
@@ -324,8 +324,8 @@ To ensure that we captured the same community signal, we additionally performed 
 
 # Results {-}
 
-A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in 11 states in the United States, as well as Australia, France, and Mexico (Table \@ref(tab:isolate-table)).
-We observed a total of 165 MLHs (215 with 16 loci).
+A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in 11 states in the United States as well as Australia, France, and Mexico (Table \@ref(tab:isolate-table)).
+With the 11 loci used in the analyses (Table \@ref(tab:locus-stats)), we observed a total of 165 MLHs (215 with 16 loci).
 Over 50% of the isolates came from four states, MI (`r pop_size[["MI"]]`), ND (`r pop_size[["ND"]]`), WA (`r pop_size[["WA"]]`), NE (`r pop_size[["NE"]]`). 
 Four regions had fewer than 10 isolates, Australia (`r pop_size[["Australia"]]`), WI (`r pop_size[["WI"]]`), NY (`r pop_size[["NY"]]`), ID (`r pop_size[["ID"]]`).
 We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 isolates over 37 MLHs (Fig \@ref(biggraph)A,C).
@@ -334,7 +334,7 @@ The number of observed alleles per locus ranged from two to 10 with an average o
 Locus `r loc_table$Locus[loc_table$allele==2]`, which contained only 2 alleles, showed low values of both *h* (`r signif(loc_table$Hexp[loc_table$allele==2], 3)`) and evenness (`r signif(loc_table$Evenness[loc_table$allele==2], 3)`), indicating that there was one dominant allele present. 
 Analysis of the haplotype accumulation curve showed no clear plateau for 11 or 16 loci (Supplemental Information), indicating that we would likely obtain more multilocus haplotypes if we were to genotype more loci. 
 
-After clone-correction on the hierarchy of Region/Source/Host/Year, we were left with `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLHs (Table \@ref(tab:iatab)).
+After clone-correction on the hierarchy of Region/Source/Host/Year, a total of `r nInd(dat11) - nInd(dat11cc)` isolates were removed from the data set, resulting in `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLHs that were used in subsequent analyses (Table \@ref(tab:iatab)).
 The results show that most populations exhibited relatively high amounts of genotypic diversity, with the exception of MI and NE, which exhibited lower-than average $E_5$ values.
 Mexico had the lowest average value of gene diversity, *h* and the lowest *eMLH*, suggesting low overall genetic diversity. 
 Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
@@ -445,14 +445,14 @@ Open circles represent the 318 clone-corrected haplotypes in ordination space.
 <!-- aggressiveness figure -->
 
 ![
-Strip Plot of aggressiveness by population arranged in descending order of mean aggressiveness for all populations with N > 5. White bars represent mean value. Circles represent individual isolates where filled circles are isolates from white mold screening nurseries (wmn) and open circles are isolates from producer fields.
+Strip plot of aggressiveness by population arranged in descending order of mean aggressiveness for all populations with N > 5. White bars represent mean value. Circles represent individual isolates where filled circles are isolates from white mold screening nurseries (wmn) and open circles are isolates from producer fields.
 ](../../results/figures/publication/aggressiveness.pdf){#aggressiveness-boxplot}
 
 <!-- end figure -->
 
 The forward-backward selection process of the dbRDA models on clone-corrected data revealed `r RDAVAR1` to be the optimal variables for the reduced model, accounting for `r prettify(vartab(caplist1$components)[2, "Proportion"])`% of the total variation.
 ANOVA showed that the reduced model was significant with an adjusted R^2^ of `r RDA1R2` (*P* = 0.001).
-Assessment of the marginal effects showed that all varaibles significantly explained genetic variation ($P \leq `r anova1res[["Region"]]`$).
+Assessment of the marginal effects showed that all varibles significantly explained genetic variation ($P \leq `r anova1res[["Region"]]`$).
 We found that there was multicollinearity when MCG was combined with any other variable, so repeated the analysis, dropping MCG from the list of potential predictors. 
 From these results, `r RDAVAR2` were found to be optimal, accounting for `r prettify(vartab(caplist2$components)[2, "Proportion"])`% of the total variation.
 ANOVA revealed significant effects with an adjusted R^2^ of `r RDA2R2` (*P* = 0.001).
@@ -554,7 +554,7 @@ Table: (\#tab:amova) Comparison of populations in the white mold screening nurse
 
 ### Discriminant Analysis of Principal Components {-}
 
-Discriminant Analysis of Principal Components (DAPC) was performed grouping by Region with the first `r dapc_region$n.pca` principal components, representing `r prettify(dapc_region$var)`% of the total variance. 
+Discriminant Analysis of Principal Components (DAPC) was performed by grouping Region with the first `r dapc_region$n.pca` principal components, representing `r prettify(dapc_region$var)`% of the total variance. 
 The first discriminant axis (representing `r paxis(dapc_region)`% of the discriminatory power) separated the centroid for the Mexico isolates from the rest of the data, indicating strong differentiation (Fig. \@ref(DAPC)b). 
 The second discriminant axis, representing `r paxis(dapc_region, 2)`% of the discriminatory power, separated the centroid for the CA isolates.
 The mean population assignment probabilities for all populations with n > 10 showed that only isolates from Mexico, CA, and France had > 50% probabilities of being reassigned to their source populations (Fig. \@ref(DAPC)a).
