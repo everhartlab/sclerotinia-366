@@ -36,8 +36,36 @@ might not want to trust them.
 locus_table(dat)
 set.seed(2017-06-28)
 genotype_curve(dat, sample = 1000, quiet = TRUE)
-genotype_curve(dat11, quiet = TRUE)
+gt16 <- last_plot() + 
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  stat_smooth() +
+  ggtitle("Haplotype accumulation curve for 16 loci") +
+  ylab("Number of multilocus haplotypes")
+genotype_curve(dat11, sample = 1000, quiet = TRUE)
+gt11 <- last_plot() + 
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  stat_smooth() +
+  ggtitle("Haplotype accumulation curve for 11 loci") +
+  ylab("Number of multilocus haplotypes")
 ```
+
+```{r saveplots}
+if (!interactive()){
+  ggsave(gt16,
+    filename = "results/figures/publication/genotype-curve16.pdf", 
+    width = 88*1.66, 
+    height = 88, 
+    units = "mm", 
+    scale = 1)
+  ggsave(gt11,
+    filename = "results/figures/publication/genotype-curve11.pdf", 
+    width = 88*1.66, 
+    height = 88, 
+    units = "mm", 
+    scale = 1)
+}
+```
+
 
 Creating contracted genotypes for use later
 
