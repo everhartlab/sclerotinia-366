@@ -22,7 +22,7 @@ This repository contains data, code, and a manuscript for analysis of 366 isolat
 
 # Citation
 
-## Manuscript
+## Preprint 
 
 > Kamvar ZN, Amaradasa BS, Jhala R, McCoy S, Steadman JR, Everhart SE. (2017) Population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean in the United States. *PeerJ Preprints* 5:e3311v1 <https://doi.org/10.7287/peerj.preprints.3311v1>
 
