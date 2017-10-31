@@ -37,3 +37,12 @@ RUN . /etc/environment \
 && make clean \
 && make -j 4
 
+# NOTES TO SELF IN A MARWICKIAN FASION
+#
+## To work on this project within the container
+#
+# docker run -dp 8787:8787 -v $(pwd):/home/rstudio/ -e ROOT=TRUE zkamvar/sclerotinia-366
+#
+## This will allow me to open Rstudio from my browser and work on it within the container.
+## It should be noted, however that I still need to commit from my command line as the
+## git bot in Rstudio doesn't appear to update inside of the container.
