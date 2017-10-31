@@ -180,7 +180,7 @@ It causes disease on more than 400 plant species belonging to 75 families [@bola
 On dry bean, *S. sclerotiorum* is the causal agent of white mold, a devastating disease that can be yield-limiting in temperate climates [@steadman1983white].
 
 Currently, there are no commercially available resistant cultivars of dry bean [@otto-hanson2011variation].
-Organized breeding efforts have used a common-garden approach with white mold screening nurseries in dry bean production areas across the United States with additional sites in Mexico, France, and Australia [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification; @otto2008identification; @mccoy2009use]. 
+Organized breeding efforts have used a common-garden approach with white mold screening nurseries in dry bean production areas across the United States with additional sites in Australia, France, and Mexico [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification; @otto2008identification; @mccoy2009use]. 
 These white mold screening nurseries use no chemical or cultural treatments against *S. sclerotiorum* and employ standardized protocols for screening new cultivars for resistance to white mold. 
 It has previously been shown that aggressiveness (the severity of disease symptoms on the host) is significantly different across white mold screening nursery sites in separate geographic regions [@otto-hanson2011variation].
 The genetic structure and mode of reproduction in these populations, however, is currently unknown.
@@ -195,7 +195,7 @@ Mycelial compatibility has been used as a proxy for vegetative compatibility, a 
 Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible were considered clones [@leslie1993fungal]; but correlation with genetic markers, such as microsatellites, have shown mixed results [@ford1995heterokaryon; @micali2003independence; @jo2008reassessment; @attanayake2012genetic; @papaioannou2014barrage; @lehner2017independently].
 However, a question remains about the relationship between mycelial compatibility groups and clonal genotypes.
 
-In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected between 2003 and 2012 from dry bean cultivars among different geographic locations in the United States, France, Mexico, and Australia. 
+In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected between 2003 and 2012 from dry bean cultivars among different geographic locations in the Australia, France, Mexico, and the United States. 
 We wanted to know if the *S. sclerotiorum* populations from white mold screening nurseries were representative of the fields within the same region. 
 As these nurseries were not treated with any chemical or cultural control of white mold, we hypothesized that these nurseries would represent the natural population of *S. sclerotiorum*.
 Furthermore, we wanted to investigate the potential effect of cultivar on genetic diversity of the pathogen by assessing three dry bean cultivars with different levels of resistance, Beryl (great northern bean, susceptible), Bunsi (navy bean, low susceptibility), and G122 (cranberry bean, partial resistance) [@otto-hanson2011variation].
@@ -217,7 +217,7 @@ Sampling was carried out by collecting sclerotia from diseased tissue in zig-zag
 Because sampling depended on disease incidence, the number of samples isolated varied from year to year.
 Although the nursery locations were the same over sampling years, sampling plots within a location varied for sampling years.
 
-Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or wmn in 11 states of the United States of America, Mexico, France, and Australia (Table \@ref(tab:isolate-table)). 
+Sclerotia of *S. sclerotiorum* were collected over several years from grower fields and/or wmn in 11 states of the Australia, France, Mexico, and the United States (Table \@ref(tab:isolate-table)). 
 After collection, sclerotia were stored in Petri plates lined with filter paper, then stored at $20~^{\circ}$F or -$4~^{\circ}$C. 
 Sclerotia were surface-sterilized with 50% Clorox bleach (at least 6% NaOCl, The Clorox Company, Oakland, CA) solution for 3 min, and double rinsed with ddH$_2$O for 3 min.
 The sterilized sclerotia were then placed on water agar plates (16g of Bacto agar per liter of ddH$_2$O, BD Diagnostic Systems, Sparks, MD), with four to five sclerotia of each isolate separated on each plate and stored on the counter top at room temperature for 5 to 6 days. 
@@ -324,7 +324,7 @@ To ensure that we captured the same community signal, we additionally performed 
 
 # Results {-}
 
-A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in Australia, Mexico, France, and 11 states in the USA (Table \@ref(tab:isolate-table)).
+A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in 11 states in the United States, as well as Australia, France, and Mexico (Table \@ref(tab:isolate-table)).
 We observed a total of 165 MLHs (215 with 16 loci).
 Over 50% of the isolates came from four states, MI (`r pop_size[["MI"]]`), ND (`r pop_size[["ND"]]`), WA (`r pop_size[["WA"]]`), NE (`r pop_size[["NE"]]`). 
 Four regions had fewer than 10 isolates, Australia (`r pop_size[["Australia"]]`), WI (`r pop_size[["WI"]]`), NY (`r pop_size[["NY"]]`), ID (`r pop_size[["ID"]]`).
@@ -499,7 +499,7 @@ Within Regions, haplotypes were relatively evenly distributed with moderate to h
 Of the 165 MLHs, 76 (46%) were found in at least two Regions, except those found in WI (2), ID (1), and Mexico (18) (Fig. \@ref(community-graph)).
 
 We had performed an analysis on a network where the connections represented shared MLHs across populations, weighted by $1 - P_{sex}$ (Fig. \@ref(community-graph), Table \@ref(tab:mlg-table)). 
-Community analysis of the MLHs shared between populations revealed 4 communities with a modularity of 0.17: A coastal community (CA, OR, WA, and NY), a midwest community (CO, NE, ND, MI), and an international community (MN, France, Australia).
+Community analysis of the MLHs shared between populations revealed 4 communities with a modularity of 0.17: A coastal community (CA, OR, WA, and NY), a midwest community (CO, ND, NE, MI), and an international community (Australia, France, MN).
 Although analysis with 16 loci resulted in the removal of the NY node because it no longer shared a haplotype with OR, the same overall community structure was present with a modularity of 0.2 (Fig. \@ref(community-graph16)).
 Relative to the US, the international community appears to be driven by MLH 4, which is shared between all three populations and has a $P_{sex}$ value of 2.87e^-5^, in contrast to the abundant MLH 25, which has a $P_{sex}$ value of 0.0168.
 
@@ -665,11 +665,11 @@ The graph walking algorithm was able to divide the network into three groups, bu
 The widespread nature of multilocus haplotypes in both wmn and production fields with relatively small values of $P_{sex}$ may indicate the spread of inoculum between regions. 
 While seedborne transmission is thought to be of insignificant epidemiological importance [@strausbaugh2003management], it has since been shown that *S. sclerotiorum* infections can be transmitted through seed [@botelho2013performance].
 Thus, we hypothesize that shared haplotypes between populations may arise due to transmission events of seed or sclerotia.
-This could explain the fact that we see shared genotypes with low $P_{sex}$ values shared between France, Australia, and the US.
+This could explain the fact that we see shared genotypes with low $P_{sex}$ values shared between Australia, France, and the United States.
 While we speculate that these transmission events are rare due to the genetic structuring by Region, these results suggest that seedborne infections may indeed reflect a source of inoculum.
 This may, in turn increase the risk of introducing new sources of genetic variation through potential outcrossing events.
 
-When we tested for sexual reproduction, we were unable to find evidence for it in any region except for CA and Australia. 
+When we tested for sexual reproduction, we were unable to find evidence for it in any region except for Australia and CA. 
 While the Australia population had a non-significant value of $\bar{r}_d$---which would suggest that we cannot reject the null hypothesis of random mating---the sample size was insufficient from which to draw conclusions [@milgroom1996recombination; @agapow2001indices].
 The low value of $\bar{r}_d$ in the CA population may represent sexual reproduction, but we can see in Figure \@ref(DAPC-RY) that there is differentiation by year. 
 Thus, this could also be an artifact of sampling two different populations, which is known to reduce the value of $\bar{r}_d$ [@prugnolle2010apparent].
