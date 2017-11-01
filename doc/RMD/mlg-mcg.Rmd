@@ -355,6 +355,7 @@ mcg_mlg_graph <- ggraph(lay2) +
                  show.legend = FALSE) +
   coord_fixed() +
   scale_linetype_manual(values = c(1, 3)) +
+  # scale_alpha_manual(values = c(1, 0.4)) +
   scale_edge_width(range = c(0.25, 1.5)) +
   scale_color_manual(values = c("black", "black", "white", "white")) +
   scale_fill_viridis(direction = -1, discrete = TRUE) +
@@ -689,7 +690,7 @@ count_group <- . %>%
   mutate(nobs = n()) %>%  # count the number of samples/MCG
   ungroup() %>%
   arrange(desc(nobs)) # arrange by number of samples and reorder factors 
-Severity <- filter(strat, MCG %in% mcgs$MCG[1:5]) %>%
+Severity <- filter(strat, MCG %in% mcgs$MCG[1:8]) %>%
   group_by(MCG) %>% 
   count_group %>%
   mutate(MCG = forcats::fct_inorder(factor(MCG), ordered = TRUE)) %>%
@@ -700,7 +701,7 @@ severity_plot <- ggplot(Severity, aes(x = MCG, y = Severity)) +
              position = position_jitter(width = 0.2),
              alpha = 0.75,
              pch = 21) +
-  scale_fill_viridis(discrete = TRUE, direction = -1) +
+  scale_fill_manual(values = c(viridis(5, direction = -1), NA)) +
   theme_bw() +
   theme(legend.position = "bottom") +
   theme(aspect.ratio = 0.6) +

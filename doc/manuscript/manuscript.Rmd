@@ -253,7 +253,7 @@ Resulting amplicons were first resolved in a 1.5% agarose gel stained with ethid
 Capillary electrophoresis (fragment analysis) of amplicons, with size standard GeneScan™ 500 LIZ®, was performed using an ABI 3730 genetic analyzer (Life Technologies Corporation, Carlsbad, CA) at the Michigan State University Genomic Sequencing Center (East Lansing, MI). 
 Alleles were scored using PeakScanner version 1.0 (Life Technologies Corporation, Carlsbad, CA) and recorded manually in a spreadsheet.
 
-## Data processing and Analysis{-}
+## Data processing and Analysis {-}
 
 All data processing and analyses were performed in `r R.version.string %>% strsplit("\\(") %>% map_chr(1)`[@R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/.
 Of the 16 microsatellite loci genotyped, five included compound repeats, which made it challenging to accurately/confidently bin alleles into fragment sizes expected for each locus based on the described repeat motif.
