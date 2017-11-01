@@ -341,14 +341,33 @@ Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), whi
 The only exceptions are CA (*P* = `r gdtrd[["CA"]]`) and Australia (*P* = `r gdtrd[["Australia"]]`). Both of these populations showed only moderate significance with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
 
 ```{r , echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
+#    Locus    Range Repeats allele      Hexp  Evenness
+#  1   5-2 318--324 2.00000      4 0.4522344 0.6164147
+#  2   6-2 483--495 5.99999      3 0.6445842 0.9493734
+#  3   7-2 158--174 2.00000      7 0.7290665 0.7635293
+#  4   8-3 244--270 2.00000      7 0.7418669 0.7892240
+#  5   9-2 360--382 2.00000      9 0.3475110 0.4055573
+#  6  12-2 214--222 2.00000      5 0.5804776 0.7791017
+#  7  17-3 342--363 3.00000      7 0.5527510 0.5264941
+#  8  20-3 280--282 2.00000      2 0.0532974 0.4204995
+#  9  55-4 153--216 4.00000     10 0.7231380 0.6564025
+# 10 110-4 370--386 3.99999      5 0.7555955 0.9147773
+# 11 114-4 339--416 4.00000     10 0.8306310 0.8012051
+
 loc_table %>%
   mutate(allele = round(allele, 2)) %>%
   mutate(Repeats = case_when(
-    Repeats <= 2 ~ "di-",
-    Repeats <= 3 ~ "tri-",
-    Repeats <= 4 ~ "tetra-",
-    Repeats <= 5 ~ "penta-",
-    Repeats <= 6 ~ "hexa-"
+    Locus == "5-2"   ~ "(GT)",
+    Locus == "6-2"   ~ "(TTTTTC)(TTTTTG)(TTTTTC)", # "(TTTTTC)~2~(TTTTTG)~2~(TTTTTC)",
+    Locus == "7-2"   ~ "(GA)",
+    Locus == "8-3"   ~ "(CA)",
+    Locus == "9-2"   ~ "(CA)(CT)", # "(CA)~9~(CT)~9~",
+    Locus == "12-2"  ~ "(CA)",
+    Locus == "17-3"  ~ "(TTA)",
+    Locus == "20-3"  ~ "(GT)GG(GT)", # "(GT)~7~GG(GT)~5~",
+    Locus == "55-4"  ~ "(TACA)",
+    Locus == "110-4" ~ "(TATG)",
+    Locus == "114-4" ~ "(TAGA)"
   )) %>%
   rename(`*h*` = Hexp) %>%
   rename(`No. alleles` = allele) %>%
@@ -357,8 +376,8 @@ loc_table %>%
   huxtable::set_number_format(huxtable::everywhere, 3:4, 0) %>%
   huxtable::set_number_format(huxtable::everywhere, 5:6, 2) %>%
   huxtable::set_align(huxtable::everywhere, 2:6, "right") %>%
-  huxtable::set_col_width(c(0.06, 0.07, 0.11, 0.1, 0.05, 0.075)) %>%
-  huxtable::print_md(max_width = 61)
+  huxtable::set_col_width(c(0.06, 0.07, 0.25, 0.1, 0.05, 0.075)) %>%
+  huxtable::print_md(max_width = 90)
 ```
 
 Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation]. Average *h* = `r signif(Hmean, 3)`, average Evenness = `r signif(Emean, 3)`, average no. alleles = `r signif(Amean, 3)`
