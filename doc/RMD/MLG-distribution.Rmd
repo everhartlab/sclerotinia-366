@@ -49,24 +49,6 @@ gt11 <- last_plot() +
   ylab("Number of multilocus haplotypes")
 ```
 
-```{r saveplots}
-if (!interactive()){
-  ggsave(gt16,
-    filename = "results/figures/publication/genotype-curve16.pdf", 
-    width = 88*1.66, 
-    height = 88, 
-    units = "mm", 
-    scale = 1)
-  ggsave(gt11,
-    filename = "results/figures/publication/genotype-curve11.pdf", 
-    width = 88*1.66, 
-    height = 88, 
-    units = "mm", 
-    scale = 1)
-}
-```
-
-
 Creating contracted genotypes for use later
 
 ```{r}
