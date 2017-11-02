@@ -343,9 +343,9 @@ We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 
 
 The number of observed alleles per locus ranged from two to 10 with an average of `r signif(Amean, 3)` (Table \@ref(tab:locus-stats)).
 Locus `r loc_table$Locus[loc_table$allele==2]`, which contained only 2 alleles, showed low values of both *h* (`r signif(loc_table$Hexp[loc_table$allele==2], 3)`) and evenness (`r signif(loc_table$Evenness[loc_table$allele==2], 3)`), indicating that there was one dominant allele present. 
-Analysis of the haplotype accumulation curve showed no clear plateau for 11 or 16 loci (Supplementary Information[^1]), indicating that we would likely obtain more multilocus haplotypes if we were to genotype more loci. 
+Analysis of the haplotype accumulation curve showed no clear plateau for 11 or 16 loci (See section on 'Loading Data and Setting Strata' in the MLG-distribution.md[^1] file in the supplemental files [@kamvar2017data]), indicating that we would likely obtain more multilocus haplotypes if we were to genotype more loci. 
 
-[^1]: https://github.com/everhartlab/sclerotinia-366/blob/v1.0/results/MLG-distribution.md#loading-data-and-setting-strata
+[^1]: Direct link: https://github.com/everhartlab/sclerotinia-366/blob/master/results/MLG-distribution.md#loading-data-and-setting-strata
 
 After clone-correction on the hierarchy of Region/Source/Host/Year, a total of `r nInd(dat11) - nInd(dat11cc)` isolates were removed from the data set, resulting in `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLHs that were used in subsequent analyses (Table \@ref(tab:iatab)).
 The results show that most populations exhibited relatively high amounts of genotypic diversity, with the exception of MI and NE, which exhibited lower-than average $E_5$ values.
@@ -552,9 +552,9 @@ Each edge represents a single MLH where its thickness represents the number of p
 ### Analysis of Molecular Variance {-}
 
 The analysis of molecular variance (AMOVA) for clone-corrected samples over the hierarchy of Region, Source, and Year showed significant variation between Regions and Years, but no significant variation between wmn and producer fields (Table \@ref(tab:amova)).
-In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Information[^2]).
+In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (See section on 'Host Differentiation' in the wmn-differentiation.md[^2] file in the supplemental files [@kamvar2017data]).
 
-[^2]: https://github.com/everhartlab/sclerotinia-366/blob/v1.0/results/wmn-differentiation.md#host-differentiation
+[^2]: Direct link: https://github.com/everhartlab/sclerotinia-366/blob/master/results/wmn-differentiation.md#host-differentiation
 
 ```{r table4, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 read_csv("../../results/tables/AMOVA-year.csv", 
@@ -746,7 +746,7 @@ Based on our analysis of the relationships between MCG and MLH, we found no clea
 
 ## Data Availability {-}
 
-All scripts, data, and resources used to generate the results presented in this publication (including Supplementary Information) are fully reproducible and available at The Open Science Framework https://osf.io/ejb5y. 
+All scripts, data, and resources used to generate the results presented in this publication (including Supplementary Information) are fully reproducible and available at The Open Science Framework https://osf.io/ejb5y [@kamvar2017data]. 
 
 ## Funding {-}
 
