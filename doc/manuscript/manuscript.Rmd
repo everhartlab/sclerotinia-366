@@ -550,8 +550,9 @@ Each edge represents a single MLH where its thickness represents the number of p
 ### Analysis of Molecular Variance {-}
 
 The analysis of molecular variance (AMOVA) for clone-corrected samples over the hierarchy of Region, Source, and Year showed significant variation between Regions and Years, but no significant variation between wmn and producer fields (Table \@ref(tab:amova)).
-In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Information).
+In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (Supplementary Information[^1]).
 
+[^1]: https://github.com/everhartlab/sclerotinia-366/blob/v1.0/results/wmn-differentiation.md#host-differentiation
 
 ```{r table4, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 read_csv("../../results/tables/AMOVA-year.csv", 
