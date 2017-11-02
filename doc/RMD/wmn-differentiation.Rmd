@@ -325,7 +325,7 @@ bebug_dapc <- dapc(bebug, n.pca = 20, n.da = 2)
 scatter(bebug_dapc, #clabel = 0,
         legend = TRUE,
         scree.pca = TRUE, 
-        scree.da = FALSE,
+        scree.da = TRUE,
         col = viridis::plasma(3, end = 0.85),
         bg.inset = "grey90",
         bg = "grey90")
