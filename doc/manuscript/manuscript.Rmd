@@ -740,6 +740,8 @@ Thus, the inconsistencies in this study and other studies indicate that research
 One of the main limitations of this study is the focus on *P. vulgaris* as a host. 
 It has been shown that *S. sclerotiorum* in the midwestern United States does not have a particular preference for host [@aldrich-wolfe2015genetic]. 
 If the distribution of *S. sclerotiorum* is even across agricultural hosts in the USA, then our sample may yet be representative of the genetic pool present in other crops and weedy species. 
+Additionally, while we found no signficant association between genotype and aggressiveness, it is important to note that the straw test is only one measure of aggressiveness. 
+Additional phenotypes for aggressiveness should be evaluated for future studieds.
 
 Another limitation was the microsatellite markers used for this particular study [@sirjusingh2001characterisation].
 The haplotype accumulation curve showed no indication of a plateau, indicating that if we had sampled more loci, we would have resolved more multilocus haplotypes. 
