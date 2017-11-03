@@ -506,6 +506,7 @@ Variance partitioning of the independent variables without MCG indicated aggress
 
 Agressiveness of the isolates ranged from `r paste(range(other(dat11)$meta$Severity), collapse = " to ")` with a mean of `r signif(mean(other(dat11)$meta$Severity), 3)` and median of `r signif(median(other(dat11)$meta$Severity), 3)`.
 The group mean averages were `r sprintf("%0.2f, %0.2f, and %0.2f", Raggmean, Maggmean, Haggmean)` for Region, MCG, and MLH, respectively.
+A strip plot showing the distribution of severity across these three variables simultaneously can be seen in figure \@ref(mcg-mlh-region-aggressiveness).
 Our assessment of aggressiveness in association with Region showed a significant effect (*P* < 1.00e^-4^), with means that ranged from 5.8 (MN) to 4.0 (CA) (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
 MCGs also showed a significant effect (*P* < 0.001), with means that ranged from 6.0 ('MCG 44') to 4.6 ('MCG 49'; Table \@ref(tab:MCG-aggressiveness)).
 We additionally found a significant effect for MLHs (*P* < 0.001), with means that ranged from 6.0 ('MLH 78') to 4.3 ('MLH 140') (Table \@ref(tab:MLG-aggressiveness)).
@@ -880,13 +881,21 @@ MLHagg %>% agghux
 
 Table: (\#tab:MLG-aggressiveness) Mean aggressiveness ratings for the 10 MLH most abundant; groupings according to 95% family-wise confidence interval.
 
+<!-- Strip plot of Aggressiveness for MLH, MCG, and Region -->
+
+![
+Strip plot of aggressiveness for the eight most abundant MCGs partitioned by region.
+Filled circles indicate one of the five most abundant MLHs and open circles indicate a MLH of lesser abundance.
+](../../results/figures/publication/RMM-aggressiveness.pdf){#mcg-mlh-region-aggressiveness width=100%}
+
+\newpage
+
 ![
 Graph showing complex associations between Mycelial Compatibility Groups (MCG) (dotted nodes) and Multilocus Haplotypes (MLH) (full nodes) where the number in each node represents the MLH/MCG assignment. 
 Node size reflect the number of samples represented by each node (circle). 
 Edges (arrows) point from MLH to MCG where the weight (thickness) of the edge represents the number of samples shared. 
 Node color represents the community assignment based on the walktrap algorithm with a maximum of four steps [@pons2006computing]. 
 ](../../results/figures/publication/full-graph.pdf){#fullgraph width=100%}
-
 
 
 <!-- community graph figure -->
