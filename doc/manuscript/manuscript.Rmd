@@ -348,8 +348,17 @@ Analysis of the haplotype accumulation curve showed no clear plateau for 11 or 1
 [^1]: Direct link: https://github.com/everhartlab/sclerotinia-366/blob/master/results/MLG-distribution.md#loading-data-and-setting-strata
 
 After clone-correction on the hierarchy of Region/Source/Host/Year, a total of `r nInd(dat11) - nInd(dat11cc)` isolates were removed from the data set, resulting in `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLHs that were used in subsequent analyses (Table \@ref(tab:iatab)).
-The results show that most populations exhibited relatively high amounts of genotypic diversity, with the exception of MI and NE, which exhibited lower-than average $E_5$ values.
-Mexico had the lowest average value of gene diversity, *h* and the lowest *eMLH*, suggesting low overall genetic diversity. 
+<!-- 
+The fact that genotypic diversity in poppr uses H, G and lambda should be clarified here. It should reflect the results interpretation as well. According to Table 2, MI and NE subpopulations exhibit high genotypic diversity when compared to other subpopulations (3.6, 29 and 0.97 for H, G and lambda, respectively for MI and 3.2, 17.8 and 0.94 for NE). If this was based on evenness, that should be explained as well. It can be confusing stated like this. When you shift focus onto diversity (h), the story changes – so please clarify this section to reflect that
+-->
+The results showed that, in terms of genotypic diversity (*H*, *G*, and $\lambda$), WA was the most diverse population with both *G* (`r signif(setNames(gdt$G, gdt$Pop)["WA"], 3)`) and $e^H$ (`r signif(setNames(exp(gdt$H), gdt$Pop)["WA"], 3)`) being close to the observed number of MLGs (`r setNames(gdt$MLG, gdt$Pop)["WA"]`). 
+This indicated that there are few duplicated genotypes in WA (Table \@ref(tab:iatab)).
+A more useful metric to compare populations, however, is $E_5$, which scales from 0 to 1 where 1 indicates all unique genotypes [@grunwald2003analysis]. 
+Evaluating by $E_5$ shows that both MI and NE exhibit lower than average values, indicating that there are over-represented genotypes in the popualtions (table \@ref(tab:iatab)). 
+When we look at Mexico, we can observed that it had relatively high values of $E_5$ and genotypic diversity, but low richness, as measured by *eMLG*.
+Moreover, Mexico had the lowest value for *h*, which is a measure of allelic diversity.
+<!-- The results show that most populations exhibited relatively high amounts of genotypic diversity, with the exception of MI and NE, which have which exhibited lower-than average $E_5$ values. -->
+<!-- Mexico had the lowest average value of gene diversity, *h* and the lowest *eMLH*, suggesting low overall genetic diversity.  -->
 Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
 The only exceptions are CA (*P* = `r gdtrd[["CA"]]`) and Australia (*P* = `r gdtrd[["Australia"]]`). Both of these populations showed only moderate significance with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
 
