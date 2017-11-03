@@ -712,6 +712,8 @@ Thus, we hypothesize that shared haplotypes between populations may arise due to
 This could explain the fact that we see shared genotypes with low $P_{sex}$ values shared between Australia, France, and the United States.
 While we speculate that these transmission events are rare due to the genetic structuring by Region, these results suggest that seedborne infections may indeed reflect a source of inoculum.
 This may, in turn increase the risk of introducing new sources of genetic variation through potential outcrossing events.
+<!-- I was also interested in more interpretation/analysis as to why the Mexican population did not have MLH shared with any other regions, the absence of clarity on this is done at a loss. -->
+
 
 When we tested for sexual reproduction, we were unable to find evidence for it in any region except for Australia and CA. 
 While the Australia population had a non-significant value of $\bar{r}_d$---which would suggest that we cannot reject the null hypothesis of random mating---the sample size was insufficient from which to draw conclusions [@milgroom1996recombination; @agapow2001indices].
