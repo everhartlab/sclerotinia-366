@@ -337,6 +337,7 @@ To ensure that we captured the same community signal, we additionally performed 
 
 A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in 11 states in the United States as well as Australia, France, and Mexico (Table \@ref(tab:isolate-table)).
 With the 11 loci used in the analyses (Table \@ref(tab:locus-stats)), we observed a total of 165 MLHs (215 with 16 loci).
+These 11 loci represented 7 chromosomes in the *S. sclerotiorum* genome with a minimum distance of 55Kbp between two loci on the same chromosome.
 Over 50% of the isolates came from four states, MI (`r pop_size[["MI"]]`), ND (`r pop_size[["ND"]]`), WA (`r pop_size[["WA"]]`), NE (`r pop_size[["NE"]]`). 
 Four regions had fewer than 10 isolates, Australia (`r pop_size[["Australia"]]`), WI (`r pop_size[["WI"]]`), NY (`r pop_size[["NY"]]`), ID (`r pop_size[["ID"]]`).
 We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 isolates over 37 MLHs (Fig \@ref(biggraph)A,C).
