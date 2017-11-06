@@ -188,13 +188,16 @@ with the host, I would like to have more details on both host and pathogen.
 *Sclerotinia sclerotiorum* (Lib.) de Bary is an ascomycete plant pathogen with a worldwide distribution [@bolton2006sclerotinia].
 This is a necrotrophic pathogen that is primarily homothallic (self-fertilization) and has the ability to survive for more than five years in soil using melanized survival structures called sclerotia [@bolton2006sclerotinia; @sexton2006population]. 
 It causes disease on more than 400 plant species belonging to 75 families [@boland1994index] including crops of major economic importance such as sunflower (*Helianthus spp.*), soybean (*Glycine max* L.), canola (*Brassica napa* L., *Brassica campestris* L.), and dry bean (*Phaseolus vulgaris* L.) [@bolton2006sclerotinia]. 
-On dry bean, *S. sclerotiorum* is the causal agent of white mold, a devastating disease that can be yield-limiting in temperate climates [@steadman1983white].
 
-<!-- Include discussion on symptoms and economic damage leading in to cultivar discussion? -->
+On dry bean, *S. sclerotiorum* is the causal agent of white mold, a devastating disease that can be yield-limiting in temperate climates [@steadman1983white]. 
+All above-ground tissues (flowers, stems, leaves, pods) are susceptible to infection, first appearing as wet lesions with white mycelial tufts, and then bleaching as the tissue senesces [@steadman1983white; @bolton2006sclerotinia].
+For many years, white mold has been the most serious dry bean disease in the Northwestern United States [@otto-hanson2011variation; @knodel2012dry; @knodel2015dry; @knodel2016dry].
+The impact of white mold on the dry bean industry in the Northwestern United States alone has been estimated at a loss of 140 kg/ha with just 10% disease incidence [@ramasubramaniam2008estimates].
 
 Currently, there are no commercially available resistant cultivars of dry bean [@otto-hanson2011variation].
 Organized breeding efforts have used a common-garden approach with white mold screening nurseries in dry bean production areas across the United States with additional sites in Australia, France, and Mexico [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification; @otto2008identification; @mccoy2009use]. 
 These white mold screening nurseries use no chemical or cultural treatments against *S. sclerotiorum* and employ standardized protocols for screening new cultivars for resistance to white mold [@steadman2003identification; @otto-hanson2011variation].
+These protocols included three established cultivars used for comparison in the trials: Beryl (great northern bean, susceptible), Bunsi (aka Ex Rico, navy bean, low susceptibility), and G122 (cranberry bean, partial resistance) [@tu1982tolerance; @steadman2005identification; @otto-hanson2011variation].
 It has previously been shown that aggressiveness (the severity of disease symptoms on the host) is significantly different across white mold screening nursery sites in separate geographic regions [@otto-hanson2011variation].
 The genetic structure and mode of reproduction in these populations, however, is currently unknown.
 
@@ -239,7 +242,7 @@ In combination with the 156 isolates described previously, we collected 210 isol
 
 ## Mycelial Compatibility {-}
 
-MCG was determined as described previously through co-culturing pairs of 2-day-old isolates 2.5 cm apart on Diana Sermons (DS) Medium [@cubeta2001mycelial]. 
+MCG was determined as described previously through co-culturing pairs of 2-day-old isolates 2.5 cm apart on Diana Sermons (DS) Medium (Fig. \@ref(mcg-fig)) [@cubeta2001mycelial]. 
 Incompatibility of different MCGs resulted in formation of a barrage line accompanied by formation of sclerotia on either side of the barrage line, indicating the limits of the isolates' growth [@otto-hanson2011variation; @kohn1990mycelial; @leslie1993fungal].
 Isolates were compared in a pairwise manner for each site and then representatives among sites were compared to determine mycelial compatibility groups by scoring compatible and incompatible interactions [@otto-hanson2011variation]. 
 No MCGs were compatible with any other MCG. 
