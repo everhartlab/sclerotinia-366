@@ -190,6 +190,8 @@ This is a necrotrophic pathogen that is primarily homothallic (self-fertilizatio
 It causes disease on more than 400 plant species belonging to 75 families [@boland1994index] including crops of major economic importance such as sunflower (*Helianthus spp.*), soybean (*Glycine max* L.), canola (*Brassica napa* L., *Brassica campestris* L.), and dry bean (*Phaseolus vulgaris* L.) [@bolton2006sclerotinia]. 
 On dry bean, *S. sclerotiorum* is the causal agent of white mold, a devastating disease that can be yield-limiting in temperate climates [@steadman1983white].
 
+<!-- Include discussion on symptoms and economic damage leading in to cultivar discussion? -->
+
 Currently, there are no commercially available resistant cultivars of dry bean [@otto-hanson2011variation].
 Organized breeding efforts have used a common-garden approach with white mold screening nurseries in dry bean production areas across the United States with additional sites in Australia, France, and Mexico [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification; @otto2008identification; @mccoy2009use]. 
 These white mold screening nurseries use no chemical or cultural treatments against *S. sclerotiorum* and employ standardized protocols for screening new cultivars for resistance to white mold [@steadman2003identification; @otto-hanson2011variation].
@@ -201,8 +203,8 @@ In particular, genetically diverse populations with high rates of sexual reprodu
 Most populations of *S. sclerotiorum* are predominantly clonal with low genetic diversity and have a large degree of population fragmentation [@attanayake2012genetic; @carbone2001multilocus; @cubeta1997clonality; @ekins2011population; @kohli1998random; @kohli1995clonal]. 
 Some studies, however have found populations that show signatures of sexual reproduction [@atallah2004high; @attanayake2013sclerotinia; @sexton2004microsatellite; @aldrich-wolfe2015genetic].
 
-Nearly all population genetic studies of *S. sclerotiorum* employ a macroscopic assay to determine mycelial compatibility, the ability for fungal hyphae from different colonies to appear to grow together without forming a barrier of dead cells between them (known as a barrage line) [@leslie1993fungal; @sirjusingh2001characterisation].
-Mycelial compatibility has been used as a proxy for vegetative compatibility, a fungal trait controlled by several independent genes controlling the ability for two hyphae to fuse and grow as a single unit [@leslie1993fungal; @schafer2006optimized].
+Nearly all population genetic studies of *S. sclerotiorum* employ a macroscopic assay to determine mycelial compatibility, the ability for fungal hyphae from different colonies to appear to grow together without forming a barrier of dead cells between them (known as a barrage line, Fig. \@ref(mcg-fig)B) [@leslie1993fungal; @sirjusingh2001characterisation].
+Mycelial compatibility has been used as a proxy for vegetative compatibility, a fungal trait controlled by several independent genes controlling the ability for two hyphae to fuse and grow as a single unit (Fig. \@ref(mcg-fig)A) [@leslie1993fungal; @schafer2006optimized].
 Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible were considered clones [@leslie1993fungal]; but correlation with genetic markers, such as microsatellites, have shown mixed results [@ford1995heterokaryon; @micali2003independence; @jo2008reassessment; @attanayake2012genetic; @papaioannou2014barrage; @lehner2017independently].
 However, a question remains about the relationship between mycelial compatibility groups and clonal genotypes.
 
@@ -883,6 +885,11 @@ MLHagg %>% agghux
 
 Table: (\#tab:MLG-aggressiveness) Mean aggressiveness ratings for the 10 MLH most abundant; groupings according to 95% family-wise confidence interval.
 
+
+![
+Example of MCG test plates showing (A) a compatible reaction with mycelia from two strains overgrowing each other and (B) an incompatible reaction with a barrage line of dead tissue forming between the two strains. Photo Credit: Rebecca Higgens.
+](images/mcg-trimmed.png){#mcg-fig width=100%}
+
 <!-- Strip plot of Aggressiveness for MLH, MCG, and Region -->
 
 ![
@@ -890,7 +897,6 @@ Strip plot of aggressiveness for the eight most abundant MCGs partitioned by reg
 Filled circles indicate one of the five most abundant MLHs and open circles indicate a MLH of lesser abundance.
 ](../../results/figures/publication/RMM-aggressiveness.pdf){#mcg-mlh-region-aggressiveness width=100%}
 
-\newpage
 
 ![
 Graph showing complex associations between Mycelial Compatibility Groups (MCG) (dotted nodes) and Multilocus Haplotypes (MLH) (full nodes) where the number in each node represents the MLH/MCG assignment. 
