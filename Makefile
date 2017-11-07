@@ -11,7 +11,8 @@ ANALYSES   := results/table-1.md \
               results/pop-diff.md \
               results/tree.md \
               results/wmn-differentiation.md\
-              results/by-year.md
+              results/by-year.md \
+              results/compare-aldrich-wolfe.md
 MANUSCRIPT := doc/manuscript/manuscript.pdf
 COMPONENTS := doc/manuscript/abstract.md \
               doc/manuscript/ssc_bibliography.bib \

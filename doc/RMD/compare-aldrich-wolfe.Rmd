@@ -1,0 +1,322 @@
+---
+title: Re-analysis of *Sclerotinia sclerotiorum* data
+author: Zhian N. Kamvar
+output: 
+  html_notebook:
+    toc: true
+editor_options: 
+  chunk_output_type: inline
+---
+
+
+
+```{r setup, include=FALSE}
+knitr::opts_knit$set(root.dir = PROJHOME)
+```
+
+# Introduction
+
+In the PLoS paper "Genetic Variation of *Sclerotinia sclerotiorum* from
+Multiple Crops in the North Central United States" (DOI:
+10.1371/journal.pone.0139188), Aldrich-Wolfe *et al.* show that there is more
+genetic differentiation within host than among hosts in *S. sclerotiorum*.
+
+It is of interest here to determine if the data from the present study is similar
+to the data in their study. 
+
+
+# Packages
+
+I'm going to use *poppr* to analyze the data, *dplyr* to merge the data, and
+*tidyr* to unnest individuals.
+
+
+```{r packages, warning = FALSE, message = FALSE}
+library("poppr")
+library("tidyverse")
+```
+
+
+# Data Preparation
+
+Here, I'm going to re-analyze their data. They did not provide an easily
+accessible format, so I was forced to copy the data from the paper.
+
+> A note on cleaning, The following data was corrected from soybean to sunflower:
+> 
+> ```
+> 3;3a;2008;North Dakota;Helianthus annuus;soybean;4;129,134,180,189
+> ```
+
+```{r read data}
+haplotypes <- "Haplotype	7_2	8_3	110_4	55_4	13_2	23_4	7_3	5_2	17_3	12_2	92_4	106_4
+1	188	268	382	189	311	407	225	332	359	238	388	572
+2a	188	270	397	189	322	407	220	332	359	232	388	572
+2b	188	270	397	189	322	407	220	332	359	232	388	576
+3a	186	268	390	189	332	407	225	332	353	238	388	577
+3b	186	268	394	189	332	407	225	332	353	238	388	577
+4	186	268	382	189	311	407	222	332	353	234	388	572
+6a	186	268	397	189	332	407	222	332	353	234	388	568
+6b	186	268	397	189	332	407	222	332	353	234	388	593
+7	188	270	390	189	322	407	225	332	353	238	390	577
+8a	188	270	390	189	322	407	220	332	359	232	390	581
+8b	188	270	390	189	322	407	220	332	359	232	390	585
+8c	188	270	390	189	322	407	220	332	365	232	390	605
+9	188	268	390	189	332	407	225	334	359	238	391	568
+11	188	268	393	189	332	407	220	332	359	232	391	554
+12a	176	262	386	205	332	405	220	332	365	232	388	574
+12b	176	262	386	205	332	405	220	332	365	232	388	578
+13	188	272	382	193	322	407	222	332	359	234	388	565
+14	188	272	393	189	332	407	225	332	361	238	390	550
+15	186	272	382	173	322	407	222	332	359	234	388	554
+16	186	270	397	189	332	407	222	332	353	234	388	585
+17	188	270	397	189	332	407	222	332	353	234	388	574
+18	186	268	382	240	332	407	225	332	359	238	388	585
+19	186	270	397	181	332	407	220	334	359	232	391	550
+20	188	270	382	181	322	407	222	332	353	234	391	543
+21	186	270	397	189	322	407	220	332	359	232	388	572
+23	186	268	397	173	311	405	220	332	359	232	388	589
+24	188	270	397	189	322	407	220	332	359	232	388	572
+25a	176	262	386	232	332	405	220	332	375	232	388	598
+25b	176	262	386	232	332	405	220	332	375	232	388	589
+28a	186	270	390	189	338	407	225	332	359	238	388	572
+28b	186	270	390	189	342	407	225	332	359	238	388	572
+30	186	270	382	181	322	407	225	332	353	238	388	562
+31	188	268	390	181	322	407	225	334	353	238	388	572
+33	188	270	390	193	322	407	220	332	359	232	390	585
+34	186	268	397	177	347	407	225	332	359	238	388	554
+36	186	270	394	193	322	407	222	332	353	234	388	558
+37	188	268	382	193	311	407	225	332	361	238	390	572
+38	186	268	382	181	311	407	222	332	359	234	390	581
+43	186	270	390	185	332	407	222	332	353	234	391	585
+46	188	268	382	193	322	407	225	332	359	238	391	546
+53	188	268	397	181	374	407	225	332	359	238	388	572
+57	176	262	386	185	332	405	220	332	367	232	388	535
+60	188	268	397	181	332	407	220	334	359	232	391	568
+61	188	268	397	181	332	407	225	332	359	238	388	554
+62	186	268	382	173	311	405	220	332	371	232	390	577
+64	186	270	397	185	332	407	222	332	353	234	388	562
+66	188	270	390	189	332	407	220	332	353	232	390	581
+69	188	270	382	189	311	407	225	332	378	238	395	574
+71	176	262	386	228	332	405	220	332	367	232	388	535
+73	186	268	382	181	311	407	220	332	353	232	390	581
+77	188	268	397	181	322	407	222	332	353	234	388	565
+"
+
+haplotypes <- readr::read_table2(haplotypes)
+
+replens <- c(
+"5_2" = 2,
+"7_2" = 2,
+"7_3" = 2,
+"8_3" = 2,
+"12_2" = 2,
+"13_2" = 5,
+"17_3" = 3,
+"23_4" = 2,
+"55_4" = 4,
+"92_4" = 2,
+"106_4" = 4,
+"110_4" = 4
+)
+
+isolates <- "MCG;Haplotype;Year;State/Province;Host;Host common name;Number of isolates;Isolate designation
+1;1;2007;North Dakota;Brassica napus;canola;1;100
+2;2a;2008;Minnesota;Phaseolus vulgaris;dry bean;1;137
+2;2a;2008;Nebraska;Glycine max;soybean;1;191
+2;2a;2008;North Dakota;Brassica napus;canola;2;175,181
+2;2a;2008;North Dakota;Phaseolus vulgaris;dry bean;2;101,122
+2;2a;2008;North Dakota;Glycine max;soybean;1;132
+2;2a;2008;South Dakota;Glycine max;soybean;1;201
+2;2a;2007;North Dakota;Brassica napus;canola;1;800
+2;2a;1996;Colorado;Phaseolus vulgaris;dry bean;1;196
+2;2a;2008;Manitoba, Canada;Phaseolus vulgaris;dry bean;1;103
+3;3a;2008;North Dakota;Brassica napus;canola;1;159
+3;3a;2008;North Dakota;Phaseolus vulgaris;dry bean;1;102
+3;3a;2007;North Dakota;Brassica napus;canola;2;700,900
+3;3a;-;Minnesota;Daucus carota;carrot;1;205
+3;3a;2008;North Dakota;Helianthus annuus;sunflower;4;129,134,180,189
+3;3b;2008;North Dakota;Phaseolus vulgaris;dry bean;1;156
+3;3b;2008;North Dakota;Glycine max;soybean;1;240
+3;3b;2008;North Dakota;Helianthus annuus;sunflower;1;188
+4;4;2008;North Dakota;Phaseolus vulgaris;dry bean;1;104
+5;2a;2008;North Dakota;Phaseolus vulgaris;dry bean;1;105
+5;2a;2008;North Dakota;Glycine max;soybean;1;116
+6;6a;2008;Minnesota;Helianthus annuus;sunflower;2;136,139
+6;6a;2008;North Dakota;Phaseolus vulgaris;dry bean;1;106
+6;6b;2008;North Dakota;Glycine max;soybean;1;176
+7;7;2008;North Dakota;Glycine max;soybean;1;107
+8;8a;2008;Iowa;Glycine max;soybean;1;213
+8;8a;2008;North Dakota;Brassica napus;canola;2;167,186
+8;8a;2008;North Dakota;Phaseolus vulgaris;dry bean;4;109,115,119,133
+8;8b;2008;North Dakota;Phaseolus vulgaris;dry bean;1;120
+8;8b;2007;Montana;Carthamus tinctorius;safflower;1;244
+8;8b;2006;Minnesota;Glycine max;soybean;1;203
+8;8c;2008;North Dakota;Glycine max;soybean;1;239
+8;8c;2008;North Dakota;Helianthus annuus;sunflower;1;183
+9;9;2008;Illinois;Glycine max;soybean;1;148
+9;9;2008;Indiana;Glycine max;soybean;2;206,207
+9;9;2008;Iowa;Glycine max;soybean;6;211,212,214,215,216,217
+9;9;2008;Minnesota;Glycine max;soybean;4;145,146,197,204
+9;9;2008;Minnesota;Helianthus annuus;sunflower;1;141
+9;9;2008;Nebraska;Glycine max;soybean;1;153
+9;9;2008;North Dakota;Brassica napus;canola;1;150
+9;9;2008;North Dakota;Phaseolus vulgaris;dry bean;7;108,117,124,131,151,157,184
+9;9;2008;North Dakota;Glycine max;soybean;5;113,114,125,135,178
+9;9;2008;North Dakota;Helianthus annuus;sunflower;2;126,128
+9;9;2007;Illinois;Glycine max;soybean;1;147
+9;9;2007;North Dakota;Brassica napus;canola;1;110
+9;9;2004;Missouri;Glycine max;soybean;1;234
+9;9;2004;Wisconsin;Nicotiana tabacum;tobacco;1;233
+9;9;2003;Wisconsin;Nicotiana tabacum;tobacco;1;232
+9;9;2002;Ohio;Glycine max;soybean;1;210
+9;9;2002;Wisconsin;Glycine max;soybean;1;226
+9;9;2000;Wisconsin;Glycine max;soybean;4;220,221,223,224
+11;11;1987;Colorado;Solanum tuberosum;potato;1;198
+12;12a;2008;Minnesota;Glycine max;soybean;1;140
+12;12a;2008;North Dakota;Helianthus annuus;sunflower;1;123
+12;12b;2008;North Dakota;Phaseolus vulgaris;dry bean;1;118
+12;12b;2008;North Dakota;Glycine max;soybean;1;127
+12;12b;2006;Colorado;Helianthus annuus;sunflower;1;193
+13;13;2008;North Dakota;Brassica napus;canola;1;168
+14;14;2007;North Dakota;Brassica napus;canola;1;111
+15;15;2008;Minnesota;Brassica napus;canola;1;190
+15;15;2008;North Dakota;Brassica napus;canola;2;171,177
+15;15;2007;North Dakota;Brassica napus;canola;1;112
+15;15;1992;Colorado;Brassica napus;canola;1;192
+16;16;2008;North Dakota;Glycine max;soybean;1;130
+17;17;2008;North Dakota;Brassica napus;canola;1;185
+18;18;2008;Minnesota;Phaseolus vulgaris;dry bean;1;138
+19;19;2008;Minnesota;Glycine max;soybean;1;142
+19;19;2003;Wisconsin;Glycine max;soybean;1;229
+20;20;2008;Minnesota;Helianthus annuus;sunflower;1;143
+21;21;2008;Minnesota;Glycine max;soybean;1;144
+23;23;2008;North Dakota;Helianthus annuus;sunflower;1;149
+24;24;2008;Nebraska;Phaseolus vulgaris;dry bean;1;154
+25;25a;2008;Kansas;Helianthus annuus;sunflower;1;246
+25;25a;2008;North Dakota;Phaseolus vulgaris;dry bean;1;121
+25;25a;2008;North Dakota;Helianthus annuus;sunflower;1;155
+25;25b;2008;North Dakota;Glycine max;soybean;1;241
+28;28a;2008;North Dakota;Phaseolus vulgaris;dry bean;1;158
+28;28a;2008;North Dakota;Helianthus annuus;sunflower;2;160,161
+28;28a;2007;North Dakota;Brassica napus;canola;1;500
+28;28b;2008;North Dakota;Helianthus annuus;sunflower;1;166
+30;30;2008;North Dakota;Helianthus annuus;sunflower;1;163
+31;31;2008;North Dakota;Brassica napus;canola;1;165
+33;33;2008;North Dakota;Phaseolus vulgaris;dry bean;1;169
+34;34;2008;North Dakota;Brassica napus;canola;1;170
+36;36;2008;North Dakota;Phaseolus vulgaris;dry bean;1;172
+37;37;2008;North Dakota;Brassica napus;canola;1;173
+38;38;2008;North Dakota;Helianthus annuus;sunflower;2;174,182
+43;43;2008;North Dakota;Glycine max;soybean;1;179
+46;46;2008;North Dakota;Helianthus anuus;sunflower;1;187
+49;12a;2008;Nebraska;Phaseolus vulgaris;dry bean;1;195
+52;23;2008;Wyoming;Phaseolus vulgaris;dry bean;1;200
+53;53;2008;South Dakota;Helianthus annuus;sunflower;1;202
+56;12a;1997;Iowa;Glycine max;soybean;1;208
+57;57;1998;Illinois;Glycine max;soybean;1;209
+60;60;2008;Michigan;Glycine max;soybean;2;218,219
+61;61;2002;North Dakota;Brassica napus;canola;1;230
+61;61;2000;Wisconsin;Glycine max;soybean;1;222
+62;62;2003;Wisconsin;Glycine max;soybean;2;227,228
+63;24;2008;Wyoming;Phaseolus vulgaris;dry bean;1;199
+64;64;2002;Wisconsin;Glycine max;soybean;1;225
+66;66;2002;North Dakota;Brassica napus;canola;1;231
+69;69;2005;Montana;Cynoglossum officinale;houndstonque;1;243
+71;71;2008;Kansas;Phaseolus vulgaris;dry bean;1;247
+73;73;2007;North Dakota;Brassica napus;canola;1;600
+77;77;2008;North Dakota;Brassica napus;canola;1;162
+78;19;2008;North Dakota;Brassica napus;canola;1;164"
+
+isocol <- readr::cols(
+  MCG = col_integer(),
+  Haplotype = col_character(),
+  Year = col_character(),
+  `State/Province` = col_character(),
+  Host = col_character(),
+  `Host common name` = col_character(),
+  `Number of isolates` = col_integer(),
+  `Isolate designation` = col_character()
+)
+
+isolates <- readr::read_delim(isolates, ";", col_types = isocol)
+```
+
+Now that I have the data read in to data frames, I can create a master data
+frame by joining them together.
+
+```{r }
+ssc <- left_join(isolates, haplotypes, by = "Haplotype") %>%
+	mutate(`Isolate designation` = strsplit(`Isolate designation`, ",")) %>%
+	tbl_df() %>%
+	unnest() %>%
+	select(`Isolate designation`, everything())
+ssc
+```
+
+Now we can read the data into poppr
+
+```{r }
+gid <- df2genind(ssc[-c(1:8)], ind.names = ssc$`Isolate designation`,
+                 strata = ssc[2:8], ploidy = 1, pop = ssc$`Host common name`) %>%
+  as.genclone()
+gid
+```
+
+# Comparison
+
+First, I need to load our data:
+
+```{r}
+load(file.path(PROJHOME, "data/sclerotinia_16_loci.rda"))
+```
+
+Now, I need to make sure that the locus names between their data and our data are cromulent:
+
+```{r}
+locNames(dat11)
+locNames(gid)
+```
+
+They are not, so I will have to massage them a bit to make sure that we can match up the loci and then subset them to only the common loci.
+
+```{r}
+ours <- dat11
+locNames(gid) <- gsub("_", "-", locNames(gid))
+locNames(ours) <- gsub("[(FH)]", "", locNames(ours))
+locNames(gid)
+locNames(ours)
+
+(AW <- gid[loc = locNames(gid) %in% locNames(ours), mlg.reset = TRUE])
+(ZK <- ours[loc = locNames(ours) %in% locNames(gid), mlg.reset = TRUE])
+```
+
+So, out of the 11 loci in this study, only 7 match up with Aldrich-Wolfe 2015. This reduces us to 140 MLGs. 
+One quick way of assessing whether or not there are any shared genotypes in this data set is to look at the
+allele sizes. 
+
+
+```{r}
+sort_alleles <- . %>% as.integer() %>% sort()
+allist <- list(
+  AW = map(alleles(AW), { . %>% sort_alleles } ),
+  ZK = map(alleles(ZK), { . %>% sort_alleles } )
+)
+purrr::transpose(allist)
+
+# Do any of the alleles match?
+(matching_alleles <- map_lgl(purrr::transpose(allist), ~{ any(.$AW %in% .$ZK) }))
+```
+
+Out of this, we only have `r sum(matching_alleles)` matches, which means that no genotypes are shared. 
+
+
+<details>
+<summary>Session Information</summary>
+
+```{r, echo = FALSE}
+options(width = 100)
+devtools::session_info()
+```
+
+</details>
