@@ -692,8 +692,8 @@ Despite this information, it is still unclear what has contributed to the differ
 While the evidence may suggest host as being a factor, previous studies have shown no significant differentiation across host species [@aldrich-wolfe2015genetic]. 
 
 With the exception of the WA Region, populations that were sampled across several years appeared to be relatively stable over time with overlapping distributions in the DAPC (i.e. NE and MI, Fig. \@ref(DAPC-RY)). 
-DAPC is based on the principal components of Euclidean distance between genotypes [@jombart2010discriminant]. 
-Unlike Bruvo's distance, Euclidean distance does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
+DAPC is based on the principal components of allele counts [@jombart2010discriminant]. 
+Unlike Bruvo's distance, this does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
 We found no evidence of private alleles in the Mexico and CA isolates, suggesting that this pattern separating these populations from the others was not an artifact.
 We believe that the differences we observe from Mexico may reflect differences in climate.
 
