@@ -169,6 +169,27 @@ MLHagg <- read_csv("../../results/tables/MLG-aggressiveness.csv",
 Raggmean <- mean(as.numeric(Regionagg[[2]]))
 Maggmean <- mean(as.numeric(MCGagg[[2]]))
 Haggmean <- mean(as.numeric(MLHagg[[2]]))
+
+# Additional Mexico analyses
+# 
+# We have no private alleles in Mexico, but the DAPC is being driven by near-private
+# alleles. We can confirm this by inspecting both the DAPC loadings and inspecting
+# these loci
+
+first_axis <- dapc_region$var.contr[, 1]
+q95 <- quantile(first_axis, 0.95)
+poptab <- dat11 %>% 
+  genind2genpop(quiet = TRUE) %>% 
+  tab()
+near_private <- apply(poptab, 2, function(i) names(i)[which((i/sum(i)) > 0.75)])
+near_private <- unlist(near_private[lengths(near_private) == 1])
+near_private <- near_private[near_private == "Mexico"]
+fa_alleles   <- poptab[, first_axis > q95]
+mx_percent   <- t(fa_alleles[, names(near_private)])/colSums(fa_alleles)
+mx_percent   <- prettify(mx_percent[, "Mexico", drop = TRUE], TRUE)
+mx_loci      <- substr(names(mx_percent), 1, 3)
+mx_alleles   <- substr(names(mx_percent), 8, 11)
+mx_allele_string <- glue::glue("alleles {mx_alleles[1]}, {mx_alleles[2]}, and {mx_alleles[3]} in loci {mx_loci[1]}, {mx_loci[2]}, and {mx_loci[3]}")
 ```
 
 
@@ -368,6 +389,7 @@ Moreover, Mexico had the lowest value for *h*, which is a measure of allelic div
 Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
 The only exceptions are CA (*P* = `r gdtrd[["CA"]]`) and Australia (*P* = `r gdtrd[["Australia"]]`). Both of these populations showed only moderate significance with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
 
+
 ```{r , echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 #    Locus    Range Repeats allele      Hexp  Evenness
 #  1   5-2 318--324 2.00000      4 0.4522344 0.6164147
@@ -409,6 +431,7 @@ loc_table %>%
 ```
 
 Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation]. Average *h* = `r signif(Hmean, 3)`, average Evenness = `r signif(Emean, 3)`, average no. alleles = `r signif(Amean, 3)`
+
 
 ```{r table_ia, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 gdt %>%
@@ -694,11 +717,13 @@ While the evidence may suggest host as being a factor, previous studies have sho
 With the exception of the WA Region, populations that were sampled across several years appeared to be relatively stable over time with overlapping distributions in the DAPC (i.e. NE and MI, Fig. \@ref(DAPC-RY)). 
 DAPC is based on the principal components of allele counts [@jombart2010discriminant]. 
 Unlike Bruvo's distance, this does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
-We found no evidence of private alleles in the Mexico and CA isolates, suggesting that this pattern separating these populations from the others was not an artifact.
+While we found no evidence of private alleles in the Mexico and CA isolates, we did find that the alleles driving the first axis in figure \@ref(DAPC)A (`r mx_allele_string`, respectively) were overrepresented in Mexico (where >75% of the alleles came from the region).
+However, all three of these alleles i) conform to the expected stepwise mutation model [@bruvo2004simple] and ii) are at or near the extremes of the total range (except for `r glue::glue("allele {mx_alleles[3]} at locus {mx_loci[3]}")`).
+Moreover, the fact that we find three alleles at three independent loci segregating for Mexico suggests that the pattern separating these populations from the others was not an artifact. 
 We believe that the differences we observe from Mexico may reflect differences in climate.
 
 Many of the isolates in our study were from temperate climates and the only isolates representing a sub-tropical climate were from Mexico.
-It has been proposed within the *S. sclerotiorum* literature that isolates from sub-tropical and tropical climates are differentiated or more variable than populations from temperate climates [@carbone2001multilocus; @attanayake2013sclerotinia; @lehner2017sclerotinia;]. 
+It has been proposed within the *S. sclerotiorum* literature that isolates from sub-tropical and tropical climates are differentiated or more variable than populations from temperate climates [@carbone2001multilocus; @attanayake2013sclerotinia; @lehner2017sclerotinia]. 
 This has been attributed to the notion that the fungus has the chance to undergo more reproductive cycles in the warmer climate [@carbone2001multilocus; @attanayake2013sclerotinia]. 
 The strongest evidence to date supporting this hypothesis is from @attanayake2013sclerotinia, showing that populations in sub-tropical regions of China have been found to be more variable, sexually reproducing, and unrelated to populations in temperate regions of the USA.
 This result however, may be driven more by geography and agricultural practice as opposed to climate.
