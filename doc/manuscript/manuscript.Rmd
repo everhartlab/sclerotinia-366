@@ -60,8 +60,8 @@ prettify <- function(x, i) signif((x[i])*100, 3)
 
 # Get proportion of variance per discriminant axis
 paxis <- function(d, i = 1){
-  res <- cumsum(d$eig)/sum(d$eig)
-  prettify(1 - res, i)
+  res <- d$eig/sum(d$eig)
+  prettify(res, i)
 }
 
 # Get proportion of assignment probability for a given population
