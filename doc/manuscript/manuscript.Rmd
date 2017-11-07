@@ -170,7 +170,7 @@ Raggmean <- mean(as.numeric(Regionagg[[2]]))
 Maggmean <- mean(as.numeric(MCGagg[[2]]))
 Haggmean <- mean(as.numeric(MLHagg[[2]]))
 
-# Additional Mexico analyses
+# Additional Mexico analyses: Reviewer 1 request
 # 
 # We have no private alleles in Mexico, but the DAPC is being driven by near-private
 # alleles. We can confirm this by inspecting both the DAPC loadings and inspecting
@@ -190,6 +190,21 @@ mx_percent   <- prettify(mx_percent[, "Mexico", drop = TRUE], TRUE)
 mx_loci      <- substr(names(mx_percent), 1, 3)
 mx_alleles   <- substr(names(mx_percent), 8, 11)
 mx_allele_string <- glue::glue("alleles {mx_alleles[1]}, {mx_alleles[2]}, and {mx_alleles[3]} in loci {mx_loci[1]}, {mx_loci[2]}, and {mx_loci[3]}")
+
+# Washington aggressiveness: Reviewer 3 request
+#
+# Reviewer 3 wanted to see an assessment of the agressiveness difference between the two fields in
+# WA white mold nurseries. 
+
+WA <- bind_cols(strata(dat11), other(dat11)$meta) %>%
+  filter(Region == "WA") %>%
+  filter(Source == "wmn") %>%
+  mutate(Field = ifelse(Year == "2008", "Southeast", "Northeast"))
+
+WAnova  <- lm(Severity ~ Field + Year, data = WA, contrasts = "contr.helmert")
+WAnova  <- anova(WAnova)
+PWA     <- signif(WAnova[1, 5], 3)
+PWA
 ```
 
 
@@ -375,9 +390,6 @@ Analysis of the haplotype accumulation curve showed no clear plateau for 11 or 1
 [^1]: Direct link: https://github.com/everhartlab/sclerotinia-366/blob/master/results/MLG-distribution.md#loading-data-and-setting-strata
 
 After clone-correction on the hierarchy of Region/Source/Host/Year, a total of `r nInd(dat11) - nInd(dat11cc)` isolates were removed from the data set, resulting in `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLHs that were used in subsequent analyses (Table \@ref(tab:iatab)).
-<!-- 
-The fact that genotypic diversity in poppr uses H, G and lambda should be clarified here. It should reflect the results interpretation as well. According to Table 2, MI and NE subpopulations exhibit high genotypic diversity when compared to other subpopulations (3.6, 29 and 0.97 for H, G and lambda, respectively for MI and 3.2, 17.8 and 0.94 for NE). If this was based on evenness, that should be explained as well. It can be confusing stated like this. When you shift focus onto diversity (h), the story changes – so please clarify this section to reflect that
--->
 The results showed that, in terms of genotypic diversity (*H*, *G*, and $\lambda$), WA was the most diverse population with both *G* (`r signif(setNames(gdt$G, gdt$Pop)["WA"], 3)`) and $e^H$ (`r signif(setNames(exp(gdt$H), gdt$Pop)["WA"], 3)`) being close to the observed number of MLGs (`r setNames(gdt$MLG, gdt$Pop)["WA"]`). 
 This indicated that there are few duplicated genotypes in WA (Table \@ref(tab:iatab)).
 A more useful metric to compare populations, however, is $E_5$, which scales from 0 to 1 where 1 indicates all unique genotypes [@grunwald2003analysis]. 
@@ -711,8 +723,12 @@ Despite the evidence that Mexico and CA contributed to much of the population di
 The two distinct clusters for the WA Region showed that the 2008 population appeared differentiated and, under further investigation, we found that all the haplotypes from this year were shared between CA and France (Fig. \@ref(community-graph), \@ref(DAPC-RY), \@ref(DAPC-RY-FULL)). 
 All of the isolates from WA in 2003--2005, and 2008 came from the same wmn; within the wmn, those in 2003--2005 came a Northeastern field location cropped with dry bean since 2002, and those in 2008 from a Southeastern field that was previously cropped with brassica, sundgrass, peas, beans, and potatoes (Miklas, Phil Pers. comm.).
 Both of these fields were inoculated with sclerotia in 2002, the Northeastern field with sclerotia provided by a commercial bean producer and the Southeastern field with sclerotia from peas (although this was thought to be unsuccessful).
-Despite this information, it is still unclear what has contributed to the differentiation of the 2008 population from WA.
-While the evidence may suggest host as being a factor, previous studies have shown no significant differentiation across host species [@aldrich-wolfe2015genetic]. 
+Despite this information, it is still unclear what has contributed to the differentiation of the 2008 population from WA or why it shares haplotypes with CA and France.
+When we assessed agressiveness between the two fields across years with an ANOVA model, we found that there was a slight effect based on field (P = `r PWA`).
+While the evidence may suggest host as being a factor, previous studies have shown no significant differentiation across host species [@aldrich-wolfe2015genetic].
+It was of interest to compare our data with that of @aldrich-wolfe2015genetic, but we found that, due to differences in data generation, we were unable to confidently perform a comparison (See supplemental file compare-aldrich-wolfe.md[^3] [@kamvar2017data]).
+
+[^3]: Direct link: https://github.com/everhartlab/sclerotinia-366/blob/master/results/compare-aldrich-wolfe.md
 
 With the exception of the WA Region, populations that were sampled across several years appeared to be relatively stable over time with overlapping distributions in the DAPC (i.e. NE and MI, Fig. \@ref(DAPC-RY)). 
 DAPC is based on the principal components of allele counts [@jombart2010discriminant]. 
@@ -742,8 +758,6 @@ Thus, we hypothesize that shared haplotypes between populations may arise due to
 This could explain the fact that we see shared genotypes with low $P_{sex}$ values shared between Australia, France, and the United States.
 While we speculate that these transmission events are rare due to the genetic structuring by Region, these results suggest that seedborne infections may indeed reflect a source of inoculum.
 This may, in turn increase the risk of introducing new sources of genetic variation through potential outcrossing events.
-<!-- I was also interested in more interpretation/analysis as to why the Mexican population did not have MLH shared with any other regions, the absence of clarity on this is done at a loss. -->
-
 
 When we tested for sexual reproduction, we were unable to find evidence for it in any region except for Australia and CA. 
 While the Australia population had a non-significant value of $\bar{r}_d$---which would suggest that we cannot reject the null hypothesis of random mating---the sample size was insufficient from which to draw conclusions [@milgroom1996recombination; @agapow2001indices].
