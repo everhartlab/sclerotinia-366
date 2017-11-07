@@ -204,7 +204,6 @@ WA <- bind_cols(strata(dat11), other(dat11)$meta) %>%
 WAnova  <- lm(Severity ~ Field + Year, data = WA, contrasts = "contr.helmert")
 WAnova  <- anova(WAnova)
 PWA     <- signif(WAnova[1, 5], 3)
-PWA
 ```
 
 
@@ -401,7 +400,6 @@ Moreover, Mexico had the lowest value for *h*, which is a measure of allelic div
 Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
 The only exceptions are CA (*P* = `r gdtrd[["CA"]]`) and Australia (*P* = `r gdtrd[["Australia"]]`). Both of these populations showed only moderate significance with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
 
-
 ```{r , echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 #    Locus    Range Repeats allele      Hexp  Evenness
 #  1   5-2 318--324 2.00000      4 0.4522344 0.6164147
@@ -443,6 +441,8 @@ loc_table %>%
 ```
 
 Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation]. Average *h* = `r signif(Hmean, 3)`, average Evenness = `r signif(Emean, 3)`, average no. alleles = `r signif(Amean, 3)`
+
+\newpage
 
 
 ```{r table_ia, echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
@@ -487,6 +487,7 @@ $\lambda$ = Simpson's Index,
 $E_5$ = Evenness,
 $\bar{r}_d$ = standardized index of association.
 An asterix indicates a significant value of $\bar{r}_d$ after 999 permutations, $P \leq 0.001$.
+
 
 <!-- MCG graph figure -->
 
