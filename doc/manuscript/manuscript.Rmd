@@ -816,6 +816,7 @@ The funders had no role in study design, data collection and analysis, decision 
 ## Acknowledgements {-}
 
 The authors would like to thank Rebecca Higgens for technical support in generating the data for the MCG assessment, aggressiveness ratings, and genotyping; and for providing valuable insights into the historical context of the data collection and curation. 
+We would also like to thank Denita Hadziabdic and two anonymous reviewers for their valuable comments and insights that improved the quality of the manuscript.
 
 ## Conflicts of Interest {-}
 
@@ -946,8 +947,8 @@ Graph showing complex associations between Mycelial Compatibility Groups (MCG) (
 Node size reflect the number of samples represented by each node (circle). 
 Edges (arrows) point from MLH to MCG where the weight (thickness) of the edge represents the number of samples shared. 
 Node color represents the community assignment based on the walktrap algorithm with a maximum of four steps [@pons2006computing]. 
+An interactive version of this network can be recreated using the code in the "Interactive visualizations" section of the mlg-mcg.md file in the supplementary information (Direct Link: https://github.com/everhartlab/sclerotinia-366/blob/master/results/mlg-mcg.md#interactive-visualizations)  [@kamvar2017data].
 ](../../results/figures/publication/full-graph.pdf){#fullgraph width=100%}
-
 
 <!-- community graph figure -->
 
@@ -957,6 +958,7 @@ Each node is labeled with **name (number of MLHs shared/number of MLHs total).**
 The shade and area of the nodes are proportional to the number of unique MLHs within the node and the inner nodes are proportional to the number of private MLHs to the region (bottom legend). 
 Each edge represents a single MLH where its thickness represents the number of populations that share the MLH and the shade represents the value of $P_{sex}$, or the probability of encountering that MLH from two independent meiotic events.
 ](../../results/figures/publication/mlg-16.pdf){#community-graph16 width=100%} 
+
 
 <!-- end fig -->
 
