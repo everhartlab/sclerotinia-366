@@ -601,6 +601,7 @@ mcg_mlg_graph <- ggraph(lay2) +
                  show.legend = FALSE) +
   coord_fixed() +
   scale_linetype_manual(values = c(1, 3)) +
+  # scale_alpha_manual(values = c(1, 0.4)) +
   scale_edge_width(range = c(0.25, 1.5)) +
   scale_color_manual(values = c("black", "black", "white", "white")) +
   scale_fill_viridis(direction = -1, discrete = TRUE) +
@@ -1128,7 +1129,7 @@ if (!interactive()){
 ```
 
 
-There are a whole buttload of MLGs for those 5 MCGs. What are the severity 
+There are a whole boatload of MLGs for those 8 MCGs. What are the severity 
 ratings for those? Again, we take take a look at these AND simultaneously query
 the top 5 MLGs for this. 
 
@@ -1138,28 +1139,32 @@ count_group <- . %>%
   mutate(nobs = n()) %>%  # count the number of samples/MCG
   ungroup() %>%
   arrange(desc(nobs)) # arrange by number of samples and reorder factors 
-Severity <- filter(strat, MCG %in% mcgs$MCG[1:5]) %>%
+Severity <- filter(strat, MCG %in% mcgs$MCG[1:8]) %>%
   group_by(MCG) %>% 
   count_group %>%
   mutate(MCG = forcats::fct_inorder(factor(MCG), ordered = TRUE)) %>%
-  mutate(MLG = ifelse(MLG %in% mlgs$MLG[1:5], paste("MLG", MLG), "Other")) 
+  mutate(MLG = ifelse(MLG %in% mlgs$MLG[1:5], paste("MLH", MLG), "Other")) 
   
 severity_plot <- ggplot(Severity, aes(x = MCG, y = Severity)) +
   geom_point(aes(fill = MLG), 
              position = position_jitter(width = 0.2),
              alpha = 0.75,
              pch = 21) +
-  scale_fill_viridis(discrete = TRUE, direction = -1) +
-  theme_bw() +
+  scale_fill_manual(values = c(viridis(5, direction = -1), NA)) +
+  theme_bw(base_size = 16, base_family = "Helvetica") +
   theme(legend.position = "bottom") +
-  theme(aspect.ratio = 0.6) +
-  facet_wrap(~Region, nrow = 2) +
-  ylim(c(3.5, 8)) +
+  theme(aspect.ratio = 0.5) +
+  facet_wrap(~Region, nrow = 3) +
+  ylim(c(1, 9)) +
   labs(list(
-    title = "Severity by MCG and Region",
-    fill = "Multilocus Haplotype",
-    subtitle = "Five most abundant multilocus genotypes shown"
-  ))
+    y = "Aggressiveness",
+    #title = "Aggressiveness by MCG and Region",
+    fill = "Multilocus Haplotype"
+    #subtitle = "Five most abundant multilocus haplotypes shown"
+  )) +
+  theme(legend.position = c(0.75, 0.1)) +
+  theme(legend.title.align = 0.5) +
+  guides(fill = guide_legend(nrow = 2))
 severity_plot
 ```
 
@@ -1167,11 +1172,7 @@ severity_plot
 
 ```r
 if (!interactive())
-  ggsave(severity_plot, filename = "results/figures/publication/FigureS3.pdf", width = 183, unit = "mm")
-```
-
-```
-## Saving 183 x 102 mm image
+  ggsave(severity_plot, filename = "results/figures/publication/RMM-aggressiveness.pdf", width = 183, height = 183*(4.5/7), unit = "mm")
 ```
 
 
@@ -1602,7 +1603,7 @@ on average 7 steps.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-10-31
+##  date     2017-11-07
 ```
 
 ```
@@ -1640,7 +1641,7 @@ on average 7 steps.
 ##  forcats        0.2.0   2017-01-23 CRAN (R 3.4.2)                      
 ##  foreign        0.8-69  2017-06-21 CRAN (R 3.4.2)                      
 ##  gdata          2.18.0  2017-06-06 cran (@2.18.0)                      
-##  ggcompoplot  * 0.1.0   2017-10-31 Github (zkamvar/ggcompoplot@bcf007d)
+##  ggcompoplot  * 0.1.0   2017-11-07 Github (zkamvar/ggcompoplot@bcf007d)
 ##  ggforce        0.1.1   2016-11-28 cran (@0.1.1)                       
 ##  ggplot2      * 2.2.1   2016-12-30 CRAN (R 3.4.2)                      
 ##  ggraph       * 1.0.0   2017-02-24 cran (@1.0.0)                       

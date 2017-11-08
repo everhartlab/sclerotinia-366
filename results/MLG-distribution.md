@@ -74,10 +74,23 @@ genotype_curve(dat, sample = 1000, quiet = TRUE)
 ![plot of chunk genotype_curves](./figures/MLG-distribution///genotype_curves-1.png)
 
 ```r
-genotype_curve(dat11, quiet = TRUE)
+gt16 <- last_plot() + 
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  stat_smooth() +
+  ggtitle("Haplotype accumulation curve for 16 loci") +
+  ylab("Number of multilocus haplotypes")
+genotype_curve(dat11, sample = 1000, quiet = TRUE)
 ```
 
 ![plot of chunk genotype_curves](./figures/MLG-distribution///genotype_curves-2.png)
+
+```r
+gt11 <- last_plot() + 
+  theme_bw(base_size = 16, base_family = "Helvetica") +
+  stat_smooth() +
+  ggtitle("Haplotype accumulation curve for 11 loci") +
+  ylab("Number of multilocus haplotypes")
+```
 
 Creating contracted genotypes for use later
 
@@ -224,7 +237,7 @@ plot_mlg_graph <- function(g, glayout = NULL, label = TRUE, seed = 2017-06-28){
   breaks      <- setNames(breaks, format(breaks, digits = 2))
   outg <- ggraph(glay) +
     geom_edge_fan(aes(alpha = 1 - weight, width = width + 1)) +
-    geom_node_circle(aes(r = drop(scale(size, center = FALSE))/10, fill = size))
+    geom_node_circle(aes(r = sqrt(size)/30, fill = size))
   outg <- if (label) outg + geom_node_label(aes(label = label), repel = TRUE, parse = TRUE, label.size = 0.75, nudge_x = x_nudge, segment.size = 0, segment.alpha = 0) else outg
   outg + 
     viridis::scale_fill_viridis(option = "C") +
@@ -309,17 +322,17 @@ graph11loc <- make_graph_list(dat[loc = keeploci, mlg.reset = TRUE])
 
 ```r
 g <- graph_from_adjacency_matrix(matrix(0, 2, 2))
-V(g)$size <- c(56, 56 - 32)
+V(g)$size <- c(43, 43 - 32)
 V(g)$label <- c("Number of MLHs in Region", "Number of private MLHs")
 lay <- as.data.frame(matrix(0, 2, 2, dimnames = list(NULL, c("x", "y"))))
 glegend <- create_layout(g, "manual", node.positions = as.data.frame(lay)) %>% ggraph() + 
-  geom_node_circle(aes(r = size, fill = size)) + 
+  geom_node_circle(aes(r = sqrt(size)*5, fill = size)) + 
   coord_fixed() + 
-  viridis::scale_fill_viridis(option = "C", begin = 1 - 32/56, end = 1, guide = "none") + 
+  viridis::scale_fill_viridis(option = "C", begin = 1 - 32/43, end = 43/56, guide = "none") + 
   ggrepel::geom_text_repel(aes(label = label), 
-                           x = c(20, 0) + 25, 
-                           y = c(35, 0), 
-                           nudge_x = 350, 
+                           x = c(6, -2) + 20, 
+                           y = c(20, -6), 
+                           nudge_x = 150, 
                            segment.size = 1, 
                            arrow = arrow(length = unit(0.15, "native")), 
                            family = "Helvetica") + 
@@ -408,7 +421,7 @@ ggsave(filename = "results/figures/publication/FigureS1Z.pdf", width = 88, heigh
 suppressWarnings(
   gg16cp <- cowplot::ggdraw(xlim = c(0, 1), ylim = c(0, 1)) +
   cowplot::draw_plot(gg16, x = 0, y = 0.05) +
-  cowplot::draw_plot(glegend, x = -0.125, y = 0, height = 0.1)
+  cowplot::draw_plot(glegend, x = -0.0125, y = 0, height = 0.1)
   )
 gg16cp
 ```
@@ -478,7 +491,7 @@ ggsave(filename = "results/figures/publication/Figure3Z.pdf", width = 88, height
 suppressWarnings(
   gg11cp <- cowplot::ggdraw(xlim = c(0, 1), ylim = c(0, 1)) +
   cowplot::draw_plot(gg11, x = 0, y = 0.05) +
-  cowplot::draw_plot(glegend, x = -0.125, y = 0, height = 0.1)
+  cowplot::draw_plot(glegend, x = -0.0125, y = 0, height = 0.1)
   )
 gg11cp
 ```
@@ -656,7 +669,7 @@ reg$DAPC$posterior %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-10-31
+##  date     2017-11-07
 ```
 
 ```
@@ -678,6 +691,7 @@ reg$DAPC$posterior %>%
 ##  cellranger    1.1.0   2016-07-27 CRAN (R 3.4.2)                      
 ##  cluster       2.0.6   2017-03-16 CRAN (R 3.4.2)                      
 ##  coda          0.19-1  2016-12-08 cran (@0.19-1)                      
+##  codetools     0.2-15  2016-10-05 CRAN (R 3.4.2)                      
 ##  colorspace    1.3-2   2016-12-14 CRAN (R 3.4.2)                      
 ##  compiler      3.4.2   2017-10-27 local                               
 ##  cowplot       0.8.0   2017-07-30 cran (@0.8.0)                       
@@ -693,7 +707,7 @@ reg$DAPC$posterior %>%
 ##  forcats       0.2.0   2017-01-23 CRAN (R 3.4.2)                      
 ##  foreign       0.8-69  2017-06-21 CRAN (R 3.4.2)                      
 ##  gdata         2.18.0  2017-06-06 cran (@2.18.0)                      
-##  ggcompoplot   0.1.0   2017-10-31 Github (zkamvar/ggcompoplot@bcf007d)
+##  ggcompoplot   0.1.0   2017-11-07 Github (zkamvar/ggcompoplot@bcf007d)
 ##  ggforce       0.1.1   2016-11-28 cran (@0.1.1)                       
 ##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.2)                      
 ##  ggraph      * 1.0.0   2017-02-24 cran (@1.0.0)                       

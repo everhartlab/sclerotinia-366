@@ -640,7 +640,7 @@ grps <- agricolae::HSD.test(ANOVA, "MLG", alpha = 0.05)$groups %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-10-31
+##  date     2017-11-07
 ```
 
 ```

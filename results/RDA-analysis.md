@@ -346,10 +346,10 @@ cap11cc       <- choose_dbrda(dat11cc.bruvo, ENV = ENV11, CHOOSER = "ordistep")
 ## 
 ##            Df    AIC      F Pr(>F)   
 ## + Region   13 1798.0 1.3931  0.005 **
+## + Source   23 1810.9 1.0586  0.005 **
 ## + Host     26 1813.4 1.0554  0.005 **
 ## + MCG      85 1843.2 1.1835  0.005 **
 ## + Severity  1 1791.4 1.3112  0.010 **
-## + Source   23 1810.9 1.0586  0.010 **
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -365,7 +365,7 @@ cap11cc       <- choose_dbrda(dat11cc.bruvo, ENV = ENV11, CHOOSER = "ordistep")
 ## + Host     26 1818.7 1.0761  0.005 **
 ## + MCG      84 1849.0 1.1270  0.005 **
 ## + Severity  1 1798.6 1.2191  0.015 * 
-## + Source   23 1817.5 1.0333  0.035 * 
+## + Source   23 1817.5 1.0333  0.040 * 
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -380,24 +380,24 @@ cap11cc       <- choose_dbrda(dat11cc.bruvo, ENV = ENV11, CHOOSER = "ordistep")
 ## 
 ##            Df    AIC      F Pr(>F)   
 ## + MCG      84 1856.8 1.1228  0.005 **
-## + Severity  1 1819.3 1.1541  0.055 . 
-## + Source   21 1834.9 1.0051  0.535   
+## + Severity  1 1819.3 1.1541  0.050 * 
+## + Source   21 1834.9 1.0051  0.545   
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ## Step: bdist ~ Year + Region + Host + MCG 
 ## 
 ##          Df    AIC      F Pr(>F)   
-## - Region 12 1853.8 1.0622  0.020 * 
 ## - MCG    84 1818.7 1.1228  0.005 **
 ## - Host   26 1849.0 1.0718  0.005 **
+## - Region 12 1853.8 1.0622  0.005 **
 ## - Year    7 1857.8 1.2893  0.005 **
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##            Df    AIC      F Pr(>F)
-## + Severity  1 1857.1 1.0071  0.445
-## + Source   21 1860.6 1.0097  0.505
+## + Source   21 1860.6 1.0097  0.445
+## + Severity  1 1857.1 1.0071  0.470
 ```
 
 ```r
@@ -439,7 +439,7 @@ cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ## Step: bdist ~ Severity + Year 
 ## 
 ##            Df    AIC      F Pr(>F)   
-## - Severity  1 1928.0 1.2208  0.020 * 
+## - Severity  1 1928.0 1.2208  0.010 **
 ## - Year      7 1924.7 1.3967  0.005 **
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -455,7 +455,7 @@ cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ## Step: bdist ~ Severity + Year + Region 
 ## 
 ##            Df    AIC      F Pr(>F)   
-## - Severity  1 1935.3 1.1830  0.040 * 
+## - Severity  1 1935.3 1.1830  0.030 * 
 ## - Region   13 1928.8 1.3858  0.005 **
 ## - Year      7 1931.5 1.2855  0.005 **
 ## ---
@@ -471,7 +471,7 @@ cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ## Step: bdist ~ Severity + Year + Region + Source 
 ## 
 ##            Df    AIC      F Pr(>F)   
-## - Severity  1 1954.5 1.0222  0.305   
+## - Severity  1 1954.5 1.0222  0.290   
 ## - Source   23 1936.1 1.0524  0.005 **
 ## - Region   13 1947.9 1.2781  0.005 **
 ## - Year      6 1951.9 1.2686  0.005 **
@@ -482,8 +482,8 @@ cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ## 
 ##            Df    AIC      F Pr(>F)   
 ## + MCG      84 1995.9 1.1410  0.005 **
-## + Host     24 1972.3 1.0516  0.025 * 
-## + Severity  1 1955.3 1.0222  0.315   
+## + Host     24 1972.3 1.0516  0.020 * 
+## + Severity  1 1955.3 1.0222  0.365   
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
@@ -498,8 +498,8 @@ cap16cc       <- choose_dbrda(dat16cc.bruvo, ENV = ENV16, CHOOSER = "ordistep")
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 ## 
 ##            Df    AIC      F Pr(>F)
-## + Host     24 2001.6 1.0410   0.26
-## + Severity  1 1996.4 0.9414   0.76
+## + Host     24 2001.6 1.0410  0.265
+## + Severity  1 1996.4 0.9414  0.755
 ```
 
 # ANOVA
@@ -646,7 +646,7 @@ cap16cc$anova
 ## + Year      7 1928.8 1.3967  0.005 **
 ## + Region   13 1936.1 1.3858  0.005 **
 ## + Source   23 1955.3 1.0524  0.005 **
-## - Severity  1 1954.5 1.0222  0.305   
+## - Severity  1 1954.5 1.0222  0.290   
 ## + MCG      84 1995.9 1.1410  0.005 **
 ## ---
 ## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
@@ -1183,7 +1183,7 @@ MLG 25).
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-10-31
+##  date     2017-11-08
 ```
 
 ```
@@ -1221,12 +1221,12 @@ MLG 25).
 ##  forcats       0.2.0   2017-01-23 CRAN (R 3.4.2)                       
 ##  foreign       0.8-69  2017-06-21 CRAN (R 3.4.2)                       
 ##  gdata         2.18.0  2017-06-06 cran (@2.18.0)                       
-##  ggcompoplot * 0.1.0   2017-10-31 Github (zkamvar/ggcompoplot@bcf007d) 
+##  ggcompoplot * 0.1.0   2017-11-07 Github (zkamvar/ggcompoplot@bcf007d) 
 ##  ggforce       0.1.1   2016-11-28 cran (@0.1.1)                        
 ##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.2)                       
 ##  ggraph      * 1.0.0   2017-02-24 cran (@1.0.0)                        
 ##  ggrepel     * 0.7.0   2017-09-29 cran (@0.7.0)                        
-##  ggtree      * 1.9.4   2017-10-31 Github (GuangchuangYu/ggtree@07063f9)
+##  ggtree      * 1.9.4   2017-11-07 Github (GuangchuangYu/ggtree@07063f9)
 ##  glue          1.1.1   2017-06-21 CRAN (R 3.4.2)                       
 ##  gmodels       2.16.2  2015-07-22 cran (@2.16.2)                       
 ##  graphics    * 3.4.2   2017-10-27 local                                
@@ -1295,7 +1295,7 @@ MLG 25).
 ##  tidyr       * 0.7.2   2017-10-16 CRAN (R 3.4.2)                       
 ##  tidyverse   * 1.1.1   2017-01-27 CRAN (R 3.4.2)                       
 ##  tools         3.4.2   2017-10-27 local                                
-##  treeio      * 1.1.2   2017-10-31 Github (GuangchuangYu/treeio@b6ae142)
+##  treeio      * 1.1.2   2017-11-07 Github (GuangchuangYu/treeio@b6ae142)
 ##  tweenr        0.1.5   2016-10-10 cran (@0.1.5)                        
 ##  udunits2      0.13    2016-11-17 cran (@0.13)                         
 ##  units         0.4-6   2017-08-27 cran (@0.4-6)                        
