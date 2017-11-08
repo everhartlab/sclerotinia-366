@@ -349,7 +349,7 @@ dplyr::setequal(saj, syd)
 ```
 
 ```
-## FALSE: Rows in x but not y: 366, 365, 364, 363, 260, 41, 40, 39, 38. Rows in y but not x: 365, 363, 260, 41, 40, 39, 366, 38, 364.
+## FALSE: Rows in x but not y: 366, 365, 364, 260, 363, 41, 40, 39, 38. Rows in y but not x: 366, 364, 260, 41, 40, 39, 38, 363, 365.
 ```
 
 Okay, something's not cromulent here. We'll have to manaully inspect these:
@@ -810,7 +810,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-10-31
+##  date     2017-11-07
 ```
 
 ```

@@ -227,9 +227,9 @@ bdwmn <- bruvo.dist(wmncc, replen = other(wmncc)$REPLEN)
 ## Adjustment method for multiple comparisons:   none 
 ## Permutation number:   999 
 ##                         Test        Obs    Std.Obs   Alter Pvalue
-## 1  Variations within samples 0.16466488 -28.027868    less  0.001
-## 2 Variations between samples 0.04770210  13.359623 greater  0.001
-## 3  Variations between Region 0.01852328   1.692148 greater  0.058
+## 1  Variations within samples 0.16466488 -27.150902    less  0.001
+## 2 Variations between samples 0.04770210  12.847730 greater  0.001
+## 3  Variations between Region 0.01852328   1.716785 greater  0.053
 ```
 
 ```r
@@ -239,7 +239,7 @@ make_amova_table(wmn.amova, wmn.amova.test, samples = "Year")
 ```
 ##                             statistic
 ## levels                       d.f. Sum of Squares Percent variation     P
-##   Between Region               10       8.216560          8.022547 0.058
+##   Between Region               10       8.216560          8.022547 0.053
 ##   Between Year Within Region   14       7.098156         20.660075 0.001
 ##   Within Year                 160      26.346381         71.317378 0.001
 ##                             statistic
@@ -298,9 +298,9 @@ bdfull <- bruvo.dist(dat11cc, replen = other(dat11cc)$REPLEN)
 ## Adjustment method for multiple comparisons:   none 
 ## Permutation number:   999 
 ##                         Test        Obs    Std.Obs   Alter Pvalue
-## 1  Variations within samples 0.17449282 -26.727803    less  0.001
-## 2 Variations between samples 0.03288065  12.686584 greater  0.001
-## 3  Variations between Region 0.01517709   2.512482 greater  0.010
+## 1  Variations within samples 0.17449282 -27.088508    less  0.001
+## 2 Variations between samples 0.03288065  13.229969 greater  0.001
+## 3  Variations between Region 0.01517709   2.565184 greater  0.007
 ```
 
 ```r
@@ -353,11 +353,11 @@ bdfull <- bruvo.dist(dat11cc, replen = other(dat11cc)$REPLEN)
 ## 
 ## Adjustment method for multiple comparisons:   none 
 ## Permutation number:   999 
-##                            Test         Obs      Std.Obs   Alter Pvalue
-## 1     Variations within samples  0.17262332 -26.19298617    less  0.001
-## 2    Variations between samples  0.03622242  10.65997860 greater  0.001
-## 3 Variations between SourceType -0.00509255  -0.03436733 greater  0.477
-## 4     Variations between Region  0.01880585   1.64372967 greater  0.036
+##                            Test         Obs       Std.Obs   Alter Pvalue
+## 1     Variations within samples  0.17262332 -25.406064490    less  0.001
+## 2    Variations between samples  0.03622242  11.405094356 greater  0.001
+## 3 Variations between SourceType -0.00509255  -0.001190669 greater  0.448
+## 4     Variations between Region  0.01880585   1.627861013 greater  0.033
 ```
 
 ```r
@@ -367,7 +367,7 @@ make_amova_table(full.amova.2, full.amova.2.test, samples = "Year")
 ```
 ##                             statistic
 ## levels                       d.f. Sum of Squares Percent variation     P
-##   Between Region               13       10.19459          6.819613 0.010
+##   Between Region               13       10.19459          6.819613 0.007
 ##   Between Year Within Region   23       10.37047         14.774461 0.001
 ##   Within Year                 281       49.03248         78.405925 0.001
 ##                             statistic
@@ -390,8 +390,8 @@ make_amova_table(full.amova.3, full.amova.3.test, samples = "Year")
 ##   Within Year                       274      47.298789         77.562933
 ##                                   statistic
 ## levels                                 P       Sigma Phi statistic
-##   Between Region                   0.036  0.01880585    0.08449826
-##   Between SourceType Within Region 0.477 -0.00509255   -0.02499372
+##   Between Region                   0.033  0.01880585    0.08449826
+##   Between SourceType Within Region 0.448 -0.00509255   -0.02499372
 ##   Between Year Within SourceType   0.001  0.03622242    0.17344103
 ##   Within Year                      0.001  0.17262332    0.22437067
 ```
@@ -426,10 +426,10 @@ make_amova_table(full.amova.3, full.amova.3.test, samples = "Year") %>%
 ---------------------------------------------------------------------------------------
  Hierarchy                    d.f. S.S. $\sigma^2$ % variation $\Phi$ statistic    *P* 
 ----------------------------- ---- ---- ---------- ----------- ---------------- -------
- Between Region                 13 10.1      0.019        8.45            0.084 0.0360 
+ Between Region                 13 10.1      0.019        8.45            0.084 0.0330 
                                       9                                                
                                                                                        
- Between Source within Region    8 2.74     -0.005       -2.29           -0.025 0.4770 
+ Between Source within Region    8 2.74     -0.005       -2.29           -0.025 0.4480 
                                                                                        
  Between Year within Source     22 9.37      0.036       16.28            0.173 0.0010 
                                                                                        
@@ -767,7 +767,7 @@ and 2008... I'm wondering if this may be a labeling issue.
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-10-31
+##  date     2017-11-08
 ```
 
 ```
@@ -805,12 +805,12 @@ and 2008... I'm wondering if this may be a labeling issue.
 ##  forcats       0.2.0   2017-01-23 CRAN (R 3.4.2)                       
 ##  foreign       0.8-69  2017-06-21 CRAN (R 3.4.2)                       
 ##  gdata         2.18.0  2017-06-06 cran (@2.18.0)                       
-##  ggcompoplot * 0.1.0   2017-10-31 Github (zkamvar/ggcompoplot@bcf007d) 
+##  ggcompoplot * 0.1.0   2017-11-07 Github (zkamvar/ggcompoplot@bcf007d) 
 ##  ggforce       0.1.1   2016-11-28 cran (@0.1.1)                        
 ##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.2)                       
 ##  ggraph      * 1.0.0   2017-02-24 cran (@1.0.0)                        
 ##  ggrepel       0.7.0   2017-09-29 cran (@0.7.0)                        
-##  ggtree      * 1.9.4   2017-10-31 Github (GuangchuangYu/ggtree@07063f9)
+##  ggtree      * 1.9.4   2017-11-07 Github (GuangchuangYu/ggtree@07063f9)
 ##  glue          1.1.1   2017-06-21 CRAN (R 3.4.2)                       
 ##  gmodels       2.16.2  2015-07-22 cran (@2.16.2)                       
 ##  graphics    * 3.4.2   2017-10-27 local                                
@@ -882,7 +882,7 @@ and 2008... I'm wondering if this may be a labeling issue.
 ##  tidyselect    0.2.2   2017-10-10 CRAN (R 3.4.2)                       
 ##  tidyverse   * 1.1.1   2017-01-27 CRAN (R 3.4.2)                       
 ##  tools         3.4.2   2017-10-27 local                                
-##  treeio      * 1.1.2   2017-10-31 Github (GuangchuangYu/treeio@b6ae142)
+##  treeio      * 1.1.2   2017-11-07 Github (GuangchuangYu/treeio@b6ae142)
 ##  tweenr        0.1.5   2016-10-10 cran (@0.1.5)                        
 ##  udunits2      0.13    2016-11-17 cran (@0.13)                         
 ##  units         0.4-6   2017-08-27 cran (@0.4-6)                        

@@ -99,7 +99,7 @@ locus_table(dat11, information = FALSE) %>%
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-10-31
+##  date     2017-11-07
 ```
 
 ```

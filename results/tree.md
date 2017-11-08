@@ -222,7 +222,7 @@ private_alleles(dat11, locus ~ Region, count.alleles = FALSE)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-10-31
+##  date     2017-11-07
 ```
 
 ```
@@ -259,9 +259,12 @@ private_alleles(dat11, locus ~ Region, count.alleles = FALSE)
 ##  forcats       0.2.0   2017-01-23 CRAN (R 3.4.2)                       
 ##  foreign       0.8-69  2017-06-21 CRAN (R 3.4.2)                       
 ##  gdata         2.18.0  2017-06-06 cran (@2.18.0)                       
-##  ggcompoplot * 0.1.0   2017-10-31 Github (zkamvar/ggcompoplot@bcf007d) 
+##  ggcompoplot * 0.1.0   2017-11-07 Github (zkamvar/ggcompoplot@bcf007d) 
+##  ggforce       0.1.1   2016-11-28 cran (@0.1.1)                        
 ##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.2)                       
-##  ggtree      * 1.9.4   2017-10-31 Github (GuangchuangYu/ggtree@07063f9)
+##  ggraph      * 1.0.0   2017-02-24 cran (@1.0.0)                        
+##  ggrepel       0.7.0   2017-09-29 cran (@0.7.0)                        
+##  ggtree      * 1.9.4   2017-11-07 Github (GuangchuangYu/ggtree@07063f9)
 ##  glue          1.1.1   2017-06-21 CRAN (R 3.4.2)                       
 ##  gmodels       2.16.2  2015-07-22 cran (@2.16.2)                       
 ##  graphics    * 3.4.2   2017-10-27 local                                
@@ -276,7 +279,7 @@ private_alleles(dat11, locus ~ Region, count.alleles = FALSE)
 ##  htmltools     0.3.6   2017-04-28 CRAN (R 3.4.2)                       
 ##  httpuv        1.3.5   2017-07-04 CRAN (R 3.4.2)                       
 ##  httr          1.3.1   2017-08-20 CRAN (R 3.4.2)                       
-##  igraph        1.1.2   2017-07-21 CRAN (R 3.4.2)                       
+##  igraph      * 1.1.2   2017-07-21 CRAN (R 3.4.2)                       
 ##  jsonlite      1.5     2017-06-01 CRAN (R 3.4.2)                       
 ##  knitr       * 1.17    2017-08-10 CRAN (R 3.4.2)                       
 ##  labeling      0.3     2014-08-23 CRAN (R 3.4.2)                       
@@ -330,7 +333,10 @@ private_alleles(dat11, locus ~ Region, count.alleles = FALSE)
 ##  tidyselect    0.2.2   2017-10-10 CRAN (R 3.4.2)                       
 ##  tidyverse   * 1.1.1   2017-01-27 CRAN (R 3.4.2)                       
 ##  tools         3.4.2   2017-10-27 local                                
-##  treeio      * 1.1.2   2017-10-31 Github (GuangchuangYu/treeio@b6ae142)
+##  treeio      * 1.1.2   2017-11-07 Github (GuangchuangYu/treeio@b6ae142)
+##  tweenr        0.1.5   2016-10-10 cran (@0.1.5)                        
+##  udunits2      0.13    2016-11-17 cran (@0.13)                         
+##  units         0.4-6   2017-08-27 cran (@0.4-6)                        
 ##  utils       * 3.4.2   2017-10-27 local                                
 ##  vegan         2.4-4   2017-08-24 cran (@2.4-4)                        
 ##  viridis       0.4.0   2017-03-27 CRAN (R 3.4.2)                       
