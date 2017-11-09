@@ -24,7 +24,8 @@
 \usepackage{indentfirst}
 
 \title{Population structure and phenotypic variation of \emph{Sclerotinia
-sclerotiorum} from dry bean in the United States}
+sclerotiorum} from dry bean (\emph{Phaseolus vulgaris}) in the United
+States}
 
 \author[1]{Zhian N. Kamvar}
 
@@ -68,17 +69,17 @@ the correlation between mycelial compatibility groups (MCG) and
 multilocus haplotypes (MLH), but none have formally tested these
 patterns. We genotyped 366 isolates of \emph{S. sclerotiorum} from
 producer fields and white mold screening nurseries surveyed over 10
-years in 2003--2012 representing 11 states, Mexico, France, and
-Australia at 11 microsatellite loci resulting in 165 MLHs. Populations
-were loosely structured over space and time based on analysis of
-molecular variance and discriminant analysis of principal components,
-but not by cultivar, aggressiveness, or field source. Of all the regions
-tested, only Mexico (n=18) shared no MLHs with any other region. Using a
-bipartite network-based approach, we found no evidence that the MCGs
-accurately represent MLHs. Our study suggests that breeders should
-continue to test dry bean lines in several white mold screening
-nurseries across the US to account for both the phenotypic and genotypic
-variation that exists across regions.
+years in 2003--2012 representing 11 states in the United States of
+America, Australia, France, and Mexico at 11 microsatellite loci
+resulting in 165 MLHs. Populations were loosely structured over space
+and time based on analysis of molecular variance and discriminant
+analysis of principal components, but not by cultivar, aggressiveness,
+or field source. Of all the regions tested, only Mexico (n=18) shared no
+MLHs with any other region. Using a bipartite network-based approach, we
+found no evidence that the MCGs accurately represent MLHs. Our study
+suggests that breeders should continue to test dry bean lines in several
+white mold screening nurseries across the US to account for both the
+phenotypic and genotypic variation that exists across regions.
 % Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text. Dummy abstract text.
 \end{abstract}
 
@@ -106,33 +107,48 @@ variation that exists across regions.
 \addcontentsline{toc}{section}{Introduction}
 
 \emph{Sclerotinia sclerotiorum} (Lib.) de Bary is an ascomycete plant
-pathogen with a worldwide distribution. This is a necrotrophic pathogen
-that is primarily homothallic (self-fertilization) and has the ability
-to survive for more than five years in soil using melanized survival
-structures called sclerotia (Bolton et al., 2006; Sexton et al., 2006).
-It causes disease on more than 400 plant species belonging to 75
-families (Boland \& Hall, 1994) including crops of major economic
-importance such as sunflower (\emph{Helianthus spp.}), soybean
+pathogen with a worldwide distribution (Bolton et al., 2006). This is a
+necrotrophic pathogen that is primarily homothallic (self-fertilization)
+and has the ability to survive for more than five years in soil using
+melanized survival structures called sclerotia (Bolton et al., 2006;
+Sexton et al., 2006). It causes disease on more than 400 plant species
+belonging to 75 families (Boland \& Hall, 1994) including crops of major
+economic importance such as sunflower (\emph{Helianthus spp.}), soybean
 (\emph{Glycine max} L.), canola (\emph{Brassica napa} L., \emph{Brassica
 campestris} L.), and dry bean (\emph{Phaseolus vulgaris} L.) (Bolton et
-al., 2006). On dry bean, \emph{S. sclerotiorum} is the causal agent of
-white mold, a devastating disease that can be yield-limiting in
-temperate climates (Steadman, 1983).
+al., 2006).
+
+On dry bean, \emph{S. sclerotiorum} is the causal agent of white mold, a
+devastating disease that can be yield-limiting in temperate climates
+(Steadman, 1983). All above-ground tissues (flowers, stems, leaves,
+pods) are susceptible to infection, first appearing as wet lesions with
+white mycelial tufts, and then bleaching as the tissue senesces
+(Steadman, 1983; Bolton et al., 2006). For many years, white mold has
+been the most serious dry bean disease in the Northwestern United States
+(Otto-Hanson et al., 2011; Knodel et al., 2012, 2015, 2016). The impact
+of white mold on the dry bean industry in the Northwestern United States
+alone has been estimated at a loss of 140 kg/ha with just 10\% disease
+incidence (Ramasubramaniam et al., 2008).
 
 Currently, there are no commercially available resistant cultivars of
 dry bean (Otto-Hanson et al., 2011). Organized breeding efforts have
 used a common-garden approach with white mold screening nurseries in dry
 bean production areas across the United States with additional sites in
-Mexico, France, and Australia (Steadman et al., 2003, 2004, 2005, 2006;
+Australia, France, and Mexico (Steadman et al., 2003, 2004, 2005, 2006;
 Otto-Hanson \& Steadman, 2007, 2008; McCoy \& Steadman, 2009). These
 white mold screening nurseries use no chemical or cultural treatments
 against \emph{S. sclerotiorum} and employ standardized protocols for
-screening new cultivars for resistance to white mold. It has previously
-been shown that aggressiveness (the severity of disease symptoms on the
-host) is significantly different across white mold screening nursery
-sites in separate geographic regions (Otto-Hanson et al., 2011). The
-genetic structure and mode of reproduction in these populations,
-however, is currently unknown.
+screening new cultivars for resistance to white mold (Steadman et al.,
+2003; Otto-Hanson et al., 2011). These protocols included three
+established cultivars used for comparison in the trials: Beryl (great
+northern bean, susceptible), Bunsi (aka Ex Rico, navy bean, low
+susceptibility), and G122 (cranberry bean, partial resistance) (Tu \&
+Beversdorf, 1982; Steadman et al., 2005; Otto-Hanson et al., 2011). It
+has previously been shown that aggressiveness (the severity of disease
+symptoms on the host) is significantly different across white mold
+screening nursery sites in separate geographic regions (Otto-Hanson et
+al., 2011). The genetic structure and mode of reproduction in these
+populations, however, is currently unknown.
 
 Understanding genetic relationships and reproduction behavior of
 \emph{S. sclerotiorum} populations is beneficial for breeders seeking to
@@ -151,23 +167,25 @@ Sexton \& Howlett, 2004; Attanayake et al., 2013; Aldrich-Wolfe et al.,
 Nearly all population genetic studies of \emph{S. sclerotiorum} employ a
 macroscopic assay to determine mycelial compatibility, the ability for
 fungal hyphae from different colonies to appear to grow together without
-forming a barrier of dead cells between them (known as a barrage line)
-(Leslie, 1993; Sirjusingh \& Kohn, 2001). Mycelial compatibility has
-been used as a proxy for vegetative compatibility, a fungal trait
-controlled by several independent genes controlling the ability for two
-hyphae to fuse and grow as a single unit (Leslie, 1993; Schafer \& Kohn,
-2006). Because of the genetic connection to vegetative compatibility,
-two isolates that are mycelially compatible were considered clones
-(Leslie, 1993); but correlation with genetic markers, such as
-microsatellites, have shown mixed results (Ford et al., 1995; Micali \&
-Smith, 2003; Jo et al., 2008; Attanayake et al., 2012; Papaioannou \&
-Typas, 2014; Lehner et al., 2017).
+forming a barrier of dead cells between them (known as a barrage line,
+Fig. \ref{mcg-fig}B) (Leslie, 1993; Sirjusingh \& Kohn, 2001). Mycelial
+compatibility has been used as a proxy for vegetative compatibility, a
+fungal trait controlled by several independent genes controlling the
+ability for two hyphae to fuse and grow as a single unit (Fig.
+\ref{mcg-fig}A) (Leslie, 1993; Schafer \& Kohn, 2006). Because of the
+genetic connection to vegetative compatibility, two isolates that are
+mycelially compatible were considered clones (Leslie, 1993); but
+correlation with genetic markers, such as microsatellites, have shown
+mixed results (Ford et al., 1995; Micali \& Smith, 2003; Jo et al.,
+2008; Attanayake et al., 2012; Papaioannou \& Typas, 2014; Lehner et
+al., 2017). However, a question remains about the relationship between
+mycelial compatibility groups and clonal genotypes.
 
 In this study, we analyze and characterize the genetic and phenotypic
 diversity of 366 \emph{S. sclerotiorum} isolates collected between 2003
 and 2012 from dry bean cultivars among different geographic locations in
-the United States, France, Mexico, and Australia. We wanted to know if
-the \emph{S. sclerotiorum} populations from white mold screening
+the Australia, France, Mexico, and the United States. We wanted to know
+if the \emph{S. sclerotiorum} populations from white mold screening
 nurseries were representative of the fields within the same region. As
 these nurseries were not treated with any chemical or cultural control
 of white mold, we hypothesized that these nurseries would represent the
@@ -181,7 +199,7 @@ categorical or phenotypic variables that best predicted genetic
 structure and if there was correlation between multilocus haplotype and
 mycelial compatibility group. Knowing what variables predict genetic
 structure can help direct breeding efforts. By investigating these aims,
-we hope to effectively describe the population structure of \emph{S.
+we will effectively describe the population structure of \emph{S.
 sclerotiorum} in the USA and make available our database of isolates for
 use in future dry bean breeding efforts.
 
@@ -191,14 +209,14 @@ use in future dry bean breeding efforts.
 \subsection*{Isolate collection}\label{isolate-collection}
 \addcontentsline{toc}{subsection}{Isolate collection}
 
-Several of the isolates used for this study were collected as reported
-in previous studies using the same methods (Otto-Hanson et al., 2011).
-Broadly, isolates were collected from two sources: white mold screening
-nurseries (wmn) or producer fields. White mold screening nurseries were
-5m x 10m in size and maintained without application of fungicides to
-observe natural incidence of white mold. The early nursery plots were
-incorporated with a basal dressing of N:P:K = 1:3:2 and side dressing of
-0:3:2 during the growing season (Steadman et al., 2003).
+Several (156) of the isolates used for this study were collected as
+reported in previous studies using the same methods (Otto-Hanson et al.,
+2011). Broadly, isolates were collected from two sources: white mold
+screening nurseries (wmn) or producer fields. White mold screening
+nurseries were 5m x 10m in size and maintained without application of
+fungicides to observe natural incidence of white mold. The early nursery
+plots were incorporated with a basal dressing of N:P:K = 1:3:2 and side
+dressing of 0:3:2 during the growing season (Steadman et al., 2003).
 
 Sampling was carried out by collecting sclerotia from diseased tissue in
 zig-zag transects across field plots. Because sampling depended on
@@ -207,16 +225,16 @@ year. Although the nursery locations were the same over sampling years,
 sampling plots within a location varied for sampling years.
 
 Sclerotia of \emph{S. sclerotiorum} were collected over several years
-from grower fields and/or wmn in 11 states of the United States of
-America, Mexico, France, and Australia (Table \ref{tab:isolate-table}).
-After collection, sclerotia were stored in Petri plates lined with
-filter paper, then stored at \(20~^{\circ}\)F or -\(4~^{\circ}\)C.
-Sclerotia were surface-sterilized with 50\% Clorox bleach (at least 6\%
-NaOCL, The Clorox Company, Oakland, CA) solution for 3 min, and double
-rinsed with ddH\(_2\)O for 3 min. The sterilized sclerotia were then
-placed on water agar plates (16g of Bacto agar per liter of ddH\(_2\)O,
-BD Diagnostic Systems, Sparks, MD), with four to five sclerotia of each
-isolate separated on each plate and stored on the counter top at room
+from grower fields and/or wmn in 11 states of the Australia, France,
+Mexico, and the United States (Table \ref{tab:isolate-table}). After
+collection, sclerotia were stored in Petri plates lined with filter
+paper, then stored at \(20~^{\circ}\)F or -\(4~^{\circ}\)C. Sclerotia
+were surface-sterilized with 50\% Clorox bleach (at least 6\% NaOCl, The
+Clorox Company, Oakland, CA) solution for 3 min, and double rinsed with
+ddH\(_2\)O for 3 min. The sterilized sclerotia were then placed on water
+agar plates (16g of Bacto agar per liter of ddH\(_2\)O, BD Diagnostic
+Systems, Sparks, MD), with four to five sclerotia of each isolate
+separated on each plate and stored on the counter top at room
 temperature for 5 to 6 days. An 8-mm plug from a 5- or 6-day-old culture
 was transferred from the advancing margin of the mycelia onto a plate of
 Difco potato dextrose agar (PDA at 39 g/liter of ddH\(_2\)O)
@@ -228,15 +246,15 @@ isolates (Otto-Hanson et al., 2011).
 \addcontentsline{toc}{subsection}{Mycelial Compatibility}
 
 MCG was determined as described previously through co-culturing pairs of
-2-day-old isolates 2.5 cm apart on Diana Sermons (DS) Medium (Cubeta et
-al., 2001). Incompatibility of different MCGs resulted in formation of a
-barrage line accompanied by formation of sclerotia on either side of the
-barrage line, indicating the limits of the isolates' growth (Kohn et
-al., 1990; Leslie, 1993; Otto-Hanson et al., 2011). Isolates were
-compared in a pairwise manner for each site and then representatives
-among sites were compared to determine mycelial compatibility groups by
-scoring compatible and incompatible interactions (Otto-Hanson et al.,
-2011). No MCGs were compatible with any other MCG.
+2-day-old isolates 2.5 cm apart on Diana Sermons (DS) Medium (Fig.
+\ref{mcg-fig}) (Cubeta et al., 2001). Incompatibility of different MCGs
+resulted in formation of a barrage line accompanied by formation of
+sclerotia on either side of the barrage line, indicating the limits of
+the isolates' growth (Kohn et al., 1990; Leslie, 1993; Otto-Hanson et
+al., 2011). Isolates were compared in a pairwise manner for each site
+and then representatives among sites were compared to determine mycelial
+compatibility groups by scoring compatible and incompatible interactions
+(Otto-Hanson et al., 2011). No MCGs were compatible with any other MCG.
 
 \subsection*{Aggressiveness}\label{aggressiveness}
 \addcontentsline{toc}{subsection}{Aggressiveness}
@@ -285,8 +303,9 @@ Carlsbad, CA) and recorded manually in a spreadsheet.
 Analysis}\label{data-processing-and-analysis}
 \addcontentsline{toc}{subsection}{Data processing and Analysis}
 
-All data processing and analyses were performed in R version 3.4.1 (R
-Core Team, 2017) and are openly available and reproducible at
+All data processing and analyses were performed in a Rocker ``verse''
+project container running R version 3.4.2 (Boettiger \& Eddelbuettel,
+2017; R Core Team, 2017) and are openly available and reproducible at
 \url{https://github.com/everhartlab/sclerotinia-366/}. Of the 16
 microsatellite loci genotyped, five included compound repeats, which
 made it challenging to accurately/confidently bin alleles into fragment
@@ -352,15 +371,16 @@ determine variation partitioning of explanatory variables.
 Assessment}\label{aggressiveness-assessment}
 \addcontentsline{toc}{subsubsection}{Aggressiveness Assessment}
 
-We used ANOVA to assess if aggressiveness was significantly different
-with respect to Region, MCG, or multilocus haplotype (MLH). To minimize
-complications due to small sample sizes, we chose the top 10 MCGs,
-representing 56.5\% of the isolates collected, the 10 most abundant MLHs
-representing 26.7\% of the isolates, and populations with more than five
-isolates. If ANOVA results were significantly different at \(\alpha\) =
-0.05, pairwise differences were assessed using Tukey's HSD test
-(\(\alpha\) = 0.05) using the \texttt{HSD.test()} function in the
-package \emph{agricolae} version 1.2.8 (Mendiburu \& Simon, 2015).
+We used ANOVA to assess if aggressiveness (determined via straw test on
+a scale of 1--9) was significantly different with respect to Region,
+MCG, or multilocus haplotype (MLH). To minimize complications due to
+small sample sizes, we chose the top 10 MCGs, representing 56.5\% of the
+isolates collected, the 10 most abundant MLHs representing 26.7\% of the
+isolates, and populations with more than five isolates. If ANOVA results
+were significantly different at \(\alpha\) = 0.05, pairwise differences
+were assessed using Tukey's HSD test (\(\alpha\) = 0.05) using the
+\texttt{HSD.test()} function in the package \emph{agricolae} version
+1.2.8 (Mendiburu \& Simon, 2015).
 
 \subsubsection*{Correlating Multilocus Haplotypes with Mycelial
 Compatibility
@@ -437,7 +457,7 @@ countries) with the \emph{poppr} function \texttt{mlg.crosspop()}
 populations as nodes and shared haplotypes as edges (connections)
 between nodes using the R packages \emph{igraph} (Csardi \& Nepusz,
 2006), \emph{dplyr} version 0.7.4 (Wickham et al., 2017), and
-\emph{purrr} version 0.2.3 (Henry \& Wickham, 2017). Each node was
+\emph{purrr} version 0.2.4 (Henry \& Wickham, 2017). Each node was
 weighted by the fraction of shared MLHs. Each edge represented a single
 MLH, but because a single MLH could be present in more than one
 population, that MLH would have a number of edges equivalent to the
@@ -460,37 +480,54 @@ the five polymorphic markers described above.
 \addcontentsline{toc}{section}{Results}
 
 A total of 366 isolates were collected from 2003 to 2012 (except 2006
-and 2011) from diseased dry bean plants in Australia, Mexico, France,
-and 11 states in the USA (Table \ref{tab:isolate-table}). We observed a
-total of 165 MLHs (215 with 16 loci). Over 50\% of the isolates came
-from four states, MI (62), ND (60), WA (59), NE (47). Four regions had
-fewer than 10 isolates, Australia (6), WI (2), NY (1), ID (1). We
-observed 87 MCGs, the most abundant of which (`MCG 5') was represented
-by 73 isolates over 37 MLHs (Fig \ref{biggraph}A,C).
+and 2011) from diseased dry bean plants in 11 states in the United
+States as well as Australia, France, and Mexico (Table
+\ref{tab:isolate-table}). With the 11 loci used in the analyses (Table
+\ref{tab:locus-stats}), we observed a total of 165 MLHs (215 with 16
+loci). These 11 loci represented 7 chromosomes in the \emph{S.
+sclerotiorum} genome with a minimum distance of 55Kbp between two loci
+on the same chromosome. Over 50\% of the isolates came from four states,
+MI (62), ND (60), WA (59), NE (47). Four regions had fewer than 10
+isolates, Australia (6), WI (2), NY (1), ID (1). We observed 87 MCGs,
+the most abundant of which (`MCG 5') was represented by 73 isolates over
+37 MLHs (Fig \ref{biggraph}A,C).
 
 The number of observed alleles per locus ranged from two to 10 with an
 average of 6.27 (Table \ref{tab:locus-stats}). Locus 20-3, which
 contained only 2 alleles, showed low values of both \emph{h} (0.0533)
 and evenness (0.42), indicating that there was one dominant allele
 present. Analysis of the haplotype accumulation curve showed no clear
-plateau for 11 or 16 loci (Supplemental Information), indicating that we
-would likely obtain more multilocus haplotypes if we were to genotype
+plateau for 11 or 16 loci (See section on `Loading Data and Setting
+Strata' in the MLG-distribution.md\footnote{Direct link:
+  \url{https://github.com/everhartlab/sclerotinia-366/blob/master/results/MLG-distribution.md\#loading-data-and-setting-strata}}
+file in the supplemental files (Kamvar et al., 2017)), indicating that
+we would likely obtain more multilocus haplotypes if we were to genotype
 more loci.
 
-After clone-correction on the hierarchy of Region/Source/Host/Year, we
-were left with 318 isolates representing 165 MLHs (Table
-\ref{tab:iatab}). The results show that most populations exhibited
-relatively high amounts of genotypic diversity, with the exception of MI
-and NE, which exhibited lower-than average \(E_5\) values. Mexico had
-the lowest average value of gene diversity, \emph{h} and the lowest
-\emph{eMLH}, suggesting low overall genetic diversity. Nearly all
-populations showed evidence for linkage (Table \ref{tab:iatab}), which
-serves as evidence for clonal reproduction or other forms of non-random
-mating. The only exceptions are CA (\emph{P} = 0.043) and Australia
-(\emph{P} = 0.052). Both of these populations showed only moderate
-significance with \(\bar{r}_d\) values of 0.03 and 0.12, respectively.
+After clone-correction on the hierarchy of Region/Source/Host/Year, a
+total of 48 isolates were removed from the data set, resulting in 318
+isolates representing 165 MLHs that were used in subsequent analyses
+(Table \ref{tab:iatab}). The results showed that, in terms of genotypic
+diversity (\emph{H}, \emph{G}, and \(\lambda\)), WA was the most diverse
+population with both \emph{G} (54.3) and \(e^H\) (55.3) being close to
+the observed number of MLGs (56). This indicated that there are few
+duplicated genotypes in WA (Table \ref{tab:iatab}). A more useful metric
+to compare populations, however, is \(E_5\), which scales from 0 to 1
+where 1 indicates all unique genotypes (Grünwald et al., 2003).
+Evaluating by \(E_5\) shows that both MI and NE exhibit lower than
+average values, indicating that there are over-represented genotypes in
+the popualtions (table \ref{tab:iatab}). When we look at Mexico, we can
+observed that it had relatively high values of \(E_5\) and genotypic
+diversity, but low richness, as measured by \emph{eMLG}. Moreover,
+Mexico had the lowest value for \emph{h}, which is a measure of allelic
+diversity. Nearly all populations showed evidence for linkage (Table
+\ref{tab:iatab}), which serves as evidence for clonal reproduction or
+other forms of non-random mating. The only exceptions are CA (\emph{P} =
+0.043) and Australia (\emph{P} = 0.052). Both of these populations
+showed only moderate significance with \(\bar{r}_d\) values of 0.03 and
+0.12, respectively.
 
-\begin{longtable}[]{@{}rrllrl@{}}
+\begin{longtable}[]{@{}rrrlrl@{}}
 \caption{\label{tab:locus-stats} Allelic diversity on full data set at loci
 used in this study. \emph{h} = Nei's Gene Diversity (Nei, 1978). Average
 \emph{h} = 0.583, average Evenness = 0.693, average no. alleles =
@@ -500,7 +537,7 @@ used in this study. \emph{h} = Nei's Gene Diversity (Nei, 1978). Average
 Locus\strut
 \end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedleft\strut
 Range\strut
-\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.29\columnwidth}\raggedleft\strut
 Repeat Motif\strut
 \end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
 No. alleles\strut
@@ -516,7 +553,7 @@ Evenness\strut
 Locus\strut
 \end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedleft\strut
 Range\strut
-\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[b]{0.29\columnwidth}\raggedleft\strut
 Repeat Motif\strut
 \end{minipage} & \begin{minipage}[b]{0.14\columnwidth}\raggedright\strut
 No. alleles\strut
@@ -531,8 +568,8 @@ Evenness\strut
 5-2\strut
 \end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedleft\strut
 318--324\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
-di-\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedleft\strut
+(GT)\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 4\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
@@ -544,8 +581,8 @@ di-\strut
 6-2\strut
 \end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedleft\strut
 483--495\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
-hexa-\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedleft\strut
+(TTTTTC)(TTTTTG)(TTTTTC)\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 3\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
@@ -557,8 +594,8 @@ hexa-\strut
 7-2\strut
 \end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedleft\strut
 158--174\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
-di-\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedleft\strut
+(GA)\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 7\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
@@ -570,8 +607,8 @@ di-\strut
 8-3\strut
 \end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedleft\strut
 244--270\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
-di-\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedleft\strut
+(CA)\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 7\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
@@ -583,8 +620,8 @@ di-\strut
 9-2\strut
 \end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedleft\strut
 360--382\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
-di-\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedleft\strut
+(CA)(CT)\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 9\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
@@ -596,8 +633,8 @@ di-\strut
 12-2\strut
 \end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedleft\strut
 214--222\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
-di-\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedleft\strut
+(CA)\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 5\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
@@ -609,8 +646,8 @@ di-\strut
 17-3\strut
 \end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedleft\strut
 342--363\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
-tri-\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedleft\strut
+(TTA)\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 7\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
@@ -622,8 +659,8 @@ tri-\strut
 20-3\strut
 \end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedleft\strut
 280--282\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
-di-\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedleft\strut
+(GT)GG(GT)\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 2\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
@@ -635,8 +672,8 @@ di-\strut
 55-4\strut
 \end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedleft\strut
 153--216\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
-tetra-\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedleft\strut
+(TACA)\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 10\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
@@ -648,8 +685,8 @@ tetra-\strut
 110-4\strut
 \end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedleft\strut
 370--386\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
-tetra-\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedleft\strut
+(TATG)\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 5\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
@@ -661,8 +698,8 @@ tetra-\strut
 114-4\strut
 \end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedleft\strut
 339--416\strut
-\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\raggedright\strut
-tetra-\strut
+\end{minipage} & \begin{minipage}[t]{0.29\columnwidth}\raggedleft\strut
+(TAGA)\strut
 \end{minipage} & \begin{minipage}[t]{0.14\columnwidth}\raggedright\strut
 10\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
@@ -672,6 +709,8 @@ tetra-\strut
 \end{minipage}\tabularnewline
 \bottomrule
 \end{longtable}
+
+\newpage
 
 \begin{longtable}[]{@{}crrrrllrl@{}}
 \caption{\label{tab:iatab} Genotypic diversity and Linkage Disequilibrium
@@ -1041,7 +1080,7 @@ space.}\label{rda-biplot}
 \begin{figure}
 \centering
 \includegraphics{../../results/figures/publication/aggressiveness.pdf}
-\caption{Strip Plot of aggressiveness by population arranged in
+\caption{Strip plot of aggressiveness by population arranged in
 descending order of mean aggressiveness for all populations with N
 \textgreater{} 5. White bars represent mean value. Circles represent
 individual isolates where filled circles are isolates from white mold
@@ -1054,7 +1093,7 @@ clone-corrected data revealed Year, Region, Host, and MCG to be the
 optimal variables for the reduced model, accounting for 45\% of the
 total variation. ANOVA showed that the reduced model was significant
 with an adjusted R\textsuperscript{2} of 0.0675 (\emph{P} = 0.001).
-Assessment of the marginal effects showed that all varaibles
+Assessment of the marginal effects showed that all varibles
 significantly explained genetic variation (\(P \leq 0.007\)). We found
 that there was multicollinearity when MCG was combined with any other
 variable, so repeated the analysis, dropping MCG from the list of
@@ -1076,16 +1115,17 @@ whereas the combination of variables accounted for 3.3\%.
 
 Agressiveness of the isolates ranged from 1.4 to 7.9 with a mean of 5.02
 and median of 4.85. The group mean averages were 4.88, 5.13, and 5.19
-for Region, MCG, and MLH, respectively. Our assessment of aggressiveness
-in association with Region showed a significant effect (\emph{P}
-\textless{} 1.00e\textsuperscript{-4}), with means that ranged from 5.8
-(MN) to 4.0 (CA) (Fig. \ref{aggressiveness-boxplot}, Table
-\ref{tab:region-aggressiveness}). MCGs also showed a significant effect
+for Region, MCG, and MLH, respectively. A strip plot showing the
+distribution of severity across these three variables simultaneously can
+be seen in figure \ref{mcg-mlh-region-aggressiveness}. Our assessment of
+aggressiveness in association with Region showed a significant effect
 (\emph{P} \textless{} 1.00e\textsuperscript{-4}), with means that ranged
-from 6.0 (`MCG 44') to 4.6 (`MCG 49'; Table
-\ref{tab:MCG-aggressiveness}). We additionally found a significant
-effect for MLHs (\emph{P} = 7.44e\textsuperscript{-4}), with means that
-ranged from 6.0 (`MLH 78') to 4.3 (`MLH 140') (Table
+from 5.8 (MN) to 4.0 (CA) (Fig. \ref{aggressiveness-boxplot}, Table
+\ref{tab:region-aggressiveness}). MCGs also showed a significant effect
+(\emph{P} \textless{} 0.001), with means that ranged from 6.0 (`MCG 44')
+to 4.6 (`MCG 49'; Table \ref{tab:MCG-aggressiveness}). We additionally
+found a significant effect for MLHs (\emph{P} \textless{} 0.001), with
+means that ranged from 6.0 (`MLH 78') to 4.3 (`MLH 140') (Table
 \ref{tab:MLG-aggressiveness}).
 
 \subsubsection*{Correlation of Mulitlocus Haplotypes and Mycelial
@@ -1161,8 +1201,8 @@ represented shared MLHs across populations, weighted by \(1 - P_{sex}\)
 (Fig. \ref{community-graph}, Table \ref{tab:mlg-table}). Community
 analysis of the MLHs shared between populations revealed 4 communities
 with a modularity of 0.17: A coastal community (CA, OR, WA, and NY), a
-midwest community (CO, NE, ND, MI), and an international community (MN,
-France, Australia). Although analysis with 16 loci resulted in the
+midwest community (CO, ND, NE, MI), and an international community
+(Australia, France, MN). Although analysis with 16 loci resulted in the
 removal of the NY node because it no longer shared a haplotype with OR,
 the same overall community structure was present with a modularity of
 0.2 (Fig. \ref{community-graph16}). Relative to the US, the
@@ -1199,7 +1239,10 @@ over the hierarchy of Region, Source, and Year showed significant
 variation between Regions and Years, but no significant variation
 between wmn and producer fields (Table \ref{tab:amova}). In contrast,
 when we compared the three cultivars, Beryl, Bunsi, and G122, we found
-no significant differentiation (Supplementary Information).
+no significant differentiation (See section on `Host Differentiation' in
+the wmn-differentiation.md\footnote{Direct link:
+  \url{https://github.com/everhartlab/sclerotinia-366/blob/master/results/wmn-differentiation.md\#host-differentiation}}
+file in the supplemental files (Kamvar et al., 2017)).
 
 \begin{longtable}[]{@{}clrllc@{}}
 \caption{\label{tab:amova} Comparison of populations in the white mold
@@ -1253,7 +1296,7 @@ Between Region\strut
 \end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
 \textbf{0.0845}\strut
 \end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\centering\strut
-0.029\strut
+0.033\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.32\columnwidth}\centering\strut
 Between Source within Region\strut
@@ -1266,7 +1309,7 @@ Between Source within Region\strut
 \end{minipage} & \begin{minipage}[t]{0.19\columnwidth}\raggedright\strut
 -0.0250\strut
 \end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\centering\strut
-0.486\strut
+0.448\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.32\columnwidth}\centering\strut
 Between Year within Source\strut
@@ -1304,13 +1347,13 @@ Components}\label{discriminant-analysis-of-principal-components}
 \addcontentsline{toc}{subsubsection}{Discriminant Analysis of Principal
 Components}
 
-Discriminant Analysis of Principal Components (DAPC) was performed
-grouping by Region with the first 21 principal components, representing
+Discriminant Analysis of Principal Components (DAPC) was performed by
+grouping Region with the first 21 principal components, representing
 88.1\% of the total variance. The first discriminant axis (representing
-36.1\% of the discriminatory power) separated the centroid for the
+63.9\% of the discriminatory power) separated the centroid for the
 Mexico isolates from the rest of the data, indicating strong
 differentiation (Fig. \ref{DAPC}b). The second discriminant axis,
-representing 25.3\% of the discriminatory power, separated the centroid
+representing 10.8\% of the discriminatory power, separated the centroid
 for the CA isolates. The mean population assignment probabilities for
 all populations with n \textgreater{} 10 showed that only isolates from
 Mexico, CA, and France had \textgreater{} 50\% probabilities of being
@@ -1318,7 +1361,7 @@ reassigned to their source populations (Fig. \ref{DAPC}a).
 
 DAPC grouping by cultivar used the first 20 principal components,
 representing 89\% of the total variance. The first two discriminant axes
-(representing 38.5\% of the discriminatory power) failed to separate any
+(representing 100\% of the discriminatory power) failed to separate any
 of the cultivars where the mean posterior assignment probabilities were
 34\% (G122), 35.9\% (Beryl), and 30.1\% (Bunsi). DAPC grouping by Region
 and Year used the first 15 principal components, representing 80.3\% of
@@ -1461,37 +1504,53 @@ Northeastern field with sclerotia provided by a commercial bean producer
 and the Southeastern field with sclerotia from peas (although this was
 thought to be unsuccessful). Despite this information, it is still
 unclear what has contributed to the differentiation of the 2008
-population from WA. While the evidence may suggest host as being a
-factor, previous studies have shown no significant differentiation
-across host species (Aldrich-Wolfe et al., 2015).
+population from WA or why it shares haplotypes with CA and France. When
+we assessed agressiveness between the two fields across years with an
+ANOVA model, we found that there was a slight effect based on field (P =
+0.0127). While the evidence may suggest host as being a factor, previous
+studies have shown no significant differentiation across host species
+(Aldrich-Wolfe et al., 2015). It was of interest to compare our data
+with that of Aldrich-Wolfe et al. (2015), but we found that, due to
+differences in data generation, we were unable to confidently perform a
+comparison (See supplemental file compare-aldrich-wolfe.md\footnote{Direct
+  link:
+  \url{https://github.com/everhartlab/sclerotinia-366/blob/master/results/compare-aldrich-wolfe.md}}
+(Kamvar et al., 2017)).
 
 With the exception of the WA Region, populations that were sampled
 across several years appeared to be relatively stable over time with
 overlapping distributions in the DAPC (i.e.~NE and MI, Fig.
-\ref{DAPC-RY}). DAPC is based on the principal components of Euclidean
-distance between genotypes (Jombart et al., 2010). Unlike Bruvo's
-distance, Euclidean distance does not take into account the magnitude of
-the difference between alleles, which could inflate the distance measure
-in the presence of private alleles (Bruvo et al., 2004). We found no
-evidence of private alleles in the Mexico and CA isolates, suggesting
-that this pattern separating these populations from the others was not
-an artifact. We believe that the differences we observe from Mexico may
-reflect differences in climate.
+\ref{DAPC-RY}). DAPC is based on the principal components of allele
+counts (Jombart et al., 2010). Unlike Bruvo's distance, this does not
+take into account the magnitude of the difference between alleles, which
+could inflate the distance measure in the presence of private alleles
+(Bruvo et al., 2004). While we found no evidence of private alleles in
+the Mexico and CA isolates, we did find that the alleles driving the
+first axis in figure \ref{DAPC}A (alleles 174, 256, and 372 in loci 7-2,
+8-3, and 9-2, respectively) were overrepresented in Mexico (where
+\textgreater{}75\% of the alleles came from the region). However, all
+three of these alleles i) conform to the expected stepwise mutation
+model (Bruvo et al., 2004) and ii) are at or near the extremes of the
+total range (except for allele 372 at locus 9-2). Moreover, the fact
+that we find three alleles at three independent loci segregating for
+Mexico suggests that the pattern separating these populations from the
+others was not an artifact. We believe that the differences we observe
+from Mexico may reflect differences in climate.
 
 Many of the isolates in our study were from temperate climates and the
 only isolates representing a sub-tropical climate were from Mexico. It
 has been proposed within the \emph{S. sclerotiorum} literature that
 isolates from sub-tropical and tropical climates are differentiated or
-more variable than populations from temperate climates {[}Carbone \&
-Kohn (2001); Attanayake et al. (2013); Lehner \& Mizubuti (2017);{]}.
-This has been attributed to the notion that the fungus has the chance to
-undergo more reproductive cycles in the warmer climate (Carbone \& Kohn,
-2001; Attanayake et al., 2013). The strongest evidence to date
-supporting this hypothesis is from Attanayake et al. (2013), showing
-that populations in sub-tropical regions of China have been found to be
-more variable, sexually reproducing, and unrelated to populations in
-temperate regions of the USA. This result however, may be driven more by
-geography and agricultural practice as opposed to climate.
+more variable than populations from temperate climates (Carbone \& Kohn,
+2001; Attanayake et al., 2013; Lehner \& Mizubuti, 2017). This has been
+attributed to the notion that the fungus has the chance to undergo more
+reproductive cycles in the warmer climate (Carbone \& Kohn, 2001;
+Attanayake et al., 2013). The strongest evidence to date supporting this
+hypothesis is from Attanayake et al. (2013), showing that populations in
+sub-tropical regions of China have been found to be more variable,
+sexually reproducing, and unrelated to populations in temperate regions
+of the USA. This result however, may be driven more by geography and
+agricultural practice as opposed to climate.
 
 The results from our shared haplotype analysis show several populations
 with at least one haplotype between them, except for Mexico and two
@@ -1518,15 +1577,15 @@ importance (Strausbaugh \& Forster, 2003), it has since been shown that
 (Botelho et al., 2013). Thus, we hypothesize that shared haplotypes
 between populations may arise due to transmission events of seed or
 sclerotia. This could explain the fact that we see shared genotypes with
-low \(P_{sex}\) values shared between France, Australia, and the US.
-While we speculate that these transmission events are rare due to the
-genetic structuring by Region, these results suggest that seedborne
-infections may indeed reflect a source of inoculum. This may, in turn
-increase the risk of introducing new sources of genetic variation
-through potential outcrossing events.
+low \(P_{sex}\) values shared between Australia, France, and the United
+States. While we speculate that these transmission events are rare due
+to the genetic structuring by Region, these results suggest that
+seedborne infections may indeed reflect a source of inoculum. This may,
+in turn increase the risk of introducing new sources of genetic
+variation through potential outcrossing events.
 
 When we tested for sexual reproduction, we were unable to find evidence
-for it in any region except for CA and Australia. While the Australia
+for it in any region except for Australia and CA. While the Australia
 population had a non-significant value of \(\bar{r}_d\)---which would
 suggest that we cannot reject the null hypothesis of random mating---the
 sample size was insufficient from which to draw conclusions (Milgroom,
@@ -1596,7 +1655,10 @@ the midwestern United States does not have a particular preference for
 host (Aldrich-Wolfe et al., 2015). If the distribution of \emph{S.
 sclerotiorum} is even across agricultural hosts in the USA, then our
 sample may yet be representative of the genetic pool present in other
-crops and weedy species.
+crops and weedy species. Additionally, while we found no signficant
+association between genotype and aggressiveness, it is important to note
+that the straw test is only one measure of aggressiveness. Additional
+phenotypes for aggressiveness should be evaluated for future studieds.
 
 Another limitation was the microsatellite markers used for this
 particular study (Sirjusingh \& Kohn, 2001). The haplotype accumulation
@@ -1635,7 +1697,7 @@ should not be used as a proxy for identifying clones.
 All scripts, data, and resources used to generate the results presented
 in this publication (including Supplementary Information) are fully
 reproducible and available at The Open Science Framework
-\url{https://osf.io/ejb5y}.
+\url{https://osf.io/ejb5y} (Kamvar et al., 2017).
 
 \subsection*{Funding}\label{funding}
 \addcontentsline{toc}{subsection}{Funding}
@@ -1653,7 +1715,9 @@ decision to publish, or preparation of the manuscript.
 The authors would like to thank Rebecca Higgens for technical support in
 generating the data for the MCG assessment, aggressiveness ratings, and
 genotyping; and for providing valuable insights into the historical
-context of the data collection and curation.
+context of the data collection and curation. We would also like to thank
+Denita Hadziabdic and two anonymous reviewers for their valuable
+comments and insights that improved the quality of the manuscript.
 
 \subsection*{Conflicts of Interest}\label{conflicts-of-interest}
 \addcontentsline{toc}{subsection}{Conflicts of Interest}
@@ -2326,6 +2390,24 @@ b\strut
 
 \begin{figure}
 \centering
+\includegraphics[width=1.00000\textwidth]{images/mcg-trimmed.png}
+\caption{Example of MCG test plates showing (A) a compatible reaction
+with mycelia from two strains overgrowing each other and (B) an
+incompatible reaction with a barrage line of dead tissue forming between
+the two strains. Photo Credit: Rebecca Higgens.}\label{mcg-fig}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=1.00000\textwidth]{../../results/figures/publication/RMM-aggressiveness.pdf}
+\caption{Strip plot of aggressiveness for the eight most abundant MCGs
+partitioned by region. Filled circles indicate one of the five most
+abundant MLHs and open circles indicate a MLH of lesser
+abundance.}\label{mcg-mlh-region-aggressiveness}
+\end{figure}
+
+\begin{figure}
+\centering
 \includegraphics[width=1.00000\textwidth]{../../results/figures/publication/full-graph.pdf}
 \caption{Graph showing complex associations between Mycelial
 Compatibility Groups (MCG) (dotted nodes) and Multilocus Haplotypes
@@ -2334,8 +2416,12 @@ assignment. Node size reflect the number of samples represented by each
 node (circle). Edges (arrows) point from MLH to MCG where the weight
 (thickness) of the edge represents the number of samples shared. Node
 color represents the community assignment based on the walktrap
-algorithm with a maximum of four steps (Pons \& Latapy,
-2006).}\label{fullgraph}
+algorithm with a maximum of four steps (Pons \& Latapy, 2006). An
+interactive version of this network can be recreated using the code in
+the ``Interactive visualizations'' section of the mlg-mcg.md file in the
+supplementary information (Direct Link:
+\url{https://github.com/everhartlab/sclerotinia-366/blob/master/results/mlg-mcg.md\#interactive-visualizations})
+(Kamvar et al., 2017).}\label{fullgraph}
 \end{figure}
 
 \begin{figure}
@@ -2405,6 +2491,11 @@ phenotypic diversity and random association of DNA markers of isolates
 of the fungal plant pathogen \emph{Sclerotinia sclerotiorum} from soil
 on a fine geographic scale. \emph{Soil Biology and Biochemistry},
 \emph{55}, 28--36. \url{https://doi.org/10.1016/j.soilbio.2012.06.002}
+
+\hypertarget{ref-boettiger2017introduction}{}
+Boettiger, C., \& Eddelbuettel, D. (2017). An introduction to rocker:
+Docker containers for R. \emph{CoRR}, \emph{abs/1710.03675}. Retrieved
+from \url{http://arxiv.org/abs/1710.03675}
 
 \hypertarget{ref-boland1994index}{}
 Boland, G., \& Hall, R. (1994). Index of plant hosts of
@@ -2547,6 +2638,13 @@ of principal components: A new method for the analysis of genetically
 structured populations. \emph{BMC Genetics}, \emph{11:94}.
 \url{https://doi.org/10.1186/1471--2156--11--94}
 
+\hypertarget{ref-kamvar2017data}{}
+Kamvar, Z. N., Amaradasa, B. S., Jhala, R., McCoy, S., Steadman, J., \&
+Everhart, S. E. (2017, November). Data and analysis for population
+structure and phenotypic variation of \emph{Sclerotinia sclerotiorum}
+from dry bean (\emph{Phaseolus vulgaris}) in the United States. Open
+Science Framework. \url{https://doi.org/10.17605/OSF.IO/EJB5Y}
+
 \hypertarget{ref-kamvar2015novel}{}
 Kamvar, Z. N., Brooks, J. C., \& Grünwald, N. J. (2015). Novel R tools
 for analysis of genome-wide population genetic data with emphasis on
@@ -2558,6 +2656,24 @@ Kamvar, Z. N., Tabima, J. F., \& Grünwald, N. J. (2014). Poppr: An R
 package for genetic analysis of populations with clonal, partially
 clonal, and/or sexual reproduction. \emph{PeerJ}, \emph{2}, e281.
 \url{https://doi.org/10.7717/peerj.281}
+
+\hypertarget{ref-knodel2012dry}{}
+Knodel, J., Beauzay, P., Franzen, D., Kandel, H., Markell, S., Osorno,
+J., Pasche, J., \& Zollinger, R. (2012). 2012 dry bean grower survey of
+production, pest problems and pesticide use in Minnesota and North
+Dakota. \emph{North Dakota State University Extension}.
+
+\hypertarget{ref-knodel2015dry}{}
+Knodel, J., Beauzay, P., Franzen, D., Kandel, H., Markell, S., Osorno,
+J., Pasche, J., \& Zollinger, R. (2015). 2015 dry bean grower survey of
+production, pest problems and pesticide use in Minnesota and North
+Dakota. \emph{North Dakota State University Extension}.
+
+\hypertarget{ref-knodel2016dry}{}
+Knodel, J., Beauzay, P., Franzen, D., Kandel, H., Markell, S., Osorno,
+J., Pasche, J., \& Zollinger, R. (2016). 2016 dry bean grower survey of
+production, pest problems and pesticide use in Minnesota and North
+Dakota. \emph{North Dakota State University Extension}.
 
 \hypertarget{ref-kohli1998random}{}
 Kohli, Y., \& Kohn, L. M. (1998). Random association among alleles in
@@ -2713,6 +2829,12 @@ R Core Team. (2017). \emph{R: A language and environment for statistical
 computing}. Vienna, Austria: R Foundation for Statistical Computing.
 Retrieved from \url{https://www.R-project.org/}
 
+\hypertarget{ref-ramasubramaniam2008estimates}{}
+Ramasubramaniam, H., Río Mendoza, L. E. del, \& Bradley, C. A. (2008).
+Estimates of yield and economic losses associated with white mold of
+rain-fed dry bean in north dakota. \emph{Agronomy Journal},
+\emph{100}(2), 315. \url{https://doi.org/10.2134/agronj2007.0127}
+
 \hypertarget{ref-sambrook1989molecular}{}
 Sambrook, J., Fritsch, E. F., Maniatis, T., \& others. (1989).
 \emph{Molecular Cloning: A Laboratory Manual.} Cold spring harbor
@@ -2818,6 +2940,13 @@ Singh, S. P. (2006). Modified Petzoldt and Dickson scale for white mold
 rating of common bean. \emph{Bean Improvement Cooperative Annual
 Report}, \emph{49}, 115--116. Retrieved from
 \url{https://naldc.nal.usda.gov/naldc/catalog.xhtml?id=IND43805401}
+
+\hypertarget{ref-tu1982tolerance}{}
+Tu, J. C., \& Beversdorf, W. D. (1982). Tolerance to white mold
+(\emph{Sclerotinia sclerotiorum} (lib.) de bary) in Ex Rico 23, a
+cultivar of white bean (\emph{Phaseolus vulgaris} l.). \emph{Canadian
+Journal of Plant Science}, \emph{62}(1), 65--69.
+\url{https://doi.org/10.4141/cjps82-010}
 
 \hypertarget{ref-ggplot2}{}
 Wickham, H. (2009). \emph{ggplot2: Elegant graphics for data analysis}.
