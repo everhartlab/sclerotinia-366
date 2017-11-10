@@ -79,14 +79,17 @@ First, we should see what AMOVA tells us about population structure
 ```{r wmn_amova, cache = TRUE}
 bdwmn <- bruvo.dist(wmncc, replen = other(wmncc)$REPLEN)
 (wmn.amova <- poppr.amova(wmncc, ~Region/Year, dist = bdwmn))
+set.seed(2017-11-10)
 (wmn.amova.test <- randtest(wmn.amova, nrepet = 999))
 make_amova_table(wmn.amova, wmn.amova.test, samples = "Year")
 ```
 ```{r, full_amova, cache = TRUE}
 bdfull <- bruvo.dist(dat11cc, replen = other(dat11cc)$REPLEN)
 (full.amova.2 <- poppr.amova(dat11cc, ~Region/Year, dist = bdfull))
+set.seed(2017-11-10)
 (full.amova.2.test <- randtest(full.amova.2, nrepet = 999)) 
 (full.amova.3 <- poppr.amova(dat11cc, ~Region/SourceType/Year, dist = bdfull))
+set.seed(2017-11-10)
 (full.amova.3.test <- randtest(full.amova.3, nrepet = 999))
 make_amova_table(full.amova.2, full.amova.2.test, samples = "Year")
 make_amova_table(full.amova.3, full.amova.3.test, samples = "Year")
