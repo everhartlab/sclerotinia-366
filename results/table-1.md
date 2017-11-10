@@ -149,7 +149,7 @@ dt <- huxtable::as_huxtable(dat, add_colnames = TRUE) %>% # Creating the huxtabl
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-11-07
+##  date     2017-11-10
 ```
 
 ```
@@ -159,25 +159,25 @@ dt <- huxtable::as_huxtable(dat, add_colnames = TRUE) %>% # Creating the huxtabl
 ```
 ##  package     * version date       source        
 ##  assertthat    0.2.0   2017-04-11 CRAN (R 3.4.2)
-##  base        * 3.4.2   2017-10-27 local         
+##  base        * 3.4.2   2017-11-01 local         
 ##  bindr         0.1     2016-11-13 CRAN (R 3.4.2)
 ##  bindrcpp    * 0.2     2017-06-17 CRAN (R 3.4.2)
-##  compiler      3.4.2   2017-10-27 local         
-##  datasets    * 3.4.2   2017-10-27 local         
+##  compiler      3.4.2   2017-11-01 local         
+##  datasets    * 3.4.2   2017-11-01 local         
 ##  devtools      1.13.3  2017-08-02 CRAN (R 3.4.2)
 ##  digest        0.6.12  2017-01-27 CRAN (R 3.4.2)
 ##  dplyr       * 0.7.4   2017-09-28 CRAN (R 3.4.2)
 ##  evaluate      0.10.1  2017-06-24 CRAN (R 3.4.2)
 ##  ezknitr       0.6     2016-09-16 cran (@0.6)   
-##  glue          1.1.1   2017-06-21 CRAN (R 3.4.2)
-##  graphics    * 3.4.2   2017-10-27 local         
-##  grDevices   * 3.4.2   2017-10-27 local         
+##  glue          1.2.0   2017-10-29 CRAN (R 3.4.2)
+##  graphics    * 3.4.2   2017-11-01 local         
+##  grDevices   * 3.4.2   2017-11-01 local         
 ##  hms           0.3     2016-11-22 CRAN (R 3.4.2)
 ##  huxtable    * 1.1.0   2017-10-20 cran (@1.1.0) 
 ##  knitr       * 1.17    2017-08-10 CRAN (R 3.4.2)
 ##  magrittr      1.5     2014-11-22 CRAN (R 3.4.2)
 ##  memoise       1.1.0   2017-04-21 CRAN (R 3.4.2)
-##  methods     * 3.4.2   2017-10-27 local         
+##  methods     * 3.4.2   2017-11-01 local         
 ##  pkgconfig     2.0.1   2017-03-21 CRAN (R 3.4.2)
 ##  R.methodsS3   1.7.1   2016-02-16 cran (@1.7.1) 
 ##  R.oo          1.21.0  2016-11-01 cran (@1.21.0)
@@ -186,12 +186,12 @@ dt <- huxtable::as_huxtable(dat, add_colnames = TRUE) %>% # Creating the huxtabl
 ##  Rcpp          0.12.13 2017-09-28 CRAN (R 3.4.2)
 ##  readr       * 1.1.1   2017-05-16 CRAN (R 3.4.2)
 ##  rlang         0.1.2   2017-08-09 CRAN (R 3.4.2)
-##  stats       * 3.4.2   2017-10-27 local         
+##  stats       * 3.4.2   2017-11-01 local         
 ##  stringi       1.1.5   2017-04-07 CRAN (R 3.4.2)
 ##  stringr       1.2.0   2017-02-18 CRAN (R 3.4.2)
 ##  tibble        1.3.4   2017-08-22 CRAN (R 3.4.2)
-##  tools         3.4.2   2017-10-27 local         
-##  utils       * 3.4.2   2017-10-27 local         
+##  tools         3.4.2   2017-11-01 local         
+##  utils       * 3.4.2   2017-11-01 local         
 ##  withr         2.0.0   2017-07-28 CRAN (R 3.4.2)
 ```
 
