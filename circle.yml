@@ -6,7 +6,7 @@ dependencies:
   override:
     - docker info
     # so we can use COPY, we send all of the repo, rather than just the dockerfile
-    - docker build -t zkamvar/sclerotinia-366:$([ ${CIRCLE_TAG} ] && ${CIRCLE_TAG} || ${CIRCLE_SHA1}) .:
+    - docker build -t zkamvar/sclerotinia-366 .:
         timeout: 1800
 test:
   override:
@@ -23,11 +23,13 @@ deployment:
     branch: master
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
-      - docker push zkamvar/sclerotinia-366:${CIRCLE_SHA1}
+      - docker tag zkamvar/sclerotinia-366:$(cut -c -7 <<< ${CIRCLE_SHA1})
+      - docker push zkamvar/sclerotinia-366:$(cut -c -7 <<< ${CIRCLE_SHA1})
   hubtag:
     branch: master
     tag: /.*?/
     commands:
       - docker login -e $DOCKER_EMAIL -u $DOCKER_USER -p $DOCKER_PASS
+      - docker tag zkamvar/sclerotinia-366 zkamvar/sclerotinia-366:${CIRCLE_TAG}
       - docker push zkamvar/sclerotinia-366:${CIRCLE_TAG}
 
