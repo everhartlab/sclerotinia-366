@@ -13,7 +13,7 @@
 ## https://github.com/benmarwick/mjbtramp/blob/898ee99f17d64a41161a8b6760325572c7406b4b/Dockerfile
 
 ## Note: this pulls from rocker/verse:3.4.2
-FROM zkamvar/sclerotinia-366-dependencies:v0.3
+FROM zkamvar/sclerotinia-366-dependencies:latest
 MAINTAINER Zhian Kamvar <zkamvar@gmail.com>
 
 ## Copy the current directory to /analysis
