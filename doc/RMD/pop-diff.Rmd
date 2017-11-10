@@ -202,7 +202,8 @@ REGION_PLOT <- region_summary %>%
   theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
   theme(panel.border = element_blank()) +
   xlab("Population Assignment") +
-  ylab("Mean Probability")
+  ylab("Mean Probability") +
+  labs(list(fill = "Source:"))
 REGION_PLOT
 
 ```
