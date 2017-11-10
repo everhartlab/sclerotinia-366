@@ -380,7 +380,7 @@ With the 11 loci used in the analyses (Table \@ref(tab:locus-stats)), we observe
 These 11 loci are found on 7 chromosomes in the *S. sclerotiorum* genome with a minimum distance of 55Kbp between two loci on the same chromosome.
 Over 50% of the isolates came from four states, MI (`r pop_size[["MI"]]`), ND (`r pop_size[["ND"]]`), WA (`r pop_size[["WA"]]`), NE (`r pop_size[["NE"]]`). 
 Four regions had fewer than 10 isolates, Australia (`r pop_size[["Australia"]]`), WI (`r pop_size[["WI"]]`), NY (`r pop_size[["NY"]]`), ID (`r pop_size[["ID"]]`).
-We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 isolates over 37 MLHs (Fig \@ref(biggraph)A,C).
+We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 isolates over 37 MLHs (Fig. \@ref(biggraph)A,C).
 
 The number of observed alleles per locus ranged from two to 10 with an average of `r signif(Amean, 3)` (Table \@ref(tab:locus-stats)).
 Locus `r loc_table$Locus[loc_table$allele==2]`, which contained only 2 alleles, showed low values of both *h* (`r signif(loc_table$Hexp[loc_table$allele==2], 3)`) and evenness (`r signif(loc_table$Evenness[loc_table$allele==2], 3)`), indicating that there was one dominant allele present. 
@@ -545,7 +545,7 @@ Variance partitioning of the independent variables without MCG indicated aggress
 
 Agressiveness of the isolates ranged from `r paste(range(other(dat11)$meta$Severity), collapse = " to ")` with a mean of `r signif(mean(other(dat11)$meta$Severity), 3)` and median of `r signif(median(other(dat11)$meta$Severity), 3)`.
 The group mean averages were `r sprintf("%0.2f, %0.2f, and %0.2f", Raggmean, Maggmean, Haggmean)` for Region, MCG, and MLH, respectively.
-A strip plot showing the distribution of severity across these three variables simultaneously can be seen in figure \@ref(mcg-mlh-region-aggressiveness).
+A strip plot showing the distribution of severity across these three variables simultaneously can be seen in Fig. \@ref(mcg-mlh-region-aggressiveness).
 Our assessment of aggressiveness in association with Region showed a significant effect (*P* < 1.00e^-4^), with means that ranged from 5.8 (MN) to 4.0 (CA) (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
 MCGs also showed a significant effect (*P* < 0.001), with means that ranged from 6.0 ('MCG 44') to 4.6 ('MCG 49'; Table \@ref(tab:MCG-aggressiveness)).
 We additionally found a significant effect for MLHs (*P* < 0.001), with means that ranged from 6.0 ('MLH 78') to 4.3 ('MLH 140') (Table \@ref(tab:MLG-aggressiveness)).
@@ -558,7 +558,7 @@ Community analysis showed 51 communities, `r sum(in_reach$N == 0)` of which cons
 The three communities with the most members contained eight of the 10 most abundant MCGs. 
 Comparing these communities with Bruvo's genetic distance showed an average distance of 0.451 among communities and an average distance of 0.437 within communities, which were not significantly different.
 When we assessed the number of times two different MLHs that are in the same MCG, considering these as potential heterothallic pairings that could result in sexual recombination, we found an average of `r signif(mean(in_reach$N), 3)` potential heterothallic parings per MLH. 
-Representing just four isolates, 'MLH 75' had `r big_haplotype$N` neighbors that shared the same mycelial compatibility group (Fig \@ref(biggraph), \@ref(fullgraph)). 
+Representing just four isolates, 'MLH 75' had `r big_haplotype$N` neighbors that shared the same mycelial compatibility group (Fig. \@ref(biggraph), \@ref(fullgraph)). 
 Overall, there was no clear pattern to the association between MLH and MCGs. 
 
 
@@ -732,7 +732,7 @@ It was of interest to compare our data with that of @aldrich-wolfe2015genetic, b
 With the exception of the WA Region, populations that were sampled across several years appeared to be relatively stable over time with overlapping distributions in the DAPC (i.e. NE and MI, Fig. \@ref(DAPC-RY)). 
 DAPC is based on the principal components of allele counts [@jombart2010discriminant]. 
 Unlike Bruvo's distance, this does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
-While we found no evidence of private alleles in the Mexico and CA isolates, we did find that the alleles driving the first axis in figure \@ref(DAPC)A (`r mx_allele_string`, respectively) were overrepresented in Mexico (where >75% of the alleles came from the region).
+While we found no evidence of private alleles in the Mexico and CA isolates, we did find that the alleles driving the first axis in Fig. \@ref(DAPC)A (`r mx_allele_string`, respectively) were overrepresented in Mexico (where >75% of the alleles came from the region).
 However, all three of these alleles, i) conform to the expected stepwise mutation model [@bruvo2004simple] and ii) are at or near the extremes of the total range (except for `r glue::glue("allele {mx_alleles[3]} at locus {mx_loci[3]}")`).
 Moreover, the fact that we find three alleles at three independent loci segregating for Mexico suggests that the pattern separating these populations from the others was not an artifact. 
 We believe that the differences in populations observed from Mexico may be due to differences in climate that allow greater diversification via sexual outcrossing.
@@ -760,7 +760,7 @@ This may, in turn increase the risk of introducing new sources of genetic variat
 
 When we tested for sexual reproduction, we were unable to find evidence for it in any region except for Australia and CA. 
 While the Australia population had a non-significant value of $\bar{r}_d$---which would suggest that we cannot reject the null hypothesis of random mating---the sample size was insufficient from which to draw conclusions [@milgroom1996recombination; @agapow2001indices].
-The low value of $\bar{r}_d$ in the CA population may represent sexual reproduction, but we can see in Figure \@ref(DAPC-RY) that there is differentiation by year. 
+The low value of $\bar{r}_d$ in the CA population may represent sexual reproduction, but we can see in Fig. \@ref(DAPC-RY) that there is differentiation by year. 
 Thus, this could also be an artifact of sampling two different populations, which is known to reduce the value of $\bar{r}_d$ [@prugnolle2010apparent].
 
 <!-- ## Mycelial Compatibility Groups and Multilocus Haplotypes {-} -->
@@ -814,8 +814,8 @@ The funders had no role in study design, data collection and analysis, decision 
 ## Acknowledgements {-}
 
 The authors would like to thank Rebecca Higgens for technical support in generating the data for the MCG assessment, aggressiveness ratings, and genotyping; and for providing valuable insights into the historical context of the data collection and curation. 
-We would also like to thank Denita Hadziabdic and two other anonymous reviewers for their valuable comments and insights that improved the quality of the manuscript.
 
+We would also like to thank Denita Hadziabdic and two other anonymous reviewers for their valuable comments and insights that improved the quality of the manuscript.
 ## Conflicts of Interest {-}
 
 The authors declare no conflict of interest.
