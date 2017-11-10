@@ -232,8 +232,8 @@ The impact of white mold on the dry bean industry in the Northwestern United Sta
 Currently, there are no commercially available resistant cultivars of dry bean [@otto-hanson2011variation].
 Organized breeding efforts have used a common-garden approach with white mold screening nurseries in dry bean production areas across the United States with additional sites in Australia, France, and Mexico [@steadman2003identification; @steadman2004identification; @steadman2005identification; @steadman2006identification; @otto2007identification; @otto2008identification; @mccoy2009use]. 
 These white mold screening nurseries use no chemical or cultural treatments against *S. sclerotiorum* and employ standardized protocols for screening new cultivars for resistance to white mold [@steadman2003identification; @otto-hanson2011variation].
-These protocols included three established cultivars used for comparison in the trials: Beryl (great northern bean, susceptible), Bunsi (aka Ex Rico, navy bean, low susceptibility), and G122 (cranberry bean, partial resistance) [@tu1982tolerance; @steadman2005identification; @otto-hanson2011variation].
-It has previously been shown that aggressiveness (the severity of disease symptoms on the host) is significantly different across white mold screening nursery sites in separate geographic regions [@otto-hanson2011variation].
+These protocols included three established cultivars used for comparison in the trials: Beryl (great northern bean, susceptible), Bunsi (a.k.a. Ex Rico, navy bean, low susceptibility), and G122 (cranberry bean, partial resistance) [@tu1982tolerance; @steadman2005identification; @otto-hanson2011variation].
+It was previously shown that aggressiveness (the severity of disease symptoms on the host) is significantly different across white mold screening nursery sites in separate geographic regions [@otto-hanson2011variation].
 The genetic structure and mode of reproduction in these populations, however, is currently unknown.
 
 Understanding genetic relationships and reproduction behavior of *S. sclerotiorum* populations is beneficial for breeders seeking to develop new resistant cultivars for worldwide deployment [@mcdonald2002pathogen; @milgroom1996recombination].
@@ -244,7 +244,7 @@ Some studies, however have found populations that show signatures of sexual repr
 Nearly all population genetic studies of *S. sclerotiorum* employ a macroscopic assay to determine mycelial compatibility, the ability for fungal hyphae from different colonies to appear to grow together without forming a barrier of dead cells between them (known as a barrage line, Fig. \@ref(mcg-fig)B) [@leslie1993fungal; @sirjusingh2001characterisation].
 Mycelial compatibility has been used as a proxy for vegetative compatibility, a fungal trait controlled by several independent genes controlling the ability for two hyphae to fuse and grow as a single unit (Fig. \@ref(mcg-fig)A) [@leslie1993fungal; @schafer2006optimized].
 Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible were considered clones [@leslie1993fungal]; but correlation with genetic markers, such as microsatellites, have shown mixed results [@ford1995heterokaryon; @micali2003independence; @jo2008reassessment; @attanayake2012genetic; @papaioannou2014barrage; @lehner2017independently].
-However, a question remains about the relationship between mycelial compatibility groups and clonal genotypes.
+Thus, the relationship between mycelial compatibility groups and clonal genotypes remains unclear.
 
 In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected between 2003 and 2012 from dry bean cultivars among different geographic locations in the Australia, France, Mexico, and the United States. 
 We wanted to know if the *S. sclerotiorum* populations from white mold screening nurseries were representative of the fields within the same region. 
@@ -331,7 +331,7 @@ The `varpart()` function of vegan was used to determine variation partitioning o
 
 ### Aggressiveness Assessment {-}
 
-We used ANOVA to assess if aggressiveness (determined via straw test on a scale of 1--9) was significantly different with respect to Region, MCG, or multilocus haplotype (MLH). 
+We used ANOVA to assess if aggressiveness (determined via straw test on a scale of 1--9 as described above) was significantly different with respect to Region, MCG, or multilocus haplotype (MLH). 
 To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 56.5% of the isolates collected, the 10 most abundant MLHs representing 26.7% of the isolates, and populations with more than five isolates.
 If ANOVA results were significantly different at $\alpha$ = 0.05, pairwise differences were assessed using Tukey's HSD test ($\alpha$ = 0.05) using the `HSD.test()` function in the package *agricolae* version `r packageVersion("agricolae")` [@mendiburu2015agricolae].
 
@@ -377,7 +377,7 @@ To ensure that we captured the same community signal, we additionally performed 
 
 A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in 11 states in the United States as well as Australia, France, and Mexico (Table \@ref(tab:isolate-table)).
 With the 11 loci used in the analyses (Table \@ref(tab:locus-stats)), we observed a total of 165 MLHs (215 with 16 loci).
-These 11 loci represented 7 chromosomes in the *S. sclerotiorum* genome with a minimum distance of 55Kbp between two loci on the same chromosome.
+These 11 loci are found on 7 chromosomes in the *S. sclerotiorum* genome with a minimum distance of 55Kbp between two loci on the same chromosome.
 Over 50% of the isolates came from four states, MI (`r pop_size[["MI"]]`), ND (`r pop_size[["ND"]]`), WA (`r pop_size[["WA"]]`), NE (`r pop_size[["NE"]]`). 
 Four regions had fewer than 10 isolates, Australia (`r pop_size[["Australia"]]`), WI (`r pop_size[["WI"]]`), NY (`r pop_size[["NY"]]`), ID (`r pop_size[["ID"]]`).
 We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 isolates over 37 MLHs (Fig \@ref(biggraph)A,C).
@@ -391,12 +391,10 @@ Analysis of the haplotype accumulation curve showed no clear plateau for 11 or 1
 After clone-correction on the hierarchy of Region/Source/Host/Year, a total of `r nInd(dat11) - nInd(dat11cc)` isolates were removed from the data set, resulting in `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLHs that were used in subsequent analyses (Table \@ref(tab:iatab)).
 The results showed that, in terms of genotypic diversity (*H*, *G*, and $\lambda$), WA was the most diverse population with both *G* (`r signif(setNames(gdt$G, gdt$Pop)["WA"], 3)`) and $e^H$ (`r signif(setNames(exp(gdt$H), gdt$Pop)["WA"], 3)`) being close to the observed number of MLGs (`r setNames(gdt$MLG, gdt$Pop)["WA"]`). 
 This indicated that there are few duplicated genotypes in WA (Table \@ref(tab:iatab)).
-A more useful metric to compare populations, however, is $E_5$, which scales from 0 to 1 where 1 indicates all unique genotypes [@grunwald2003analysis]. 
+A more useful metric to compare populations, however, is $E_5$, which scales from 0 to 1, where 1 indicates all unique genotypes [@grunwald2003analysis]. 
 Evaluating by $E_5$ shows that both MI and NE exhibit lower than average values, indicating that there are over-represented genotypes in the popualtions (table \@ref(tab:iatab)). 
-When we look at Mexico, we can observed that it had relatively high values of $E_5$ and genotypic diversity, but low richness, as measured by *eMLG*.
+When we look at Mexico, we observed that it had relatively high values of $E_5$ and genotypic diversity, but low richness, as measured by *eMLG*.
 Moreover, Mexico had the lowest value for *h*, which is a measure of allelic diversity.
-<!-- The results show that most populations exhibited relatively high amounts of genotypic diversity, with the exception of MI and NE, which have which exhibited lower-than average $E_5$ values. -->
-<!-- Mexico had the lowest average value of gene diversity, *h* and the lowest *eMLH*, suggesting low overall genetic diversity.  -->
 Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
 The only exceptions are CA (*P* = `r gdtrd[["CA"]]`) and Australia (*P* = `r gdtrd[["Australia"]]`). Both of these populations showed only moderate significance with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
 
@@ -735,9 +733,9 @@ With the exception of the WA Region, populations that were sampled across severa
 DAPC is based on the principal components of allele counts [@jombart2010discriminant]. 
 Unlike Bruvo's distance, this does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
 While we found no evidence of private alleles in the Mexico and CA isolates, we did find that the alleles driving the first axis in figure \@ref(DAPC)A (`r mx_allele_string`, respectively) were overrepresented in Mexico (where >75% of the alleles came from the region).
-However, all three of these alleles i) conform to the expected stepwise mutation model [@bruvo2004simple] and ii) are at or near the extremes of the total range (except for `r glue::glue("allele {mx_alleles[3]} at locus {mx_loci[3]}")`).
+However, all three of these alleles, i) conform to the expected stepwise mutation model [@bruvo2004simple] and ii) are at or near the extremes of the total range (except for `r glue::glue("allele {mx_alleles[3]} at locus {mx_loci[3]}")`).
 Moreover, the fact that we find three alleles at three independent loci segregating for Mexico suggests that the pattern separating these populations from the others was not an artifact. 
-We believe that the differences we observe from Mexico may reflect differences in climate.
+We believe that the differences in populations observed from Mexico may be due to differences in climate that allow greater diversification via sexual outcrossing.
 
 Many of the isolates in our study were from temperate climates and the only isolates representing a sub-tropical climate were from Mexico.
 It has been proposed within the *S. sclerotiorum* literature that isolates from sub-tropical and tropical climates are differentiated or more variable than populations from temperate climates [@carbone2001multilocus; @attanayake2013sclerotinia; @lehner2017sclerotinia]. 
@@ -790,7 +788,7 @@ One of the main limitations of this study is the focus on *P. vulgaris* as a hos
 It has been shown that *S. sclerotiorum* in the midwestern United States does not have a particular preference for host [@aldrich-wolfe2015genetic]. 
 If the distribution of *S. sclerotiorum* is even across agricultural hosts in the USA, then our sample may yet be representative of the genetic pool present in other crops and weedy species. 
 Additionally, while we found no signficant association between genotype and aggressiveness, it is important to note that the straw test is only one measure of aggressiveness. 
-Additional phenotypes for aggressiveness should be evaluated for future studieds.
+Additional phenotypes for aggressiveness should be evaluated for future studies.
 
 Another limitation was the microsatellite markers used for this particular study [@sirjusingh2001characterisation].
 The haplotype accumulation curve showed no indication of a plateau, indicating that if we had sampled more loci, we would have resolved more multilocus haplotypes. 
@@ -816,7 +814,7 @@ The funders had no role in study design, data collection and analysis, decision 
 ## Acknowledgements {-}
 
 The authors would like to thank Rebecca Higgens for technical support in generating the data for the MCG assessment, aggressiveness ratings, and genotyping; and for providing valuable insights into the historical context of the data collection and curation. 
-We would also like to thank Denita Hadziabdic and two anonymous reviewers for their valuable comments and insights that improved the quality of the manuscript.
+We would also like to thank Denita Hadziabdic and two other anonymous reviewers for their valuable comments and insights that improved the quality of the manuscript.
 
 ## Conflicts of Interest {-}
 

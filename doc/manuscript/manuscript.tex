@@ -141,10 +141,10 @@ against \emph{S. sclerotiorum} and employ standardized protocols for
 screening new cultivars for resistance to white mold (Steadman et al.,
 2003; Otto-Hanson et al., 2011). These protocols included three
 established cultivars used for comparison in the trials: Beryl (great
-northern bean, susceptible), Bunsi (aka Ex Rico, navy bean, low
+northern bean, susceptible), Bunsi (a.k.a. Ex Rico, navy bean, low
 susceptibility), and G122 (cranberry bean, partial resistance) (Tu \&
 Beversdorf, 1982; Steadman et al., 2005; Otto-Hanson et al., 2011). It
-has previously been shown that aggressiveness (the severity of disease
+was previously shown that aggressiveness (the severity of disease
 symptoms on the host) is significantly different across white mold
 screening nursery sites in separate geographic regions (Otto-Hanson et
 al., 2011). The genetic structure and mode of reproduction in these
@@ -178,8 +178,8 @@ mycelially compatible were considered clones (Leslie, 1993); but
 correlation with genetic markers, such as microsatellites, have shown
 mixed results (Ford et al., 1995; Micali \& Smith, 2003; Jo et al.,
 2008; Attanayake et al., 2012; Papaioannou \& Typas, 2014; Lehner et
-al., 2017). However, a question remains about the relationship between
-mycelial compatibility groups and clonal genotypes.
+al., 2017). Thus, the relationship between mycelial compatibility groups
+and clonal genotypes remains unclear.
 
 In this study, we analyze and characterize the genetic and phenotypic
 diversity of 366 \emph{S. sclerotiorum} isolates collected between 2003
@@ -372,15 +372,15 @@ Assessment}\label{aggressiveness-assessment}
 \addcontentsline{toc}{subsubsection}{Aggressiveness Assessment}
 
 We used ANOVA to assess if aggressiveness (determined via straw test on
-a scale of 1--9) was significantly different with respect to Region,
-MCG, or multilocus haplotype (MLH). To minimize complications due to
-small sample sizes, we chose the top 10 MCGs, representing 56.5\% of the
-isolates collected, the 10 most abundant MLHs representing 26.7\% of the
-isolates, and populations with more than five isolates. If ANOVA results
-were significantly different at \(\alpha\) = 0.05, pairwise differences
-were assessed using Tukey's HSD test (\(\alpha\) = 0.05) using the
-\texttt{HSD.test()} function in the package \emph{agricolae} version
-1.2.8 (Mendiburu \& Simon, 2015).
+a scale of 1--9 as described above) was significantly different with
+respect to Region, MCG, or multilocus haplotype (MLH). To minimize
+complications due to small sample sizes, we chose the top 10 MCGs,
+representing 56.5\% of the isolates collected, the 10 most abundant MLHs
+representing 26.7\% of the isolates, and populations with more than five
+isolates. If ANOVA results were significantly different at \(\alpha\) =
+0.05, pairwise differences were assessed using Tukey's HSD test
+(\(\alpha\) = 0.05) using the \texttt{HSD.test()} function in the
+package \emph{agricolae} version 1.2.8 (Mendiburu \& Simon, 2015).
 
 \subsubsection*{Correlating Multilocus Haplotypes with Mycelial
 Compatibility
@@ -484,7 +484,7 @@ and 2011) from diseased dry bean plants in 11 states in the United
 States as well as Australia, France, and Mexico (Table
 \ref{tab:isolate-table}). With the 11 loci used in the analyses (Table
 \ref{tab:locus-stats}), we observed a total of 165 MLHs (215 with 16
-loci). These 11 loci represented 7 chromosomes in the \emph{S.
+loci). These 11 loci are found on 7 chromosomes in the \emph{S.
 sclerotiorum} genome with a minimum distance of 55Kbp between two loci
 on the same chromosome. Over 50\% of the isolates came from four states,
 MI (62), ND (60), WA (59), NE (47). Four regions had fewer than 10
@@ -512,11 +512,11 @@ diversity (\emph{H}, \emph{G}, and \(\lambda\)), WA was the most diverse
 population with both \emph{G} (54.3) and \(e^H\) (55.3) being close to
 the observed number of MLGs (56). This indicated that there are few
 duplicated genotypes in WA (Table \ref{tab:iatab}). A more useful metric
-to compare populations, however, is \(E_5\), which scales from 0 to 1
+to compare populations, however, is \(E_5\), which scales from 0 to 1,
 where 1 indicates all unique genotypes (Grünwald et al., 2003).
 Evaluating by \(E_5\) shows that both MI and NE exhibit lower than
 average values, indicating that there are over-represented genotypes in
-the popualtions (table \ref{tab:iatab}). When we look at Mexico, we can
+the popualtions (table \ref{tab:iatab}). When we look at Mexico, we
 observed that it had relatively high values of \(E_5\) and genotypic
 diversity, but low richness, as measured by \emph{eMLG}. Moreover,
 Mexico had the lowest value for \emph{h}, which is a measure of allelic
@@ -1529,13 +1529,14 @@ the Mexico and CA isolates, we did find that the alleles driving the
 first axis in figure \ref{DAPC}A (alleles 174, 256, and 372 in loci 7-2,
 8-3, and 9-2, respectively) were overrepresented in Mexico (where
 \textgreater{}75\% of the alleles came from the region). However, all
-three of these alleles i) conform to the expected stepwise mutation
+three of these alleles, i) conform to the expected stepwise mutation
 model (Bruvo et al., 2004) and ii) are at or near the extremes of the
 total range (except for allele 372 at locus 9-2). Moreover, the fact
 that we find three alleles at three independent loci segregating for
 Mexico suggests that the pattern separating these populations from the
-others was not an artifact. We believe that the differences we observe
-from Mexico may reflect differences in climate.
+others was not an artifact. We believe that the differences in
+populations observed from Mexico may be due to differences in climate
+that allow greater diversification via sexual outcrossing.
 
 Many of the isolates in our study were from temperate climates and the
 only isolates representing a sub-tropical climate were from Mexico. It
@@ -1658,7 +1659,7 @@ sample may yet be representative of the genetic pool present in other
 crops and weedy species. Additionally, while we found no signficant
 association between genotype and aggressiveness, it is important to note
 that the straw test is only one measure of aggressiveness. Additional
-phenotypes for aggressiveness should be evaluated for future studieds.
+phenotypes for aggressiveness should be evaluated for future studies.
 
 Another limitation was the microsatellite markers used for this
 particular study (Sirjusingh \& Kohn, 2001). The haplotype accumulation
@@ -1716,7 +1717,7 @@ The authors would like to thank Rebecca Higgens for technical support in
 generating the data for the MCG assessment, aggressiveness ratings, and
 genotyping; and for providing valuable insights into the historical
 context of the data collection and curation. We would also like to thank
-Denita Hadziabdic and two anonymous reviewers for their valuable
+Denita Hadziabdic and two other anonymous reviewers for their valuable
 comments and insights that improved the quality of the manuscript.
 
 \subsection*{Conflicts of Interest}\label{conflicts-of-interest}
@@ -2661,19 +2662,19 @@ clonal, and/or sexual reproduction. \emph{PeerJ}, \emph{2}, e281.
 Knodel, J., Beauzay, P., Franzen, D., Kandel, H., Markell, S., Osorno,
 J., Pasche, J., \& Zollinger, R. (2012). 2012 dry bean grower survey of
 production, pest problems and pesticide use in Minnesota and North
-Dakota. \emph{North Dakota State University Extension}.
+Dakota. \emph{North Dakota State University Extension}, \emph{E1640}.
 
 \hypertarget{ref-knodel2015dry}{}
 Knodel, J., Beauzay, P., Franzen, D., Kandel, H., Markell, S., Osorno,
 J., Pasche, J., \& Zollinger, R. (2015). 2015 dry bean grower survey of
 production, pest problems and pesticide use in Minnesota and North
-Dakota. \emph{North Dakota State University Extension}.
+Dakota. \emph{North Dakota State University Extension}, \emph{E1802}.
 
 \hypertarget{ref-knodel2016dry}{}
 Knodel, J., Beauzay, P., Franzen, D., Kandel, H., Markell, S., Osorno,
 J., Pasche, J., \& Zollinger, R. (2016). 2016 dry bean grower survey of
 production, pest problems and pesticide use in Minnesota and North
-Dakota. \emph{North Dakota State University Extension}.
+Dakota. \emph{North Dakota State University Extension}, \emph{E1841}.
 
 \hypertarget{ref-kohli1998random}{}
 Kohli, Y., \& Kohn, L. M. (1998). Random association among alleles in
@@ -2830,9 +2831,9 @@ computing}. Vienna, Austria: R Foundation for Statistical Computing.
 Retrieved from \url{https://www.R-project.org/}
 
 \hypertarget{ref-ramasubramaniam2008estimates}{}
-Ramasubramaniam, H., Río Mendoza, L. E. del, \& Bradley, C. A. (2008).
+Ramasubramaniam, H., del Río Mendoza, L. E., \& Bradley, C. A. (2008).
 Estimates of yield and economic losses associated with white mold of
-rain-fed dry bean in north dakota. \emph{Agronomy Journal},
+rain-fed dry bean in North Dakota. \emph{Agronomy Journal},
 \emph{100}(2), 315. \url{https://doi.org/10.2134/agronj2007.0127}
 
 \hypertarget{ref-sambrook1989molecular}{}
@@ -2925,7 +2926,7 @@ Estimation and prediction in samples. \emph{Genetics}, \emph{118}(4),
 
 \hypertarget{ref-strausbaugh2003management}{}
 Strausbaugh, C., \& Forster, R. (2003). Management of white mold of
-beans. \emph{Pacific Northwest Extension}. Retrieved from
+beans. \emph{Pacific Northwest Extension}, \emph{PNW568}. Retrieved from
 \url{http://http://www.extension.uidaho.edu/publishing/pdf/PNW/PNW0568.pdf}
 
 \hypertarget{ref-strom2016genomes}{}
@@ -2943,8 +2944,8 @@ Report}, \emph{49}, 115--116. Retrieved from
 
 \hypertarget{ref-tu1982tolerance}{}
 Tu, J. C., \& Beversdorf, W. D. (1982). Tolerance to white mold
-(\emph{Sclerotinia sclerotiorum} (lib.) de bary) in Ex Rico 23, a
-cultivar of white bean (\emph{Phaseolus vulgaris} l.). \emph{Canadian
+(\emph{Sclerotinia sclerotiorum} (Lib.) De Bary) in Ex Rico 23, a
+cultivar of white bean (\emph{Phaseolus vulgaris} L.). \emph{Canadian
 Journal of Plant Science}, \emph{62}(1), 65--69.
 \url{https://doi.org/10.4141/cjps82-010}
 
