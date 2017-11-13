@@ -14,7 +14,7 @@ author:
   - name: Serena McCoy
     email: serena.mccoy@icloud.com
     affiliation: 1
-  - name: James Steadman
+  - name: James R. Steadman
     email: jsteadman1@unl.edu
     affiliation: 1
   - name: Sydney E. Everhart
