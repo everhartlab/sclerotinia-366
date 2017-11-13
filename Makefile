@@ -60,7 +60,7 @@ results/bootstrap.txt: DESCRIPTION
 	R --slave -e $(RCMD)
 	date > results/bootstrap.txt
 
-README.md : README.Rmd
+README.md : README.Rmd $(MANUSCRIPT)
 	R --slave -e 'rmarkdown::render("$<")'
 
 results/%.md : doc/RMD/%.Rmd
