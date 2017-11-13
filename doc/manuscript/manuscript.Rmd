@@ -813,7 +813,7 @@ The funders had no role in study design, data collection and analysis, decision 
 
 ## Acknowledgements {-}
 
-The authors would like to thank Rebecca Higgens for technical support in generating the data for the MCG assessment, aggressiveness ratings, and genotyping; and for providing valuable insights into the historical context of the data collection and curation. 
+The authors would like to thank Rebecca Higgins for technical support in generating the data for the MCG assessment, aggressiveness ratings, and genotyping; and for providing valuable insights into the historical context of the data collection and curation. 
 
 We would also like to thank Denita Hadziabdic and two other anonymous reviewers for their valuable comments and insights that improved the quality of the manuscript.
 
@@ -831,7 +831,7 @@ The authors declare no conflict of interest.
 
  - **Serena McCoy** Carried out experiments (MCG assessment, aggressiveness ratings, genotyping), edited and reviewed drafts of the paper.
 
- - **James Steadman** Conceived and designed experiments, organized network of white mold screening nurseries, provided *S. sclerotiorum* isolates, edited and reviewed drafts of the paper.
+ - **James R. Steadman** Conceived and designed experiments, organized network of white mold screening nurseries, provided *S. sclerotiorum* isolates, edited and reviewed drafts of the paper.
 
  - **Sydney E. Everhart** supervised data analysis, analyzed the data, contributed analysis tools, wrote the paper, edited and reviewed drafts of the paper.
 
@@ -930,7 +930,7 @@ Table: (\#tab:MLG-aggressiveness) Mean aggressiveness ratings for the 10 MLH mos
 
 
 ![
-Example of MCG test plates showing (A) a compatible reaction with mycelia from two strains overgrowing each other and (B) an incompatible reaction with a barrage line of dead tissue forming between the two strains. Photo Credit: Rebecca Higgens.
+Example of MCG test plates showing (A) a compatible reaction with mycelia from two strains overgrowing each other and (B) an incompatible reaction with a barrage line of dead tissue forming between the two strains. Photo Credit: Rebecca Higgins.
 ](images/mcg-trimmed.png){#mcg-fig width=100%}
 
 <!-- Strip plot of Aggressiveness for MLH, MCG, and Region -->
