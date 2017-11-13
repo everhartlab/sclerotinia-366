@@ -222,7 +222,7 @@ private_alleles(dat11, locus ~ Region, count.alleles = FALSE)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-11-10
+##  date     2017-11-13
 ```
 
 ```
