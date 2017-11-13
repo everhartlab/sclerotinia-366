@@ -149,7 +149,7 @@ dt <- huxtable::as_huxtable(dat, add_colnames = TRUE) %>% # Creating the huxtabl
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-11-10
+##  date     2017-11-13
 ```
 
 ```

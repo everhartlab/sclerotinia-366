@@ -199,11 +199,11 @@ ssc_amova_test
 ## Observation: 0.004391536 
 ## 
 ## Based on 999 replicates
-## Simulated p-value: 0.002 
+## Simulated p-value: 0.001 
 ## Alternative hypothesis: greater 
 ## 
-##      Std.Obs  Expectation     Variance 
-## 7.553125e+00 1.331031e-05 3.360028e-07
+##       Std.Obs   Expectation      Variance 
+##  8.054265e+00 -1.917767e-06  2.975503e-07
 ```
 
 
@@ -235,7 +235,7 @@ plot(ssc_amova_region_test)
 ##   Within Region                     296     56.6667061        86.3618966
 ##                                   statistic
 ## levels                                  P Phi statistic
-##   Between SourceType               0.2945  -0.001583345
+##   Between SourceType               0.2888  -0.001583345
 ##   Between Region Within SourceType 0.0001   0.137746279
 ##   Within Region                    0.0001   0.136381034
 ```
@@ -267,7 +267,7 @@ plot(ssc_amova_nm_test)
 ##   Within Region                     282     55.0854125         90.349725
 ##                                   statistic
 ## levels                                  P Phi statistic
-##   Between SourceType               0.2723    0.00115560
+##   Between SourceType               0.2806    0.00115560
 ##   Between Region Within SourceType 0.0001    0.09545746
 ##   Within Region                    0.0001    0.09650275
 ```
@@ -317,7 +317,7 @@ plot(ssc_amova_newami_test)
 ##   Within Region                     147     30.0470395         93.522707
 ##                                   statistic
 ## levels                                  P Phi statistic
-##   Between SourceType               0.3988   -0.01831835
+##   Between SourceType               0.4026   -0.01831835
 ##   Between Region Within SourceType 0.0001    0.08159657
 ##   Within Region                    0.0001    0.06477293
 ```
@@ -855,7 +855,7 @@ LDS_PLOT
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-11-10
+##  date     2017-11-13
 ```
 
 ```
