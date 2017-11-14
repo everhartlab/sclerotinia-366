@@ -2,12 +2,13 @@
 Analysis of 366 *S. sclerotiorum* isolates
 ==========================================
 
-[![Last-changedate](https://img.shields.io/badge/last%20change-2017--11--13-brightgreen.svg)](https://github.com/everhartlab/sclerotinia-366/commits/master) [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.4.1-brightgreen.svg)](https://cran.r-project.org/) [![Licence](https://img.shields.io/github/license/mashape/apistatus.svg)](http://choosealicense.com/licenses/mit/) [![Circle CI](https://circleci.com/gh/everhartlab/sclerotinia-366.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/everhartlab/sclerotinia-366)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2017--11--14-2F4096.svg)](https://github.com/everhartlab/sclerotinia-366/commits/master) [![Licence](https://img.shields.io/badge/license-MIT%20License-2F4096.svg)](http://choosealicense.com/licenses/mit/)
+[![minimal R version](https://img.shields.io/badge/R%3E%3D-3.4.2-2F4096.svg)](https://cran.r-project.org/) [![Circle CI](https://circleci.com/gh/everhartlab/sclerotinia-366.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/everhartlab/sclerotinia-366)
 
 This repository contains data, code, and a manuscript for analysis of 366 isolates of *Sclerotinia sclerotiorum* from the US and various countries around the world.
 
-Citation
-========
+Citations
+=========
 
 Preprint
 --------
@@ -17,7 +18,7 @@ Preprint
 Data and Code
 -------------
 
-> Kamvar, Z. N., Amaradasa, B. S., Jhala, R., McCoy, S., Steadman, J., & Everhart, S. E. (2017, October 3). Population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean in the United States. <http://doi.org/10.17605/OSF.IO/EJB5Y>
+> Kamvar, Z. N., Amaradasa, B. S., Jhala, R., McCoy, S., Steadman, J. R., & Everhart, S. E. (2017, November). Data and analysis for population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean (*Phaseolus vulgaris*) in the United States. <http://doi.org/10.17605/OSF.IO/EJB5Y>
 
 TOC
 ===
@@ -34,54 +35,65 @@ The analyses are arranged in the following order according to the [Makefile](Mak
 8.  [tree.md](results/tree.md)
 9.  [wmn-differentiation.md](results/wmn-differentiation.md)
 10. [by-year.md](results/by-year.md)
+11. [compare-aldrich-wolfe.md](results/compare-aldrich-wolfe.md)
 
-Reproducing the analysis
-========================
+Analysis
+========
 
-Locally
--------
+Background
+----------
 
-This project is controlled via a [Makefile](Makefile) which means that everything (analyses, tables, figures, the paper itself) is controlled via one command:
+The analysis is controlled via two docker containers:
 
-    make
+1.  [sclerotinia-366-dependencies](https://hub.docker.com/r/zkamvar/sclerotinia-366-dependencies/): defines the complete software environment used, built on top of the [rocker/verse:3.4.2](https://hub.docker.com/r/rocker/verse) container. **(See the [Dockerfile](https://osf.io/mwv6d/))**
+2.  [sclerotinia-366](https://hub.docker.com/r/zkamvar/sclerotinia-366/) is built on top of the above container and contains the results of the analysis. **(See the [Dockerfile](https://osf.io/tvfju/))**
 
-This will bootstrap the installation (warning: it will update packages), process the data, perform the analyses, and compile the paper.
+The `sclerotinia-366-dependencies` container is regularly rebuilt on docker hub whenever `rocker/verse:3.4.2` updates and the `sclerotinia-366` container is rebuilt on [CircleCI](https://circleci.com/gh/everhartlab/sclerotinia-366) whenever the git repository is updated.
 
-Required software:
+As of this writing, the containers are up to date with R version 3.4.2 and packages downloaded from the [MRAN snapshot on 2017-10-31](https://mran.microsoft.com/snapshot/2017-10-31/).
 
--   GNU Make (If you're on Windows, you can use MinGW: <http://www.mingw.org/>)
--   [R (version 3.4.1 or greater)](https://r-project.org)
--   [LaTeX](https://www.latex-project.org/get)
--   [pandoc](http://pandoc.org/) (Note: pandoc ships with Rstudio)
--   [devtools](https://github.com/hadley/devtools#readme)
+Jump to [Reproduction via Docker](#reproduction-via-docker) or [Reproduction Locally](#locally).
 
-Docker
-------
+------------------------------------------------------------------------
 
-This repository contains a [Dockerfile](Dockerfile), which specifies the instructions to build a [docker](https://www.docker.com/) container. This is designed to capture the complete development environment of the analysis so that it can be accurately reproduced. The image is ~2.71Gb, so be sure that you have enough memory on your computer to run it.
+Reproduction via Docker
+-----------------------
+
+This repository contains a [Dockerfile](Dockerfile), which specifies the instructions to build a [docker](https://www.docker.com/) container. This is designed to capture the complete development environment of the analysis so that it can be accurately reproduced. The image is ~3.21Gb, so be sure that you have enough memory on your computer to run it.
 
 To Install Docker, go here: <https://docs.docker.com/engine/installation/#desktop>. Once you have downloaded docker, you can either pull the container or build it. Pulling is by far the quickest way to do this. The docker container is located at <https://hub.docker.com/r/zkamvar/sclerotinia-366/>
 
-> Note: both ways assume that you are in the analysis directory
-
 ### RStudio Server
 
-    docker run --rm -dp 8787:8787 zkamvar/sclerotinia-366:latest
+To run the docker container, make sure you have Docker running, open your terminal and type:
 
-This will spin up the Docker container on your machine and expose it to port 8787. You can open your browser and type `localhost:8787`, and an instance of Rstudio server will appear. Sign in with the username: rstudio and password: rstudio.
+``` bash
+docker run --name ssc --rm -dp 8787:8787 -e ROOT=TRUE zkamvar/sclerotinia-366:latest
+```
+
+This will first check to make sure you have the container on your machine. If you don't, Docker will automatically download it for you. It will spin up the Docker container on your machine, give it the name "ssc", and expose it to port 8787. You can open your browser and type `localhost:8787`, and an instance of Rstudio server will appear. Sign in with the following credentials:
+
+-   username: rstudio
+-   password: rstudio.
 
 Since the files in `/analysis` are write-protected, if you wanted to explore, you should copy the directory to your current working space:
 
 -   in the R console type: `system("cp -R /analysis .")`.
 -   open `/analysis` and double click on znk\_analysis.Rproj
 
-From here you can re-run the analyses to your heart's content.
+From here you can re-run the analyses to your heart's content. **Don't forget to stop the container when you are finished:**
+
+``` bash
+docker stop ssc
+```
 
 ### Building the container locally
 
-If you don't want to pull from docker hub, you can build the container.
+If you don't want to pull from docker hub, you can build the container locally. First, download the repository
 
-``` sh
+``` bash
+git clone https://github.com/everhartlab/sclerotinia-366.git
+cd sclerotinia-366/
 docker build -t sclerotinia-366 .
 ```
 
@@ -96,6 +108,25 @@ Once you are in the container, you can run the analysis, which is mapped to `ana
     cd analysis/
     make clean
     make
+
+Locally
+-------
+
+This project is controlled via a [Makefile](Makefile) which means that everything (analyses, tables, figures, the paper itself) is controlled via one command:
+
+    make
+
+This will bootstrap the installation (warning: it will update packages), process the data, perform the analyses, and compile the paper.
+
+> Note: This analysis is only guaranteed to work with [the stated software environment](#packages-used).
+
+Required software:
+
+-   GNU Make (If you're on Windows, you can use MinGW: <http://www.mingw.org/>)
+-   [R (version 3.4.1 or greater)](https://r-project.org)
+-   [LaTeX](https://www.latex-project.org/get)
+-   [pandoc](http://pandoc.org/) (Note: pandoc ships with Rstudio)
+-   [devtools](https://github.com/hadley/devtools#readme)
 
 Packages Used
 -------------
@@ -114,7 +145,7 @@ devtools::session_info()
 #>  language (EN)                        
 #>  collate  en_US.UTF-8                 
 #>  tz       UTC                         
-#>  date     2017-11-13
+#>  date     2017-11-14
 #> Packages ------------------------------------------------------------------------------------------
 #>  package     * version date       source                               
 #>  ade4        * 1.7-8   2017-08-09 cran (@1.7-8)                        
