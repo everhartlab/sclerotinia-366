@@ -243,11 +243,11 @@ Some studies, however have found populations that show signatures of sexual repr
 
 Nearly all population genetic studies of *S. sclerotiorum* employ a macroscopic assay to determine mycelial compatibility, the ability for fungal hyphae from different colonies to appear to grow together without forming a barrier of dead cells between them (known as a barrage line, Fig. \@ref(mcg-fig)B) [@leslie1993fungal; @sirjusingh2001characterisation].
 Mycelial compatibility has been used as a proxy for vegetative compatibility, a fungal trait controlled by several independent genes controlling the ability for two hyphae to fuse and grow as a single unit (Fig. \@ref(mcg-fig)A) [@leslie1993fungal; @schafer2006optimized].
-Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible were considered clones [@leslie1993fungal]; but correlation with genetic markers, such as microsatellites, have shown mixed results [@ford1995heterokaryon; @micali2003independence; @jo2008reassessment; @attanayake2012genetic; @papaioannou2014barrage; @lehner2017independently].
+Because of the genetic connection to vegetative compatibility, two isolates that are mycelially compatible were considered clones [@leslie1993fungal]; but correlation with genetic markers, such as microsatellites, have shown inconsistent results [@ford1995heterokaryon; @micali2003independence; @jo2008reassessment; @attanayake2012genetic; @papaioannou2014barrage; @lehner2017independently].
 Thus, the relationship between mycelial compatibility groups and clonal genotypes remains unclear.
 
-In this study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected between 2003 and 2012 from dry bean cultivars among different geographic locations in the Australia, France, Mexico, and the United States. 
-We wanted to know if the *S. sclerotiorum* populations from white mold screening nurseries were representative of the fields within the same region. 
+In the present study, we analyze and characterize the genetic and phenotypic diversity of 366 *S. sclerotiorum* isolates collected between 2003 and 2012 from dry bean cultivars among different geographic locations in the Australia, France, Mexico, and the United States. 
+We wanted to know if the *S. sclerotiorum* populations from white mold screening nurseries were representative of the producer fields within the same region. 
 As these nurseries were not treated with any chemical or cultural control of white mold, we hypothesized that these nurseries would represent the natural population of *S. sclerotiorum*.
 Furthermore, we wanted to investigate the potential effect of cultivar on genetic diversity of the pathogen by assessing three dry bean cultivars with different levels of resistance, Beryl (great northern bean, susceptible), Bunsi (navy bean, low susceptibility), and G122 (cranberry bean, partial resistance) [@otto-hanson2011variation].
 We additionally wanted to determine categorical or phenotypic variables that best predicted genetic structure and if there was correlation between multilocus haplotype and mycelial compatibility group.
@@ -275,10 +275,10 @@ The sterilized sclerotia were then placed on water agar plates (16g of Bacto aga
 An 8-mm plug from a 5- or 6-day-old culture was transferred from the advancing margin of the mycelia onto a plate of Difco potato dextrose agar (PDA at 39 g/liter of ddH$_2$O) [@otto-hanson2011variation].
 In combination with the 156 isolates described previously, we collected 210 isolates for a total of 366 isolates [@otto-hanson2011variation].
 
-## Mycelial Compatibility {-}
+## Mycelial compatibility {-}
 
 MCG was determined as described previously through co-culturing pairs of 2-day-old isolates 2.5 cm apart on Diana Sermons (DS) Medium (Fig. \@ref(mcg-fig)) [@cubeta2001mycelial]. 
-Incompatibility of different MCGs resulted in formation of a barrage line accompanied by formation of sclerotia on either side of the barrage line, indicating the limits of the isolates' growth [@otto-hanson2011variation; @kohn1990mycelial; @leslie1993fungal].
+Incompatibility of different MCGs resulted in formation of a barrage line accompanied by formation of sclerotia on either side of the barrage line, indicating the limits of mycelial growth [@otto-hanson2011variation; @kohn1990mycelial; @leslie1993fungal].
 Isolates were compared in a pairwise manner for each site and then representatives among sites were compared to determine mycelial compatibility groups by scoring compatible and incompatible interactions [@otto-hanson2011variation]. 
 No MCGs were compatible with any other MCG. 
 
@@ -287,7 +287,7 @@ No MCGs were compatible with any other MCG.
 
 Aggressiveness of each isolate was assessed using a straw test as described in @otto-hanson2011variation that rated necrotic lesion size [@petzoldt1996straw; @teran2006modified].
 Briefly, the straw test uses 21-day-old G122 plants as the host in a greenhouse setting. 
-Clear drinking straws cut to 2.5 cm and sealed were used to place two mycelial plugs of inoculum on the host plant after removing plant growth beyond 2.5 cm above the fourth node.
+Clear drinking straws cut to 2.5 cm and heat sealed were used to place two mycelial plugs of inoculum on the host plant after removing plant growth beyond 2.5 cm above the fourth node.
 Measurements of the necrotic lesion were taken 8 days later using the Modified Petzoldt and Dickson scale of 1--9, where 1 is no disease and 9 is plant death [@petzoldt1996straw; @teran2006modified].
 
 ## Microsatellite genotyping {-}
@@ -304,7 +304,7 @@ Resulting amplicons were first resolved in a 1.5% agarose gel stained with ethid
 Capillary electrophoresis (fragment analysis) of amplicons, with size standard GeneScan™ 500 LIZ®, was performed using an ABI 3730 genetic analyzer (Life Technologies Corporation, Carlsbad, CA) at the Michigan State University Genomic Sequencing Center (East Lansing, MI). 
 Alleles were scored using PeakScanner version 1.0 (Life Technologies Corporation, Carlsbad, CA) and recorded manually in a spreadsheet.
 
-## Data processing and Analysis {-}
+## Data processing and analysis {-}
 
 All data processing and analyses were performed in a Rocker "verse" project container running `r R.version.string %>% strsplit("\\(") %>% map_chr(1)`[@boettiger2017introduction; @R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/.
 Of the 16 microsatellite loci genotyped, five included compound repeats, which made it challenging to accurately/confidently bin alleles into fragment sizes expected for each locus based on the described repeat motif.
@@ -316,9 +316,9 @@ We assessed haplotype diversity by calculating Stoddart and Taylor's index (*G*)
 To assess the potential for random mating, we tested for linkage disequilibrium with the index of association, $I_A$ and its standardized version, $\bar{r}_d$ using 999 permutations [@agapow2001indices; @smith1993how; @brown1980multilocus].
 Both haplotype diversity and linkage disequilibrium were calculated in *poppr* [@kamvar2014poppr].
 
-## Assessing Importance of Variables  {-}
+## Assessing importance of variables  {-}
 
-### Distance-based Redundancy Analysis {-}
+### Distance-based redundancy analysis {-}
 
 A distance-based redundancy analysis (dbRDA) [@legendre1999distance] was performed with the function `capscale()` in the *vegan* package version `r packageVersion("vegan")` [@vegan].
 This method uses constrained ordinations on a distance matrix representing the response variable to delineate relative contribution of any number of independent explanatory variables. 
@@ -329,13 +329,13 @@ To identify explanatory variable(s) correlated with genetic variation, a forward
 An analysis of variance (ANOVA) was then performed to test for significance of the reduced model and marginal effects using 999 permutations.
 The `varpart()` function of vegan was used to determine variation partitioning of explanatory variables.
 
-### Aggressiveness Assessment {-}
+### Aggressiveness assessment {-}
 
 We used ANOVA to assess if aggressiveness (determined via straw test on a scale of 1--9 as described above) was significantly different with respect to Region, MCG, or multilocus haplotype (MLH). 
 To minimize complications due to small sample sizes, we chose the top 10 MCGs, representing 56.5% of the isolates collected, the 10 most abundant MLHs representing 26.7% of the isolates, and populations with more than five isolates.
 If ANOVA results were significantly different at $\alpha$ = 0.05, pairwise differences were assessed using Tukey's HSD test ($\alpha$ = 0.05) using the `HSD.test()` function in the package *agricolae* version `r packageVersion("agricolae")` [@mendiburu2015agricolae].
 
-### Correlating Multilocus Haplotypes with Mycelial Compatibility Groups {-}
+### Correlating multilocus haplotypes with mycelial compatibility groups {-}
 
 We wanted to assess if there was correlation between MLHs and MCGs. 
 This was performed using a network-based approach where both MLHs and MCGs were considered nodes and the number of isolates in which they were found together was the strength of the connection between an MLH and and MCG node.
@@ -343,14 +343,14 @@ The network-based approach allowed us to assess the associations between MLHs an
 To construct the network, a contingency table was created with MLHs and MCGs and converted to a directed and weighted edgelist where each edge represented a connection from an MCG to an MLH, weighted by the number of samples shared in the connection. 
 This was then converted to a bipartite graph where top nodes represented MLHs and bottom nodes represented MCGs.
 To identify clusters of MLHs and MCGs within the network, we used the cluster walktrap community detection algorithm as implemented in the `cluster_walktrap()` function in *igraph* version `r packageVersion("igraph")` [@csardi2006igraph; @pons2006computing].
-This algorithm attempts to define clusters of nodes by starting at a random nodes and performing short, random "walks" along the edges between nodes, assuming that these walks would stay within clusters.
+This algorithm attempts to define clusters of nodes by starting at a random node and performing short, random "walks" along the edges between nodes, assuming that these walks would stay within clusters.
 For this analysis, we set the number of steps within a walk to four and allowed the algorithm to use the edge weights in determining the path.
 All of the resulting communities that had fewer than 10 members were then consolidated into one.
 Community definitions were used to assess the average genetic distance (as defined by Bruvo's distance) within members of the community [@bruvo2004simple].
 
-## Genetic Diversity {-}
+## Genetic diversity {-}
 
-### Population Differentiation {-}
+### Population differentiation {-}
 
 We used analysis of molecular variance (AMOVA) with Bruvo's genetic distance in *poppr* to test for differentiation between populations in wmn and producer fields from the same region and collected in the same year [@excoffier1992analysis; @bruvo2004simple; @kamvar2014poppr].
 To identify Regions with greater differentiation, we used discriminant analysis of principal components (DAPC) as implemented in *adegenet* version `r packageVersion("adegenet")`, assessing the per-sample posterior group assignment probability [@jombart2008adegenet]. 
@@ -360,7 +360,7 @@ This function implements a cross-validation procedure to iterate over an increas
 To assess if cultivar had an influence on genetic diversity between wmn, we first subset the clone-corrected data to contain only samples from wmn and from the cultivars Beryl, Bunsi, and G122 and tested differentiation using AMOVA and DAPC as described above. 
 We additionally assessed population stability over time by calculating DAPC over the combined groups of Region and Year as described above.
 
-### Analysis of Shared Multilocus Haplotypes {-}
+### Analysis of shared multilocus haplotypes {-}
 
 We wanted to evaluate patterns of connectivity between shared multilocus haplotypes across geographic regions.
 We first tabulated the multilocus haplotypes shared between at least two populations (defined as states or countries) with the *poppr* function `mlg.crosspop()` [@kamvar2014poppr].
@@ -377,7 +377,7 @@ To ensure that we captured the same community signal, we additionally performed 
 
 A total of 366 isolates were collected from 2003 to 2012 (except 2006 and 2011) from diseased dry bean plants in 11 states in the United States as well as Australia, France, and Mexico (Table \@ref(tab:isolate-table)).
 With the 11 loci used in the analyses (Table \@ref(tab:locus-stats)), we observed a total of 165 MLHs (215 with 16 loci).
-These 11 loci are found on 7 chromosomes in the *S. sclerotiorum* genome with a minimum distance of 55Kbp between two loci on the same chromosome.
+These 11 loci are located on 7 chromosomes in the *S. sclerotiorum* genome with a minimum distance of 55Kbp between two loci on the same chromosome.
 Over 50% of the isolates came from four states, MI (`r pop_size[["MI"]]`), ND (`r pop_size[["ND"]]`), WA (`r pop_size[["WA"]]`), NE (`r pop_size[["NE"]]`). 
 Four regions had fewer than 10 isolates, Australia (`r pop_size[["Australia"]]`), WI (`r pop_size[["WI"]]`), NY (`r pop_size[["NY"]]`), ID (`r pop_size[["ID"]]`).
 We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 isolates over 37 MLHs (Fig. \@ref(biggraph)A,C).
@@ -389,14 +389,14 @@ Analysis of the haplotype accumulation curve showed no clear plateau for 11 or 1
 [^1]: Direct link: https://github.com/everhartlab/sclerotinia-366/blob/master/results/MLG-distribution.md#loading-data-and-setting-strata
 
 After clone-correction on the hierarchy of Region/Source/Host/Year, a total of `r nInd(dat11) - nInd(dat11cc)` isolates were removed from the data set, resulting in `r nInd(dat11cc)` isolates representing `r nmll(dat11cc)` MLHs that were used in subsequent analyses (Table \@ref(tab:iatab)).
-The results showed that, in terms of genotypic diversity (*H*, *G*, and $\lambda$), WA was the most diverse population with both *G* (`r signif(setNames(gdt$G, gdt$Pop)["WA"], 3)`) and $e^H$ (`r signif(setNames(exp(gdt$H), gdt$Pop)["WA"], 3)`) being close to the observed number of MLGs (`r setNames(gdt$MLG, gdt$Pop)["WA"]`). 
+The results showed that, in terms of genotypic diversity (*H*, *G*, and $\lambda$), WA was the most diverse population with both *G* (`r signif(setNames(gdt$G, gdt$Pop)["WA"], 3)`) and $e^H$ (`r signif(setNames(exp(gdt$H), gdt$Pop)["WA"], 3)`) being close to the observed number of MLHs (`r setNames(gdt$MLG, gdt$Pop)["WA"]`). 
 This indicated that there are few duplicated genotypes in WA (Table \@ref(tab:iatab)).
 A more useful metric to compare populations, however, is $E_5$, which scales from 0 to 1, where 1 indicates all unique genotypes [@grunwald2003analysis]. 
 Evaluating by $E_5$ shows that both MI and NE exhibit lower than average values, indicating that there are over-represented genotypes in the popualtions (table \@ref(tab:iatab)). 
 When we look at Mexico, we observed that it had relatively high values of $E_5$ and genotypic diversity, but low richness, as measured by *eMLG*.
 Moreover, Mexico had the lowest value for *h*, which is a measure of allelic diversity.
-Nearly all populations showed evidence for linkage (Table \@ref(tab:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
-The only exceptions are CA (*P* = `r gdtrd[["CA"]]`) and Australia (*P* = `r gdtrd[["Australia"]]`). Both of these populations showed only moderate significance with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
+Nearly all populations showed evidence of linkage (Table \@ref(tab:iatab)), which serves as evidence for clonal reproduction or other forms of non-random mating. 
+The only exceptions were CA (*P* = `r gdtrd[["CA"]]`) and Australia (*P* = `r gdtrd[["Australia"]]`). Both of these populations showed only moderate significance with $\bar{r}_d$ values of 0.03 and 0.12, respectively. 
 
 ```{r , echo = FALSE, warning = FALSE, message = FALSE, results = "asis"}
 #    Locus    Range Repeats allele      Hexp  Evenness
@@ -508,9 +508,9 @@ Edges extending from MLHs displayed to other MCGs are not shown.
 
 <!-- end fig -->
 
-## Variable Assessment {-}
+## Variable assessment {-}
 
-### Variable Contributions {-}
+### Variable contributions {-}
 
 
 <!-- RDA figure -->
@@ -543,14 +543,14 @@ Variance partitioning of the independent variables without MCG indicated aggress
 
 ### Aggressiveness {-}
 
-Agressiveness of the isolates ranged from `r paste(range(other(dat11)$meta$Severity), collapse = " to ")` with a mean of `r signif(mean(other(dat11)$meta$Severity), 3)` and median of `r signif(median(other(dat11)$meta$Severity), 3)`.
+Aggressiveness of the isolates ranged from `r paste(range(other(dat11)$meta$Severity), collapse = " to ")` with a mean of `r signif(mean(other(dat11)$meta$Severity), 3)` and median of `r signif(median(other(dat11)$meta$Severity), 3)`.
 The group mean averages were `r sprintf("%0.2f, %0.2f, and %0.2f", Raggmean, Maggmean, Haggmean)` for Region, MCG, and MLH, respectively.
 A strip plot showing the distribution of severity across these three variables simultaneously can be seen in Fig. \@ref(mcg-mlh-region-aggressiveness).
 Our assessment of aggressiveness in association with Region showed a significant effect (*P* < 1.00e^-4^), with means that ranged from 5.8 (MN) to 4.0 (CA) (Fig. \@ref(aggressiveness-boxplot), Table \@ref(tab:region-aggressiveness)). 
 MCGs also showed a significant effect (*P* < 0.001), with means that ranged from 6.0 ('MCG 44') to 4.6 ('MCG 49'; Table \@ref(tab:MCG-aggressiveness)).
 We additionally found a significant effect for MLHs (*P* < 0.001), with means that ranged from 6.0 ('MLH 78') to 4.3 ('MLH 140') (Table \@ref(tab:MLG-aggressiveness)).
 
-### Correlation of Mulitlocus Haplotypes and Mycelial Compatibility Groups {-}
+### Correlation of mulitlocus haplotypes and mycelial compatibility groups {-}
 
 In our analysis, we found `r nmll(dat11)` MLHs with `r sum(table(mll(dat11)) == 1)` singletons and `r nPop(setPop(dat11, ~MCG))` MCGs with `r sum(table(strata(dat11)$MCG) == 1)` singletons (Fig. \@ref(biggraph)A,B) where the eight most abundant MCGs represented > 51% of the data over 11 Regions, and all years except for 2012.
 Our network-based approach to correlating MLHs with MCGs revealed a large and complex network (Fig. \@ref(biggraph), Table \@ref(tab:mlg-table)). 
@@ -558,7 +558,7 @@ Community analysis showed 51 communities, `r sum(in_reach$N == 0)` of which cons
 The three communities with the most members contained eight of the 10 most abundant MCGs. 
 Comparing these communities with Bruvo's genetic distance showed an average distance of 0.451 among communities and an average distance of 0.437 within communities, which were not significantly different.
 When we assessed the number of times two different MLHs that are in the same MCG, considering these as potential heterothallic pairings that could result in sexual recombination, we found an average of `r signif(mean(in_reach$N), 3)` potential heterothallic parings per MLH. 
-Representing just four isolates, 'MLH 75' had `r big_haplotype$N` neighbors that shared the same mycelial compatibility group (Fig. \@ref(biggraph), \@ref(fullgraph)). 
+Representing just four isolates, 'MLH 75' had `r big_haplotype$N` neighbors that shared the same MCG (Fig. \@ref(biggraph), \@ref(fullgraph)). 
 Overall, there was no clear pattern to the association between MLH and MCGs. 
 
 
@@ -574,14 +574,14 @@ read_csv("../../results/tables/mlg_table.csv",
 Table: (\#tab:mlg-table) The five most abundant Multilocus Haplotypes (MLH) with
 the probability of second encounter ($P_{sex}$), Mycelial Compatibility Groups (MCG), and Regions with sample sizes in parentheses.
 
-## Structure of Shared Multilocus Haplotypes {-}
+## Structure of shared multilocus haplotypes {-}
 
 The most abundant MLH was represented by 27 isolates (Table \@ref(tab:mlg-table)) from five Regions (NE, MI, WA, CO, and ND). 
 Within Regions, haplotypes were relatively evenly distributed with moderate to high diversity (Table \@ref(tab:iatab)). 
 Of the 165 MLHs, 76 (46%) were found in at least two Regions, except those found in WI (2), ID (1), and Mexico (18) (Fig. \@ref(community-graph)).
 
 We had performed an analysis on a network where the connections represented shared MLHs across populations, weighted by $1 - P_{sex}$ (Fig. \@ref(community-graph), Table \@ref(tab:mlg-table)). 
-Community analysis of the MLHs shared between populations revealed 4 communities with a modularity of 0.17: A coastal community (CA, OR, WA, and NY), a midwest community (CO, ND, NE, MI), and an international community (Australia, France, MN).
+Community analysis of the MLHs shared between populations revealed 4 communities with a modularity of 0.17: A coastal community (CA, OR, WA, and NY), a Midwest community (CO, ND, NE, MI), and an international community (Australia, France, MN).
 Although analysis with 16 loci resulted in the removal of the NY node because it no longer shared a haplotype with OR, the same overall community structure was present with a modularity of 0.2 (Fig. \@ref(community-graph16)).
 Relative to the US, the international community appears to be driven by MLH 4, which is shared between all three populations and has a $P_{sex}$ value of 2.87e^-5^, in contrast to the abundant MLH 25, which has a $P_{sex}$ value of 0.0168.
 
@@ -597,11 +597,11 @@ Each edge represents a single MLH where its thickness represents the number of p
 <!-- end fig -->
 
 
-## Population Differentiation {-}
+## Population differentiation {-}
 
-### Analysis of Molecular Variance {-}
+### Analysis of molecular variance {-}
 
-The analysis of molecular variance (AMOVA) for clone-corrected samples over the hierarchy of Region, Source, and Year showed significant variation between Regions and Years, but no significant variation between wmn and producer fields (Table \@ref(tab:amova)).
+The AMOVA for clone-corrected samples over the hierarchy of Region, Source, and Year showed significant variation between Regions and Years, but no significant variation between wmn and producer fields (Table \@ref(tab:amova)).
 In contrast, when we compared the three cultivars, Beryl, Bunsi, and G122, we found no significant differentiation (See section on 'Host Differentiation' in the wmn-differentiation.md[^2] file in the supplemental files [@kamvar2017data]).
 
 [^2]: Direct link: https://github.com/everhartlab/sclerotinia-366/blob/master/results/wmn-differentiation.md#host-differentiation
@@ -630,14 +630,14 @@ read_csv("../../results/tables/AMOVA-year.csv",
   huxtable::print_md(max_width = 80)
 ```
 
-Table: (\#tab:amova) Comparison of populations in the white mold screening nurseries (wmn) and producer fields using an analysis of molecular variance on Bruvo's genetic distance showing no apparent differentiation between wmn and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a wmn or producer field. Bold $\Phi$ values indicate significant difference (*P* < 0.05). S.S. = Sum of Squares, d.f. = degrees of freedom.
+Table: (\#tab:amova) Comparison of populations in the white mold screening nurseries (wmn) and producer fields using an analysis of molecular variance (AMOVA) on Bruvo's genetic distance showing no apparent differentiation between wmn and other sources. The hierarchy was constructed as Source/Region where source is defined as belonging to a wmn or producer field. Bold $\Phi$ values indicate significant difference (*P* < 0.05). S.S. = Sum of Squares, d.f. = degrees of freedom.
 
 \newpage
 
 
-### Discriminant Analysis of Principal Components {-}
+### Discriminant analysis of principal components {-}
 
-Discriminant Analysis of Principal Components (DAPC) was performed by grouping Region with the first `r dapc_region$n.pca` principal components, representing `r prettify(dapc_region$var)`% of the total variance. 
+DAPC was performed by grouping Region with the first `r dapc_region$n.pca` principal components, representing `r prettify(dapc_region$var)`% of the total variance. 
 The first discriminant axis (representing `r paxis(dapc_region)`% of the discriminatory power) separated the centroid for the Mexico isolates from the rest of the data, indicating strong differentiation (Fig. \@ref(DAPC)b). 
 The second discriminant axis, representing `r paxis(dapc_region, 2)`% of the discriminatory power, separated the centroid for the CA isolates.
 The mean population assignment probabilities for all populations with n > 10 showed that only isolates from Mexico, CA, and France had > 50% probabilities of being reassigned to their source populations (Fig. \@ref(DAPC)a).
@@ -654,7 +654,7 @@ Further analysis of this population revealed that all 12 isolates in WA circa 20
 <!-- DAPC figure -->
 
 ![
-Discriminant Analysis of Principal Components on regions showing that Mexico is differentiated from other populations. 
+Discriminant Analysis of Principal Components (DAPC) on regions showing that Mexico is differentiated from other populations. 
 **A)** Scatter plot of first two components from DAPC.
 Points represent observed individuals connected to the population centroids with ellipses representing a 66% confidence interval for a normal distribution. 
 The center of each component is represented as black grid lines.
@@ -669,7 +669,7 @@ All values sum to one.
 <!-- DAPC figure 2: Electric Boogaloo-->
 
 ![
-Scatter plot of Discriminant Analysis of Principal Components on Regions and Years showing non-differentiated temporal variation NE and MI and temporal variation in WA and CA. 
+Scatter plot of Discriminant Analysis of Principal Components (DAPC) on Regions and Years showing non-differentiated temporal variation NE and MI and temporal variation in WA and CA. 
 Points (text labels) represent observed individuals connected to the population centroids with ellipses representing a 66% confidence interval for a normal distribution. 
 The center of each component is represented as black grid lines.
 A more detailed view is shown in Fig. \@ref(DAPC-RY-FULL).
@@ -734,7 +734,7 @@ DAPC is based on the principal components of allele counts [@jombart2010discrimi
 Unlike Bruvo's distance, this does not take into account the magnitude of the difference between alleles, which could inflate the distance measure in the presence of private alleles [@bruvo2004simple]. 
 While we found no evidence of private alleles in the Mexico and CA isolates, we did find that the alleles driving the first axis in Fig. \@ref(DAPC)A (`r mx_allele_string`, respectively) were overrepresented in Mexico (where >75% of the alleles came from the region).
 However, all three of these alleles, i) conform to the expected stepwise mutation model [@bruvo2004simple] and ii) are at or near the extremes of the total range (except for `r glue::glue("allele {mx_alleles[3]} at locus {mx_loci[3]}")`).
-Moreover, the fact that we find three alleles at three independent loci segregating for Mexico suggests that the pattern separating these populations from the others was not an artifact. 
+Moreover, the fact that we find three alleles at three independent loci segregating the Mexican genotypes suggests that the pattern separating these populations from the others was not an artifact. 
 We believe that the differences in populations observed from Mexico may be due to differences in climate that allow greater diversification via sexual outcrossing.
 
 Many of the isolates in our study were from temperate climates and the only isolates representing a sub-tropical climate were from Mexico.
@@ -745,16 +745,16 @@ This result however, may be driven more by geography and agricultural practice a
 
 <!-- ## Genotypic Structure {-} -->
 
-The results from our shared haplotype analysis show several populations with at least one haplotype between them, except for Mexico and two states that had fewer than three samples each (Fig. \@ref(community-graph)).
+The results from our shared haplotype analysis showed several populations with at least one haplotype between them, except for Mexico and two states that had fewer than three samples each (Fig. \@ref(community-graph)).
 Our network-based approach by treating the haplotypes as edges and weighting each edge with the inverse of $P_{sex}$ treated the edges as springs connecting the populations with the strength proportional to the probability of obtaining the same haplotype as a clone. 
-This allowed us to use a graph walking algorithm to see how close the populations were simply based off of the proportion of clones they shared.
+This allowed us to use a graph walking algorithm to see how close the populations were, simply based off of the proportion of clones they shared.
 The most abundant haplotype was shared across four populations, but its high value of $P_{sex}$ meant that it did not contribute significantly to the overall structure. 
 The graph walking algorithm was able to divide the network into three groups, but had a modularity of 0.17, which indicates that the groups are only weakly differentiated.
 
 The widespread nature of multilocus haplotypes in both wmn and production fields with relatively small values of $P_{sex}$ may indicate the spread of inoculum between regions. 
 While seedborne transmission is thought to be of insignificant epidemiological importance [@strausbaugh2003management], it has since been shown that *S. sclerotiorum* infections can be transmitted through seed [@botelho2013performance].
 Thus, we hypothesize that shared haplotypes between populations may arise due to transmission events of seed or sclerotia.
-This could explain the fact that we see shared genotypes with low $P_{sex}$ values shared between Australia, France, and the United States.
+This could explain the fact that we see shared haplotypes with low $P_{sex}$ values shared between Australia, France, and the United States.
 While we speculate that these transmission events are rare due to the genetic structuring by Region, these results suggest that seedborne infections may indeed reflect a source of inoculum.
 This may, in turn increase the risk of introducing new sources of genetic variation through potential outcrossing events.
 
@@ -779,7 +779,7 @@ Some studies have shown a correlation between MCG and MLH [@aldrich-wolfe2015gen
 
 One long-held assumption was that MCGs (as determined via barrage reaction) represent vegetative compatibility groups (VCGs) [@schafer2006optimized; @kohn1990mycelial; @lehner2015genetic], which are known to have a genetic component [@saupe2000molecular; @hall2010evolution; @strom2016genomes].
 While our protocol for assessing MCGs utilized Diana Sermons Medium [@cubeta2001mycelial] as compared to Patterson's Medium or Potato Dextrose Agar [@schafer2006optimized] for the MCG reactions, the patterns we observe are not dissimilar from what have previously been reported in the literature.
-It has been demonstrated in several Ascomycetes---including *Neurospora crassa* [@micali2003independence], *Sclerotinia homoecarpa* [@jo2008reassessment], *Verticillium dahliae* [@papaioannou2014barrage], and *S. sclerotiorum* [@ford1995heterokaryon]---that barrage reactions are independent from stable anastomosis.
+It has been demonstrated in several Ascomycetes---including *Neurospora crassa* [@micali2003independence], *Sclerotinia homoeocarpa* [@jo2008reassessment], *Verticillium dahliae* [@papaioannou2014barrage], and *S. sclerotiorum* [@ford1995heterokaryon]---that barrage reactions are independent from stable anastomosis.
 Thus, the inconsistencies in this study and other studies indicate that researchers studying *S. sclerotiorum* should not rely on MCG data derived from barrage reactions as an indicator for genetic diversity. 
 
 ## Limitations {-}
@@ -825,7 +825,7 @@ The authors declare no conflict of interest.
 
  - **Zhian N. Kamvar** analyzed the data, contributed analysis tools, wrote the paper, prepared figures and tables, edited and reviewed drafts of the paper.
 
- - **Bimal Sajeewa Amaradasa** analyzed the data, contributed analysis tools, wrote drafts of the paper, edited and reviewed drafts of the paper.
+ - **B. Sajeewa Amaradasa** analyzed the data, contributed analysis tools, wrote drafts of the paper, edited and reviewed drafts of the paper.
 
  - **Rachana Jhala** Carried out experiments (MCG assessment, aggressiveness ratings, genotyping), edited and reviewed drafts of the paper.
 
