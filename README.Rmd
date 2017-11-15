@@ -55,8 +55,8 @@ The analyses are arranged in the following order according to the [Makefile]:
 
 The analysis is controlled via two docker containers:
 
- 1. [sclerotinia-366-dependencies](https://hub.docker.com/r/zkamvar/sclerotinia-366-dependencies/): defines the complete software environment used, built on top of the [rocker/verse:3.4.2](https://hub.docker.com/r/rocker/verse) container. **(See the [Dockerfile](https://osf.io/mwv6d/))**
- 2. [sclerotinia-366](https://hub.docker.com/r/zkamvar/sclerotinia-366/) is built on top of the above container and contains the results of the analysis. **(See the [Dockerfile](https://osf.io/tvfju/))**
+ 1. [sclerotinia-366-dependencies](https://hub.docker.com/r/everhartlab/sclerotinia-366-dependencies/): defines the complete software environment used, built on top of the [rocker/verse:3.4.2](https://hub.docker.com/r/rocker/verse) container. **(See the [Dockerfile](https://osf.io/mwv6d/))**
+ 2. [sclerotinia-366](https://hub.docker.com/r/everhartlab/sclerotinia-366/) is built on top of the above container and contains the results of the analysis. **(See the [Dockerfile](https://osf.io/tvfju/))**
 
 The `sclerotinia-366-dependencies` container is regularly rebuilt on docker hub whenever `rocker/verse:3.4.2` updates and the `sclerotinia-366` container is rebuilt on [CircleCI](https://circleci.com/gh/everhartlab/sclerotinia-366) whenever the git repository is updated.
 
@@ -75,14 +75,14 @@ that it can be accurately reproduced. The image is ~3.21Gb, so be sure that you
 have enough memory on your computer to run it. 
 
 To Install Docker, go here: https://docs.docker.com/engine/installation/#desktop. Once you have downloaded docker, you can either pull the container or build it. Pulling is by far the quickest way to do this.
-The docker container is located at https://hub.docker.com/r/zkamvar/sclerotinia-366/ 
+The docker container is located at https://hub.docker.com/r/everhartlab/sclerotinia-366/ 
 
 ### RStudio Server
 
 To run the docker container, make sure you have Docker running, open your terminal and type:
 
 ```bash
-docker run --name ssc --rm -dp 8787:8787 -e ROOT=TRUE zkamvar/sclerotinia-366:latest
+docker run --name ssc --rm -dp 8787:8787 -e ROOT=TRUE everhartlab/sclerotinia-366:latest
 ```
 
 This will first check to make sure you have the container on your machine. If you don't, Docker will automatically download it for you. It will spin up the Docker container on your machine, give it the name "ssc", and expose it to port 8787. You can open your browser and type `localhost:8787`, and an instance of Rstudio server will appear. Sign in with the following credentials:

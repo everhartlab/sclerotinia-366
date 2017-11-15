@@ -28,7 +28,7 @@ RUN . /etc/environment \
 #
 ## To work on this project within the container
 #
-# docker run --rm --name ssc -dp 8787:8787 -v $(pwd):/home/rstudio/ -e ROOT=TRUE zkamvar/sclerotinia-366
+# docker run --rm --name ssc -dp 8787:8787 -v $(pwd):/home/rstudio/ -e ROOT=TRUE everhartlab/sclerotinia-366:latest
 #
 ## This will allow me to open Rstudio from my browser and work on it within the container.
 ## It should be noted, however that I still need to commit from my command line as the
