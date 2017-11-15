@@ -640,7 +640,7 @@ scatter(dat11.nc.dapc)
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-11-13
+##  date     2017-11-15
 ```
 
 ```
@@ -678,7 +678,7 @@ scatter(dat11.nc.dapc)
 ##  forcats        0.2.0   2017-01-23 CRAN (R 3.4.2)                      
 ##  foreign        0.8-69  2017-06-21 CRAN (R 3.4.2)                      
 ##  gdata          2.18.0  2017-06-06 cran (@2.18.0)                      
-##  ggcompoplot  * 0.1.0   2017-11-09 Github (zkamvar/ggcompoplot@bcf007d)
+##  ggcompoplot  * 0.1.0   2017-11-14 Github (zkamvar/ggcompoplot@bcf007d)
 ##  ggforce        0.1.1   2016-11-28 cran (@0.1.1)                       
 ##  ggplot2      * 2.2.1   2016-12-30 CRAN (R 3.4.2)                      
 ##  ggraph       * 1.0.0   2017-02-24 cran (@1.0.0)                       
