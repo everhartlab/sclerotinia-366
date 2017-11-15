@@ -2,7 +2,7 @@
 Analysis of 366 *S. sclerotiorum* isolates
 ==========================================
 
-[![Last-changedate](https://img.shields.io/badge/last%20change-2017--11--14-2F4096.svg)](https://github.com/everhartlab/sclerotinia-366/commits/master) [![Licence](https://img.shields.io/badge/license-MIT%20License-2F4096.svg)](http://choosealicense.com/licenses/mit/)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2017--11--15-2F4096.svg)](https://github.com/everhartlab/sclerotinia-366/commits/master) [![Licence](https://img.shields.io/badge/license-MIT%20License-2F4096.svg)](http://choosealicense.com/licenses/mit/)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.4.2-2F4096.svg)](https://cran.r-project.org/) [![Circle CI](https://circleci.com/gh/everhartlab/sclerotinia-366.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/everhartlab/sclerotinia-366)
 
 This repository contains data, code, and a manuscript for analysis of 366 isolates of *Sclerotinia sclerotiorum* from the US and various countries around the world.
@@ -145,7 +145,7 @@ devtools::session_info()
 #>  language (EN)                        
 #>  collate  en_US.UTF-8                 
 #>  tz       UTC                         
-#>  date     2017-11-14
+#>  date     2017-11-15
 #> Packages ------------------------------------------------------------------------------------------
 #>  package     * version date       source                               
 #>  ade4        * 1.7-8   2017-08-09 cran (@1.7-8)                        
