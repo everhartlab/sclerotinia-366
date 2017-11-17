@@ -806,34 +806,11 @@ Based on our analysis of the relationships between MCG and MLH, we found no clea
 
 All scripts, data, and resources used to generate the results presented in this publication (including Supplementary Information) are fully reproducible and available at The Open Science Framework https://osf.io/ejb5y [@kamvar2017data]. 
 
-## Funding {-}
-
-Funding for this research was provided by the North Central Soybean Research Program (#639K623) to SEE, a Layman Award (#2446) to SEE, USDA-ARS National Sclerotinia Initiative (#58-5442-2-209) to JRS/SEE, and start-up funds from the University of Nebraska-Lincoln to SEE.
-The funders had no role in study design, data collection and analysis, decision to publish, or preparation of the manuscript.
-
 ## Acknowledgements {-}
 
 The authors would like to thank Rebecca Higgins for technical support in generating the data for the MCG assessment, aggressiveness ratings, and genotyping; and for providing valuable insights into the historical context of the data collection and curation. 
 
 We would also like to thank Denita Hadziabdic and two other anonymous reviewers for their valuable comments and insights that improved the quality of the manuscript.
-
-## Conflicts of Interest {-}
-
-The authors declare no conflict of interest.
-
-## Author Contributions {-}
-
- - **Zhian N. Kamvar** analyzed the data, contributed analysis tools, wrote the paper, prepared figures and tables, edited and reviewed drafts of the paper.
-
- - **B. Sajeewa Amaradasa** analyzed the data, contributed analysis tools, wrote drafts of the paper, edited and reviewed drafts of the paper.
-
- - **Rachana Jhala** Carried out experiments (MCG assessment, aggressiveness ratings, genotyping), edited and reviewed drafts of the paper.
-
- - **Serena McCoy** Carried out experiments (MCG assessment, aggressiveness ratings, genotyping), edited and reviewed drafts of the paper.
-
- - **James R. Steadman** Conceived and designed experiments, organized network of white mold screening nurseries, provided *S. sclerotiorum* isolates, edited and reviewed drafts of the paper.
-
- - **Sydney E. Everhart** supervised data analysis, analyzed the data, contributed analysis tools, wrote the paper, edited and reviewed drafts of the paper.
 
 \newpage
 
