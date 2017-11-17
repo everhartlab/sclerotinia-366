@@ -13,6 +13,8 @@ TEXFILE="doc/manuscript/manuscript.tex"
 SUPFILE="doc/manuscript/supplementary.tex"
 PAPER="doc/manuscript/paper.tex"
 MANUSCRIPT_SHELL="doc/manuscript/manuscript_shell.tex"
+PAPER_ONLY="doc/manuscript/paper-only.tex"
+SUPPLEMENTARY_ONLY="doc/manuscript/supplementary-only.tex"
 
 # step 1: figure out where the supplementary information begins and ends.
 supplement_line=$(grep -n 'section\*{Supplementary' ${TEXFILE} | awk -F: '{print $1}')
@@ -69,15 +71,16 @@ split_head="sed -n 1,$((intro_line-1))p ${TEXFILE} > ${MANUSCRIPT_SHELL}"
 printf "\t${split_head}\n"
 eval ${split_head}
 
-printf "\\\\include{paper}" >> ${MANUSCRIPT_SHELL}
-printf "\n" >> ${MANUSCRIPT_SHELL}
-printf "\\\\include{supplementary}" >> ${MANUSCRIPT_SHELL}
+printf "\\\\input{paper}" >> ${MANUSCRIPT_SHELL}
+printf "\n\\\\newpage\n" >> ${MANUSCRIPT_SHELL}
+printf "\\\\input{supplementary}" >> ${MANUSCRIPT_SHELL}
 printf "\n" >> ${MANUSCRIPT_SHELL}
 
-split_foot="printf '\\\\end{document}' >> ${MANUSCRIPT_SHELL}"
-printf "\t${split_foot}\n"
-eval ${split_foot}
+split_foot="printf '\\\\end{document}' >> "
+printf "\t${split_foot}${MANUSCRIPT_SHELL}\n"
+eval "${split_foot}${MANUSCRIPT_SHELL}"
 printf "\n" >> ${MANUSCRIPT_SHELL}
+
 
 printf "\nCreating manuscript...\n"
 cd doc/manuscript
@@ -85,3 +88,6 @@ pdflatex manuscript_shell
 pdflatex manuscript_shell
 pdflatex manuscript_shell
 cd -
+
+printf "\ndone\n"
+printf "\n\nNow open manuscript_shell.pdf and split it into the supplementary info and the manuscript manually\n"
