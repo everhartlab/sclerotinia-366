@@ -12,11 +12,13 @@
 TEXFILE="doc/manuscript/manuscript.tex"
 SUPFILE="doc/manuscript/supplementary.tex"
 PAPER="doc/manuscript/paper.tex"
-TEXLEN=$(wc -l ${TEXFILE} | awk '{print $1}')
+MANUSCRIPT_SHELL="doc/manuscript/manuscript_shell.tex"
 
 # step 1: figure out where the supplementary information begins and ends.
 supplement_line=$(grep -n 'section\*{Supplementary' ${TEXFILE} | awk -F: '{print $1}')
 references_line=$(grep -n 'section\*{References' ${TEXFILE} | awk -F: '{print $1}')
+intro_line=$(grep -n 'section\*{Introduction' ${TEXFILE} | awk -F: '{print $1}')
+end_line=$(grep -n '\end{document' ${TEXFILE} | awk -F: '{print $1}')
 
 printf "Supplementary info starts on line ${supplement_line} and ends on $((references_line - 1))\n"
 
@@ -48,9 +50,38 @@ fi;
 
 # step 3: split the tex documents into two files to follow https://tex.stackexchange.com/a/87011/77699
 printf "\nSplitting the document...\n"
-printf "\tsed -n ${supplement_line},$((references_line-1))p ${TEXFILE} > ${SUPFILE}\n"
-sed -n ${supplement_line},$((references_line-1))p ${TEXFILE} > ${SUPFILE}
-printf "\tsed -n 1,$((supplement_line-1))p ${TEXFILE} > ${PAPER}\n"
-sed -n 1,$((supplement_line-1))p ${TEXFILE} > ${PAPER}
-printf "\tsed -n ${references_line},${texlen}p ${TEXFILE} >> ${PAPER}\n"
-sed -n ${references_line},${TEXLEN}p ${TEXFILE} >> ${PAPER}
+
+split_sup="sed -n ${supplement_line},$((references_line-1))p ${TEXFILE} > ${SUPFILE}"
+printf "\t${split_sup}\n"
+eval ${split_sup}
+
+split_body="sed -n ${intro_line},$((supplement_line-1))p ${TEXFILE} > ${PAPER}"
+printf "\t${split_body}\n"
+eval ${split_body}
+
+split_ref="sed -n ${references_line},$((end_line-1))p ${TEXFILE} >> ${PAPER}"
+printf "\t${split_ref}\n"
+eval ${split_ref}
+
+printf "\nCreating new document...\n"
+
+split_head="sed -n 1,$((intro_line-1))p ${TEXFILE} > ${MANUSCRIPT_SHELL}"
+printf "\t${split_head}\n"
+eval ${split_head}
+
+printf "\\\\include{paper}" >> ${MANUSCRIPT_SHELL}
+printf "\n" >> ${MANUSCRIPT_SHELL}
+printf "\\\\include{supplementary}" >> ${MANUSCRIPT_SHELL}
+printf "\n" >> ${MANUSCRIPT_SHELL}
+
+split_foot="printf '\\\\end{document}' >> ${MANUSCRIPT_SHELL}"
+printf "\t${split_foot}\n"
+eval ${split_foot}
+printf "\n" >> ${MANUSCRIPT_SHELL}
+
+printf "\nCreating manuscript...\n"
+cd doc/manuscript
+pdflatex manuscript_shell
+pdflatex manuscript_shell
+pdflatex manuscript_shell
+cd -
