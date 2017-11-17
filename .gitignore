@@ -9,3 +9,7 @@ cache/*
 results/bootstrap.txt
 sclerotinia-366.tar
 doc/manuscript/diff*
+doc/manuscript/*aux
+doc/manuscript/*log
+doc/manuscript/*out
+
