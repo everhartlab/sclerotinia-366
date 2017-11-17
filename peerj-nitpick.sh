@@ -28,8 +28,13 @@ echo "I am updating their names now ..."
 counter=1;
 for i in ${figures[@]};
 do
-  fig=$(sed "${i}q;d" ${TEXFILE} | sed -r "s/^.+\{(.+)\}/\1/")
+  fig=$(sed "${i}q;d" ${TEXFILE} | sed -r "s/^.+\{(.+)\}/\1/" | sed 's@../../@@')
   new=$(sed -r "s@^(.+)/([^/]+\.pdf)@\1/Fig${counter}.pdf@" <<< ${fig})
-  echo "Figure ${fig} will become ${new}"
+  printf "sed -i \"s@${fig}@${new}@\" ${TEXFILE}\n"
+  sed -i "s@${fig}@${new}@" ${TEXFILE}
+  printf "cp ${fig} ${new}\n"
+  cp ${fig} ${new}
+  now=$(sed "${i}q;d" ${TEXFILE} | sed -r "s/^.+\{(.+)\}/\1/" | sed 's@../../@@')
+  printf "Figure ${fig} is now ${now}\n\n"
   counter=$((counter + 1))
 done
