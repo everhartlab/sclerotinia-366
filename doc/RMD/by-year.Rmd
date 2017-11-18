@@ -236,10 +236,20 @@ gg_region_year_micanewa <- ggscatter(regyear.dapc, strata(dat11cc), filter = quo
   theme(strip.text = element_text(face = "bold", hjust = 0.05)) +
   theme(panel.border = element_blank()) +
   theme(legend.key = element_rect(fill = "grey95"))
-gg_region_year_micanewa
+# 2017-11-18
+# PeerJ has asked for me to label this figure with A-D for silly reasons
+gg_region_year_mincanewa_lab <- gg_region_year_micanewa %+%
+  mutate(gg_region_year_micanewa$data, 
+         Region = case_when(
+           Region == "NE" ~ "A (NE)",
+           Region == "MI" ~ "B (MI)",
+           Region == "WA" ~ "C (WA)",
+           Region == "CA" ~ "D (CA)"
+         ))
+gg_region_year_mincanewa_lab
 if (!interactive()) {
     ggsave(filename = file.path(PROJHOME, "results/figures/publication/dapc_region_year_micanewa.pdf"),
-       plot = gg_region_year_micanewa,
+       plot = gg_region_year_mincanewa_lab,
        width = 88,
        height = 0.8*88,
        units = "mm",
