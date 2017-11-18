@@ -2,7 +2,7 @@
 Analysis of 366 *S. sclerotiorum* isolates
 ==========================================
 
-[![Last-changedate](https://img.shields.io/badge/last%20change-2017--11--15-2F4096.svg)](https://github.com/everhartlab/sclerotinia-366/commits/master) [![Licence](https://img.shields.io/badge/license-MIT%20License-2F4096.svg)](http://choosealicense.com/licenses/mit/)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2017--11--18-2F4096.svg)](https://github.com/everhartlab/sclerotinia-366/commits/master) [![Licence](https://img.shields.io/badge/license-MIT%20License-2F4096.svg)](http://choosealicense.com/licenses/mit/)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.4.2-2F4096.svg)](https://cran.r-project.org/) [![Circle CI](https://circleci.com/gh/everhartlab/sclerotinia-366.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/everhartlab/sclerotinia-366)
 
 This repository contains data, code, and a manuscript for analysis of 366 isolates of *Sclerotinia sclerotiorum* from the US and various countries around the world.
@@ -13,12 +13,12 @@ Citations
 Preprint
 --------
 
-> Kamvar ZN, Amaradasa BS, Jhala R, McCoy S, Steadman JR, Everhart SE. (2017) Population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean in the United States. *PeerJ Preprints* 5:e3311v1 <https://doi.org/10.7287/peerj.preprints.3311v1>
+> Kamvar ZN, Amaradasa BS, Jhala R, McCoy S, Steadman JR, Everhart SE. (2017) Population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean (*Phaseolus vulgaris*) in the United States. *PeerJ Preprints* 5:e3311v2 <https://doi.org/10.7287/peerj.preprints.3311v2>
 
 Data and Code
 -------------
 
-> Kamvar, Z. N., Amaradasa, B. S., Jhala, R., McCoy, S., Steadman, J. R., & Everhart, S. E. (2017, November). Data and analysis for population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean (*Phaseolus vulgaris*) in the United States. <http://doi.org/10.17605/OSF.IO/EJB5Y>
+> Kamvar, Z. N., Amaradasa, B. S., Jhala, R., McCoy, S., Steadman, J. R., & Everhart, S. E. (2017, November). Data and analysis for population structure and phenotypic variation of *Sclerotinia sclerotiorum* from dry bean (*Phaseolus vulgaris*) in the United States. <https://doi.org/10.17605/OSF.IO/K8WTM>
 
 TOC
 ===
@@ -145,7 +145,7 @@ devtools::session_info()
 #>  language (EN)                        
 #>  collate  en_US.UTF-8                 
 #>  tz       UTC                         
-#>  date     2017-11-15
+#>  date     2017-11-18
 #> Packages ------------------------------------------------------------------------------------------
 #>  package     * version date       source                               
 #>  ade4        * 1.7-8   2017-08-09 cran (@1.7-8)                        
