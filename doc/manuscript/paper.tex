@@ -201,36 +201,38 @@ analysis}\label{data-processing-and-analysis}
 
 All data processing and analyses were performed in a Rocker ``verse''
 project container running R version 3.4.2 (Boettiger \& Eddelbuettel,
-2017; R Core Team, 2017) and are openly available and reproducible at
-\url{https://github.com/everhartlab/sclerotinia-366/}. Of the 16
-microsatellite loci genotyped, five included compound repeats, which
-made it challenging to accurately/confidently bin alleles into fragment
-sizes expected for each locus based on the described repeat motif. Loci
-with compound repeats were removed for the reported statistics. To
-ensure the integrity of the results we additionally processed these loci
-and included them in concurrent analyses. We assessed the power of our
-11 markers by generating a genotype accumulation curve in the R package
-\emph{poppr} version 2.5.0, looking for evidence of saturation, which
-would indicate that loci were sufficiently sampled to adequately
-represent the full set of haplotypes (Arnaud-Hanod et al., 2007; Kamvar
-et al., 2015). To avoid including isolates potentially collected from
-the same plant (which increases the probability of collecting sclerotia
-from the same point of infection more than once), data were
-clone-corrected on a hierarchy of Region/Source/Host/Year---meaning that
-duplicated genotypes were reduced to a single observation when they were
-collected in the same year from the same host cultivar located in the
-same source field (wmn or producer)---for subsequent analysis. We
-assessed haplotype diversity by calculating Stoddart and Taylor's index
-(\emph{G}) (Stoddart \& Taylor, 1988), Shannon's index (\emph{H})
-(Shannon, 1948), Simpson's index (\(\lambda\)) (Simpson, 1949), evenness
-(\(E_5\)), and the expected number of multilocus haplotypes
-(\emph{eMLH}) (Hurlbert, 1971; Heck et al., 1975; Pielou, 1975; Grünwald
-et al., 2003). To assess the potential for random mating, we tested for
-linkage disequilibrium with the index of association, \(I_A\) and its
-standardized version, \(\bar{r}_d\) using 999 permutations (Brown et
-al., 1980; Smith et al., 1993; Agapow \& Burt, 2001). Both haplotype
-diversity and linkage disequilibrium were calculated in \emph{poppr}
-(Kamvar et al., 2014).
+2017; R Core Team, 2017). These analyses were rendered as dynamic
+documents with the R packages \emph{knitr} (version 1.17) and
+\emph{ezknitr} (version 0.6) and are openly available and reproducible
+at \url{https://github.com/everhartlab/sclerotinia-366/} (Attali, 2016;
+Xie, 2017). Of the 16 microsatellite loci genotyped, five included
+compound repeats, which made it challenging to accurately/confidently
+bin alleles into fragment sizes expected for each locus based on the
+described repeat motif. Loci with compound repeats were removed for the
+reported statistics. To ensure the integrity of the results we
+additionally processed these loci and included them in concurrent
+analyses. We assessed the power of our 11 markers by generating a
+genotype accumulation curve in the R package \emph{poppr} version 2.5.0,
+looking for evidence of saturation, which would indicate that loci were
+sufficiently sampled to adequately represent the full set of haplotypes
+(Arnaud-Hanod et al., 2007; Kamvar et al., 2015). To avoid including
+isolates potentially collected from the same plant (which increases the
+probability of collecting sclerotia from the same point of infection
+more than once), data were clone-corrected on a hierarchy of
+Region/Source/Host/Year---meaning that duplicated genotypes were reduced
+to a single observation when they were collected in the same year from
+the same host cultivar located in the same source field (wmn or
+producer)---for subsequent analysis. We assessed haplotype diversity by
+calculating Stoddart and Taylor's index (\emph{G}) (Stoddart \& Taylor,
+1988), Shannon's index (\emph{H}) (Shannon, 1948), Simpson's index
+(\(\lambda\)) (Simpson, 1949), evenness (\(E_5\)), and the expected
+number of multilocus haplotypes (\emph{eMLH}) (Hurlbert, 1971; Heck et
+al., 1975; Pielou, 1975; Grünwald et al., 2003). To assess the potential
+for random mating, we tested for linkage disequilibrium with the index
+of association, \(I_A\) and its standardized version, \(\bar{r}_d\)
+using 999 permutations (Brown et al., 1980; Smith et al., 1993; Agapow
+\& Burt, 2001). Both haplotype diversity and linkage disequilibrium were
+calculated in \emph{poppr} (Kamvar et al., 2014).
 
 \subsection*{Assessing importance of
 variables}\label{assessing-importance-of-variables}
@@ -934,7 +936,7 @@ NaN\strut
 
 \begin{figure}
 \centering
-\includegraphics[width=1.00000\textwidth]{../../results/figures/publication/Fig1.pdf}
+\includegraphics[width=1.00000\textwidth]{../../results/figures/publication/mcg-subgraph-with-context.pdf}
 \caption{Associations between Mycelial Compatibility Groups and
 Multilocus Haplotypes. \textbf{A)} Barplot of Mycelial Compatibility
 Group (MCG) abundance in descending order. Singletons (46) were
@@ -963,7 +965,7 @@ from MLHs displayed to other MCGs are not shown.}\label{biggraph}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.61000\textwidth]{../../results/figures/publication/Fig2.pdf}
+\includegraphics[width=0.61000\textwidth]{../../results/figures/publication/Figure7Z.pdf}
 \caption{Biplot showing five most influential explanatory variables
 (arrows) overlayed on the first two eigenvectors of distance based
 redundancy analysis of \emph{Sclerotinia sclerotiorum} isolates. The
@@ -975,7 +977,7 @@ space.}\label{rda-biplot}
 
 \begin{figure}
 \centering
-\includegraphics{../../results/figures/publication/Fig3.pdf}
+\includegraphics{../../results/figures/publication/aggressiveness.pdf}
 \caption{Strip plot of aggressiveness by population arranged in
 descending order of mean aggressiveness for all populations with N
 \textgreater{} 5. White bars represent mean value. Circles represent
@@ -1109,7 +1111,7 @@ a \(P_{sex}\) value of 0.0168.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.61000\textwidth]{../../results/figures/publication/Fig4.pdf}
+\includegraphics[width=0.61000\textwidth]{../../results/figures/publication/mlg-11.pdf}
 \caption{Network of populations (nodes/circles) and their shared
 multilocus haplotypes (MLH) (edges/lines) genotyped over 11 loci. Each
 node is labeled with \textbf{name (number of MLHs shared/number of MLHs
@@ -1271,7 +1273,7 @@ haplotypes were shared with CA, and three were shared with France (Fig.
 
 \begin{figure}
 \centering
-\includegraphics[width=1.00000\textwidth]{../../results/figures/publication/Fig5.pdf}
+\includegraphics[width=1.00000\textwidth]{../../results/figures/publication/DAPC.pdf}
 \caption{Discriminant Analysis of Principal Components (DAPC) on regions
 showing that Mexico is differentiated from other populations.
 \textbf{A)} Scatter plot of first two components from DAPC. Points
@@ -1287,7 +1289,7 @@ size. All values sum to one.}\label{DAPC}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.61000\textwidth]{../../results/figures/publication/Fig6.pdf}
+\includegraphics[width=0.61000\textwidth]{../../results/figures/publication/dapc_region_year_micanewa.pdf}
 \caption{Scatter plot of Discriminant Analysis of Principal Components
 (DAPC) on Regions and Years showing non-differentiated temporal
 variation NE and MI and temporal variation in WA and CA. Points (text
@@ -1635,6 +1637,11 @@ Atallah, Z. K., Larget, B., Chen, X., \& Johnson, D. A. (2004). High
 genetic diversity, phenotypic uniformity, and evidence of outcrossing in
 \emph{Sclerotinia sclerotiorum} in the Columbia Basin of Washington
 State. \emph{Phytopathology}, \emph{94}, 737--742.
+
+\hypertarget{ref-attali2016ezknitr}{}
+Attali, D. (2016). ezknitr: Avoid the typical working directory pain
+when using ``knitr''. \emph{The Journal of Open Source Software},
+\emph{1}(5), 75. \url{https://doi.org/10.21105/joss.00075}
 
 \hypertarget{ref-attanayake2013sclerotinia}{}
 Attanayake, R. N., Carter, P. A., Jiang, D., del Río-Mendoza, L., \&
@@ -2114,6 +2121,10 @@ Springer-Verlag New York. Retrieved from \url{http://ggplot2.org}
 Wickham, H., Francois, R., Henry, L., \& Müller, K. (2017). \emph{dplyr:
 A grammar of data manipulation}. Retrieved from
 \url{https://CRAN.R-project.org/package=dplyr}
+
+\hypertarget{ref-xie2017knitr}{}
+Xie, Y. (2017). \emph{knitr: A general-purpose package for dynamic
+report generation in R}. Retrieved from \url{https://yihui.name/knitr/}
 
 
 
