@@ -306,7 +306,8 @@ Alleles were scored using PeakScanner version 1.0 (Life Technologies Corporation
 
 ## Data processing and analysis {-}
 
-All data processing and analyses were performed in a Rocker "verse" project container running `r R.version.string %>% strsplit("\\(") %>% map_chr(1)`[@boettiger2017introduction; @R] and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/.
+All data processing and analyses were performed in a Rocker "verse" project container running `r R.version.string %>% strsplit("\\(") %>% map_chr(1)`[@boettiger2017introduction; @R]. 
+These analyses were rendered as dynamic documents with the R packages *knitr* (version `r packageVersion("knitr")`) and *ezknitr* (version `r packageVersion("ezknitr")`) and are openly available and reproducible at https://github.com/everhartlab/sclerotinia-366/ [@attali2016ezknitr; @xie2017knitr].
 Of the 16 microsatellite loci genotyped, five included compound repeats, which made it challenging to accurately/confidently bin alleles into fragment sizes expected for each locus based on the described repeat motif.
 Loci with compound repeats were removed for the reported statistics.
 To ensure the integrity of the results we additionally processed these loci and included them in concurrent analyses.
