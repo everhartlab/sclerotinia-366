@@ -312,8 +312,10 @@ Of the 16 microsatellite loci genotyped, five included compound repeats, which m
 Loci with compound repeats were removed for the reported statistics.
 To ensure the integrity of the results we additionally processed these loci and included them in concurrent analyses.
 We assessed the power of our 11 markers by generating a genotype accumulation curve in the R package *poppr* version `r packageVersion("poppr")`, looking for evidence of saturation, which would indicate that loci were sufficiently sampled to adequately represent the full set of haplotypes [@arnaud2007standardizing; @kamvar2015novel].
+We additionally assessed within-locus allelic diversity by measuring Nei's gene diversity (*h*) [@nei1978estimation] and allelic evenness ($E_5$) [@pielou1975ecological; @grunwald2003analysis].
 To avoid including isolates potentially collected from the same plant (which increases the probability of collecting sclerotia from the same point of infection more than once), data were clone-corrected on a hierarchy of Region/Source/Host/Year---meaning that duplicated genotypes were reduced to a single observation when they were collected in the same year from the same host cultivar located in the same source field (wmn or producer)---for subsequent analysis. 
-We assessed haplotype diversity by calculating Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], evenness ($E_5$), and the expected number of multilocus haplotypes (*eMLH*) [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
+We assessed haplotype diversity by calculating Stoddart and Taylor's index (*G*) [@stoddart1988genotypic], Shannon's index (*H*) [@shannon2001mathematical], Simpson's index ($\lambda$) [@simpson1949measurement], evenness ($E_5$), and the expected number of multilocus haplotypes via rarefaction (*eMLH*) with 10 samples [@heck1975explicit; @hurlbert1971nonconcept; @pielou1975ecological; @grunwald2003analysis]. 
+If all haplotypes in are equally abundant, both *G* and $e^H$ (the exponentiation of *H*) are expected to be equal to the number of haplotypes, $\lambda$ and $E_5$ are expected to equal one, and *eMLH* is expected to be at its maximum value (in this case, 10) [@grunwald2003analysis].
 To assess the potential for random mating, we tested for linkage disequilibrium with the index of association, $I_A$ and its standardized version, $\bar{r}_d$ using 999 permutations [@agapow2001indices; @smith1993how; @brown1980multilocus].
 Both haplotype diversity and linkage disequilibrium were calculated in *poppr* [@kamvar2014poppr].
 
@@ -384,7 +386,7 @@ Four regions had fewer than 10 isolates, Australia (`r pop_size[["Australia"]]`)
 We observed 87 MCGs, the most abundant of which ('MCG 5') was represented by 73 isolates over 37 MLHs (Fig. \@ref(biggraph)A,C).
 
 The number of observed alleles per locus ranged from two to 10 with an average of `r signif(Amean, 3)` (Table \@ref(tab:locus-stats)).
-Locus `r loc_table$Locus[loc_table$allele==2]`, which contained only 2 alleles, showed low values of both *h* (`r signif(loc_table$Hexp[loc_table$allele==2], 3)`) and evenness (`r signif(loc_table$Evenness[loc_table$allele==2], 3)`), indicating that there was one dominant allele present. 
+Locus `r loc_table$Locus[loc_table$allele==2]`, which contained only 2 alleles, showed low values of both *h* (`r signif(loc_table$Hexp[loc_table$allele==2], 3)`) and $E_5$ (`r signif(loc_table$Evenness[loc_table$allele==2], 3)`), indicating that there was one dominant allele present. 
 Analysis of the haplotype accumulation curve showed no clear plateau for 11 or 16 loci (See section on 'Loading Data and Setting Strata' in the MLG-distribution.md[^1] file in the supplemental files [@kamvar2017data]), indicating that we would likely obtain more multilocus haplotypes if we were to genotype more loci. 
 
 [^1]: Direct link: https://github.com/everhartlab/sclerotinia-366/blob/master/results/MLG-distribution.md#loading-data-and-setting-strata
@@ -414,32 +416,33 @@ The only exceptions were CA (*P* = `r gdtrd[["CA"]]`) and Australia (*P* = `r gd
 # 11 114-4 339--416 4.00000     10 0.8306310 0.8012051
 
 loc_table %>%
-  mutate(allele = round(allele, 2)) %>%
-  mutate(Repeats = case_when(
-    Locus == "5-2"   ~ "(GT)",
-    Locus == "6-2"   ~ "(TTTTTC)(TTTTTG)(TTTTTC)", # "(TTTTTC)~2~(TTTTTG)~2~(TTTTTC)",
-    Locus == "7-2"   ~ "(GA)",
-    Locus == "8-3"   ~ "(CA)",
-    Locus == "9-2"   ~ "(CA)(CT)", # "(CA)~9~(CT)~9~",
-    Locus == "12-2"  ~ "(CA)",
-    Locus == "17-3"  ~ "(TTA)",
-    Locus == "20-3"  ~ "(GT)GG(GT)", # "(GT)~7~GG(GT)~5~",
-    Locus == "55-4"  ~ "(TACA)",
-    Locus == "110-4" ~ "(TATG)",
-    Locus == "114-4" ~ "(TAGA)"
-  )) %>%
-  rename(`*h*` = Hexp) %>%
-  rename(`No. alleles` = allele) %>%
-  rename(`Repeat Motif` = Repeats) %>%
-  huxtable::as_huxtable(add_colnames = TRUE) %>%
-  huxtable::set_number_format(huxtable::everywhere, 3:4, 0) %>%
-  huxtable::set_number_format(huxtable::everywhere, 5:6, 2) %>%
-  huxtable::set_align(huxtable::everywhere, 2:6, "right") %>%
-  huxtable::set_col_width(c(0.06, 0.07, 0.25, 0.1, 0.05, 0.075)) %>%
-  huxtable::print_md(max_width = 100)
+mutate(allele = round(allele, 2)) %>%
+mutate(Repeats = case_when(
+Locus == "5-2"   ~ "(GT)",
+Locus == "6-2"   ~ "(TTTTTC)(TTTTTG)(TTTTTC)", # "(TTTTTC)~2~(TTTTTG)~2~(TTTTTC)",
+Locus == "7-2"   ~ "(GA)",
+Locus == "8-3"   ~ "(CA)",
+Locus == "9-2"   ~ "(CA)(CT)", # "(CA)~9~(CT)~9~",
+Locus == "12-2"  ~ "(CA)",
+Locus == "17-3"  ~ "(TTA)",
+Locus == "20-3"  ~ "(GT)GG(GT)", # "(GT)~7~GG(GT)~5~",
+Locus == "55-4"  ~ "(TACA)",
+Locus == "110-4" ~ "(TATG)",
+Locus == "114-4" ~ "(TAGA)"
+)) %>%
+rename(`*h*` = Hexp) %>%
+rename(`$E_5$` = Evenness) %>%
+rename(`No. alleles` = allele) %>%
+rename(`Repeat Motif` = Repeats) %>%
+huxtable::as_huxtable(add_colnames = TRUE) %>%
+huxtable::set_number_format(huxtable::everywhere, 3:4, 0) %>%
+huxtable::set_number_format(huxtable::everywhere, 5:6, 2) %>%
+huxtable::set_align(huxtable::everywhere, 2:6, "right") %>%
+huxtable::set_col_width(c(0.06, 0.07, 0.25, 0.1, 0.05, 0.075)) %>%
+huxtable::print_md(max_width = 100)
 ```
 
-Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's Gene Diversity [@nei1978estimation]. Average *h* = `r signif(Hmean, 3)`, average Evenness = `r signif(Emean, 3)`, average no. alleles = `r signif(Amean, 3)`
+Table: (\#tab:locus-stats) Allelic diversity on full data set at loci used in this study. *h* = Nei's 1978 gene diversity, $E_5$ = Evenness. Average *h* = `r signif(Hmean, 3)`, average $E_5$ = `r signif(Emean, 3)`, average no. alleles = `r signif(Amean, 3)`
 
 \newpage
 
