@@ -13,7 +13,7 @@ ANALYSES   := results/table-1.md \
               results/wmn-differentiation.md\
               results/by-year.md \
               results/compare-aldrich-wolfe.md
-MANUSCRIPT := doc/manuscript/manuscript.pdf
+MANUSCRIPT := doc/manuscript/manuscript.pdf doc/manuscript/manuscript_shell.tex
 COMPONENTS := doc/manuscript/abstract.md \
               doc/manuscript/ssc_bibliography.bib \
               doc/manuscript/wlpeerj.cls \
@@ -69,6 +69,9 @@ results/%.md : doc/RMD/%.Rmd
 	              out_dir = '$(@D)', \
 	              keep_html = FALSE \
 	              )"
+
+doc/manuscript/manuscript_shell.tex : doc/manuscript/manuscript.pdf
+	./move-supplementary.sh
 
 doc/manuscript/%.pdf : doc/manuscript/%.Rmd $(COMPONENTS) $(ANALYSES)
 	R --slave -e "rmarkdown::render('$<')"
