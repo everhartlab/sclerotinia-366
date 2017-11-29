@@ -306,36 +306,46 @@ analysis}\label{data-processing-and-analysis}
 
 All data processing and analyses were performed in a Rocker ``verse''
 project container running R version 3.4.2 (Boettiger \& Eddelbuettel,
-2017; R Core Team, 2017) and are openly available and reproducible at
-\url{https://github.com/everhartlab/sclerotinia-366/}. Of the 16
-microsatellite loci genotyped, five included compound repeats, which
-made it challenging to accurately/confidently bin alleles into fragment
-sizes expected for each locus based on the described repeat motif. Loci
-with compound repeats were removed for the reported statistics. To
-ensure the integrity of the results we additionally processed these loci
-and included them in concurrent analyses. We assessed the power of our
-11 markers by generating a genotype accumulation curve in the R package
-\emph{poppr} version 2.5.0, looking for evidence of saturation, which
-would indicate that loci were sufficiently sampled to adequately
-represent the full set of haplotypes (Arnaud-Hanod et al., 2007; Kamvar
-et al., 2015). To avoid including isolates potentially collected from
-the same plant (which increases the probability of collecting sclerotia
-from the same point of infection more than once), data were
-clone-corrected on a hierarchy of Region/Source/Host/Year---meaning that
-duplicated genotypes were reduced to a single observation when they were
-collected in the same year from the same host cultivar located in the
-same source field (wmn or producer)---for subsequent analysis. We
-assessed haplotype diversity by calculating Stoddart and Taylor's index
-(\emph{G}) (Stoddart \& Taylor, 1988), Shannon's index (\emph{H})
-(Shannon, 1948), Simpson's index (\(\lambda\)) (Simpson, 1949), evenness
-(\(E_5\)), and the expected number of multilocus haplotypes
-(\emph{eMLH}) (Hurlbert, 1971; Heck et al., 1975; Pielou, 1975; Grünwald
-et al., 2003). To assess the potential for random mating, we tested for
-linkage disequilibrium with the index of association, \(I_A\) and its
-standardized version, \(\bar{r}_d\) using 999 permutations (Brown et
-al., 1980; Smith et al., 1993; Agapow \& Burt, 2001). Both haplotype
-diversity and linkage disequilibrium were calculated in \emph{poppr}
-(Kamvar et al., 2014).
+2017; R Core Team, 2017). These analyses were rendered as dynamic
+documents with the R packages \emph{knitr} (version 1.17) and
+\emph{ezknitr} (version 0.6) and are openly available and reproducible
+at \url{https://github.com/everhartlab/sclerotinia-366/} (Attali, 2016;
+Xie, 2017). Of the 16 microsatellite loci genotyped, five included
+compound repeats, which made it challenging to accurately/confidently
+bin alleles into fragment sizes expected for each locus based on the
+described repeat motif. Loci with compound repeats were removed for the
+reported statistics. To ensure the integrity of the results we
+additionally processed these loci and included them in concurrent
+analyses. We assessed the power of our 11 markers by generating a
+genotype accumulation curve in the R package \emph{poppr} version 2.5.0,
+looking for evidence of saturation, which would indicate that loci were
+sufficiently sampled to adequately represent the full set of haplotypes
+(Arnaud-Hanod et al., 2007; Kamvar et al., 2015). We additionally
+assessed within-locus allelic diversity by measuring Nei's gene
+diversity (\emph{h}) (Nei, 1978) and allelic evenness (\(E_5\)) (Pielou,
+1975; Grünwald et al., 2003). To avoid including isolates potentially
+collected from the same plant (which increases the probability of
+collecting sclerotia from the same point of infection more than once),
+data were clone-corrected on a hierarchy of
+Region/Source/Host/Year---meaning that duplicated genotypes were reduced
+to a single observation when they were collected in the same year from
+the same host cultivar located in the same source field (wmn or
+producer)---for subsequent analysis. We assessed haplotype diversity by
+calculating Stoddart and Taylor's index (\emph{G}) (Stoddart \& Taylor,
+1988), Shannon's index (\emph{H}) (Shannon, 1948), Simpson's index
+(\(\lambda\)) (Simpson, 1949), evenness (\(E_5\)), and the expected
+number of multilocus haplotypes via rarefaction (\emph{eMLH}) with 10
+samples (Hurlbert, 1971; Heck et al., 1975; Pielou, 1975; Grünwald et
+al., 2003). If all haplotypes in are equally abundant, both \emph{G} and
+\(e^H\) (the exponentiation of \emph{H}) are expected to be equal to the
+number of haplotypes, \(\lambda\) and \(E_5\) are expected to equal one,
+and \emph{eMLH} is expected to be at its maximum value (in this case,
+10) (Grünwald et al., 2003). To assess the potential for random mating,
+we tested for linkage disequilibrium with the index of association,
+\(I_A\) and its standardized version, \(\bar{r}_d\) using 999
+permutations (Brown et al., 1980; Smith et al., 1993; Agapow \& Burt,
+2001). Both haplotype diversity and linkage disequilibrium were
+calculated in \emph{poppr} (Kamvar et al., 2014).
 
 \subsection*{Assessing importance of
 variables}\label{assessing-importance-of-variables}
@@ -496,7 +506,7 @@ the most abundant of which (`MCG 5') was represented by 73 isolates over
 The number of observed alleles per locus ranged from two to 10 with an
 average of 6.27 (Table \ref{tab:locus-stats}). Locus 20-3, which
 contained only 2 alleles, showed low values of both \emph{h} (0.0533)
-and evenness (0.42), indicating that there was one dominant allele
+and \(E_5\) (0.42), indicating that there was one dominant allele
 present. Analysis of the haplotype accumulation curve showed no clear
 plateau for 11 or 16 loci (See section on `Loading Data and Setting
 Strata' in the MLG-distribution.md\footnote{Direct link:
@@ -530,9 +540,9 @@ showed only moderate significance with \(\bar{r}_d\) values of 0.03 and
 
 \begin{longtable}[]{@{}rrrlrl@{}}
 \caption{\label{tab:locus-stats} Allelic diversity on full data set at loci
-used in this study. \emph{h} = Nei's Gene Diversity (Nei, 1978). Average
-\emph{h} = 0.583, average Evenness = 0.693, average no. alleles =
-6.27}\tabularnewline
+used in this study. \emph{h} = Nei's 1978 gene diversity, \(E_5\) =
+Evenness. Average \emph{h} = 0.583, average \(E_5\) = 0.693, average no.
+alleles = 6.27}\tabularnewline
 \toprule
 \begin{minipage}[b]{0.08\columnwidth}\raggedleft\strut
 Locus\strut
@@ -544,8 +554,8 @@ Repeat Motif\strut
 No. alleles\strut
 \end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedleft\strut
 \emph{h}\strut
-\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright\strut
-Evenness\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright\strut
+\(E_5\)\strut
 \end{minipage}\tabularnewline
 \midrule
 \endfirsthead
@@ -560,8 +570,8 @@ Repeat Motif\strut
 No. alleles\strut
 \end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedleft\strut
 \emph{h}\strut
-\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright\strut
-Evenness\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright\strut
+\(E_5\)\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
@@ -575,7 +585,7 @@ Evenness\strut
 4\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.45\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.62\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -588,7 +598,7 @@ Evenness\strut
 3\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.64\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.95\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -601,7 +611,7 @@ Evenness\strut
 7\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.73\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.76\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -614,7 +624,7 @@ Evenness\strut
 7\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.74\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.79\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -627,7 +637,7 @@ Evenness\strut
 9\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.35\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.41\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -640,7 +650,7 @@ Evenness\strut
 5\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.58\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.78\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -653,7 +663,7 @@ Evenness\strut
 7\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.55\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.53\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -666,7 +676,7 @@ Evenness\strut
 2\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.05\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.42\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -679,7 +689,7 @@ Evenness\strut
 10\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.72\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.66\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -692,7 +702,7 @@ Evenness\strut
 5\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.76\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.91\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -705,7 +715,7 @@ Evenness\strut
 10\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.83\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.80\strut
 \end{minipage}\tabularnewline
 \bottomrule
@@ -1701,16 +1711,6 @@ in this publication (including Supplementary Information) are fully
 reproducible and available at The Open Science Framework
 \url{https://osf.io/ejb5y} (Kamvar et al., 2017).
 
-\subsection*{Funding}\label{funding}
-\addcontentsline{toc}{subsection}{Funding}
-
-Funding for this research was provided by the North Central Soybean
-Research Program (\#639K623) to SEE, a Layman Award (\#2446) to SEE,
-USDA-ARS National Sclerotinia Initiative (\#58-5442-2-209) to JRS/SEE,
-and start-up funds from the University of Nebraska-Lincoln to SEE. The
-funders had no role in study design, data collection and analysis,
-decision to publish, or preparation of the manuscript.
-
 \subsection*{Acknowledgements}\label{acknowledgements}
 \addcontentsline{toc}{subsection}{Acknowledgements}
 
@@ -1722,41 +1722,6 @@ context of the data collection and curation.
 We would also like to thank Denita Hadziabdic and two other anonymous
 reviewers for their valuable comments and insights that improved the
 quality of the manuscript.
-
-\subsection*{Conflicts of Interest}\label{conflicts-of-interest}
-\addcontentsline{toc}{subsection}{Conflicts of Interest}
-
-The authors declare no conflict of interest.
-
-\subsection*{Author Contributions}\label{author-contributions}
-\addcontentsline{toc}{subsection}{Author Contributions}
-
-\begin{itemize}
-\item
-  \textbf{Zhian N. Kamvar} analyzed the data, contributed analysis
-  tools, wrote the paper, prepared figures and tables, edited and
-  reviewed drafts of the paper.
-\item
-  \textbf{B. Sajeewa Amaradasa} analyzed the data, contributed analysis
-  tools, wrote drafts of the paper, edited and reviewed drafts of the
-  paper.
-\item
-  \textbf{Rachana Jhala} Carried out experiments (MCG assessment,
-  aggressiveness ratings, genotyping), edited and reviewed drafts of the
-  paper.
-\item
-  \textbf{Serena McCoy} Carried out experiments (MCG assessment,
-  aggressiveness ratings, genotyping), edited and reviewed drafts of the
-  paper.
-\item
-  \textbf{James R. Steadman} Conceived and designed experiments,
-  organized network of white mold screening nurseries, provided \emph{S.
-  sclerotiorum} isolates, edited and reviewed drafts of the paper.
-\item
-  \textbf{Sydney E. Everhart} supervised data analysis, analyzed the
-  data, contributed analysis tools, wrote the paper, edited and reviewed
-  drafts of the paper.
-\end{itemize}
 
 \newpage
 
@@ -2482,6 +2447,11 @@ genetic diversity, phenotypic uniformity, and evidence of outcrossing in
 \emph{Sclerotinia sclerotiorum} in the Columbia Basin of Washington
 State. \emph{Phytopathology}, \emph{94}, 737--742.
 
+\hypertarget{ref-attali2016ezknitr}{}
+Attali, D. (2016). ezknitr: Avoid the typical working directory pain
+when using ``knitr''. \emph{The Journal of Open Source Software},
+\emph{1}(5), 75. \url{https://doi.org/10.21105/joss.00075}
+
 \hypertarget{ref-attanayake2013sclerotinia}{}
 Attanayake, R. N., Carter, P. A., Jiang, D., del Río-Mendoza, L., \&
 Chen, W. (2013). \emph{Sclerotinia sclerotiorum} populations infecting
@@ -2647,12 +2617,12 @@ Kamvar, Z. N., Amaradasa, B. S., Jhala, R., McCoy, S., Steadman, J. R.,
 \& Everhart, S. E. (2017, November). Data and analysis for population
 structure and phenotypic variation of \emph{Sclerotinia sclerotiorum}
 from dry bean (\emph{Phaseolus vulgaris}) in the United States. Open
-Science Framework. Retrieved from \url{osf.io/k8wtm}
+Science Framework. \url{https://doi.org/10.17605/OSF.IO/K8WTM}
 
 \hypertarget{ref-kamvar2015novel}{}
 Kamvar, Z. N., Brooks, J. C., \& Grünwald, N. J. (2015). Novel R tools
 for analysis of genome-wide population genetic data with emphasis on
-clonality. \emph{Frontiers in Genetics}, \emph{6}.
+clonality. \emph{Frontiers in Genetics}, \emph{6}, 208.
 \url{https://doi.org/10.3389/fgene.2015.00208}
 
 \hypertarget{ref-kamvar2014poppr}{}
@@ -2734,8 +2704,9 @@ of Phytopathology}, \emph{31}, 127--150. Review.
 \hypertarget{ref-mccoy2009use}{}
 McCoy, S., \& Steadman, J. R. (2009). Use of multi-site screening to
 identify partial resistance to white mold in common bean in 2008.
-\emph{Bean Improvement Cooperative Annual Report}, 86--87. Retrieved
-from \url{https://naldc.nal.usda.gov/naldc/catalog.xhtml?id=IND44207142}
+\emph{Bean Improvement Cooperative Annual Report}, \emph{52}, 86--87.
+Retrieved from
+\url{https://naldc.nal.usda.gov/naldc/catalog.xhtml?id=IND44207142}
 
 \hypertarget{ref-mcdonald2002pathogen}{}
 McDonald, B. A., \& Linde, C. (2002). Pathogen population genetics,
@@ -2746,7 +2717,8 @@ Phytopathology}, \emph{40}(1), 349--379.
 \hypertarget{ref-mendiburu2015agricolae}{}
 Mendiburu, F. D., \& Simon, R. (2015). Agricolae - ten years of an open
 source statistical tool for experiments in breeding, agriculture and
-biology. \url{https://doi.org/10.7287/peerj.preprints.1404v1}
+biology. \emph{PeerJ PrePrints}, \emph{3}, e1404v1.
+\url{https://doi.org/10.7287/peerj.preprints.1404v1}
 
 \hypertarget{ref-micali2003independence}{}
 Micali, C. O., \& Smith, M. L. (2003). On the independence of barrage
@@ -2775,14 +2747,14 @@ Community ecology package}. Retrieved from
 Otto-Hanson, L., \& Steadman, J. R. (2007). Identification of partial
 resistance to \emph{Sclerotinia sclerotiorum} in common bean at multiple
 locations in 2006. \emph{Bean Improvement Cooperative Annual Report},
-133--134. Retrieved from
+\emph{50}, 133--134. Retrieved from
 \url{https://naldc.nal.usda.gov/naldc/catalog.xhtml?id=IND43940892}
 
 \hypertarget{ref-otto2008identification}{}
 Otto-Hanson, L., \& Steadman, J. R. (2008). Identification of partial
 resistance to \emph{Sclerotinia sclerotiorum} in common bean at multiple
 locations in 2007. \emph{Bean Improvement Cooperative Annual Report},
-214--215. Retrieved from
+\emph{51}, 214--215. Retrieved from
 \url{https://naldc.nal.usda.gov/naldc/catalog.xhtml?id=IND44063230}
 
 \hypertarget{ref-otto-hanson2011variation}{}
@@ -2898,14 +2870,14 @@ bean. \emph{Plant Disease}, \emph{67}, 346--350.
 Steadman, J. R., Eskridge, K., \& Powers, K. (2003). Identification of
 partial resistance to \emph{Sclerotinia sclerotiorum} in common bean at
 multiple locations. \emph{Bean Improvement Cooperative Annual Report},
-225--226. Retrieved from
+\emph{46}, 225--226. Retrieved from
 \url{https://naldc.nal.usda.gov/naldc/catalog.xhtml?id=IND43757287}
 
 \hypertarget{ref-steadman2006identification}{}
 Steadman, J. R., Otto-Hanson, L., \& Breathnach, J. (2006).
 Identification of partial resistance to \emph{Sclerotinia sclerotiorum}
 in common bean at multiple locations in 2005. \emph{Bean Improvement
-Cooperative Annual Report}, 223--224. Retrieved from
+Cooperative Annual Report}, \emph{49}, 223--224. Retrieved from
 \url{https://naldc.nal.usda.gov/naldc/catalog.xhtml?id=IND43805570}
 
 \hypertarget{ref-steadman2004identification}{}
@@ -2919,7 +2891,7 @@ Report}, \emph{47}, 281--282. Retrieved from
 Steadman, J. R., Otto-Hanson, L., \& Powers, K. (2005). Identification
 of partial resistance to \emph{Sclerotinia sclerotiorum} in common bean
 at multiple locations in 2004. \emph{Bean Improvement Cooperative Annual
-Report}, 124--125. Retrieved from
+Report}, \emph{48}, 124--125. Retrieved from
 \url{https://naldc.nal.usda.gov/naldc/catalog.xhtml?id=IND43759243}
 
 \hypertarget{ref-stoddart1988genotypic}{}
@@ -2960,6 +2932,10 @@ Springer-Verlag New York. Retrieved from \url{http://ggplot2.org}
 Wickham, H., Francois, R., Henry, L., \& Müller, K. (2017). \emph{dplyr:
 A grammar of data manipulation}. Retrieved from
 \url{https://CRAN.R-project.org/package=dplyr}
+
+\hypertarget{ref-xie2017knitr}{}
+Xie, Y. (2017). \emph{knitr: A general-purpose package for dynamic
+report generation in R}. Retrieved from \url{https://yihui.name/knitr/}
 
 
 

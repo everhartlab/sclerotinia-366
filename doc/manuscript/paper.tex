@@ -215,10 +215,13 @@ analyses. We assessed the power of our 11 markers by generating a
 genotype accumulation curve in the R package \emph{poppr} version 2.5.0,
 looking for evidence of saturation, which would indicate that loci were
 sufficiently sampled to adequately represent the full set of haplotypes
-(Arnaud-Hanod et al., 2007; Kamvar et al., 2015). To avoid including
-isolates potentially collected from the same plant (which increases the
-probability of collecting sclerotia from the same point of infection
-more than once), data were clone-corrected on a hierarchy of
+(Arnaud-Hanod et al., 2007; Kamvar et al., 2015). We additionally
+assessed within-locus allelic diversity by measuring Nei's gene
+diversity (\emph{h}) (Nei, 1978) and allelic evenness (\(E_5\)) (Pielou,
+1975; Grünwald et al., 2003). To avoid including isolates potentially
+collected from the same plant (which increases the probability of
+collecting sclerotia from the same point of infection more than once),
+data were clone-corrected on a hierarchy of
 Region/Source/Host/Year---meaning that duplicated genotypes were reduced
 to a single observation when they were collected in the same year from
 the same host cultivar located in the same source field (wmn or
@@ -226,12 +229,17 @@ producer)---for subsequent analysis. We assessed haplotype diversity by
 calculating Stoddart and Taylor's index (\emph{G}) (Stoddart \& Taylor,
 1988), Shannon's index (\emph{H}) (Shannon, 1948), Simpson's index
 (\(\lambda\)) (Simpson, 1949), evenness (\(E_5\)), and the expected
-number of multilocus haplotypes (\emph{eMLH}) (Hurlbert, 1971; Heck et
-al., 1975; Pielou, 1975; Grünwald et al., 2003). To assess the potential
-for random mating, we tested for linkage disequilibrium with the index
-of association, \(I_A\) and its standardized version, \(\bar{r}_d\)
-using 999 permutations (Brown et al., 1980; Smith et al., 1993; Agapow
-\& Burt, 2001). Both haplotype diversity and linkage disequilibrium were
+number of multilocus haplotypes via rarefaction (\emph{eMLH}) with 10
+samples (Hurlbert, 1971; Heck et al., 1975; Pielou, 1975; Grünwald et
+al., 2003). If all haplotypes in are equally abundant, both \emph{G} and
+\(e^H\) (the exponentiation of \emph{H}) are expected to be equal to the
+number of haplotypes, \(\lambda\) and \(E_5\) are expected to equal one,
+and \emph{eMLH} is expected to be at its maximum value (in this case,
+10) (Grünwald et al., 2003). To assess the potential for random mating,
+we tested for linkage disequilibrium with the index of association,
+\(I_A\) and its standardized version, \(\bar{r}_d\) using 999
+permutations (Brown et al., 1980; Smith et al., 1993; Agapow \& Burt,
+2001). Both haplotype diversity and linkage disequilibrium were
 calculated in \emph{poppr} (Kamvar et al., 2014).
 
 \subsection*{Assessing importance of
@@ -393,7 +401,7 @@ the most abundant of which (`MCG 5') was represented by 73 isolates over
 The number of observed alleles per locus ranged from two to 10 with an
 average of 6.27 (Table \ref{tab:locus-stats}). Locus 20-3, which
 contained only 2 alleles, showed low values of both \emph{h} (0.0533)
-and evenness (0.42), indicating that there was one dominant allele
+and \(E_5\) (0.42), indicating that there was one dominant allele
 present. Analysis of the haplotype accumulation curve showed no clear
 plateau for 11 or 16 loci (See section on `Loading Data and Setting
 Strata' in the MLG-distribution.md\footnote{Direct link:
@@ -427,9 +435,9 @@ showed only moderate significance with \(\bar{r}_d\) values of 0.03 and
 
 \begin{longtable}[]{@{}rrrlrl@{}}
 \caption{\label{tab:locus-stats} Allelic diversity on full data set at loci
-used in this study. \emph{h} = Nei's Gene Diversity (Nei, 1978). Average
-\emph{h} = 0.583, average Evenness = 0.693, average no. alleles =
-6.27}\tabularnewline
+used in this study. \emph{h} = Nei's 1978 gene diversity, \(E_5\) =
+Evenness. Average \emph{h} = 0.583, average \(E_5\) = 0.693, average no.
+alleles = 6.27}\tabularnewline
 \toprule
 \begin{minipage}[b]{0.08\columnwidth}\raggedleft\strut
 Locus\strut
@@ -441,8 +449,8 @@ Repeat Motif\strut
 No. alleles\strut
 \end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedleft\strut
 \emph{h}\strut
-\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright\strut
-Evenness\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright\strut
+\(E_5\)\strut
 \end{minipage}\tabularnewline
 \midrule
 \endfirsthead
@@ -457,8 +465,8 @@ Repeat Motif\strut
 No. alleles\strut
 \end{minipage} & \begin{minipage}[b]{0.06\columnwidth}\raggedleft\strut
 \emph{h}\strut
-\end{minipage} & \begin{minipage}[b]{0.10\columnwidth}\raggedright\strut
-Evenness\strut
+\end{minipage} & \begin{minipage}[b]{0.07\columnwidth}\raggedright\strut
+\(E_5\)\strut
 \end{minipage}\tabularnewline
 \midrule
 \endhead
@@ -472,7 +480,7 @@ Evenness\strut
 4\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.45\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.62\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -485,7 +493,7 @@ Evenness\strut
 3\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.64\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.95\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -498,7 +506,7 @@ Evenness\strut
 7\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.73\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.76\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -511,7 +519,7 @@ Evenness\strut
 7\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.74\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.79\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -524,7 +532,7 @@ Evenness\strut
 9\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.35\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.41\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -537,7 +545,7 @@ Evenness\strut
 5\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.58\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.78\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -550,7 +558,7 @@ Evenness\strut
 7\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.55\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.53\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -563,7 +571,7 @@ Evenness\strut
 2\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.05\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.42\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -576,7 +584,7 @@ Evenness\strut
 10\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.72\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.66\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -589,7 +597,7 @@ Evenness\strut
 5\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.76\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.91\strut
 \end{minipage}\tabularnewline
 \begin{minipage}[t]{0.08\columnwidth}\raggedleft\strut
@@ -602,7 +610,7 @@ Evenness\strut
 10\strut
 \end{minipage} & \begin{minipage}[t]{0.06\columnwidth}\raggedleft\strut
 0.83\strut
-\end{minipage} & \begin{minipage}[t]{0.10\columnwidth}\raggedright\strut
+\end{minipage} & \begin{minipage}[t]{0.07\columnwidth}\raggedright\strut
 0.80\strut
 \end{minipage}\tabularnewline
 \bottomrule
