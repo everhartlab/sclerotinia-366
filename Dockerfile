@@ -1,8 +1,8 @@
 ## This Dockerfile describes the R analysis environment for:
 ##
-## Kamvar, Z.N., Amaradasa, B.S., Jhala, R., McCoy, S., Steadman, S., and
-## Everhart, S.E. (2017). Population structure and phenotypic variation of
-## _Sclerotinia sclerotiorum_ from dry bean in the United States PeerJ XXX
+## Kamvar ZN, Amaradasa BS, Jhala R, McCoy S, Steadman JR, Everhart SE. (2017) Population 
+## structure and phenotypic variation of _Sclerotinia sclerotiorum_ from dry bean 
+## (_Phaseolus vulgaris_) in the United States. PeerJ 5:e4152 https://doi.org/10.7717/peerj.4152 
 ##
 ## package versions here are locked to those present on 2017-09-30
 ##
