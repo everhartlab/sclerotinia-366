@@ -9,41 +9,30 @@
 version: 2
 jobs:
   build:
-    working_directory: ~/everhartlab/sclerotinia-366
-    parallelism: 1
     machine: true
     # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
     # If any of these refer to each other, rewrite them so that they don't or see https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables .
     environment:
       CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
-    # In CircleCI 1.0 we used a pre-configured image with a large number of languages and other packages.
-    # In CircleCI 2.0 you can now specify your own image, or use one of our pre-configured images.
-    # The following configuration line tells CircleCI to use the specified docker image as the runtime environment for you job.
-    # We have selected a pre-built image that mirrors the build environment we use on
-    # the 1.0 platform, but we recommend you choose an image more tailored to the needs
-    # of each job. For more information on choosing an image (or alternatively using a
-    # VM instead of a container) see https://circleci.com/docs/2.0/executor-types/
-    # To see the list of pre-built images that CircleCI provides for most common languages see
-    # https://circleci.com/docs/2.0/circleci-images/
     steps:
       - checkout
       # start proprietary DB using private Docker image
       # with credentials stored in the UI
-     - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
-     # build the application image
-     - run:
-         command: docker build -t everhartlab/sclerotinia-366 .
-         no_output_timeout: 1800s
-     - run: docker run -ti -v $(pwd):/tmp -w /tmp everhartlab/sclerotinia-366 ./tests.sh
-     - run: docker run --name sclerotinia-366 -d -p 8787:8787 everhartlab/sclerotinia-366 ; sleep 10
-     - run: curl --retry 10 --retry-delay 5 -v http://localhost:8787
+      - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
+      # build the application image
+      - run:
+          command: docker build -t everhartlab/sclerotinia-366 .
+          no_output_timeout: 1800s
+      - run: docker run -ti -v $(pwd):/tmp -w /tmp everhartlab/sclerotinia-366 ./tests.sh
+      - run: docker run --name sclerotinia-366 -d -p 8787:8787 everhartlab/sclerotinia-366 ; sleep 10
+      - run: curl --retry 10 --retry-delay 5 -v http://localhost:8787
 
-     # Save test results
-     - store_test_results:
-         path: /tmp/circleci-test-results
-     # Save artifacts
-     - store_artifacts:
-         path: /tmp/circleci-artifacts
-     - store_artifacts:
-         path: /tmp/circleci-test-results
+      # Save test results
+      - store_test_results:
+          path: /tmp/circleci-test-results
+      # Save artifacts
+      - store_artifacts:
+          path: /tmp/circleci-artifacts
+      - store_artifacts:
+          path: /tmp/circleci-test-results
