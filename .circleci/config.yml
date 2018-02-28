@@ -30,8 +30,7 @@ jobs:
       - checkout
       # start proprietary DB using private Docker image
       # with credentials stored in the UI
-      - run: |
-         docker login -u $DOCKER_USER -p $DOCKER_PASS
+     - run: docker login -u $DOCKER_USER -p $DOCKER_PASS
      # build the application image
      - run:
          command: docker build -t everhartlab/sclerotinia-366 .
