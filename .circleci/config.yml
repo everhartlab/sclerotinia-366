@@ -25,31 +25,6 @@ jobs:
       - store_artifacts:
           path: /tmp/circleci-test-results
 # https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
-workflows:
-  version: 2
-  un-tagged-build:
-    jobs:
-      - build:
-          filters:
-            tags:
-              ignore: /^v.*/
-          branches:
-            only: /(master|update-circle)/
-        # - deploy:
-        #     steps:
-        #       - run: docker push everhartlab/sclerotinia-366
-  tagged-build:
-    jobs:
-      - build
-          tags:
-            only: /^v.*/
-          filters:
-            branches:
-              ignore: /.*/
-            # - deploy:
-            #     steps:
-            #       - run: docker tag everhartlab/sclerotinia-366 everhartlab/sclerotinia-366:${CIRCLE_TAG}
-            #       - run: docker push everhartlab/sclerotinia-366:${CIRCLE_TAG}
 # deployment:
 #   hub:
 #     branch: master
