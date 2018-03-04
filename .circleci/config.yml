@@ -33,9 +33,9 @@ workflows:
       - deploy:
           steps:
             - run: docker push everhartlab/sclerotinia-366
-        filters:
-          tags:
-            ignore: /^v.*/
+      filters:
+        tags:
+          ignore: /^v.*/
       branches:
         only: /(master|update-circle)/
   tagged-build:
@@ -45,11 +45,11 @@ workflows:
           steps:
             - run: docker tag everhartlab/sclerotinia-366 everhartlab/sclerotinia-366:${CIRCLE_TAG}
             - run: docker push everhartlab/sclerotinia-366:${CIRCLE_TAG}
-        tags:
-          only: /^v.*/
-        filters:
-          branches:
-            ignore: /.*/
+      tags:
+        only: /^v.*/
+      filters:
+        branches:
+          ignore: /.*/
 # deployment:
 #   hub:
 #     branch: master
