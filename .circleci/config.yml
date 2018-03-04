@@ -30,9 +30,9 @@ workflows:
   un-tagged-build:
     jobs:
       - build
-      - deploy:
-          steps:
-            - run: docker push everhartlab/sclerotinia-366
+      # - deploy:
+      #     steps:
+      #       - run: docker push everhartlab/sclerotinia-366
       filters:
         tags:
           ignore: /^v.*/
@@ -41,10 +41,10 @@ workflows:
   tagged-build:
     jobs:
       - build
-      - deploy:
-          steps:
-            - run: docker tag everhartlab/sclerotinia-366 everhartlab/sclerotinia-366:${CIRCLE_TAG}
-            - run: docker push everhartlab/sclerotinia-366:${CIRCLE_TAG}
+      # - deploy:
+      #     steps:
+      #       - run: docker tag everhartlab/sclerotinia-366 everhartlab/sclerotinia-366:${CIRCLE_TAG}
+      #       - run: docker push everhartlab/sclerotinia-366:${CIRCLE_TAG}
       tags:
         only: /^v.*/
       filters:
