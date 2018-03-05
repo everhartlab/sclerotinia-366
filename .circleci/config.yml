@@ -9,7 +9,7 @@ jobs:
       CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
     steps:
       - checkout
-      - run: docker login -e ${DOCKER_EMAIL} -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
       - run:
           command: docker build -t everhartlab/sclerotinia-366 .
           no_output_timeout: 1800s
