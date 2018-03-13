@@ -1,0 +1,103 @@
+# Zhian N. Kamvar 2018-03-13
+#
+# This updated version of the dockerfile represents a LOT of frustration of
+# going through the docs and failing. I think the most relevant doc for this
+# project in particular is: https://circleci.com/docs/2.0/workflows/#using-contexts-and-filtering-in-your-workflows
+#
+# Because of the way things are set up and because I'm not quite sure how to
+# share the built docker container between workflow steps, I must write the
+# procedure in a verbose manner for each possible scenario, of which there are
+# three:
+#   1. build and test: builds commits on a non-master branch, but does not deploy
+#   2. deploy: builds and deploys the latest version
+#   3. deploy-tag: builds and deploys tags starting with "v".
+version: 2
+jobs:
+  build-and-test:
+    machine: true
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+    steps:
+      - checkout
+      - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run:
+          command: docker build -t everhartlab/sclerotinia-366 .
+          no_output_timeout: 1800s
+      - run: docker run -ti -v $(pwd):/tmp -w /tmp everhartlab/sclerotinia-366 ./tests.sh
+      - run: docker run --name sclerotinia-366 -d -p 8787:8787 everhartlab/sclerotinia-366 ; sleep 10
+      - run: curl --retry 10 --retry-delay 5 -v http://localhost:8787
+      # Save test results
+      - store_test_results:
+          path: /tmp/circleci-test-results
+      # Save artifacts
+      - store_artifacts:
+          path: /tmp/circleci-artifacts
+      - store_artifacts:
+          path: /tmp/circleci-test-results
+  deploy:
+    machine: true
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+    steps:
+      - checkout
+      - run:
+          command: docker build -t everhartlab/sclerotinia-366 .
+          no_output_timeout: 1800s
+      - run: docker run -ti -v $(pwd):/tmp -w /tmp everhartlab/sclerotinia-366 ./tests.sh
+      - run: docker run --name sclerotinia-366 -d -p 8787:8787 everhartlab/sclerotinia-366 ; sleep 10
+      - run: curl --retry 10 --retry-delay 5 -v http://localhost:8787
+      - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run: docker push everhartlab/sclerotinia-366
+  deploy-tag:
+    machine: true
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+    steps:
+      - checkout
+      - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run:
+          command: docker build -t everhartlab/sclerotinia-366 .
+          no_output_timeout: 1800s
+      - run: docker run -ti -v $(pwd):/tmp -w /tmp everhartlab/sclerotinia-366 ./tests.sh
+      - run: docker run --name sclerotinia-366 -d -p 8787:8787 everhartlab/sclerotinia-366 ; sleep 10
+      - run: curl --retry 10 --retry-delay 5 -v http://localhost:8787
+      - run: docker tag everhartlab/sclerotinia-366 everhartlab/sclerotinia-366:$(git describe --abbrev=0 --tags)
+      - run: docker push everhartlab/sclerotinia-366
+workflows:
+  version: 2
+  build-and-test:
+    jobs:
+      - build-and-test:
+          filters:
+            branches:
+              ignore:
+                - master
+            tags:
+              ignore: /.*/
+  deploy-latest:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
+            tags:
+              ignore: /.*/
+  deploy-tag:
+    jobs:
+      - deploy-tag:
+          filters:
+            tags:
+              only: /^v*/
+  weekly:
+    triggers:
+      - schedule:
+          cron: "9 11 * * 6"
+          filter:
+            branches:
+              only: master
+    jobs:
+      - deploy
