@@ -57,7 +57,7 @@ jobs:
       - run: docker push everhartlab/sclerotinia-366
 workflows:
   version: 2
-  build-and-test:
+  BAT:
     jobs:
       - build-and-test:
           filters:
