@@ -61,7 +61,7 @@ workflows:
     jobs:
       - build-and-test:
           branches:
-            - update-circle
+            only: update-circle
           # branches:
           #   ignore:
           #     - master
