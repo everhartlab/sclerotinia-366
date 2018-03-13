@@ -24,11 +24,54 @@ jobs:
           path: /tmp/circleci-artifacts
       - store_artifacts:
           path: /tmp/circleci-test-results
-# workflows:
-#   version: 2
-#   build_and:
-#     jobs:
-#       -build
+  test:
+    machine: true
+    # CircleCI 2.0 does not support environment variables that refer to each other the same way as 1.0 did.
+    # If any of these refer to each other, rewrite them so that they don't or see https://circleci.com/docs/2.0/env-vars/#interpolating-environment-variables-to-set-other-environment-variables .
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+    steps:
+      - checkout
+      - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run: docker run -ti -v $(pwd):/tmp -w /tmp everhartlab/sclerotinia-366 ./tests.sh
+      - run: docker run --name sclerotinia-366 -d -p 8787:8787 everhartlab/sclerotinia-366 ; sleep 10
+      - run: curl --retry 10 --retry-delay 5 -v http://localhost:8787
+      # Save test results
+      - store_test_results:
+          path: /tmp/circleci-test-results
+      # Save artifacts
+      - store_artifacts:
+          path: /tmp/circleci-artifacts
+      - store_artifacts:
+          path: /tmp/circleci-test-results
+  deploy:
+    machine: true
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+    steps:
+      - checkout
+      - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run: docker push everhartlab/sclerotinia-366
+  deploy-tag:
+    machine: true
+    environment:
+      CIRCLE_ARTIFACTS: /tmp/circleci-artifacts
+      CIRCLE_TEST_REPORTS: /tmp/circleci-test-results
+    steps:
+      - checkout
+      - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
+      - run: docker tag everhartlab/sclerotinia-366 everhartlab/sclerotinia-366:${CIRCLE_TAG}
+      - run: docker push everhartlab/sclerotinia-366
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
 # https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
 # deployment:
 #   hub:
