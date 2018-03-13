@@ -60,8 +60,9 @@ workflows:
   build-and-test:
     jobs:
       - build-and-test:
-          branches:
-            - /.*/
+          filters:
+            branches:
+              - update-circle
           # branches:
           #   ignore:
           #     - master
