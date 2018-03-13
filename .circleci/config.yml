@@ -62,7 +62,7 @@ workflows:
       - build-and-test:
           filters:
             branches:
-              - update-circle
+              - only: update-circle
           # branches:
           #   ignore:
           #     - master
