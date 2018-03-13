@@ -81,7 +81,5 @@ workflows:
     jobs:
       - deploy-tag:
           filters:
-            branches:
-              ignore: /.*/
             tags:
               only: /^v*/
