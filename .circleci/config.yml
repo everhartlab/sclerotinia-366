@@ -57,36 +57,34 @@ jobs:
       - run: docker push everhartlab/sclerotinia-366
 workflows:
   version: 2
-  BAT:
+  build-and-test:
     jobs:
       - build-and-test:
           filters:
             branches:
-              only: update-circle
-          # branches:
-          #   ignore:
-          #     - master
-          #     - update-circle
-          # tags:
-          #   ignore: /^v*/
-  # deploy-latest:
-  #   jobs:
-  #     - deploy:
-  #         filters:
-  #           branches:
-  #             only:
-  #               - master
-  #               - update-circle
-  #           tags:
-  #             ignore: /^v*/
-  # deploy-tag:
-  #   jobs:
-  #     - deploy-tag:
-  #         filters:
-  #           branches:
-  #             ignore: /.*/
-  #           tags:
-  #             only: /^v*/
+              ignore:
+                - master
+                - update-circle
+            tags:
+              ignore: /^v*/
+  deploy-latest:
+    jobs:
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
+                - update-circle
+            tags:
+              ignore: /^v*/
+  deploy-tag:
+    jobs:
+      - deploy-tag:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v*/
 # https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
 # deployment:
 #   hub:
