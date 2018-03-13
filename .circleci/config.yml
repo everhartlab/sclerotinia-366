@@ -94,7 +94,7 @@ workflows:
     triggers:
       - schedule:
           cron: "9 11 * * 6"
-          filter:
+          filters:
             branches:
               only: master
     jobs:
