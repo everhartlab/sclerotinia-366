@@ -84,8 +84,6 @@ workflows:
             branches:
               only:
                 - master
-            tags:
-              ignore: /.*/
   deploy-tag:
     jobs:
       - deploy-tag:
