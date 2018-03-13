@@ -60,30 +60,30 @@ workflows:
   build-and-test:
     jobs:
       - build-and-test:
-          branches:
-            ignore:
-              - master
-              - update-circle
+          # branches:
+          #   ignore:
+          #     - master
+          #     - update-circle
           tags:
             ignore: /^v*/
-  deploy-latest:
-    jobs:
-      - deploy:
-          filters:
-            branches:
-              only:
-                - master
-                - update-circle
-            tags:
-              ignore: /^v*/
-  deploy-tag:
-    jobs:
-      - deploy-tag:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /^v*/
+  # deploy-latest:
+  #   jobs:
+  #     - deploy:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - master
+  #               - update-circle
+  #           tags:
+  #             ignore: /^v*/
+  # deploy-tag:
+  #   jobs:
+  #     - deploy-tag:
+  #         filters:
+  #           branches:
+  #             ignore: /.*/
+  #           tags:
+  #             only: /^v*/
 # https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
 # deployment:
 #   hub:
