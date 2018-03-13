@@ -11,7 +11,7 @@ jobs:
       - checkout
       - run: docker login -u ${DOCKER_USER} -p ${DOCKER_PASS}
       - run:
-          command: docker build -t everhartlab/sclerotinia-366 .
+          command: docker pull everhartlab/sclerotinia-366 # docker build -t everhartlab/sclerotinia-366 .
           no_output_timeout: 1800s
       - run: docker run -ti -v $(pwd):/tmp -w /tmp everhartlab/sclerotinia-366 ./tests.sh
       - run: docker run --name sclerotinia-366 -d -p 8787:8787 everhartlab/sclerotinia-366 ; sleep 10
@@ -24,6 +24,11 @@ jobs:
           path: /tmp/circleci-artifacts
       - store_artifacts:
           path: /tmp/circleci-test-results
+workflows:
+  version: 2
+  they-will-come:
+    jobs:
+      -build
 # https://circleci.com/docs/2.0/workflows/#git-tag-job-execution
 # deployment:
 #   hub:
