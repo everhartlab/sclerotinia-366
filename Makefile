@@ -43,7 +43,7 @@ all: $(DIRS) README.md $(ANALYSES) $(MANUSCRIPT)
 # Bootstrap the  data by installing the dependencies
 # This is a specific target for the convenience of typing make bootstrap
 .PHONY: bootstrap
-bootstrap: results/bootstrap.txt
+bootstrap: $(DIRS) results/bootstrap.txt
 
 # Create the shared data set
 $(THE_DATA) : bootstrap $(PARSE_DATA)
@@ -82,10 +82,14 @@ doc/manuscript/%.pdf : doc/manuscript/%.Rmd $(COMPONENTS) $(ANALYSES)
 # ALL of the analyses (the cache still exists)
 tidy:
 	$(RM) $(PARSE_DATA)
+	$(RM) data/*.{csv,rda,rdb} 
 	$(RM) $(ANALYSES)
 	$(RM) $(MANUSCRIPT)
 	$(RM) README
 	$(RM) -r $(DIRS)
+	$(RM) results/
+	$(RM) docs/RMD/*html
+	$(RM) docs/manuscript/*{tex,pdf}
 
 .PHONY : clean
 
