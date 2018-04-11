@@ -87,7 +87,7 @@ tidy:
 	$(RM) $(MANUSCRIPT)
 	$(RM) README
 	$(RM) -r $(DIRS)
-	$(RM) results/
+	$(RM) -r results/
 	$(RM) docs/RMD/*html
 	$(RM) docs/manuscript/*{tex,pdf}
 
