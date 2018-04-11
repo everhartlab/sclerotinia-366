@@ -82,14 +82,14 @@ doc/manuscript/%.pdf : doc/manuscript/%.Rmd $(COMPONENTS) $(ANALYSES)
 # ALL of the analyses (the cache still exists)
 tidy:
 	$(RM) $(PARSE_DATA)
-	$(RM) data/*.{csv,rda,rdb} 
+	$(RM) data/*.{csv,rda,rdb,rds} 
 	$(RM) $(ANALYSES)
 	$(RM) $(MANUSCRIPT)
 	$(RM) README
 	$(RM) -r $(DIRS)
 	$(RM) -r results/
-	$(RM) docs/RMD/*html
-	$(RM) docs/manuscript/*{tex,pdf}
+	$(RM) doc/RMD/*html
+	$(RM) doc/manuscript/*{tex,pdf}
 
 .PHONY : clean
 
