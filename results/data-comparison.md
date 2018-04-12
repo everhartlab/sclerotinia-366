@@ -348,7 +348,7 @@ dplyr::setequal(saj, syd)
 ```
 
 ```
-## FALSE: Rows in x but not y: 366, 365, 364, 363, 260, 41, 40, 39, 38. Rows in y but not x: 366, 365, 363, 260, 41, 40, 39, 38, 364.
+## FALSE: Rows in x but not y: 366, 365, 364, 260, 363, 41, 40, 39, 38. Rows in y but not x: 366, 365, 364, 363, 260, 41, 40, 39, 38.
 ```
 
 Okay, something's not cromulent here. We'll have to manaully inspect these:
@@ -809,7 +809,7 @@ devtools::session_info()
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-12-07
+##  date     2018-04-12
 ```
 
 ```
@@ -823,7 +823,7 @@ devtools::session_info()
 ##  ape           5.0     2017-10-30 cran (@5.0)    
 ##  assertr     * 2.0.2.2 2017-06-06 cran (@2.0.2.2)
 ##  assertthat    0.2.0   2017-04-11 CRAN (R 3.4.2) 
-##  base        * 3.4.2   2017-12-01 local          
+##  base        * 3.4.2   2018-03-01 local          
 ##  bindr         0.1     2016-11-13 CRAN (R 3.4.2) 
 ##  bindrcpp    * 0.2     2017-06-17 CRAN (R 3.4.2) 
 ##  boot          1.3-20  2017-07-30 cran (@1.3-20) 
@@ -833,9 +833,9 @@ devtools::session_info()
 ##  cluster       2.0.6   2017-03-16 CRAN (R 3.4.2) 
 ##  coda          0.19-1  2016-12-08 cran (@0.19-1) 
 ##  colorspace    1.3-2   2016-12-14 CRAN (R 3.4.2) 
-##  compiler      3.4.2   2017-12-01 local          
+##  compiler      3.4.2   2018-03-01 local          
 ##  crayon        1.3.4   2017-09-16 CRAN (R 3.4.2) 
-##  datasets    * 3.4.2   2017-12-01 local          
+##  datasets    * 3.4.2   2018-03-01 local          
 ##  deldir        0.1-14  2017-04-22 cran (@0.1-14) 
 ##  devtools      1.13.4  2017-11-09 CRAN (R 3.4.2) 
 ##  digest        0.6.12  2017-01-27 CRAN (R 3.4.2) 
@@ -850,9 +850,9 @@ devtools::session_info()
 ##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.2) 
 ##  glue          1.2.0   2017-10-29 CRAN (R 3.4.2) 
 ##  gmodels       2.16.2  2015-07-22 cran (@2.16.2) 
-##  graphics    * 3.4.2   2017-12-01 local          
-##  grDevices   * 3.4.2   2017-12-01 local          
-##  grid          3.4.2   2017-12-01 local          
+##  graphics    * 3.4.2   2018-03-01 local          
+##  grDevices   * 3.4.2   2018-03-01 local          
+##  grid          3.4.2   2018-03-01 local          
 ##  gtable        0.2.0   2016-02-26 CRAN (R 3.4.2) 
 ##  gtools        3.5.0   2015-05-29 cran (@3.5.0)  
 ##  haven         1.1.0   2017-07-09 CRAN (R 3.4.2) 
@@ -871,14 +871,14 @@ devtools::session_info()
 ##  MASS          7.3-47  2017-04-21 CRAN (R 3.4.2) 
 ##  Matrix        1.2-12  2017-11-16 CRAN (R 3.4.2) 
 ##  memoise       1.1.0   2017-04-21 CRAN (R 3.4.2) 
-##  methods     * 3.4.2   2017-12-01 local          
+##  methods     * 3.4.2   2018-03-01 local          
 ##  mgcv          1.8-22  2017-09-19 CRAN (R 3.4.2) 
 ##  mime          0.5     2016-07-07 CRAN (R 3.4.2) 
 ##  mnormt        1.5-5   2016-10-15 CRAN (R 3.4.2) 
 ##  modelr        0.1.1   2017-07-24 CRAN (R 3.4.2) 
 ##  munsell       0.4.3   2016-02-13 CRAN (R 3.4.2) 
 ##  nlme          3.1-131 2017-02-06 CRAN (R 3.4.2) 
-##  parallel      3.4.2   2017-12-01 local          
+##  parallel      3.4.2   2018-03-01 local          
 ##  pegas         0.10    2017-05-03 cran (@0.10)   
 ##  permute       0.9-4   2016-09-09 cran (@0.9-4)  
 ##  phangorn      2.3.1   2017-11-01 cran (@2.3.1)  
@@ -905,16 +905,16 @@ devtools::session_info()
 ##  sp            1.2-5   2017-06-29 CRAN (R 3.4.2) 
 ##  spData        0.2.6.7 2017-11-28 cran (@0.2.6.7)
 ##  spdep         0.7-4   2017-11-22 cran (@0.7-4)  
-##  splines       3.4.2   2017-12-01 local          
-##  stats       * 3.4.2   2017-12-01 local          
+##  splines       3.4.2   2018-03-01 local          
+##  stats       * 3.4.2   2018-03-01 local          
 ##  stringi       1.1.6   2017-11-17 CRAN (R 3.4.2) 
 ##  stringr     * 1.2.0   2017-02-18 CRAN (R 3.4.2) 
 ##  tibble      * 1.3.4   2017-08-22 CRAN (R 3.4.2) 
 ##  tidyr       * 0.7.2   2017-10-16 CRAN (R 3.4.2) 
 ##  tidyselect    0.2.3   2017-11-06 CRAN (R 3.4.2) 
 ##  tidyverse   * 1.2.1   2017-11-14 CRAN (R 3.4.2) 
-##  tools         3.4.2   2017-12-01 local          
-##  utils       * 3.4.2   2017-12-01 local          
+##  tools         3.4.2   2018-03-01 local          
+##  utils       * 3.4.2   2018-03-01 local          
 ##  vegan         2.4-4   2017-08-24 cran (@2.4-4)  
 ##  withr         2.1.0   2017-11-01 CRAN (R 3.4.2) 
 ##  xml2          1.1.1   2017-01-24 CRAN (R 3.4.2) 

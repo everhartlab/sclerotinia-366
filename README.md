@@ -2,7 +2,7 @@
 Analysis of 366 *S. sclerotiorum* isolates
 ==========================================
 
-[![Last-changedate](https://img.shields.io/badge/last%20change-2018--03--13-2F4096.svg)](https://github.com/everhartlab/sclerotinia-366/commits/master) [![Licence](https://img.shields.io/badge/license-MIT%20License-2F4096.svg)](http://choosealicense.com/licenses/mit/)
+[![Last-changedate](https://img.shields.io/badge/last%20change-2018--04--12-2F4096.svg)](https://github.com/everhartlab/sclerotinia-366/commits/master) [![Licence](https://img.shields.io/badge/license-MIT%20License-2F4096.svg)](http://choosealicense.com/licenses/mit/)
 [![minimal R version](https://img.shields.io/badge/R%3E%3D-3.4.2-2F4096.svg)](https://cran.r-project.org/) [![Circle CI](https://circleci.com/gh/everhartlab/sclerotinia-366.svg?style=shield&circle-token=:circle-token)](https://circleci.com/gh/everhartlab/sclerotinia-366)
 
 This repository contains data, code, and a manuscript for analysis of 366 isolates of *Sclerotinia sclerotiorum* from the US and various countries around the world.
@@ -149,7 +149,7 @@ devtools::session_info()
 #>  language (EN)                        
 #>  collate  en_US.UTF-8                 
 #>  tz       UTC                         
-#>  date     2018-03-13
+#>  date     2018-04-12
 #> Packages ------------------------------------------------------------------------------------------
 #>  package     * version date       source                               
 #>  ade4        * 1.7-8   2017-08-09 cran (@1.7-8)                        
@@ -187,13 +187,13 @@ devtools::session_info()
 #>  forcats     * 0.2.0   2017-01-23 CRAN (R 3.4.2)                       
 #>  foreign       0.8-69  2017-06-21 CRAN (R 3.4.2)                       
 #>  gdata         2.18.0  2017-06-06 cran (@2.18.0)                       
-#>  ggcompoplot * 0.1.0   2018-03-02 Github (zkamvar/ggcompoplot@bcf007d) 
+#>  ggcompoplot * 0.1.0   2018-04-09 Github (zkamvar/ggcompoplot@bcf007d) 
 #>  ggforce     * 0.1.1   2016-11-28 cran (@0.1.1)                        
 #>  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.2)                       
 #>  ggraph      * 1.0.0   2017-02-24 cran (@1.0.0)                        
 #>  ggrepel     * 0.7.0   2017-09-29 cran (@0.7.0)                        
 #>  ggridges    * 0.4.1   2017-09-15 cran (@0.4.1)                        
-#>  ggtree      * 1.9.4   2018-03-02 Github (GuangchuangYu/ggtree@07063f9)
+#>  ggtree      * 1.9.4   2018-04-09 Github (GuangchuangYu/ggtree@07063f9)
 #>  glue          1.2.0   2017-10-29 CRAN (R 3.4.2)                       
 #>  gmodels       2.16.2  2015-07-22 cran (@2.16.2)                       
 #>  graphics    * 3.4.2   2018-03-01 local                                
@@ -248,7 +248,7 @@ devtools::session_info()
 #>  rmarkdown     1.8     2017-11-17 CRAN (R 3.4.2)                       
 #>  rprojroot     1.2     2017-01-16 CRAN (R 3.4.2)                       
 #>  rstudioapi    0.7     2017-09-07 CRAN (R 3.4.2)                       
-#>  rticles     * 0.4.1   2018-03-02 Github (rstudio/rticles@4111a39)     
+#>  rticles     * 0.4.1   2018-04-09 Github (rstudio/rticles@4111a39)     
 #>  rvcheck       0.0.9   2017-07-10 cran (@0.0.9)                        
 #>  rvest         0.3.2   2016-06-17 CRAN (R 3.4.2)                       
 #>  scales        0.5.0   2017-08-24 CRAN (R 3.4.2)                       
@@ -265,7 +265,7 @@ devtools::session_info()
 #>  tidyr       * 0.7.2   2017-10-16 CRAN (R 3.4.2)                       
 #>  tidyverse   * 1.2.1   2017-11-14 CRAN (R 3.4.2)                       
 #>  tools         3.4.2   2018-03-01 local                                
-#>  treeio      * 1.1.2   2018-03-02 Github (GuangchuangYu/treeio@b6ae142)
+#>  treeio      * 1.1.2   2018-04-09 Github (GuangchuangYu/treeio@b6ae142)
 #>  tweenr        0.1.5   2016-10-10 cran (@0.1.5)                        
 #>  udunits2      0.13    2016-11-17 cran (@0.13)                         
 #>  units         0.4-6   2017-08-27 cran (@0.4-6)                        

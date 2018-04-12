@@ -199,11 +199,11 @@ ssc_amova_test
 ## Observation: 0.004391536 
 ## 
 ## Based on 999 replicates
-## Simulated p-value: 0.002 
+## Simulated p-value: 0.001 
 ## Alternative hypothesis: greater 
 ## 
-##       Std.Obs   Expectation      Variance 
-##  7.983543e+00 -3.349763e-05  3.072146e-07
+##      Std.Obs  Expectation     Variance 
+## 7.902623e+00 1.343248e-05 3.069231e-07
 ```
 
 
@@ -235,7 +235,7 @@ plot(ssc_amova_region_test)
 ##   Within Region                     296     56.6667061        86.3618966
 ##                                   statistic
 ## levels                                  P Phi statistic
-##   Between SourceType               0.2885  -0.001583345
+##   Between SourceType               0.2878  -0.001583345
 ##   Between Region Within SourceType 0.0001   0.137746279
 ##   Within Region                    0.0001   0.136381034
 ```
@@ -267,7 +267,7 @@ plot(ssc_amova_nm_test)
 ##   Within Region                     282     55.0854125         90.349725
 ##                                   statistic
 ## levels                                  P Phi statistic
-##   Between SourceType               0.2777    0.00115560
+##   Between SourceType               0.2765    0.00115560
 ##   Between Region Within SourceType 0.0001    0.09545746
 ##   Within Region                    0.0001    0.09650275
 ```
@@ -317,7 +317,7 @@ plot(ssc_amova_newami_test)
 ##   Within Region                     147     30.0470395         93.522707
 ##                                   statistic
 ## levels                                  P Phi statistic
-##   Between SourceType               0.3960   -0.01831835
+##   Between SourceType               0.3945   -0.01831835
 ##   Between Region Within SourceType 0.0001    0.08159657
 ##   Within Region                    0.0001    0.06477293
 ```
@@ -855,7 +855,7 @@ LDS_PLOT
 ##  language (EN)                        
 ##  collate  en_US.UTF-8                 
 ##  tz       UTC                         
-##  date     2017-12-07
+##  date     2018-04-12
 ```
 
 ```
@@ -869,7 +869,7 @@ LDS_PLOT
 ##  ape           5.0     2017-10-30 cran (@5.0)                         
 ##  assertr       2.0.2.2 2017-06-06 cran (@2.0.2.2)                     
 ##  assertthat    0.2.0   2017-04-11 CRAN (R 3.4.2)                      
-##  base        * 3.4.2   2017-12-01 local                               
+##  base        * 3.4.2   2018-03-01 local                               
 ##  bindr         0.1     2016-11-13 CRAN (R 3.4.2)                      
 ##  bindrcpp    * 0.2     2017-06-17 CRAN (R 3.4.2)                      
 ##  boot          1.3-20  2017-07-30 cran (@1.3-20)                      
@@ -880,10 +880,10 @@ LDS_PLOT
 ##  coda          0.19-1  2016-12-08 cran (@0.19-1)                      
 ##  codetools     0.2-15  2016-10-05 CRAN (R 3.4.2)                      
 ##  colorspace    1.3-2   2016-12-14 CRAN (R 3.4.2)                      
-##  compiler      3.4.2   2017-12-01 local                               
+##  compiler      3.4.2   2018-03-01 local                               
 ##  cowplot     * 0.9.1   2017-11-16 cran (@0.9.1)                       
 ##  crayon        1.3.4   2017-09-16 CRAN (R 3.4.2)                      
-##  datasets    * 3.4.2   2017-12-01 local                               
+##  datasets    * 3.4.2   2018-03-01 local                               
 ##  deldir        0.1-14  2017-04-22 cran (@0.1-14)                      
 ##  devtools      1.13.4  2017-11-09 CRAN (R 3.4.2)                      
 ##  digest        0.6.12  2017-01-27 CRAN (R 3.4.2)                      
@@ -895,16 +895,16 @@ LDS_PLOT
 ##  forcats     * 0.2.0   2017-01-23 CRAN (R 3.4.2)                      
 ##  foreign       0.8-69  2017-06-21 CRAN (R 3.4.2)                      
 ##  gdata         2.18.0  2017-06-06 cran (@2.18.0)                      
-##  ggcompoplot * 0.1.0   2017-12-07 Github (zkamvar/ggcompoplot@bcf007d)
+##  ggcompoplot * 0.1.0   2018-04-09 Github (zkamvar/ggcompoplot@bcf007d)
 ##  ggforce       0.1.1   2016-11-28 cran (@0.1.1)                       
 ##  ggplot2     * 2.2.1   2016-12-30 CRAN (R 3.4.2)                      
 ##  ggraph      * 1.0.0   2017-02-24 cran (@1.0.0)                       
 ##  ggrepel       0.7.0   2017-09-29 cran (@0.7.0)                       
 ##  glue          1.2.0   2017-10-29 CRAN (R 3.4.2)                      
 ##  gmodels       2.16.2  2015-07-22 cran (@2.16.2)                      
-##  graphics    * 3.4.2   2017-12-01 local                               
-##  grDevices   * 3.4.2   2017-12-01 local                               
-##  grid          3.4.2   2017-12-01 local                               
+##  graphics    * 3.4.2   2018-03-01 local                               
+##  grDevices   * 3.4.2   2018-03-01 local                               
+##  grid          3.4.2   2018-03-01 local                               
 ##  gridExtra     2.3     2017-09-09 CRAN (R 3.4.2)                      
 ##  gtable        0.2.0   2016-02-26 CRAN (R 3.4.2)                      
 ##  gtools        3.5.0   2015-05-29 cran (@3.5.0)                       
@@ -929,14 +929,14 @@ LDS_PLOT
 ##  MASS          7.3-47  2017-04-21 CRAN (R 3.4.2)                      
 ##  Matrix        1.2-12  2017-11-16 CRAN (R 3.4.2)                      
 ##  memoise       1.1.0   2017-04-21 CRAN (R 3.4.2)                      
-##  methods     * 3.4.2   2017-12-01 local                               
+##  methods     * 3.4.2   2018-03-01 local                               
 ##  mgcv          1.8-22  2017-09-19 CRAN (R 3.4.2)                      
 ##  mime          0.5     2016-07-07 CRAN (R 3.4.2)                      
 ##  mnormt        1.5-5   2016-10-15 CRAN (R 3.4.2)                      
 ##  modelr        0.1.1   2017-07-24 CRAN (R 3.4.2)                      
 ##  munsell       0.4.3   2016-02-13 CRAN (R 3.4.2)                      
 ##  nlme          3.1-131 2017-02-06 CRAN (R 3.4.2)                      
-##  parallel      3.4.2   2017-12-01 local                               
+##  parallel      3.4.2   2018-03-01 local                               
 ##  pegas         0.10    2017-05-03 cran (@0.10)                        
 ##  permute       0.9-4   2016-09-09 cran (@0.9-4)                       
 ##  phangorn      2.3.1   2017-11-01 cran (@2.3.1)                       
@@ -963,19 +963,19 @@ LDS_PLOT
 ##  sp            1.2-5   2017-06-29 CRAN (R 3.4.2)                      
 ##  spData        0.2.6.7 2017-11-28 cran (@0.2.6.7)                     
 ##  spdep         0.7-4   2017-11-22 cran (@0.7-4)                       
-##  splines       3.4.2   2017-12-01 local                               
-##  stats       * 3.4.2   2017-12-01 local                               
+##  splines       3.4.2   2018-03-01 local                               
+##  stats       * 3.4.2   2018-03-01 local                               
 ##  stringi       1.1.6   2017-11-17 CRAN (R 3.4.2)                      
 ##  stringr     * 1.2.0   2017-02-18 CRAN (R 3.4.2)                      
 ##  tibble      * 1.3.4   2017-08-22 CRAN (R 3.4.2)                      
 ##  tidyr       * 0.7.2   2017-10-16 CRAN (R 3.4.2)                      
 ##  tidyselect    0.2.3   2017-11-06 CRAN (R 3.4.2)                      
 ##  tidyverse   * 1.2.1   2017-11-14 CRAN (R 3.4.2)                      
-##  tools         3.4.2   2017-12-01 local                               
+##  tools         3.4.2   2018-03-01 local                               
 ##  tweenr        0.1.5   2016-10-10 cran (@0.1.5)                       
 ##  udunits2      0.13    2016-11-17 cran (@0.13)                        
 ##  units         0.4-6   2017-08-27 cran (@0.4-6)                       
-##  utils       * 3.4.2   2017-12-01 local                               
+##  utils       * 3.4.2   2018-03-01 local                               
 ##  vegan         2.4-4   2017-08-24 cran (@2.4-4)                       
 ##  viridis     * 0.4.0   2017-03-27 CRAN (R 3.4.2)                      
 ##  viridisLite * 0.2.0   2017-03-24 CRAN (R 3.4.2)                      
